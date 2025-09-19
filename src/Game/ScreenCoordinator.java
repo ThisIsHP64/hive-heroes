@@ -6,6 +6,7 @@ import Engine.Screen;
 import Screens.CreditsScreen;
 import Screens.MenuScreen;
 import Screens.PlayLevelScreen;
+import Screens.SprintOneLevelScreen;
 
 /*
  * Based on the current game state, this class determines which Screen should be shown
@@ -44,8 +45,11 @@ public class ScreenCoordinator extends Screen {
 					case MENU:
 						currentScreen = new MenuScreen(this);
 						break;
+					
+					// note from Wilson: in order to switch between the "new" map and the old one, replace the LEVEL case
+					// with this: currentScreen = new PlayLevelScreen(this);
 					case LEVEL:
-						currentScreen = new PlayLevelScreen(this);
+						currentScreen = new SprintOneLevelScreen(this);
 						break;
 					case CREDITS:
 						currentScreen = new CreditsScreen(this);
