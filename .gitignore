@@ -28,4 +28,5 @@ replay_pid*
 ._*
 .Spotlight-V100
 .Trashes
+.idea/
 desktop.ini
