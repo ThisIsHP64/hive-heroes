@@ -5,10 +5,10 @@ import Level.*;
 import NPCs.Bug;
 import NPCs.Dinosaur;
 import NPCs.Walrus;
-import PowerUps.PowerUp;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.*;
 import Tilesets.CommonTileset;
+
 import java.util.ArrayList;
 
 // Represents a test map to be used in a level
@@ -45,9 +45,6 @@ public class TestMap extends Map {
         Bug bug = new Bug(3, getMapTile(7, 12).getLocation().subtractX(20));
         bug.setInteractScript(new BugScript());
         npcs.add(bug);
-
-        PowerUp pu = new PowerUp(2000, getMapTile(5, 10).getLocation());
-        npcs.add(pu);
 
         return npcs;
     }
