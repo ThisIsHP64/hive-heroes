@@ -14,6 +14,7 @@ public class PowerUp extends NPC {
 
     public PowerUp(int id, Point location) {
         super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("Powerup.png"), 24, 24), "IDLE");
+        this.isUncollidable = true;
     }
 
     @Override
@@ -22,6 +23,7 @@ public class PowerUp extends NPC {
             put("IDLE", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 0))
                             .withScale(3)
+                            .withBounds(6, 6, 12, 12)
                             .build()
             });
         }};
