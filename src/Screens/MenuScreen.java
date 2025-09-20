@@ -14,7 +14,10 @@ public class MenuScreen extends Screen {
     protected ScreenCoordinator screenCoordinator;
     protected int currentMenuItemHovered = 0; // current menu item being "hovered" over
     protected int menuItemSelected = -1;
+    protected SpriteFont titleA;
+    protected SpriteFont titleB;
     protected SpriteFont playGame;
+    protected SpriteFont options;
     protected SpriteFont credits;
     protected Map background;
     protected int keyPressTimer;
@@ -27,10 +30,19 @@ public class MenuScreen extends Screen {
 
     @Override
     public void initialize() {
-        playGame = new SpriteFont("PLAY GAME", 200, 123, "Arial", 30, new Color(49, 207, 240));
+        titleA = new SpriteFont("HIVE", 20, 20, "Arial", 60, new Color(255, 255, 0));
+        titleB = new SpriteFont("HEROES", 20, 80, "Arial", 60, new Color(255, 255, 0));
+        titleA.setOutlineColor(Color.black);
+        titleA.setOutlineThickness(5);
+        titleB.setOutlineColor(Color.black);
+        titleB.setOutlineThickness(5);
+        playGame = new SpriteFont("PLAY GAME", 600, 405, "Arial", 30, new Color(49, 207, 240));
         playGame.setOutlineColor(Color.black);
         playGame.setOutlineThickness(3);
-        credits = new SpriteFont("CREDITS", 200, 223, "Arial", 30, new Color(49, 207, 240));
+        options = new SpriteFont("OPTIONS", 600, 455, "Arial", 30, new Color(49, 207, 240));
+        options.setOutlineColor(Color.black);
+        options.setOutlineThickness(3);
+        credits = new SpriteFont("CREDITS", 600, 505, "Arial", 30, new Color(49, 207, 240));
         credits.setOutlineColor(Color.black);
         credits.setOutlineThickness(3);
         background = new TitleScreenMap();
@@ -58,23 +70,32 @@ public class MenuScreen extends Screen {
         }
 
         // if down is pressed on last menu item or up is pressed on first menu item, "loop" the selection back around to the beginning/end
-        if (currentMenuItemHovered > 1) {
+        if (currentMenuItemHovered > 2) {
             currentMenuItemHovered = 0;
         } else if (currentMenuItemHovered < 0) {
-            currentMenuItemHovered = 1;
+            currentMenuItemHovered = 2;
         }
 
         // sets location for blue square in front of text (pointerLocation) and also sets color of spritefont text based on which menu item is being hovered
         if (currentMenuItemHovered == 0) {
             playGame.setColor(new Color(255, 215, 0));
+            options.setColor(new Color(49, 207, 240));
             credits.setColor(new Color(49, 207, 240));
-            pointerLocationX = 170;
-            pointerLocationY = 130;
+            pointerLocationX = (int) (playGame.getX() - 40);
+            pointerLocationY = (int) (playGame.getY() + 7);
         } else if (currentMenuItemHovered == 1) {
             playGame.setColor(new Color(49, 207, 240));
+            credits.setColor(new Color(49, 207, 240));
+            options.setColor(new Color(255, 215, 0));
+            pointerLocationX = (int) (options.getX() - 40);;
+            pointerLocationY = (int) (options.getY() + 7);
+        } else if (currentMenuItemHovered == 2) {
+            playGame.setColor(new Color(49, 207, 240));
+            options.setColor(new Color(49, 207, 240));
             credits.setColor(new Color(255, 215, 0));
-            pointerLocationX = 170;
-            pointerLocationY = 230;
+            pointerLocationX = (int) (credits.getX() - 40);
+            ;
+            pointerLocationY = (int) (credits.getY() + 7);
         }
 
         // if space is pressed on menu item, change to appropriate screen based on which menu item was chosen
@@ -86,6 +107,8 @@ public class MenuScreen extends Screen {
             if (menuItemSelected == 0) {
                 screenCoordinator.setGameState(GameState.LEVEL);
             } else if (menuItemSelected == 1) {
+                screenCoordinator.setGameState(GameState.OPTIONS);
+            } else if (menuItemSelected == 2) {
                 screenCoordinator.setGameState(GameState.CREDITS);
             }
         }
@@ -93,7 +116,10 @@ public class MenuScreen extends Screen {
 
     public void draw(GraphicsHandler graphicsHandler) {
         background.draw(graphicsHandler);
+        titleA.draw(graphicsHandler);
+        titleB.draw(graphicsHandler);
         playGame.draw(graphicsHandler);
+        options.draw(graphicsHandler);
         credits.draw(graphicsHandler);
         graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20, new Color(49, 207, 240), Color.black, 2);
     }

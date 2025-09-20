@@ -2,6 +2,7 @@ package Maps;
 
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
+import Engine.ScreenManager;
 import GameObject.ImageEffect;
 import GameObject.Sprite;
 import Level.Map;
@@ -15,17 +16,21 @@ public class TitleScreenMap extends Map {
     private Sprite cat;
 
     public TitleScreenMap() {
-        super("title_screen_map.txt", new CommonTileset());
-        Point catLocation = getMapTile(8, 5).getLocation().subtractX(6).subtractY(7);
-        cat = new Sprite(ImageLoader.loadSubImage("Cat.png", Colors.MAGENTA, 0, 0, 24, 24));
-        cat.setScale(3);
-        cat.setImageEffect(ImageEffect.FLIP_HORIZONTAL);
-        cat.setLocation(catLocation.x, catLocation.y);
+        super("sprint_one_map.txt", new CommonTileset());
+        this.playerStartPosition = getMapTile(50, 50).getLocation();
     }
 
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
+        // we gotta center the title screen on the hive
+        Point hiveLocation = getMapTile(63, 63).getLocation();
+
+        // center the camera there
+        int camX = (int) (hiveLocation.x - (ScreenManager.getScreenWidth() / 2));
+        int camY = (int) (hiveLocation.y- (ScreenManager.getScreenHeight() / 2));
+        camera.moveX(camX - camera.getX());
+        camera.moveY(camY - camera.getY());
+
         super.draw(graphicsHandler);
-        cat.draw(graphicsHandler);
     }
 }

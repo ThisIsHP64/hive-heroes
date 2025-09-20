@@ -3,10 +3,7 @@ package Game;
 import Engine.DefaultScreen;
 import Engine.GraphicsHandler;
 import Engine.Screen;
-import Screens.CreditsScreen;
-import Screens.MenuScreen;
-import Screens.PlayLevelScreen;
-import Screens.SprintOneLevelScreen;
+import Screens.*;
 
 /*
  * Based on the current game state, this class determines which Screen should be shown
@@ -51,6 +48,9 @@ public class ScreenCoordinator extends Screen {
 					case LEVEL:
 						currentScreen = new SprintOneLevelScreen(this);
 						break;
+                    case OPTIONS:
+                        currentScreen = new OptionsScreen(this);
+                        break;
 					case CREDITS:
 						currentScreen = new CreditsScreen(this);
 						break;
