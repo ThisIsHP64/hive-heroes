@@ -3,7 +3,7 @@ package Players;
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
-import Engine.Key; 
+import Engine.Key;
 import GameObject.Frame;
 import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
@@ -12,7 +12,6 @@ import Level.Player;
 import java.util.HashMap;
 
 public class Bee extends Player {
-
 
     private static final String PREFIX = "";
 
@@ -30,13 +29,13 @@ public class Bee extends Player {
             "STAND_RIGHT"
         );
 
-        // WASD 
+        // WASD
         MOVE_LEFT_KEY  = Key.A;
         MOVE_RIGHT_KEY = Key.D;
         MOVE_UP_KEY    = Key.W;
         MOVE_DOWN_KEY  = Key.S;
 
-        walkSpeed = 10f; // tweek if need bee ;)
+        walkSpeed = 10f; // tweak if need bee ;)
     }
 
     @Override public void update() { super.update(); }
@@ -47,7 +46,7 @@ public class Bee extends Player {
         SpriteSheet idleSheet =
             new SpriteSheet(ImageLoader.loadPreserveAlpha(PREFIX + "Bee_Idle.png"), TILE, TILE, 0);
 
-        // rough hitbox; tweak if need bee ;)
+        // rough hitbox; tweak if needed
         int hbX = Math.round(22 * SCALE), hbY = Math.round(42 * SCALE);
         int hbW = Math.round(20 * SCALE), hbH = Math.round(14 * SCALE);
 

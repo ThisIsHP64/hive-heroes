@@ -34,11 +34,13 @@ public class ImageLoader {
 // Loads an image and PRESERVES existing alpha (no color-keying).
 public static BufferedImage loadPreserveAlpha(String imageFileName) {
     try {
-     
+
         BufferedImage raw = ImageIO.read(new File(Config.RESOURCES_PATH + imageFileName));
         if (raw == null) {
             throw new IOException("ImageIO.read returned null for: " + Config.RESOURCES_PATH + imageFileName);
         }
+
+        // If already ARGB, return as-is
 
         if (raw.getType() == BufferedImage.TYPE_INT_ARGB) {
             return raw;
