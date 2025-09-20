@@ -3,6 +3,7 @@ package Players;
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
+import Engine.Key; 
 import GameObject.Frame;
 import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
@@ -10,82 +11,75 @@ import Level.Player;
 
 import java.util.HashMap;
 
-// This is the class for the Cat player character
-// basically just sets some values for physics and then defines animations
 public class Bee extends Player {
 
-    public Bee (float x, float y) {
-        super(new SpriteSheet(ImageLoader.load("Cat.png"), 24, 24), x, y, "STAND_RIGHT");
-        walkSpeed = 2.3f;
+
+    private static final String PREFIX = "";
+
+    private static final int TILE = 64;        // tiles are 64x64
+    private static final float SCALE = 2.5f;   // tweak 2.0–3.0 to taste
+
+    // Pick the row in your sheet that faces RIGHT (0..3). Try 2 first; if wrong, try 1 or 0.
+    private static final int RIGHT_ROW = 2;
+
+    public Bee(float x, float y) {
+        // gutter=0 because sheets have no spacing between frames
+        super(
+            new SpriteSheet(ImageLoader.loadPreserveAlpha(PREFIX + "Bee_Walk.png"), TILE, TILE, 0),
+            x, y,
+            "STAND_RIGHT"
+        );
+
+        // WASD 
+        MOVE_LEFT_KEY  = Key.A;
+        MOVE_RIGHT_KEY = Key.D;
+        MOVE_UP_KEY    = Key.W;
+        MOVE_DOWN_KEY  = Key.S;
+
+        walkSpeed = 2.3f; // tune
     }
 
-    public void update() {
-        super.update();
-    }
-
-    public void draw(GraphicsHandler graphicsHandler) {
-        super.draw(graphicsHandler);
-    }
+    @Override public void update() { super.update(); }
+    @Override public void draw(GraphicsHandler g) { super.draw(g); }
 
     @Override
-    public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
-        return new HashMap<String, Frame[]>() {{
-            put("STAND_RIGHT", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(0, 0))
-                            .withScale(3)
-                            .withBounds(6, 12, 12, 7)
-                            .build()
-            });
+    public HashMap<String, Frame[]> loadAnimations(SpriteSheet walkSheet) {
+        SpriteSheet idleSheet =
+            new SpriteSheet(ImageLoader.loadPreserveAlpha(PREFIX + "Bee_Idle.png"), TILE, TILE, 0);
 
-            put("STAND_LEFT", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(0, 0))
-                            .withScale(3)
-                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(6, 12, 12, 7)
-                            .build()
-            });
+        // rough hitbox; tweak after you see it
+        int hbX = Math.round(22 * SCALE), hbY = Math.round(42 * SCALE);
+        int hbW = Math.round(20 * SCALE), hbH = Math.round(14 * SCALE);
 
-            put("WALK_RIGHT", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(1, 0), 14)
-                            .withScale(3)
-                            .withBounds(6, 12, 12, 7)
-                            .build(),
-                    new FrameBuilder(spriteSheet.getSprite(1, 1), 14)
-                            .withScale(3)
-                            .withBounds(6, 12, 12, 7)
-                            .build(),
-                    new FrameBuilder(spriteSheet.getSprite(1, 2), 14)
-                            .withScale(3)
-                            .withBounds(6, 12, 12, 7)
-                            .build(),
-                    new FrameBuilder(spriteSheet.getSprite(1, 3), 14)
-                            .withScale(3)
-                            .withBounds(6, 12, 12, 7)
-                            .build()
-            });
+        HashMap<String, Frame[]> map = new HashMap<>();
 
-            put("WALK_LEFT", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(1, 0), 14)
-                            .withScale(3)
-                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(6, 12, 12, 7)
-                            .build(),
-                    new FrameBuilder(spriteSheet.getSprite(1, 1), 14)
-                            .withScale(3)
-                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(6, 12, 12, 7)
-                            .build(),
-                    new FrameBuilder(spriteSheet.getSprite(1, 2), 14)
-                            .withScale(3)
-                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(6, 12, 12, 7)
-                            .build(),
-                    new FrameBuilder(spriteSheet.getSprite(1, 3), 14)
-                            .withScale(3)
-                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(6, 12, 12, 7)
-                            .build()
-            });
-        }};
+        // IDLE (first column of the right-facing row)
+        map.put("STAND_RIGHT", new Frame[] {
+            new FrameBuilder(idleSheet.getSprite(RIGHT_ROW, 0))
+                .withScale(SCALE).withBounds(hbX, hbY, hbW, hbH).build()
+        });
+        map.put("STAND_LEFT", new Frame[] {
+            new FrameBuilder(idleSheet.getSprite(RIGHT_ROW, 0))
+                .withScale(SCALE).withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                .withBounds(hbX, hbY, hbW, hbH).build()
+        });
+
+        // WALK RIGHT — cols 0..3
+        map.put("WALK_RIGHT", new Frame[] {
+            new FrameBuilder(walkSheet.getSprite(RIGHT_ROW, 0), 14).withScale(SCALE).withBounds(hbX, hbY, hbW, hbH).build(),
+            new FrameBuilder(walkSheet.getSprite(RIGHT_ROW, 1), 14).withScale(SCALE).withBounds(hbX, hbY, hbW, hbH).build(),
+            new FrameBuilder(walkSheet.getSprite(RIGHT_ROW, 2), 14).withScale(SCALE).withBounds(hbX, hbY, hbW, hbH).build(),
+            new FrameBuilder(walkSheet.getSprite(RIGHT_ROW, 3), 14).withScale(SCALE).withBounds(hbX, hbY, hbW, hbH).build()
+        });
+
+        // WALK LEFT — flip
+        map.put("WALK_LEFT", new Frame[] {
+            new FrameBuilder(walkSheet.getSprite(RIGHT_ROW, 0), 14).withScale(SCALE).withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(hbX, hbY, hbW, hbH).build(),
+            new FrameBuilder(walkSheet.getSprite(RIGHT_ROW, 1), 14).withScale(SCALE).withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(hbX, hbY, hbW, hbH).build(),
+            new FrameBuilder(walkSheet.getSprite(RIGHT_ROW, 2), 14).withScale(SCALE).withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(hbX, hbY, hbW, hbH).build(),
+            new FrameBuilder(walkSheet.getSprite(RIGHT_ROW, 3), 14).withScale(SCALE).withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(hbX, hbY, hbW, hbH).build()
+        });
+
+        return map;
     }
 }
