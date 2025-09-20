@@ -19,7 +19,7 @@ public class Bee extends Player {
     private static final int TILE = 64;        // tiles are 64x64
     private static final float SCALE = 2.5f;   // tweak 2.0–3.0 to taste
 
-    // Pick the row in your sheet that faces RIGHT (0..3). Try 2 first; if wrong, try 1 or 0.
+    // row in the sprite sheet for right-facing bee
     private static final int RIGHT_ROW = 2;
 
     public Bee(float x, float y) {
@@ -36,7 +36,7 @@ public class Bee extends Player {
         MOVE_UP_KEY    = Key.W;
         MOVE_DOWN_KEY  = Key.S;
 
-        walkSpeed = 2.3f; // tune
+        walkSpeed = 10f; // tweek if need bee ;)
     }
 
     @Override public void update() { super.update(); }
@@ -47,7 +47,7 @@ public class Bee extends Player {
         SpriteSheet idleSheet =
             new SpriteSheet(ImageLoader.loadPreserveAlpha(PREFIX + "Bee_Idle.png"), TILE, TILE, 0);
 
-        // rough hitbox; tweak after you see it
+        // rough hitbox; tweak if need bee ;)
         int hbX = Math.round(22 * SCALE), hbY = Math.round(42 * SCALE);
         int hbW = Math.round(20 * SCALE), hbH = Math.round(14 * SCALE);
 
