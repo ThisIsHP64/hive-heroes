@@ -3,7 +3,7 @@ package Players;
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
-import Engine.Key; 
+import Engine.Key;
 import GameObject.Frame;
 import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
@@ -13,13 +13,12 @@ import java.util.HashMap;
 
 public class Bee extends Player {
 
-
     private static final String PREFIX = "";
 
     private static final int TILE = 64;        // tiles are 64x64
     private static final float SCALE = 2.5f;   // tweak 2.0–3.0 to taste
 
-    // Pick the row in your sheet that faces RIGHT (0..3). Try 2 first; if wrong, try 1 or 0.
+    // row in the sprite sheet for right-facing bee
     private static final int RIGHT_ROW = 2;
 
     public Bee(float x, float y) {
@@ -30,13 +29,13 @@ public class Bee extends Player {
             "STAND_RIGHT"
         );
 
-        // WASD 
+        // WASD
         MOVE_LEFT_KEY  = Key.A;
         MOVE_RIGHT_KEY = Key.D;
         MOVE_UP_KEY    = Key.W;
         MOVE_DOWN_KEY  = Key.S;
 
-        walkSpeed = 2.3f; // tune
+        walkSpeed = 10f; // tweak if need bee ;)
     }
 
     @Override public void update() { super.update(); }
@@ -47,7 +46,7 @@ public class Bee extends Player {
         SpriteSheet idleSheet =
             new SpriteSheet(ImageLoader.loadPreserveAlpha(PREFIX + "Bee_Idle.png"), TILE, TILE, 0);
 
-        // rough hitbox; tweak after you see it
+        // rough hitbox; tweak if needed
         int hbX = Math.round(22 * SCALE), hbY = Math.round(42 * SCALE);
         int hbW = Math.round(20 * SCALE), hbH = Math.round(14 * SCALE);
 

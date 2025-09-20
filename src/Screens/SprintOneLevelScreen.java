@@ -6,7 +6,7 @@ import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.*;
 import Maps.SprintOneMap;
-import Players.Cat;
+import Players. Bee;
 import Utils.Direction;
 
 // This class is for when the RPG game is actually being played
@@ -37,7 +37,7 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
         map.setFlagManager(flagManager);
 
         // setup player
-        player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        player = new Players.Bee(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         player.setMap(map);
         playLevelScreenState = PlayLevelScreenState.RUNNING;
         player.setFacingDirection(Direction.LEFT);
