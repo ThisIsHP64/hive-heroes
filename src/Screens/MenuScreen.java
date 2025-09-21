@@ -5,6 +5,8 @@ import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.Map;
 import Maps.TitleScreenMap;
+import Sound.Music;
+import Sound.MusicManager;
 import SpriteFont.SpriteFont;
 
 import java.awt.*;
@@ -50,6 +52,7 @@ public class MenuScreen extends Screen {
         keyPressTimer = 0;
         menuItemSelected = -1;
         keyLocker.lockKey(Key.SPACE);
+        MusicManager.playMenuLoop();
     }
 
     public void update() {
@@ -105,6 +108,7 @@ public class MenuScreen extends Screen {
         if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
             menuItemSelected = currentMenuItemHovered;
             if (menuItemSelected == 0) {
+                MusicManager.stopMenuLoop();
                 screenCoordinator.setGameState(GameState.LEVEL);
             } else if (menuItemSelected == 1) {
                 screenCoordinator.setGameState(GameState.OPTIONS);
