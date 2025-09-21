@@ -266,14 +266,14 @@ public class CommonTileset extends Tileset {
 
         mapTiles.add(pathField4Tile);
 
-        // plain grass 1
-        Frame plainGrass1Frame = new FrameBuilder(getSubImage(5, 0))
+        // dark green plain grass
+        Frame darkGreenplainGrassFrame = new FrameBuilder(getSubImage(5, 0))
                 .withScale(tileScale)
                 .build();
 
-        MapTileBuilder plainGrass1Tile = new MapTileBuilder(plainGrass1Frame);
+        MapTileBuilder darkGreenplainGrassTile = new MapTileBuilder(darkGreenplainGrassFrame);
 
-        mapTiles.add(plainGrass1Tile);
+        mapTiles.add(darkGreenplainGrassTile);
 
         // path 4
         Frame path4Frame = new FrameBuilder(getSubImage(5, 1))
