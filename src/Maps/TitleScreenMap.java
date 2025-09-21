@@ -23,11 +23,11 @@ public class TitleScreenMap extends Map {
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
         // we gotta center the title screen on the hive
-        Point hiveLocation = getMapTile(63, 63).getLocation();
+        Point hiveLocation = getMapTile(64, 63).getLocation();
 
         // center the camera there
         int camX = (int) (hiveLocation.x - (ScreenManager.getScreenWidth() / 2));
-        int camY = (int) (hiveLocation.y- (ScreenManager.getScreenHeight() / 2));
+        int camY = (int) (hiveLocation.y - (ScreenManager.getScreenHeight() / 2));
         camera.moveX(camX - camera.getX());
         camera.moveY(camY - camera.getY());
 
