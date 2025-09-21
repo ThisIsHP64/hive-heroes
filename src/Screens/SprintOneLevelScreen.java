@@ -37,7 +37,7 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
         map.setFlagManager(flagManager);
 
         // setup player
-        player = new Players.Bee(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        player = new Bee(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         player.setMap(map);
         playLevelScreenState = PlayLevelScreenState.RUNNING;
         player.setFacingDirection(Direction.LEFT);
