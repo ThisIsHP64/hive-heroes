@@ -6,7 +6,7 @@ import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.*;
 import Maps.SprintOneMap;
-import Players. Bee;
+import Players.Bee;
 import Utils.Direction;
 
 // This class is for when the RPG game is actually being played
