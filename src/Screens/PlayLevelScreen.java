@@ -7,6 +7,7 @@ import Game.ScreenCoordinator;
 import Level.*;
 import Maps.TestMap;
 import Players.Bee;
+import Players.Bee2;
 import Players.Cat;
 import Utils.Direction;
 
