@@ -46,7 +46,8 @@ public class TestMap extends Map {
         bug.setInteractScript(new BugScript());
         npcs.add(bug);
 
-        PowerUp pu = new PowerUp(2000, getMapTile(5, 10).getLocation());
+        PowerUp pu = new PowerUp(2000, getMapTile(5, 10).getLocation().subtractY(40));
+        pu.setInteractScript(new PowerUpScript());
         npcs.add(pu);
 
         return npcs;

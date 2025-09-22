@@ -1,15 +1,13 @@
 package Maps;
 
 import Engine.GraphicsHandler;
-import Engine.ImageLoader;
-import GameObject.ImageEffect;
-import GameObject.Sprite;
 import Level.Map;
+import Level.NPC;
+import PowerUps.PowerUp;
 import Scripts.SimpleTextScript;
-import Scripts.TestMap.TreeScript;
+import Scripts.TestMap.PowerUpScript;
 import Tilesets.CommonTileset;
-import Utils.Colors;
-import Utils.Point;
+import java.util.ArrayList;
 
 public class SprintOneMap extends Map {
 
@@ -22,6 +20,18 @@ public class SprintOneMap extends Map {
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
+    }
+
+    @Override
+    public ArrayList<NPC> loadNPCs() {
+        ArrayList<NPC> npcs = new ArrayList<>();
+
+        PowerUp pu = new PowerUp(2000, getMapTile(5, 10).getLocation().subtractY(40));
+        pu.setInteractScript(new PowerUpScript());
+        npcs.add(pu);
+
+
+        return npcs;
     }
 
     @Override

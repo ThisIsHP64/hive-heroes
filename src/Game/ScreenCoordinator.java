@@ -47,6 +47,7 @@ public class ScreenCoordinator extends Screen {
 					// with this: currentScreen = new PlayLevelScreen(this);
 					case LEVEL:
 						currentScreen = new SprintOneLevelScreen(this);
+						//currentScreen = new PlayLevelScreen(this);
 						break;
                     case OPTIONS:
                         currentScreen = new OptionsScreen(this);
