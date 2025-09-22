@@ -22,8 +22,8 @@ public class PowerUp extends NPC {
         return new HashMap<String, Frame[]>() {{
             put("IDLE", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 0))
-                            .withScale(3)
-                            .withBounds(6, 6, 12, 12)
+                            .withScale(3f)
+                            .withBounds(0, 0, 16, 16)
                             .build()
             });
         }};

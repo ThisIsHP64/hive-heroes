@@ -5,6 +5,7 @@ import Level.Map;
 import Level.NPC;
 import PowerUps.PowerUp;
 import Scripts.SimpleTextScript;
+import Scripts.TestMap.PowerUpScript;
 import Tilesets.CommonTileset;
 import java.util.ArrayList;
 
@@ -25,8 +26,10 @@ public class SprintOneMap extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        PowerUp pu = new PowerUp(2000, getMapTile(5, 10).getLocation());
+        PowerUp pu = new PowerUp(2000, getMapTile(5, 10).getLocation().subtractY(40));
+        pu.setInteractScript(new PowerUpScript());
         npcs.add(pu);
+
 
         return npcs;
     }
