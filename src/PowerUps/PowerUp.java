@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class PowerUp extends NPC {
 
     public PowerUp(int id, Point location) {
-        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("Powerup.png"), 24, 24), "IDLE");
+        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("PowerUp.png"), 24, 24), "IDLE");
         this.isUncollidable = true;
     }
 
