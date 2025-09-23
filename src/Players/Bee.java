@@ -46,9 +46,11 @@ public class Bee extends Player {
         SpriteSheet idleSheet =
             new SpriteSheet(ImageLoader.loadPreserveAlpha(PREFIX + "Bee_Idle.png"), TILE, TILE, 0);
 
-        // rough hitbox; tweak if needed
-        int hbX = Math.round(22 * SCALE), hbY = Math.round(42 * SCALE);
-        int hbW = Math.round(20 * SCALE), hbH = Math.round(14 * SCALE);
+
+        // bounds in raw 64x64 sprite pixels (no SCALE here)
+        int hbX = 22, hbY = 42;
+        int hbW = 20, hbH = 14;
+
 
         HashMap<String, Frame[]> map = new HashMap<>();
 
