@@ -14,7 +14,7 @@ public class SprintOneMap extends Map {
 
     public SprintOneMap() {
         super("sprint_one_map.txt", new CommonTileset());
-        this.playerStartPosition = getMapTile(63, 63).getLocation();
+        this.playerStartPosition = getMapTile(70, 50).getLocation();
     }
 
     @Override
@@ -38,14 +38,19 @@ public class SprintOneMap extends Map {
     public void loadScripts() {
 
         // simple signs and markers to indicate the relative locations of the Hive and other regions
-        getMapTile(63, 63).setInteractScript(new SimpleTextScript("The Hive"));
+        getMapTile(71, 50).setInteractScript(new SimpleTextScript("The Hive"));
+        getMapTile(72, 50).setInteractScript(new SimpleTextScript("The Hive"));
 
-        getMapTile(0, 0).setInteractScript(new SimpleTextScript("(0,0) Arctic Region"));
+        getMapTile(0, 0).setInteractScript(new SimpleTextScript("Arctic Region?"));
+        getMapTile(1, 0).setInteractScript(new SimpleTextScript("Arctic Region?"));
 
-        getMapTile(124, 0).setInteractScript(new SimpleTextScript("(124, 0) Arctic Region?"));
+        getMapTile(123, 0).setInteractScript(new SimpleTextScript("Windy Region?"));
+        getMapTile(124, 0).setInteractScript(new SimpleTextScript("Windy Region?"));
 
-        getMapTile(124, 124).setInteractScript(new SimpleTextScript("(124, 124) Grassy Region?"));
+        getMapTile(123, 124).setInteractScript(new SimpleTextScript("Grassy Region?"));
+        getMapTile(124, 124).setInteractScript(new SimpleTextScript("Grassy Region?"));
 
-        getMapTile(0, 124).setInteractScript(new SimpleTextScript("(0, 124) Volcanic Region?"));
+        getMapTile(0, 124).setInteractScript(new SimpleTextScript("Volcanic Region?"));
+        getMapTile(1, 124).setInteractScript(new SimpleTextScript("Volcanic Region?"));
     }
 }
