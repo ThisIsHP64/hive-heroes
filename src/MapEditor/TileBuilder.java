@@ -3,12 +3,11 @@ package MapEditor;
 import Engine.GraphicsHandler;
 import Level.*;
 import Utils.Colors;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import javax.swing.*;
 
 public class TileBuilder extends JPanel {
     private Map map;
