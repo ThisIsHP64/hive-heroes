@@ -7,9 +7,9 @@ import Game.ScreenCoordinator;
 import Level.*;
 import Maps.TestMap;
 import Players.Bee;
-import Players.Bee2;
-import Players.Cat;
+import NPCs.Spider;
 import Utils.Direction;
+import Utils.Point;
 
 // This class is for when the RPG game is actually being played
 public class PlayLevelScreen extends Screen implements GameListener {
@@ -36,23 +36,26 @@ public class PlayLevelScreen extends Screen implements GameListener {
         map = new TestMap();
         map.setFlagManager(flagManager);
 
-        // setup player
-        player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        // setup player (Bee instead of Cat)
+        player = new Bee(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         player.setMap(map);
         playLevelScreenState = PlayLevelScreenState.RUNNING;
         player.setFacingDirection(Direction.LEFT);
-
         map.setPlayer(player);
 
         // let pieces of map know which button to listen for as the "interact" button
         map.getTextbox().setInteractKey(player.getInteractKey());
 
-        // add this screen as a "game listener" so other areas of the game that don't normally have direct access to it (such as scripts) can "signal" to have it do something
-        // this is used in the "onWin" method -- a script signals to this class that the game has been won by calling its "onWin" method
+        // add this screen as a "game listener"
         map.addListener(this);
 
-        // preloads all scripts ahead of time rather than loading them dynamically
-        // both are supported, however preloading is recommended
+        // === Add a Spider NPC to the map ===
+        // give it an id (unique int), and a location
+        Spider spider = new Spider(1, new Point(19, 20));
+        map.getNPCs().add(spider);
+        // ===================================
+
+        // preload all scripts
         map.preloadScripts();
 
         winScreen = new WinScreen(this);
@@ -61,12 +64,10 @@ public class PlayLevelScreen extends Screen implements GameListener {
     public void update() {
         // based on screen state, perform specific actions
         switch (playLevelScreenState) {
-            // if level is "running" update player and map to keep game logic for the platformer level going
             case RUNNING:
                 player.update();
                 map.update(player);
                 break;
-            // if level has been completed, bring up level cleared screen
             case LEVEL_COMPLETED:
                 winScreen.update();
                 break;
@@ -75,7 +76,7 @@ public class PlayLevelScreen extends Screen implements GameListener {
 
     @Override
     public void onWin() {
-        // when this method is called within the game, it signals the game has been "won"
+        // signal the game has been "won"
         playLevelScreenState = PlayLevelScreenState.LEVEL_COMPLETED;
     }
 
