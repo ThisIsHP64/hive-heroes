@@ -7,11 +7,11 @@ import Game.ScreenCoordinator;
 import Level.*;
 import Maps.SprintOneMap;
 import Players.Bee;
-import Players.Bee2;
-import Players.Cat;
 import Utils.Direction;
+import Utils.Point;
+import NPCs.Spider;
 
-// This class is for when the RPG game is actually being played
+// main level screen; we add a spider and check Bee's sting vs Spider's body box
 public class SprintOneLevelScreen extends Screen implements GameListener {
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
@@ -25,49 +25,60 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
     }
 
     public void initialize() {
-        // setup state
         flagManager = new FlagManager();
 
-        // unneeded flags for this new screen
-        // flagManager.addFlag("hasLostBall", false);
-        // flagManager.addFlag("hasTalkedToWalrus", false);
-        // flagManager.addFlag("hasTalkedToDinosaur", false);
-        // flagManager.addFlag("hasFoundBall", false);
-
-        // define/setup map
         map = new SprintOneMap();
         map.setFlagManager(flagManager);
 
-        // setup player
+        // player (Bee) spawn
         player = new Bee(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         player.setMap(map);
         playLevelScreenState = PlayLevelScreenState.RUNNING;
         player.setFacingDirection(Direction.LEFT);
-
         map.setPlayer(player);
 
-        // let pieces of map know which button to listen for as the "interact" button
         map.getTextbox().setInteractKey(player.getInteractKey());
-
-        // add this screen as a "game listener" so other areas of the game that don't normally have direct access to it (such as scripts) can "signal" to have it do something
-        // this is used in the "onWin" method -- a script signals to this class that the game has been won by calling its "onWin" method
         map.addListener(this);
 
-        // preloads all scripts ahead of time rather than loading them dynamically
-        // both are supported, however preloading is recommended
+        // let the map finish its own loading (avoids our NPC being overwritten)
         map.preloadScripts();
 
+        // === spawn one spider near Bee start (32px tiles on this sheet) ===
+        Point start = map.getPlayerStartPosition();
+        // Point spiderSpot = new Point(start.x + (2 * 32), start.y + (2 * 32)); // 2 right, 2 down
+        // Spider spider = new Spider(1001, spiderSpot);
+        // map.getNPCs().add(spider);
+        // ==================================================================
     }
 
     public void update() {
-        // based on screen state, perform specific actions
         switch (playLevelScreenState) {
-            // if level is "running" update player and map to keep game logic for the platformer level going
             case RUNNING:
                 player.update();
                 map.update(player);
+
+                // === simple "hit" interaction: Space sting box vs Spider body box ===
+                if (player instanceof Bee) {
+                    Bee bee = (Bee) player;
+
+                    if (bee.isAttacking()) {
+                        java.awt.Rectangle sting = bee.getAttackHitbox();
+
+                        for (NPC npc : map.getNPCs()) {
+                            if (npc instanceof Spider) {
+                                Spider sp = (Spider) npc;
+
+                                if (sting.intersects(sp.getHitbox())) {
+                                    System.out.println("Spider hit!");
+                                }
+                            }
+                        }
+                    }
+                }
+                // ===================================================================
+
                 break;
-            // if level has been completed, bring up level cleared screen
+
             case LEVEL_COMPLETED:
                 winScreen.update();
                 break;
@@ -76,12 +87,10 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
 
     @Override
     public void onWin() {
-        // when this method is called within the game, it signals the game has been "won"
         playLevelScreenState = PlayLevelScreenState.LEVEL_COMPLETED;
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
-        // based on screen state, draw appropriate graphics
         switch (playLevelScreenState) {
             case RUNNING:
                 map.draw(player, graphicsHandler);
@@ -96,16 +105,9 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
         return playLevelScreenState;
     }
 
-    public void resetLevel() {
-        initialize();
-    }
+    public void resetLevel() { initialize(); }
 
-    public void goBackToMenu() {
-        screenCoordinator.setGameState(GameState.MENU);
-    }
+    public void goBackToMenu() { screenCoordinator.setGameState(GameState.MENU); }
 
-    // This enum represents the different states this screen can be in
-    private enum PlayLevelScreenState {
-        RUNNING, LEVEL_COMPLETED
-    }
+    private enum PlayLevelScreenState { RUNNING, LEVEL_COMPLETED }
 }
