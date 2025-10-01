@@ -21,10 +21,10 @@ public class Spider extends NPC {
     private static final int IDLE_ROW = 0;
 
     // these match the FrameBuilder.withBounds(...) below so our hitbox lines up
-    private static final int HBX = 7;   // body box x offset in sprite pixels (pre-scale)
+    private static final int HBX = 4;   // body box x offset in sprite pixels (pre-scale)
     private static final int HBY = 10;  // body box y offset
-    private static final int HBW = 18;  // body box width
-    private static final int HBH = 14;  // body box height
+    private static final int HBW = 7;  // body box width
+    private static final int HBH = 7;  // body box height
 
     public Spider(int id, Point location) {
         super(
@@ -63,8 +63,24 @@ public class Spider extends NPC {
 
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
-        // uncomment to visualize the hitbox during testing:
-        // graphicsHandler.drawRect(getHitbox(), java.awt.Color.GREEN, 1);
+
+
+        // uncomment to show hitbox
+        // Rectangle bounds = getBounds();
+//        float camX = map.getCamera().getX();
+//        float camY = map.getCamera().getY();
+//
+//        int screenX = (int)(bounds.getX() - camX);
+//        int screenY = (int)(bounds.getY() - camY);
+//
+//        graphicsHandler.drawRectangle(
+//                screenX,
+//                screenY,
+//                bounds.getWidth(),
+//                bounds.getHeight(),
+//                java.awt.Color.GREEN,
+//                2
+//        );
         super.draw(graphicsHandler);
     }
 }

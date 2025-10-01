@@ -4,7 +4,7 @@ import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import Engine.Key;
-import Engine.Keyboard; // <-- added
+import Engine.Keyboard;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
 import Level.Player;
@@ -143,8 +143,24 @@ public class Bee extends Player {
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
-        // Debug: draw attack hitbox
-        // if (attacking) graphicsHandler.drawRect(getAttackHitbox(), Color.RED, 2);
+
+        // uncomment to show hitbox
+//        Rectangle bounds = getBounds();
+//
+//        float camX = map.getCamera().getX();
+//        float camY = map.getCamera().getY();
+//
+//        int screenX = (int)(bounds.getX() - camX);
+//        int screenY = (int)(bounds.getY() - camY);
+//
+//        graphicsHandler.drawRectangle(
+//                screenX,
+//                screenY,
+//                bounds.getWidth(),
+//                bounds.getHeight(),
+//                java.awt.Color.BLUE,
+//                2
+//        );
     }
 
     @Override
@@ -152,8 +168,8 @@ public class Bee extends Player {
         SpriteSheet idleSheet   = new SpriteSheet(ImageLoader.load("Bee_Idle.png"),   TILE, TILE, 0);
         SpriteSheet attackSheet = new SpriteSheet(ImageLoader.load("Bee_Attack.png"), TILE, TILE, 0);
 
-        int hbX = Math.round(22 * SCALE), hbY = Math.round(42 * SCALE);
-        int hbW = Math.round(20 * SCALE), hbH = Math.round(14 * SCALE);
+        int hbX = Math.round(10 * SCALE), hbY = Math.round(8 * SCALE);
+        int hbW = Math.round(5 * SCALE), hbH = Math.round(5 * SCALE);
 
         HashMap<String, Frame[]> map = new HashMap<>();
 
