@@ -2,6 +2,7 @@ package Engine;
 
 import GameObject.Rectangle;
 import SpriteFont.SpriteFont;
+import SpriteImage.SpriteImage;
 import Utils.Colors;
 
 import javax.swing.*;
@@ -30,6 +31,8 @@ public class GamePanel extends JPanel {
 	private int currentFPS;
 	private boolean doPaint;
 
+	private SpriteImage heartBar;
+
 	// The JPanel and various important class instances are setup here
 	public GamePanel() {
 		super();
@@ -47,6 +50,8 @@ public class GamePanel extends JPanel {
 		pauseLabel.setOutlineThickness(2.0f);
 
 		fpsDisplayLabel = new SpriteFont("FPS", 4, 3, "Arial", 12, Color.black);
+
+		heartBar = new SpriteImage("Redgolden32px1.png", 10, 10);
 
 		currentFPS = Config.TARGET_FPS;
 
@@ -115,10 +120,13 @@ public class GamePanel extends JPanel {
 	public void draw() {			
 		// draw current game state
 		screenManager.draw(graphicsHandler);
+		
+		// heartBar.draw(graphicsHandler);
 
 		// if game is paused, draw pause gfx over Screen gfx
 		if (isGamePaused) {
 			pauseLabel.draw(graphicsHandler);
+			heartBar.draw(graphicsHandler);
 			graphicsHandler.drawFilledRectangle(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight(), new Color(0, 0, 0, 100));
 		}
 
