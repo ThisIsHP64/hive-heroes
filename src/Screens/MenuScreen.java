@@ -110,6 +110,7 @@ public class MenuScreen extends Screen {
             menuItemSelected = currentMenuItemHovered;
             if (menuItemSelected == 0) {
                 MusicManager.stopMenuLoop();
+                MusicManager.playGpLoop();
                 screenCoordinator.setGameState(GameState.LEVEL);
             } else if (menuItemSelected == 1) {
                 screenCoordinator.setGameState(GameState.OPTIONS);

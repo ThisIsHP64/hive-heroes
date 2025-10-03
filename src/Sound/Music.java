@@ -34,14 +34,14 @@ public class Music {
     }
 
     // play the audio and loop at a certain bar
-    public void loopAtBar(int bpm, int loopBar) {
+    public void loopAtBar(double bpm, int loopBar) {
         // calculate loop point (in seconds)
         double secondsPerBar = (double) 4 / (bpm / 60.0);
         double startSeconds = (loopBar - 1) * secondsPerBar;
 
         // get loop point frame
         int sampleRate = (int) clip.getFormat().getSampleRate();
-        int startFrame = (int) (startSeconds * sampleRate);
+        int startFrame = (int) (startSeconds * sampleRate) - 1800;
 
         // start from beginning and set loop point
         clip.setLoopPoints(startFrame, -1);
