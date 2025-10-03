@@ -3,16 +3,17 @@ package Screens;
 import Engine.*;
 import Game.GameState;
 import Game.ScreenCoordinator;
-import Level.Map;
-import Maps.TitleScreenMap;
 import SpriteFont.SpriteFont;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 // This class is for the credits screen
 public class CreditsScreen extends Screen {
     protected ScreenCoordinator screenCoordinator;
-    protected Map background;
+    protected BufferedImage background;
     protected KeyLocker keyLocker = new KeyLocker();
     protected SpriteFont creditsLabel;
     protected SpriteFont createdByLabel;
@@ -24,9 +25,12 @@ public class CreditsScreen extends Screen {
 
     @Override
     public void initialize() {
-        // setup graphics on screen (background map, spritefont text)
-        background = new TitleScreenMap();
-        background.setAdjustCamera(false);
+        // setup graphics on screen (background, spritefont text)
+        try {
+            background = ImageIO.read(new File("Resources/titleBg.jpg"));
+        } catch (Exception e) {
+            background = null;
+        }
         creditsLabel = new SpriteFont("Credits", 15, 7, "Times New Roman", 30, Color.white);
         createdByLabel = new SpriteFont("Created by the Chaos Emeralds", 130, 121, "Times New Roman", 20, Color.white);
         returnInstructionsLabel = new SpriteFont("Press Space to return to the menu", 20, 532, "Times New Roman", 30, Color.white);
@@ -34,8 +38,6 @@ public class CreditsScreen extends Screen {
     }
 
     public void update() {
-        background.update(null);
-
         if (Keyboard.isKeyUp(Key.SPACE)) {
             keyLocker.unlockKey(Key.SPACE);
         }
@@ -47,7 +49,9 @@ public class CreditsScreen extends Screen {
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
-        background.draw(graphicsHandler);
+        if(background != null) {
+            graphicsHandler.drawImage(background, 0, 0, 800, 605);
+        }
         creditsLabel.draw(graphicsHandler);
         createdByLabel.draw(graphicsHandler);
         returnInstructionsLabel.draw(graphicsHandler);
