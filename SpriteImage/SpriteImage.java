@@ -1,5 +1,6 @@
 package SpriteImage;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
@@ -12,7 +13,6 @@ import Engine.ImageLoader;
 public class SpriteImage extends ImageLoader {
     protected int x;
 	protected int y;
-    ImageIcon image;
     BufferedImage bi;
     protected String imageString;
 
@@ -24,6 +24,9 @@ public class SpriteImage extends ImageLoader {
         bi = ImageLoader.load(imageString, Config.TRANSPARENT_COLOR);
     }
 
+    public BufferedImage getSpriteImage() {
+        return bi;
+    }
     // public BufferedImage convertFromImageIcon(ImageIcon image) {
     //     this.image = image;
     //     BufferedImage bi = new BufferedImage(
@@ -67,6 +70,9 @@ public class SpriteImage extends ImageLoader {
 
 
     public void draw(GraphicsHandler graphicsHandler) {
+        // draws the heart at a specific x, y coordinate
         graphicsHandler.drawImage(bi, x, y);
+        
+        graphicsHandler.drawFilledRectangleWithBorder(45, 15, 100, 24, Color.RED, Color.GREEN, 2);
 	}
 }

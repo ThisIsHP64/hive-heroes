@@ -105,9 +105,15 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
         return playLevelScreenState;
     }
 
-    public void resetLevel() { initialize(); }
+    public void resetLevel() { 
+        initialize(); 
+    }
 
-    public void goBackToMenu() { screenCoordinator.setGameState(GameState.MENU); }
+    public void goBackToMenu() { 
+        screenCoordinator.setGameState(GameState.MENU); 
+    }
 
-    private enum PlayLevelScreenState { RUNNING, LEVEL_COMPLETED }
+    private enum PlayLevelScreenState { 
+        RUNNING, LEVEL_COMPLETED 
+    }
 }

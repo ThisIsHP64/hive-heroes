@@ -1,6 +1,7 @@
 package Engine;
 
 
+import Game.GameState;
 import GameObject.Rectangle;
 
 /*
@@ -21,6 +22,10 @@ public class ScreenManager {
     public void setCurrentScreen(Screen screen) {
         screen.initialize();
         this.currentScreen = screen;
+    }
+
+    public Screen getCurrentScreen() {
+        return currentScreen;
     }
 
     public void update() {
