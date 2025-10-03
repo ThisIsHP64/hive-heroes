@@ -3,8 +3,6 @@ package MapEditor;
 import Level.Map;
 import Maps.SprintOneMap;
 import Maps.TestMap;
-import Maps.TitleScreenMap;
-
 import java.util.ArrayList;
 
 public class EditorMaps {
@@ -20,8 +18,6 @@ public class EditorMaps {
         switch(mapName) {
             case "TestMap":
                 return new TestMap();
-            case "TitleScreen":
-                return new TitleScreenMap();
             case "SprintOneMap":
                 return new SprintOneMap();
             default:
