@@ -51,9 +51,7 @@ public class GamePanel extends JPanel {
 		pauseLabel.setOutlineColor(Color.black);
 		pauseLabel.setOutlineThickness(2.0f);
 
-		fpsDisplayLabel = new SpriteFont("FPS", 4, 3, "Arial", 12, Color.black);
-
-		// heartBar = new SpriteImage("heart_icon.png", 10, 10);
+		fpsDisplayLabel = new SpriteFont("FPS", 725, 20, "Arial", 12, Color.black);
 
 		resourceBars = new ResourceHUD();
 
@@ -129,8 +127,6 @@ public class GamePanel extends JPanel {
 		
 		resourceBars.draw(graphicsHandler);
 		
-
-		// heartBar.draw(graphicsHandler);
 
 		// if game is paused, draw pause gfx over Screen gfx
 		if (isGamePaused) {
