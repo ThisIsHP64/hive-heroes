@@ -1,10 +1,9 @@
 package Engine;
 
 import GameObject.Rectangle;
-import Level.PlayerState;
-import Screens.PlayLevelScreen;
 import SpriteFont.SpriteFont;
 import SpriteImage.ResourceHUD;
+
 import Utils.Colors;
 
 import javax.swing.*;
@@ -27,13 +26,16 @@ public class GamePanel extends JPanel {
 	private final Key pauseKey = Key.P;
 	private Thread gameLoopProcess;
 
-	private Key showFPSKey = Key.G;
+	private Key showFPSKey = Key.T;
 	private SpriteFont fpsDisplayLabel;
 	private boolean showFPS = false;
 	private int currentFPS;
 	private boolean doPaint;
 
 	private ResourceHUD resourceBars;
+	private Key resourcesKey = Key.G;
+	private boolean isShowingResources = false;
+
 
 	// The JPanel and various important class instances are setup here
 	public GamePanel() {
@@ -125,8 +127,15 @@ public class GamePanel extends JPanel {
 		// draw current game state
 		screenManager.draw(graphicsHandler);
 		
-		resourceBars.draw(graphicsHandler);
 		
+		if (Keyboard.isKeyDown(resourcesKey)) {
+			isShowingResources = true;
+			
+		}
+
+		if (isShowingResources) {
+			resourceBars.draw(graphicsHandler);
+		}
 
 		// if game is paused, draw pause gfx over Screen gfx
 		if (isGamePaused) {

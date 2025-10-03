@@ -16,8 +16,8 @@ public class ResourceHUD extends ImageLoader {
     public ResourceHUD() {
         
         health = new SpriteImage("heart_icon.png", 10, 10);
-        stamina = new SpriteImage("heart_icon.png", 20, 20);
-        nectar = new SpriteImage("heart_icon.png", 30, 10);
+        stamina = new SpriteImage("stamina1.png", 20, 20);
+        nectar = new SpriteImage("honeypot.png", 30, 10);
 
         // declares new arraylist containing the resource bars
         resourceBars = new ArrayList<>();
