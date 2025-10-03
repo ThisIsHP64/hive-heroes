@@ -51,7 +51,7 @@ public class GamePanel extends JPanel {
 
 		fpsDisplayLabel = new SpriteFont("FPS", 4, 3, "Arial", 12, Color.black);
 
-		heartBar = new SpriteImage("Redgolden32px1.png", 10, 10);
+		heartBar = new SpriteImage("5.png", 10, 10);
 
 		currentFPS = Config.TARGET_FPS;
 
