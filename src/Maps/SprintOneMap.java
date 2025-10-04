@@ -10,6 +10,7 @@ import Tilesets.CommonTileset;
 
 import java.util.ArrayList;
 
+import NPCs.RareSunflowerwithFlowers;
 import NPCs.Spider;      // add spider
 import Utils.Point;     // for positions
 
@@ -35,6 +36,8 @@ public class SprintOneMap extends Map {
         pu.setInteractScript(new PowerUpScript());
         npcs.add(pu);
 
+        RareSunflowerwithFlowers rareSunflower = new RareSunflowerwithFlowers(4, getMapTile(70, 70).getLocation());
+        npcs.add(rareSunflower);
         // --- SPIDER: place it down the path near the red X ---
         // Tiles on this map are grid-based; use tile coords for easy nudging.
         // Start is (70,50). The red X area is roughly ~12 tiles down and a hair right.
