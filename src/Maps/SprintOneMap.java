@@ -3,15 +3,14 @@ package Maps;
 import Engine.GraphicsHandler;
 import Level.Map;
 import Level.NPC;
+import NPCs.RareSunflowerwithFlowers;
+import NPCs.Spider;
 import PowerUps.PowerUp;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.PowerUpScript;
 import Tilesets.CommonTileset;
-
-import java.util.ArrayList;
-
-import NPCs.Spider;      // add spider
-import Utils.Point;     // for positions
+import Utils.Point;      // add spider
+import java.util.ArrayList;     // for positions
 
 public class SprintOneMap extends Map {
 
@@ -34,6 +33,9 @@ public class SprintOneMap extends Map {
         PowerUp pu = new PowerUp(2000, getMapTile(5, 10).getLocation().subtractY(40));
         pu.setInteractScript(new PowerUpScript());
         npcs.add(pu);
+
+        RareSunflowerwithFlowers rareSunflower = new RareSunflowerwithFlowers(4, getMapTile(67, 48).getLocation());
+        npcs.add(rareSunflower);
 
         // --- SPIDER: place it down the path near the red X ---
         // Tiles on this map are grid-based; use tile coords for easy nudging.
