@@ -59,9 +59,19 @@ public class ResourceHUD extends ImageLoader {
         health.setLocation(10, 15);
         stamina.setLocation(10, 45);
         nectar.setLocation(10, 75);
-        for (SpriteImage s : resourceBars) {
-            graphicsHandler.drawImage(s.getSpriteImage(), s.getX(), s.getY());
-            graphicsHandler.drawFilledRectangleWithBorder(s.getX() + 35, s.getY() + 3, 100, 24, Color.RED, Color.GREEN, 2);
-        }
+
+        graphicsHandler.drawImage(health.getSpriteImage(), health.getX(), health.getY());
+        graphicsHandler.drawFilledRectangleWithBorder(health.getX() + 35, health.getY() + 3, 100, 24, Color.RED, Color.RED, 2);
+
+        graphicsHandler.drawImage(stamina.getSpriteImage(), stamina.getX(), stamina.getY());
+        graphicsHandler.drawFilledRectangleWithBorder(stamina.getX() + 35, stamina.getY() + 3, 100, 24, Color.GREEN, Color.GREEN, 2);
+
+        graphicsHandler.drawImage(nectar.getSpriteImage(), nectar.getX(), nectar.getY());
+        graphicsHandler.drawFilledRectangleWithBorder(nectar.getX() + 35, nectar.getY() + 3, 100, 24, Color.YELLOW, Color.YELLOW, 2);
+
+        // for (SpriteImage s : resourceBars) {
+        //     graphicsHandler.drawImage(s.getSpriteImage(), s.getX(), s.getY());
+        //     graphicsHandler.drawFilledRectangleWithBorder(s.getX() + 35, s.getY() + 3, 100, 24, Color.RED, Color.GREEN, 2);
+        // }
     }
 }
