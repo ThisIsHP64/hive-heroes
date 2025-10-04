@@ -1,8 +1,5 @@
 package Level;
 
-import java.awt.Color;
-
-import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
@@ -262,4 +259,13 @@ public abstract class Player extends GameObject {
         drawBounds(graphicsHandler, new Color(255, 0, 0, 100));
     }
     */
+
+    // Line 276 - 273 is implemented for the speed power
+    public float getWalkSpeed() {
+        return walkSpeed;
+    }
+
+    public void setWalkSpeed(float walkSpeed) {
+        this.walkSpeed = walkSpeed;
+    }
 }

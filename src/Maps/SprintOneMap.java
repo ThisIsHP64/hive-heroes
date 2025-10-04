@@ -3,16 +3,24 @@ package Maps;
 import Engine.GraphicsHandler;
 import Level.Map;
 import Level.NPC;
+<<<<<<< HEAD
 import NPCs.RareSunflowerwithFlowers;
+=======
+>>>>>>> 9c8fea3 (in progress)
 import NPCs.Spider;
 import PowerUps.PowerUp;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.PowerUpScript;
 import Tilesets.CommonTileset;
+<<<<<<< HEAD
 import java.util.ArrayList;
 import NPCs.RareSunflowerwithFlowers;
 import NPCs.Spider;      // add spider
 import Utils.Point;     // for positions
+=======
+import Utils.Point;      // add spider
+import java.util.ArrayList;     // for positions
+>>>>>>> 9c8fea3 (in progress)
 
 public class SprintOneMap extends Map {
 
@@ -32,7 +40,7 @@ public class SprintOneMap extends Map {
         ArrayList<NPC> npcs = new ArrayList<>();
 
         // --- existing power-up ---
-        PowerUp pu = new PowerUp(2000, getMapTile(5, 10).getLocation().subtractY(40));
+        PowerUp pu = new PowerUp(2000, getMapTile(5, 10).getLocation());
         pu.setInteractScript(new PowerUpScript());
         npcs.add(pu);
 

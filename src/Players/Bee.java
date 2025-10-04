@@ -9,7 +9,6 @@ import GameObject.Frame;
 import GameObject.SpriteSheet;
 import Level.Player;
 import Utils.Direction;
-
 import java.util.HashMap;
 
 public class Bee extends Player {
