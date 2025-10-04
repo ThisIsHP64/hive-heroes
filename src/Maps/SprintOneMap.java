@@ -9,8 +9,10 @@ import PowerUps.PowerUp;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.PowerUpScript;
 import Tilesets.CommonTileset;
-import Utils.Point;      // add spider
-import java.util.ArrayList;     // for positions
+import java.util.ArrayList;
+import NPCs.RareSunflowerwithFlowers;
+import NPCs.Spider;      // add spider
+import Utils.Point;     // for positions
 
 public class SprintOneMap extends Map {
 

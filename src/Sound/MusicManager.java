@@ -1,7 +1,7 @@
 package Sound;
 
 public class MusicManager {
-    private static Music menuLoop;
+    private static Music menuLoop, gpLoop;
 
     public static void playMenuLoop() {
         if (menuLoop == null) {
@@ -15,6 +15,21 @@ public class MusicManager {
     public static void stopMenuLoop() {
         if(menuLoop != null) {
             menuLoop.stop();
+        }
+    }
+
+    public static void playGpLoop() {
+        if (gpLoop == null) {
+            gpLoop = new Music("Resources/audio/gp.wav");
+            gpLoop.loopAtBar(128.6, 13);
+        } else if(!gpLoop.isPlaying()) {
+            gpLoop.loopAtBar(128.6, 13);
+        }
+    }
+
+    public static void stopGpLoop() {
+        if(gpLoop != null) {
+            gpLoop.stop();
         }
     }
 }

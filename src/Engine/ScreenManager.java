@@ -23,6 +23,10 @@ public class ScreenManager {
         this.currentScreen = screen;
     }
 
+    public Screen getCurrentScreen() {
+        return currentScreen;
+    }
+
     public void update() {
         currentScreen.update();
     }
