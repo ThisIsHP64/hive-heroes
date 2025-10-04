@@ -5,11 +5,10 @@ import Game.GameState;
 import Game.ScreenCoordinator;
 import Sound.MusicManager;
 import SpriteFont.SpriteFont;
-
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import javax.imageio.ImageIO;
 
 // This is the class for the main menu screen
 public class MenuScreen extends Screen {
