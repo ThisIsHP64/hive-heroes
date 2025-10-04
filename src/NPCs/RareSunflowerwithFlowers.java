@@ -24,15 +24,15 @@ public class RareSunflowerwithFlowers extends NPC {
             put("STAND_LEFT", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(0, 0), 65) // frame 1 for 200ms
                         .withScale(3)
-                        .withBounds(0, 0, 18, 52)
+                        .withBounds(0, 0, 11, 7)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 1), 65) // frame 2
                         .withScale(3)
-                        .withBounds(0, 0, 18, 52)
+                        .withBounds(0, 0, 11, 7)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 2), 65) // frame 3
                         .withScale(3)
-                        .withBounds(0, 0, 18, 52)
+                        .withBounds(0, 0, 11, 7)
                         .build()
             });
         }};
