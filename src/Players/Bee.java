@@ -44,6 +44,9 @@ public class Bee extends Player {
         MOVE_DOWN_KEY  = Key.S;
 
         walkSpeed = 10f;
+        setHealth(100);
+        setStamina(25);
+        setNectar(0);
     }
 
     @Override

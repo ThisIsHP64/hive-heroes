@@ -124,7 +124,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		updatePauseState();
 		updateShowFPSState();
 		resourceBars.update();
-		
+		// add 3 methods to update the stamina, health, and nectar by pressing a key
 
 		if (!isGamePaused) {
 			screenManager.update();
@@ -173,7 +173,6 @@ public class GamePanel extends JPanel implements ActionListener{
 		
 		if (Keyboard.isKeyDown(resourcesKey)) {
 			isShowingResources = true;
-			
 		}
 
 		if (isShowingResources) {
