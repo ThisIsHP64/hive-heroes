@@ -1,17 +1,19 @@
 package Engine;
 
+import Effects.RainParticleSystem;
 import GameObject.Rectangle;
 import SpriteFont.SpriteFont;
 import SpriteImage.ResourceHUD;
-
 import Utils.Colors;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /*
  * This is where the game loop process and render back buffer is setup
  */
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements ActionListener{
 	// loads Screens on to the JPanel
 	// each screen has its own update and draw methods defined to handle a "section" of the game.
 	private ScreenManager screenManager;
@@ -34,6 +36,15 @@ public class GamePanel extends JPanel {
 	private ResourceHUD resourceBars;
 	private Key resourcesKey = Key.G;
 	private boolean isShowingResources = false;
+
+	private final int SCREEN_WIDTH = 800;
+	private final int SCREEN_HEIGHT = 600;
+
+	private RainParticleSystem rainSystem;
+	private Timer gameLoopTimer;
+	private Timer rainTimer;
+
+	private boolean isRaining = false;
 
 
 	// The JPanel and various important class instances are setup here
@@ -62,6 +73,28 @@ public class GamePanel extends JPanel {
 		// will continually update the game's logic and repaint the game's graphics
 		GameLoop gameLoop = new GameLoop(this);
 		gameLoopProcess = new Thread(gameLoop.getGameLoopProcess());
+
+		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+
+		//initializing the rain system
+		rainSystem = new RainParticleSystem(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+		//timer for the game updates
+		gameLoopTimer = new Timer(16, (ActionListener) this);
+		gameLoopTimer.start();
+
+		isRaining = true;
+
+		//demo purpose for the rain to stop raining after 3 minutes
+		new Timer(180000, e -> {
+            isRaining = false;
+            rainSystem.clear();
+            ((Timer) e.getSource()).stop();
+        }).start();
+
+		// Timer for starting rain every 5 minutes (300000 ms)
+		rainTimer = new Timer(300000, e -> startRainCycle());
+		rainTimer.start();
 	}
 
 	// this is called later after instantiation, and will initialize screenManager
@@ -98,6 +131,17 @@ public class GamePanel extends JPanel {
 		}
 	}
 
+	private void startRainCycle() {
+        // Start raining again
+        isRaining = true;
+	
+        // Stop raining after 1 minute
+        new Timer(60000, e -> {
+            isRaining = false;
+            rainSystem.clear();
+            ((Timer) e.getSource()).stop();
+        }).start();
+	}
 	private void updatePauseState() {
 		if (Keyboard.isKeyDown(pauseKey) && !keyLocker.isKeyLocked(pauseKey)) {
 			isGamePaused = !isGamePaused;
@@ -147,6 +191,13 @@ public class GamePanel extends JPanel {
 		}
 	}
 
+	public void actionPerformed(ActionEvent e){
+		if (isRaining) {
+			rainSystem.update();
+		}
+		repaint();
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -155,6 +206,10 @@ public class GamePanel extends JPanel {
 			// when called, it will setup the graphics handler and then call this class's draw method
 			graphicsHandler.setGraphics((Graphics2D) g);
 			draw();
+			Graphics2D g2d = (Graphics2D) g;
+			if (isRaining) {
+				rainSystem.draw(g2d);
+			}
 		}
 	}
 }

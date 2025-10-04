@@ -9,7 +9,7 @@ public class RainParticle {
     private static final Random random = new Random();
 
     public RainParticle(int screenWidth) {
-        // Start the raindrop at a random x-position above the screen
+        // Starts the raindrop at a random x-position above the screen
         this.x = random.nextInt(screenWidth);
         this.y = -random.nextInt(300); // Start off-screen
         this.speed = 5 + random.nextInt(10);

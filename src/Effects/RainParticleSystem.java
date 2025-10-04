@@ -17,12 +17,12 @@ public class RainParticleSystem {
     }
 
     public void update() {
-        // Add new particles if needed
+        // adds new particles if needed
         if (particles.size() < maxParticles) {
             particles.add(new RainParticle(screenWidth));
         }
 
-        // Update all particles and remove off-screen ones
+        // Updates all the particles and removes the ones that are off-screen
         Iterator<RainParticle> iterator = particles.iterator();
         while (iterator.hasNext()) {
             RainParticle p = iterator.next();
