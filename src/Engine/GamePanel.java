@@ -5,9 +5,8 @@ import SpriteFont.SpriteFont;
 import SpriteImage.ResourceHUD;
 
 import Utils.Colors;
-
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 /*
  * This is where the game loop process and render back buffer is setup
