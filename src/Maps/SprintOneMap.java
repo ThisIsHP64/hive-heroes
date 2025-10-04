@@ -3,24 +3,14 @@ package Maps;
 import Engine.GraphicsHandler;
 import Level.Map;
 import Level.NPC;
-<<<<<<< HEAD
 import NPCs.RareSunflowerwithFlowers;
-=======
->>>>>>> 9c8fea3 (in progress)
 import NPCs.Spider;
 import PowerUps.PowerUp;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.PowerUpScript;
 import Tilesets.CommonTileset;
-<<<<<<< HEAD
-import java.util.ArrayList;
-import NPCs.RareSunflowerwithFlowers;
-import NPCs.Spider;      // add spider
-import Utils.Point;     // for positions
-=======
-import Utils.Point;      // add spider
-import java.util.ArrayList;     // for positions
->>>>>>> 9c8fea3 (in progress)
+import Utils.Point;
+import java.util.ArrayList;      // add spider
 
 public class SprintOneMap extends Map {
 

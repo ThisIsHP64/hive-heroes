@@ -3,20 +3,12 @@ package Screens;
 import Engine.*;
 import Game.GameState;
 import Game.ScreenCoordinator;
-<<<<<<< HEAD
 import Sound.MusicManager;
 import SpriteFont.SpriteFont;
-
-import javax.imageio.ImageIO;
-=======
-import Level.Map;
-import Maps.TitleScreenMap;
-import Sound.MusicManager;
-import SpriteFont.SpriteFont;
->>>>>>> 9c8fea3 (in progress)
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import javax.imageio.ImageIO;
 
 // This is the class for the main menu screen
 public class MenuScreen extends Screen {

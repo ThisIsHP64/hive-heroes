@@ -70,7 +70,5 @@ public class PowerUp extends NPC {
     public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
 
-    // Draw the hitbox in red so you can see where it is
-    drawBounds(graphicsHandler, new java.awt.Color(255, 0, 0, 100));
     }
 }
