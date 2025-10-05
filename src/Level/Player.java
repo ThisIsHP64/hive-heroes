@@ -1,5 +1,6 @@
 package Level;
 
+
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
@@ -12,6 +13,15 @@ public abstract class Player extends GameObject {
     // values that affect player movement
     // these should be set in a subclass
     protected float walkSpeed = 0;
+
+    // player stats
+    protected int health = 0;
+
+    protected int stamina = 0;
+
+    protected int nectar = 0;
+
+
     protected int interactionRange = 1;
     protected Direction currentWalkingXDirection;
     protected Direction currentWalkingYDirection;
@@ -268,4 +278,29 @@ public abstract class Player extends GameObject {
     public void setWalkSpeed(float walkSpeed) {
         this.walkSpeed = walkSpeed;
     }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+    
+    public int getStamina() {
+        return stamina;
+    }
+
+    public void setStamina(int stamina) {
+        this.stamina = stamina;
+    }
+
+    public int getNectar() {
+        return nectar;
+    }
+
+    public void setNectar(int nectar) {
+        this.nectar = nectar;
+    }
+    
 }
