@@ -1,6 +1,5 @@
 package Level;
 
-
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
@@ -23,7 +22,6 @@ public abstract class Player extends GameObject {
     protected int nectar = 0;
 
     protected ResourceHUD resourceBars;
-
 
     protected int interactionRange = 1;
     protected Direction currentWalkingXDirection;
@@ -59,19 +57,21 @@ public abstract class Player extends GameObject {
         this.affectedByTriggers = true;
     }
 
-    public void update(Player player) {
+    public void update() {
         if (!isLocked) {
             moveAmountX = 0;
             moveAmountY = 0;
 
             // if player is currently playing through level (has not won or lost)
-            // update player's state and current actions, which includes things like determining how much it should move each frame and if its walking or jumping
+            // update player's state and current actions, which includes things like
+            // determining how much it should move each frame and if its walking or jumping
             do {
                 previousPlayerState = playerState;
                 handlePlayerState();
             } while (previousPlayerState != playerState);
 
-            // move player with respect to map collisions based on how much player needs to move this frame
+            // move player with respect to map collisions based on how much player needs to
+            // move this frame
             lastAmountMovedY = super.moveYHandleCollision(moveAmountY);
             lastAmountMovedX = super.moveXHandleCollision(moveAmountX);
         }
@@ -84,7 +84,8 @@ public abstract class Player extends GameObject {
         super.update();
     }
 
-    // based on player's current state, call appropriate player state handling method
+    // based on player's current state, call appropriate player state handling
+    // method
     protected void handlePlayerState() {
         switch (playerState) {
             case STANDING:
@@ -104,7 +105,8 @@ public abstract class Player extends GameObject {
         }
 
         // if a walk key is pressed, player enters WALKING state
-        if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(MOVE_RIGHT_KEY) || Keyboard.isKeyDown(MOVE_UP_KEY) || Keyboard.isKeyDown(MOVE_DOWN_KEY)) {
+        if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(MOVE_RIGHT_KEY) || Keyboard.isKeyDown(MOVE_UP_KEY)
+                || Keyboard.isKeyDown(MOVE_DOWN_KEY)) {
             playerState = PlayerState.WALKING;
         }
     }
@@ -130,8 +132,7 @@ public abstract class Player extends GameObject {
             facingDirection = Direction.RIGHT;
             currentWalkingXDirection = Direction.RIGHT;
             lastWalkingXDirection = Direction.RIGHT;
-        }
-        else {
+        } else {
             currentWalkingXDirection = Direction.NONE;
         }
 
@@ -139,25 +140,26 @@ public abstract class Player extends GameObject {
             moveAmountY -= walkSpeed;
             currentWalkingYDirection = Direction.UP;
             lastWalkingYDirection = Direction.UP;
-        }
-        else if (Keyboard.isKeyDown(MOVE_DOWN_KEY)) {
+        } else if (Keyboard.isKeyDown(MOVE_DOWN_KEY)) {
             moveAmountY += walkSpeed;
             currentWalkingYDirection = Direction.DOWN;
             lastWalkingYDirection = Direction.DOWN;
-        }
-        else {
+        } else {
             currentWalkingYDirection = Direction.NONE;
         }
 
-        if ((currentWalkingXDirection == Direction.RIGHT || currentWalkingXDirection == Direction.LEFT) && currentWalkingYDirection == Direction.NONE) {
+        if ((currentWalkingXDirection == Direction.RIGHT || currentWalkingXDirection == Direction.LEFT)
+                && currentWalkingYDirection == Direction.NONE) {
             lastWalkingYDirection = Direction.NONE;
         }
 
-        if ((currentWalkingYDirection == Direction.UP || currentWalkingYDirection == Direction.DOWN) && currentWalkingXDirection == Direction.NONE) {
+        if ((currentWalkingYDirection == Direction.UP || currentWalkingYDirection == Direction.DOWN)
+                && currentWalkingXDirection == Direction.NONE) {
             lastWalkingXDirection = Direction.NONE;
         }
 
-        if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY) && Keyboard.isKeyUp(MOVE_UP_KEY) && Keyboard.isKeyUp(MOVE_DOWN_KEY)) {
+        if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY) && Keyboard.isKeyUp(MOVE_UP_KEY)
+                && Keyboard.isKeyUp(MOVE_DOWN_KEY)) {
             playerState = PlayerState.STANDING;
         }
     }
@@ -173,18 +175,19 @@ public abstract class Player extends GameObject {
         if (playerState == PlayerState.STANDING) {
             // sets animation to a STAND animation based on which way player is facing
             this.currentAnimationName = facingDirection == Direction.RIGHT ? "STAND_RIGHT" : "STAND_LEFT";
-        }
-        else if (playerState == PlayerState.WALKING) {
+        } else if (playerState == PlayerState.WALKING) {
             // sets animation to a WALK animation based on which way player is facing
             this.currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";
         }
     }
 
     @Override
-    public void onEndCollisionCheckX(boolean hasCollided, Direction direction, GameObject entityCollidedWith) { }
+    public void onEndCollisionCheckX(boolean hasCollided, Direction direction, GameObject entityCollidedWith) {
+    }
 
     @Override
-    public void onEndCollisionCheckY(boolean hasCollided, Direction direction, GameObject entityCollidedWith) { }
+    public void onEndCollisionCheckY(boolean hasCollided, Direction direction, GameObject entityCollidedWith) {
+    }
 
     public PlayerState getPlayerState() {
         return playerState;
@@ -210,13 +213,26 @@ public abstract class Player extends GameObject {
                 getBounds().getHeight() + (interactionRange * 2));
     }
 
-    public Key getInteractKey() { return INTERACT_KEY; }
-    public Direction getCurrentWalkingXDirection() { return currentWalkingXDirection; }
-    public Direction getCurrentWalkingYDirection() { return currentWalkingYDirection; }
-    public Direction getLastWalkingXDirection() { return lastWalkingXDirection; }
-    public Direction getLastWalkingYDirection() { return lastWalkingYDirection; }
+    public Key getInteractKey() {
+        return INTERACT_KEY;
+    }
 
-    
+    public Direction getCurrentWalkingXDirection() {
+        return currentWalkingXDirection;
+    }
+
+    public Direction getCurrentWalkingYDirection() {
+        return currentWalkingYDirection;
+    }
+
+    public Direction getLastWalkingXDirection() {
+        return lastWalkingXDirection;
+    }
+
+    public Direction getLastWalkingYDirection() {
+        return lastWalkingYDirection;
+    }
+
     public void lock() {
         isLocked = true;
         playerState = PlayerState.STANDING;
@@ -235,8 +251,7 @@ public abstract class Player extends GameObject {
         facingDirection = direction;
         if (direction == Direction.RIGHT) {
             this.currentAnimationName = "STAND_RIGHT";
-        }
-        else if (direction == Direction.LEFT) {
+        } else if (direction == Direction.LEFT) {
             this.currentAnimationName = "STAND_LEFT";
         }
     }
@@ -247,31 +262,28 @@ public abstract class Player extends GameObject {
         facingDirection = direction;
         if (direction == Direction.RIGHT) {
             this.currentAnimationName = "WALK_RIGHT";
-        }
-        else if (direction == Direction.LEFT) {
+        } else if (direction == Direction.LEFT) {
             this.currentAnimationName = "WALK_LEFT";
         }
         if (direction == Direction.UP) {
             moveY(-speed);
-        }
-        else if (direction == Direction.DOWN) {
+        } else if (direction == Direction.DOWN) {
             moveY(speed);
-        }
-        else if (direction == Direction.LEFT) {
+        } else if (direction == Direction.LEFT) {
             moveX(-speed);
-        }
-        else if (direction == Direction.RIGHT) {
+        } else if (direction == Direction.RIGHT) {
             moveX(speed);
         }
     }
 
-    // Uncomment this to have game draw player's bounds to make it easier to visualize
+    // Uncomment this to have game draw player's bounds to make it easier to
+    // visualize
     /*
-    public void draw(GraphicsHandler graphicsHandler) {
-        super.draw(graphicsHandler);
-        drawBounds(graphicsHandler, new Color(255, 0, 0, 100));
-    }
-    */
+     * public void draw(GraphicsHandler graphicsHandler) {
+     * super.draw(graphicsHandler);
+     * drawBounds(graphicsHandler, new Color(255, 0, 0, 100));
+     * }
+     */
 
     // Line 276 - 273 is implemented for the speed power
     public float getWalkSpeed() {
@@ -281,5 +293,5 @@ public abstract class Player extends GameObject {
     public void setWalkSpeed(float walkSpeed) {
         this.walkSpeed = walkSpeed;
     }
-    
+
 }

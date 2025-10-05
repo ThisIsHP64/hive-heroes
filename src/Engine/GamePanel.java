@@ -3,7 +3,6 @@ package Engine;
 import Effects.RainParticleSystem;
 import GameObject.Rectangle;
 import SpriteFont.SpriteFont;
-import SpriteImage.ResourceHUD;
 import Utils.Colors;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -32,10 +31,6 @@ public class GamePanel extends JPanel implements ActionListener{
 	private boolean showFPS = false;
 	private int currentFPS;
 	private boolean doPaint;
-
-	private ResourceHUD resourceBars;
-	private Key resourcesKey = Key.G;
-	private boolean isShowingResources = false;
 
 	private final int SCREEN_WIDTH = 800;
 	private final int SCREEN_HEIGHT = 600;
@@ -123,8 +118,6 @@ public class GamePanel extends JPanel implements ActionListener{
 	public void update() {
 		updatePauseState();
 		updateShowFPSState();
-		// resourceBars.update();
-		// add 3 methods to update the stamina, health, and nectar by pressing a key
 
 		if (!isGamePaused) {
 			screenManager.update();
@@ -169,15 +162,6 @@ public class GamePanel extends JPanel implements ActionListener{
 	public void draw() {			
 		// draw current game state
 		screenManager.draw(graphicsHandler);
-		
-		
-		if (Keyboard.isKeyDown(resourcesKey)) {
-			isShowingResources = true;
-		}
-
-		if (isShowingResources) {
-			// resourceBars.draw(graphicsHandler);
-		}
 
 		// if game is paused, draw pause gfx over Screen gfx
 		if (isGamePaused) {
