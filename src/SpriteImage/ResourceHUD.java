@@ -5,28 +5,38 @@ import java.util.ArrayList;
 
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
+import Players.Bee;
 
 public class ResourceHUD extends ImageLoader {
-    SpriteImage health, stamina, nectar;
+    SpriteImage healthBar, staminaBar, nectarBar;
     ArrayList<SpriteImage> resourceBars;
 
     protected int x;
 	protected int y;
 
-    public ResourceHUD() {
-        
-        health = new SpriteImage("heart_icon.png", 10, 10);
-        stamina = new SpriteImage("stamina1.png", 20, 20);
-        nectar = new SpriteImage("honeypot.png", 30, 10);
+    protected int health = 250;
+    protected int stamina = 100;
+    protected int nectar = 50;
+
+    protected Bee bee;
+
+
+    public ResourceHUD(Bee bee) {
+
+        healthBar = new SpriteImage("heart_icon.png", 10, 10);
+        staminaBar = new SpriteImage("stamina_icon.png", 20, 20);
+        nectarBar = new SpriteImage("honeypot_icon.png", 30, 10);
 
         // declares new arraylist containing the resource bars
         resourceBars = new ArrayList<>();
         
-        resourceBars.add(health);
-        resourceBars.add(stamina);
-        resourceBars.add(nectar);
+        resourceBars.add(healthBar);
+        resourceBars.add(staminaBar);
+        resourceBars.add(nectarBar);
 
+        this.bee = bee;
     }
+
 
     public int getX() {
 		return x;
@@ -49,19 +59,28 @@ public class ResourceHUD extends ImageLoader {
 		this.y = y;
 	}
 
-    public void update() {
-        System.out.println("Updated.");
-
+    public void update(Bee bee) {
+        System.out.println(String.format("Health: %d  Stamina: %d  Nectar: %d", bee.getHealth(), bee.getStamina(), bee.getNectar()));
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
       
-        health.setLocation(10, 15);
-        stamina.setLocation(10, 45);
-        nectar.setLocation(10, 75);
-        for (SpriteImage s : resourceBars) {
-            graphicsHandler.drawImage(s.getSpriteImage(), s.getX(), s.getY());
-            graphicsHandler.drawFilledRectangleWithBorder(s.getX() + 35, s.getY() + 3, 100, 24, Color.RED, Color.GREEN, 2);
-        }
+        healthBar.setLocation(10, 15);
+        staminaBar.setLocation(10, 45);
+        nectarBar.setLocation(10, 75);
+
+        graphicsHandler.drawImage(healthBar.getSpriteImage(), healthBar.getX(), healthBar.getY());
+        graphicsHandler.drawFilledRectangleWithBorder(healthBar.getX() + 35, healthBar.getY() + 3, bee.getHealth(), 24, Color.RED, Color.RED, 2);
+
+        graphicsHandler.drawImage(staminaBar.getSpriteImage(), staminaBar.getX(), staminaBar.getY());
+        graphicsHandler.drawFilledRectangleWithBorder(staminaBar.getX() + 35, staminaBar.getY() + 3, bee.getStamina(), 24, Color.GREEN, Color.GREEN, 2);
+
+        graphicsHandler.drawImage(nectarBar.getSpriteImage(), nectarBar.getX(), nectarBar.getY());
+        graphicsHandler.drawFilledRectangleWithBorder(nectarBar.getX() + 35, nectarBar.getY() + 3, bee.getNectar(), 24, Color.YELLOW, Color.YELLOW, 2);
+
+        // for (SpriteImage s : resourceBars) {
+        //     graphicsHandler.drawImage(s.getSpriteImage(), s.getX(), s.getY());
+        //     graphicsHandler.drawFilledRectangleWithBorder(s.getX() + 35, s.getY() + 3, 100, 24, Color.RED, Color.GREEN, 2);
+        // }
     }
 }

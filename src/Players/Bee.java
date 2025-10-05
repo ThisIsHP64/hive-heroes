@@ -8,51 +8,56 @@ import Engine.Keyboard;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
 import Level.Player;
+import SpriteImage.ResourceHUD;
 import Utils.Direction;
 import java.util.HashMap;
 
 public class Bee extends Player {
 
-    private static final int TILE = 64;      // frames are 64x64
+    private static final int TILE = 64; // frames are 64x64
     private static final float SCALE = 2.5f; // resize bee (2.0–3.0)
 
     // row mapping in BOTH sheets (0-based)
-    private static final int ROW_UP    = 0;
-    private static final int ROW_LEFT  = 1;
+    private static final int ROW_UP = 0;
+    private static final int ROW_LEFT = 1;
     private static final int ROW_RIGHT = 2;
-    private static final int ROW_DOWN  = 3;
+    private static final int ROW_DOWN = 3;
 
     // --- attack timing ---
-    private static final int ATTACK_ACTIVE_MS   = 120;  // sting window
-    private static final int ATTACK_COOLDOWN_MS = 10;  // delay before next attack
+    private static final int ATTACK_ACTIVE_MS = 120; // sting window
+    private static final int ATTACK_COOLDOWN_MS = 10; // delay before next attack
 
     private boolean attacking = false;
     private long attackStart = 0L;
     private long lastAttackEnd = 0L;
 
-    private boolean prevSpaceDown = false;   // edge detection
+    private boolean prevSpaceDown = false; // edge detection
 
     public Bee(float x, float y) {
         super(new SpriteSheet(ImageLoader.load("Bee_Walk.png"), TILE, TILE, 0),
-              x, y,
-              "STAND_DOWN");
+                x, y,
+                "STAND_DOWN");
 
         // === CONTROLS: WASD ===
-        MOVE_LEFT_KEY  = Key.A;
+        MOVE_LEFT_KEY = Key.A;
         MOVE_RIGHT_KEY = Key.D;
-        MOVE_UP_KEY    = Key.W;
-        MOVE_DOWN_KEY  = Key.S;
+        MOVE_UP_KEY = Key.W;
+        MOVE_DOWN_KEY = Key.S;
 
         walkSpeed = 10f;
         setHealth(100);
         setStamina(25);
         setNectar(0);
+        resourceBars = new ResourceHUD(this);
     }
 
     @Override
     public void update() {
-        handleAttackInput();
         super.update();
+        handleAttackInput();
+        resourceBars.update(this);
+        System.out.println(String.format("Health: %d  Stamina: %d  Nectar: %d", this.getHealth(), this.getStamina(),
+                this.getNectar()));
 
         // end attack window
         if (attacking && System.currentTimeMillis() - attackStart > ATTACK_ACTIVE_MS) {
@@ -88,11 +93,16 @@ public class Bee extends Player {
         int baseY = Math.round(getY());
 
         switch (facingDirection) {
-            case UP:    return new java.awt.Rectangle(baseX + Math.round(20*SCALE), baseY + Math.round(4*SCALE),  w, h);
-            case DOWN:  return new java.awt.Rectangle(baseX + Math.round(20*SCALE), baseY + Math.round(44*SCALE), w, h);
-            case LEFT:  return new java.awt.Rectangle(baseX + Math.round(0*SCALE),  baseY + Math.round(24*SCALE), w, h);
-            case RIGHT: return new java.awt.Rectangle(baseX + Math.round(44*SCALE), baseY + Math.round(24*SCALE), w, h);
-            default:    return new java.awt.Rectangle(baseX, baseY, 1, 1);
+            case UP:
+                return new java.awt.Rectangle(baseX + Math.round(20 * SCALE), baseY + Math.round(4 * SCALE), w, h);
+            case DOWN:
+                return new java.awt.Rectangle(baseX + Math.round(20 * SCALE), baseY + Math.round(44 * SCALE), w, h);
+            case LEFT:
+                return new java.awt.Rectangle(baseX + Math.round(0 * SCALE), baseY + Math.round(24 * SCALE), w, h);
+            case RIGHT:
+                return new java.awt.Rectangle(baseX + Math.round(44 * SCALE), baseY + Math.round(24 * SCALE), w, h);
+            default:
+                return new java.awt.Rectangle(baseX, baseY, 1, 1);
         }
     }
 
@@ -103,8 +113,7 @@ public class Bee extends Player {
             return;
         }
 
-        boolean walking =
-                (currentWalkingYDirection != Direction.NONE) ||
+        boolean walking = (currentWalkingYDirection != Direction.NONE) ||
                 (currentWalkingXDirection != Direction.NONE);
 
         if (!walking) {
@@ -145,29 +154,30 @@ public class Bee extends Player {
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
+        resourceBars.draw(graphicsHandler);
 
         // uncomment to show hitbox
-//        Rectangle bounds = getBounds();
-//
-//        float camX = map.getCamera().getX();
-//        float camY = map.getCamera().getY();
-//
-//        int screenX = (int)(bounds.getX() - camX);
-//        int screenY = (int)(bounds.getY() - camY);
-//
-//        graphicsHandler.drawRectangle(
-//                screenX,
-//                screenY,
-//                bounds.getWidth(),
-//                bounds.getHeight(),
-//                java.awt.Color.BLUE,
-//                2
-//        );
+        // Rectangle bounds = getBounds();
+        //
+        // float camX = map.getCamera().getX();
+        // float camY = map.getCamera().getY();
+        //
+        // int screenX = (int)(bounds.getX() - camX);
+        // int screenY = (int)(bounds.getY() - camY);
+        //
+        // graphicsHandler.drawRectangle(
+        // screenX,
+        // screenY,
+        // bounds.getWidth(),
+        // bounds.getHeight(),
+        // java.awt.Color.BLUE,
+        // 2
+        // );
     }
 
     @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet walkSheet) {
-        SpriteSheet idleSheet   = new SpriteSheet(ImageLoader.load("Bee_Idle.png"),   TILE, TILE, 0);
+        SpriteSheet idleSheet = new SpriteSheet(ImageLoader.load("Bee_Idle.png"), TILE, TILE, 0);
         SpriteSheet attackSheet = new SpriteSheet(ImageLoader.load("Bee_Attack.png"), TILE, TILE, 0);
 
         int hbX = Math.round(10 * SCALE), hbY = Math.round(8 * SCALE);
@@ -176,28 +186,28 @@ public class Bee extends Player {
         HashMap<String, Frame[]> map = new HashMap<>();
 
         // === IDLE hover ===
-        map.put("STAND_UP",    frames(idleSheet, ROW_UP,    0, 3, 7,  hbX,hbY,hbW,hbH));
-        map.put("STAND_LEFT",  frames(idleSheet, ROW_LEFT,  0, 3, 7,  hbX,hbY,hbW,hbH));
-        map.put("STAND_RIGHT", frames(idleSheet, ROW_RIGHT, 0, 3, 7,  hbX,hbY,hbW,hbH));
-        map.put("STAND_DOWN",  frames(idleSheet, ROW_DOWN,  0, 3, 7,  hbX,hbY,hbW,hbH));
+        map.put("STAND_UP", frames(idleSheet, ROW_UP, 0, 3, 7, hbX, hbY, hbW, hbH));
+        map.put("STAND_LEFT", frames(idleSheet, ROW_LEFT, 0, 3, 7, hbX, hbY, hbW, hbH));
+        map.put("STAND_RIGHT", frames(idleSheet, ROW_RIGHT, 0, 3, 7, hbX, hbY, hbW, hbH));
+        map.put("STAND_DOWN", frames(idleSheet, ROW_DOWN, 0, 3, 7, hbX, hbY, hbW, hbH));
 
         // === WALK ===
-        map.put("WALK_UP",    frames(walkSheet, ROW_UP,    0, 3, 14, hbX,hbY,hbW,hbH));
-        map.put("WALK_LEFT",  frames(walkSheet, ROW_LEFT,  0, 3, 14, hbX,hbY,hbW,hbH));
-        map.put("WALK_RIGHT", frames(walkSheet, ROW_RIGHT, 0, 3, 14, hbX,hbY,hbW,hbH));
-        map.put("WALK_DOWN",  frames(walkSheet, ROW_DOWN,  0, 3, 14, hbX,hbY,hbW,hbH));
+        map.put("WALK_UP", frames(walkSheet, ROW_UP, 0, 3, 14, hbX, hbY, hbW, hbH));
+        map.put("WALK_LEFT", frames(walkSheet, ROW_LEFT, 0, 3, 14, hbX, hbY, hbW, hbH));
+        map.put("WALK_RIGHT", frames(walkSheet, ROW_RIGHT, 0, 3, 14, hbX, hbY, hbW, hbH));
+        map.put("WALK_DOWN", frames(walkSheet, ROW_DOWN, 0, 3, 14, hbX, hbY, hbW, hbH));
 
         // === ATTACK ===
-        map.put("ATTACK_UP",    frames(attackSheet, ROW_UP,    0, 2, 6, hbX,hbY,hbW,hbH));
-        map.put("ATTACK_LEFT",  frames(attackSheet, ROW_LEFT,  0, 2, 6, hbX,hbY,hbW,hbH));
-        map.put("ATTACK_RIGHT", frames(attackSheet, ROW_RIGHT, 0, 2, 6, hbX,hbY,hbW,hbH));
-        map.put("ATTACK_DOWN",  frames(attackSheet, ROW_DOWN,  0, 2, 6, hbX,hbY,hbW,hbH));
+        map.put("ATTACK_UP", frames(attackSheet, ROW_UP, 0, 2, 6, hbX, hbY, hbW, hbH));
+        map.put("ATTACK_LEFT", frames(attackSheet, ROW_LEFT, 0, 2, 6, hbX, hbY, hbW, hbH));
+        map.put("ATTACK_RIGHT", frames(attackSheet, ROW_RIGHT, 0, 2, 6, hbX, hbY, hbW, hbH));
+        map.put("ATTACK_DOWN", frames(attackSheet, ROW_DOWN, 0, 2, 6, hbX, hbY, hbW, hbH));
 
         return map;
     }
 
     private Frame[] frames(SpriteSheet sheet, int row, int colStart, int colEnd, int duration,
-                           int hbX, int hbY, int hbW, int hbH) {
+            int hbX, int hbY, int hbW, int hbH) {
         int n = (colEnd - colStart) + 1;
         Frame[] out = new Frame[n];
         for (int i = 0; i < n; i++) {
@@ -208,4 +218,29 @@ public class Bee extends Player {
         }
         return out;
     }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getStamina() {
+        return stamina;
+    }
+
+    public void setStamina(int stamina) {
+        this.stamina = stamina;
+    }
+
+    public int getNectar() {
+        return nectar;
+    }
+
+    public void setNectar(int nectar) {
+        this.nectar = nectar;
+    }
+
 }

@@ -60,11 +60,13 @@ public class SpriteImage extends ImageLoader {
 
     // it should check if the bee was hurt, and then update the sprites
     public void update() {
-        
+
+
     }
 
 
     public void draw(GraphicsHandler graphicsHandler) {
+        // draws the heart at a specific x, y coordinate
         graphicsHandler.drawImage(bi, x, y);
         
         graphicsHandler.drawFilledRectangleWithBorder(45, 15, 100, 24, Color.RED, Color.GREEN, 2);
