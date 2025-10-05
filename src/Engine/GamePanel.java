@@ -65,7 +65,7 @@ public class GamePanel extends JPanel implements ActionListener{
 
 		fpsDisplayLabel = new SpriteFont("FPS", 725, 20, "Arial", 12, Color.black);
 
-		resourceBars = new ResourceHUD();
+		// resourceBars = new ResourceHUD();
 
 		currentFPS = Config.TARGET_FPS;
 
@@ -123,7 +123,7 @@ public class GamePanel extends JPanel implements ActionListener{
 	public void update() {
 		updatePauseState();
 		updateShowFPSState();
-		resourceBars.update();
+		// resourceBars.update();
 		// add 3 methods to update the stamina, health, and nectar by pressing a key
 
 		if (!isGamePaused) {
@@ -176,7 +176,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		}
 
 		if (isShowingResources) {
-			resourceBars.draw(graphicsHandler);
+			// resourceBars.draw(graphicsHandler);
 		}
 
 		// if game is paused, draw pause gfx over Screen gfx

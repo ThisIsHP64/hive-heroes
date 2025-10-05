@@ -7,6 +7,7 @@ import Engine.Keyboard;
 import GameObject.GameObject;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
+import SpriteImage.ResourceHUD;
 import Utils.Direction;
 
 public abstract class Player extends GameObject {
@@ -20,6 +21,8 @@ public abstract class Player extends GameObject {
     protected int stamina = 0;
 
     protected int nectar = 0;
+
+    protected ResourceHUD resourceBars;
 
 
     protected int interactionRange = 1;
@@ -56,7 +59,7 @@ public abstract class Player extends GameObject {
         this.affectedByTriggers = true;
     }
 
-    public void update() {
+    public void update(Player player) {
         if (!isLocked) {
             moveAmountX = 0;
             moveAmountY = 0;
@@ -277,30 +280,6 @@ public abstract class Player extends GameObject {
 
     public void setWalkSpeed(float walkSpeed) {
         this.walkSpeed = walkSpeed;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-    
-    public int getStamina() {
-        return stamina;
-    }
-
-    public void setStamina(int stamina) {
-        this.stamina = stamina;
-    }
-
-    public int getNectar() {
-        return nectar;
-    }
-
-    public void setNectar(int nectar) {
-        this.nectar = nectar;
     }
     
 }

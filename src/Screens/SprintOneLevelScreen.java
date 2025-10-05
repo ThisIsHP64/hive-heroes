@@ -70,6 +70,7 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
 
                                 if (sting.intersects(sp.getHitbox())) {
                                     System.out.println("Spider hit!");
+                                    bee.setStamina(bee.getStamina() - 3);
                                 }
                             }
                         }

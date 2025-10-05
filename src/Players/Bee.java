@@ -8,6 +8,7 @@ import Engine.Keyboard;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
 import Level.Player;
+import SpriteImage.ResourceHUD;
 import Utils.Direction;
 import java.util.HashMap;
 
@@ -47,12 +48,15 @@ public class Bee extends Player {
         setHealth(100);
         setStamina(25);
         setNectar(0);
+        resourceBars = new ResourceHUD(this);
     }
 
     @Override
-    public void update() {
-        handleAttackInput();
+    public void update(Player player) {
         super.update();
+        handleAttackInput();
+        // resourceBars.update(this);
+        System.out.println(String.format("Health: %d  Stamina: %d  Nectar: %d", this.getHealth(), this.getStamina(), this.getNectar()));
 
         // end attack window
         if (attacking && System.currentTimeMillis() - attackStart > ATTACK_ACTIVE_MS) {
@@ -145,6 +149,7 @@ public class Bee extends Player {
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
+        resourceBars.draw(graphicsHandler);
 
         // uncomment to show hitbox
 //        Rectangle bounds = getBounds();
@@ -208,4 +213,29 @@ public class Bee extends Player {
         }
         return out;
     }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+    
+    public int getStamina() {
+        return stamina;
+    }
+
+    public void setStamina(int stamina) {
+        this.stamina = stamina;
+    }
+
+    public int getNectar() {
+        return nectar;
+    }
+
+    public void setNectar(int nectar) {
+        this.nectar = nectar;
+    }
+
 }
