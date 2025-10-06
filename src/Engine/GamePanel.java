@@ -135,6 +135,7 @@ public class GamePanel extends JPanel implements ActionListener{
             ((Timer) e.getSource()).stop();
         }).start();
 	}
+	
 	private void updatePauseState() {
 		if (Keyboard.isKeyDown(pauseKey) && !keyLocker.isKeyLocked(pauseKey)) {
 			isGamePaused = !isGamePaused;

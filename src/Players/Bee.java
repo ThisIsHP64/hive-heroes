@@ -47,7 +47,8 @@ public class Bee extends Player {
         walkSpeed = 10f;
         setHealth(100);
         setStamina(25);
-        setNectar(0);
+        setNectar(10);
+        setExperience(5);
         resourceBars = new ResourceHUD(this);
     }
 
@@ -55,9 +56,11 @@ public class Bee extends Player {
     public void update() {
         super.update();
         handleAttackInput();
+        
+        // both the Bee instance/class and ResourceHUD class have access to the get methods for the resources.
         resourceBars.update(this);
-        System.out.println(String.format("Health: %d  Stamina: %d  Nectar: %d", this.getHealth(), this.getStamina(),
-                this.getNectar()));
+        System.out.println(String.format("Health: %d  Stamina: %d  Nectar: %d", 
+                            this.getHealth(), this.getStamina(), this.getNectar()));
 
         // end attack window
         if (attacking && System.currentTimeMillis() - attackStart > ATTACK_ACTIVE_MS) {
@@ -241,6 +244,14 @@ public class Bee extends Player {
 
     public void setNectar(int nectar) {
         this.nectar = nectar;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
     }
 
 }
