@@ -8,24 +8,20 @@ import Engine.ImageLoader;
 import Players.Bee;
 
 public class ResourceHUD extends ImageLoader {
-    SpriteImage healthBar, staminaBar, nectarBar;
+    SpriteImage healthBar, staminaBar, nectarBar, experienceBar;
     ArrayList<SpriteImage> resourceBars;
 
     protected int x;
 	protected int y;
 
-    protected int health = 250;
-    protected int stamina = 100;
-    protected int nectar = 50;
-
     protected Bee bee;
-
 
     public ResourceHUD(Bee bee) {
 
-        healthBar = new SpriteImage("heart_icon.png", 10, 10);
-        staminaBar = new SpriteImage("stamina_icon.png", 20, 20);
-        nectarBar = new SpriteImage("honeypot_icon.png", 30, 10);
+        healthBar = new SpriteImage("heart_icon.png", 10, 15);
+        staminaBar = new SpriteImage("stamina_icon.png", 10, 45);
+        nectarBar = new SpriteImage("honeypot_icon.png", 10, 75);
+        experienceBar = new SpriteImage("experience_icon.png", 10, 105);
 
         // declares new arraylist containing the resource bars
         resourceBars = new ArrayList<>();
@@ -33,6 +29,7 @@ public class ResourceHUD extends ImageLoader {
         resourceBars.add(healthBar);
         resourceBars.add(staminaBar);
         resourceBars.add(nectarBar);
+        resourceBars.add(experienceBar);
 
         this.bee = bee;
     }
@@ -60,23 +57,24 @@ public class ResourceHUD extends ImageLoader {
 	}
 
     public void update(Bee bee) {
-        System.out.println(String.format("Health: %d  Stamina: %d  Nectar: %d", bee.getHealth(), bee.getStamina(), bee.getNectar()));
+        // System.out.println(String.format("Health: %d  Stamina: %d  Nectar: %d", bee.getHealth(), bee.getStamina(), bee.getNectar()));
+        // System.out.println("Checking.");
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
-      
-        healthBar.setLocation(10, 15);
-        staminaBar.setLocation(10, 45);
-        nectarBar.setLocation(10, 75);
 
+        // i need to add the borders for the maximum values for each stat
         graphicsHandler.drawImage(healthBar.getSpriteImage(), healthBar.getX(), healthBar.getY());
-        graphicsHandler.drawFilledRectangleWithBorder(healthBar.getX() + 35, healthBar.getY() + 3, bee.getHealth(), 24, Color.RED, Color.RED, 2);
+        graphicsHandler.drawFilledRectangleWithBorder(healthBar.getX() + 35, healthBar.getY() + 3, bee.getHealth(), 24, Color.RED, Color.BLACK, 2);
 
         graphicsHandler.drawImage(staminaBar.getSpriteImage(), staminaBar.getX(), staminaBar.getY());
-        graphicsHandler.drawFilledRectangleWithBorder(staminaBar.getX() + 35, staminaBar.getY() + 3, bee.getStamina(), 24, Color.GREEN, Color.GREEN, 2);
+        graphicsHandler.drawFilledRectangleWithBorder(staminaBar.getX() + 35, staminaBar.getY() + 3, bee.getStamina(), 24, Color.GREEN, Color.BLACK, 2);
 
         graphicsHandler.drawImage(nectarBar.getSpriteImage(), nectarBar.getX(), nectarBar.getY());
-        graphicsHandler.drawFilledRectangleWithBorder(nectarBar.getX() + 35, nectarBar.getY() + 3, bee.getNectar(), 24, Color.YELLOW, Color.YELLOW, 2);
+        graphicsHandler.drawFilledRectangleWithBorder(nectarBar.getX() + 35, nectarBar.getY() + 3, bee.getNectar(), 24, Color.YELLOW, Color.BLACK, 2);
+
+        graphicsHandler.drawImage(experienceBar.getSpriteImage(), experienceBar.getX(), experienceBar.getY());
+        graphicsHandler.drawFilledRectangleWithBorder(experienceBar.getX() + 35, experienceBar.getY() + 3, bee.getExperience(), 24, Color.YELLOW, Color.BLACK, 2);
 
         // for (SpriteImage s : resourceBars) {
         //     graphicsHandler.drawImage(s.getSpriteImage(), s.getX(), s.getY());

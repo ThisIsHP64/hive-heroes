@@ -21,6 +21,9 @@ public abstract class Player extends GameObject {
 
     protected int nectar = 0;
 
+    protected int experience = 0;
+
+
     protected ResourceHUD resourceBars;
 
     protected int interactionRange = 1;
