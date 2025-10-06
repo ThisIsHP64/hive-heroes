@@ -3,6 +3,7 @@ package Maps;
 import Engine.GraphicsHandler;
 import Level.Map;
 import Level.NPC;
+import NPCs.BigHive;
 import NPCs.RareSunflowerwithFlowers;
 import NPCs.Spider;
 import PowerUps.PowerUp;
@@ -36,6 +37,9 @@ public class SprintOneMap extends Map {
 
         RareSunflowerwithFlowers rareSunflower = new RareSunflowerwithFlowers(4, getMapTile(67, 48).getLocation());
         npcs.add(rareSunflower);
+
+        BigHive bigHive = new BigHive(4, getMapTile(65, 59).getLocation());
+        npcs.add(bigHive);
 
         // --- SPIDER: place it down the path near the red X ---
         // Tiles on this map are grid-based; use tile coords for easy nudging.
