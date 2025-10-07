@@ -4,7 +4,6 @@ import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import GameObject.Frame;
-import GameObject.ImageEffect;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
 import Level.NPC;
@@ -12,19 +11,6 @@ import Utils.Point;
 import java.util.HashMap;
 
 public class RareSunflowerwithFlowers extends NPC {
-
-    private static final int TILE = 32; // spider05.png frames are 32x32
-    private static final float SCALE = 2.0f; // integer scale keeps pixels crisp
-
-    // pick the cell we want to show for now (col,row)
-    private static final int IDLE_COL = 0;
-    private static final int IDLE_ROW = 0;
-
-    // these match the FrameBuilder.withBounds(...) below so our hitbox lines up
-    private static final int HBX = 4; // body box x offset in sprite pixels (pre-scale)
-    private static final int HBY = 10; // body box y offset
-    private static final int HBW = 7; // body box width
-    private static final int HBH = 7; // body box height
 
     public RareSunflowerwithFlowers(int id, Point location) {
         super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("RareSunflowerwithFlowers.png"), 16, 16),
