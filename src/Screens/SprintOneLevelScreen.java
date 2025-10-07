@@ -23,6 +23,7 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
 
     public SprintOneLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
+        // this.playLevelScreenState = PlayLevelScreenState.RUNNING;
     }
 
     public void initialize() {
@@ -102,6 +103,10 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
+        if (map == null || player == null || playLevelScreenState == null) {
+            return; // wait until initialize() runs
+        }
+
         switch (playLevelScreenState) {
             case RUNNING:
                 map.draw(player, graphicsHandler);
