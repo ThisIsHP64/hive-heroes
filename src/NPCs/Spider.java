@@ -4,6 +4,7 @@ import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import GameObject.Frame;
+import GameObject.Rectangle;
 import GameObject.SpriteSheet;
 import Level.NPC;
 import Utils.Point;
@@ -66,21 +67,21 @@ public class Spider extends NPC {
 
 
         // uncomment to show hitbox
-        // Rectangle bounds = getBounds();
-//        float camX = map.getCamera().getX();
-//        float camY = map.getCamera().getY();
-//
-//        int screenX = (int)(bounds.getX() - camX);
-//        int screenY = (int)(bounds.getY() - camY);
-//
-//        graphicsHandler.drawRectangle(
-//                screenX,
-//                screenY,
-//                bounds.getWidth(),
-//                bounds.getHeight(),
-//                java.awt.Color.GREEN,
-//                2
-//        );
+        Rectangle bounds = getBounds();
+       float camX = map.getCamera().getX();
+       float camY = map.getCamera().getY();
+
+       int screenX = (int)(bounds.getX() - camX);
+       int screenY = (int)(bounds.getY() - camY);
+
+       graphicsHandler.drawRectangle(
+               screenX,
+               screenY,
+               bounds.getWidth(),
+               bounds.getHeight(),
+               java.awt.Color.GREEN,
+               2
+       );
         super.draw(graphicsHandler);
     }
 }

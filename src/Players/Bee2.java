@@ -16,7 +16,6 @@ public class Bee2 extends Player {
 
         private static final String PREFIX = "";
     private static final float SCALE = 3.0f;   // tweak 2.0–3.0 to taste
-    private static final int RIGHT_ROW = 2;
 
     public Bee2(float x, float y) {
         super(new SpriteSheet(ImageLoader.loadPreserveAlpha(PREFIX + "Bee_Walk.png"), 24, 24), x, y, "STAND_RIGHT");
