@@ -22,25 +22,38 @@ public class PowerUp extends NPC {
     private float originalSpeed = 0f;    // bee’s speed before boost
     private boolean visible = true;      // simple visibility flag
 
-    private static final int BOOST_DURATION_MS = 10_000;  // 10 seconds
+    private static final int BOOST_DURATION_MS = 5000;  // 10 seconds
     private static final float BOOST_MULTIPLIER = 2.0f;   // 2x faster
 
     public PowerUp(int id, Point location) {
-        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("PowerUp.png"), 24, 24), "IDLE");
+        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("powerup_speed.png"), 32,32, 0), "IDLE");
         this.isUncollidable = true;
     }
 
-    @Override
-    public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
-        return new HashMap<String, Frame[]>() {{
-            put("IDLE", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(0, 0))
-                            .withScale(3f)
-                            .withBounds(0, 0, 24, 24)
-                            .build()
-            });
-        }};
-    }
+@Override
+public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
+    return new HashMap<String, Frame[]>() {{
+        put("IDLE", new Frame[] {
+            new FrameBuilder(spriteSheet.getSprite(0, 0), 10)
+                .withScale(2f)
+                .withBounds(0, 0, 32, 32)
+                .build(),
+        });
+
+        put("ACTIVATED", new Frame[] {
+            new FrameBuilder(spriteSheet.getSprite(0, 1), 10)
+                .withScale(2f)
+                .withBounds(0, 0, 32, 32)
+                .build(),
+
+            new FrameBuilder(spriteSheet.getSprite(1, 0), 10)
+                .withScale(2f)
+                .withBounds(0, 0, 32, 32)
+                .build()
+        });
+    }};
+}
+
 
     
 
@@ -56,13 +69,17 @@ public class PowerUp extends NPC {
                 originalSpeed = bee.getWalkSpeed();
                 bee.setWalkSpeed(originalSpeed * BOOST_MULTIPLIER);
 
+                // play activated animation
+                this.currentAnimationName = "ACTIVATED";
+
                 // start timer and mark used
                 startTimeMs = System.currentTimeMillis();
                 used = true;
-
-                // hide/remove powerup from map
-                setMapEntityStatus(MapEntityStatus.REMOVED);
             }
+        }
+
+        if (used && System.currentTimeMillis() - startTimeMs > 500) { // 0.5s delay
+                        setMapEntityStatus(MapEntityStatus.REMOVED);
         }
     }
 
