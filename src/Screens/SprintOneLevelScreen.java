@@ -23,7 +23,6 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
 
     public SprintOneLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
-        // this.playLevelScreenState = PlayLevelScreenState.RUNNING;
     }
 
     public void initialize() {
