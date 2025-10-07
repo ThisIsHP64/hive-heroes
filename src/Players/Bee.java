@@ -33,6 +33,8 @@ public class Bee extends Player {
 
     private boolean prevSpaceDown = false; // edge detection
 
+    protected static boolean isRaining = false;
+
     public Bee(float x, float y) {
         super(new SpriteSheet(ImageLoader.load("Bee_Walk.png"), TILE, TILE, 0),
                 x, y,
@@ -87,6 +89,12 @@ public class Bee extends Player {
     public boolean isAttacking() {
         return attacking;
     }
+
+    //public void boolean isRaining(){
+       // if(isRaining==true){
+           // walkspeed -= walkspeed*0.5f;
+        //}
+    //}
 
     // rectangle hitbox in front of the bee while attacking
     public java.awt.Rectangle getAttackHitbox() {

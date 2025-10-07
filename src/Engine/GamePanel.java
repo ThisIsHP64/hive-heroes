@@ -78,17 +78,20 @@ public class GamePanel extends JPanel implements ActionListener{
 		gameLoopTimer = new Timer(16, (ActionListener) this);
 		gameLoopTimer.start();
 
-		isRaining = true;
-
 		//demo purpose for the rain to stop raining after 3 minutes
+		/* 
 		new Timer(180000, e -> {
             isRaining = false;
             rainSystem.clear();
             ((Timer) e.getSource()).stop();
         }).start();
+		*/
 
 		// Timer for starting rain every 5 minutes (300000 ms)
 		rainTimer = new Timer(300000, e -> startRainCycle());
+		rainTimer.start();
+
+		rainTimer = new Timer(30000, t -> startRainCycle());
 		rainTimer.start();
 	}
 
@@ -125,16 +128,21 @@ public class GamePanel extends JPanel implements ActionListener{
 	}
 
 	private void startRainCycle() {
-        // Start raining again
-        isRaining = true;
-	
+		 
+        new Timer(30000, t -> {
+			isRaining = false;
+			((Timer) t.getSource()).stop(); // stop the 30s starter timer
+    		}).start();
+			
         // Stop raining after 1 minute
+		
         new Timer(60000, e -> {
             isRaining = false;
             rainSystem.clear();
             ((Timer) e.getSource()).stop();
         }).start();
-	}
+		
+}
 	
 	private void updatePauseState() {
 		if (Keyboard.isKeyDown(pauseKey) && !keyLocker.isKeyLocked(pauseKey)) {
