@@ -9,6 +9,7 @@ import Maps.SprintOneMap;
 import Players.Bee;
 import Utils.Direction;
 import Utils.Point;
+import NPCs.RareSunflowerwithFlowers;
 import NPCs.Spider;
 
 // main level screen; we add a spider and check Bee's sting vs Spider's body box
@@ -71,6 +72,15 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
                                 if (sting.intersects(sp.getHitbox())) {
                                     System.out.println("Spider hit!");
                                     bee.setStamina(bee.getStamina() + 1);
+                                }
+                            }
+
+                            if (npc instanceof RareSunflowerwithFlowers) {
+                                RareSunflowerwithFlowers rareSunflower = (RareSunflowerwithFlowers) npc;
+                                
+                                if (sting.intersects(rareSunflower.getHitbox())) {
+                                    System.out.println("Sunflower hit!");
+                                    bee.setNectar(bee.getNectar() + 1);
                                 }
                             }
                         }
