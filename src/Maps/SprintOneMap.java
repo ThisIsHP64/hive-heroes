@@ -31,7 +31,7 @@ public class SprintOneMap extends Map {
         ArrayList<NPC> npcs = new ArrayList<>();
 
         // --- existing power-up ---
-        PowerUp pu = new PowerUp(2000, getMapTile(5, 10).getLocation());
+        PowerUp pu = new PowerUp(2000, getMapTile(70, 59).getLocation());
         pu.setInteractScript(new PowerUpScript());
         npcs.add(pu);
 
