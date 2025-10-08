@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class BigHive extends NPC {
 
     public BigHive(int id, Point location) {
-        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("BigBeeHive.png"), 16, 16), "STAND_LEFT");
+        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("BigBeeHive.png"), 43, 43), "STAND_LEFT");
     }
 
     @Override

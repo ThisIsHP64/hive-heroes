@@ -38,7 +38,7 @@ public class SprintOneMap extends Map {
         RareSunflowerwithFlowers rareSunflower = new RareSunflowerwithFlowers(4, getMapTile(67, 48).getLocation());
         npcs.add(rareSunflower);
 
-        BigHive bigHive = new BigHive(4, getMapTile(65, 59).getLocation());
+        BigHive bigHive = new BigHive(4, getMapTile(67, 51).getLocation());
         npcs.add(bigHive);
 
         // --- SPIDER: place it down the path near the red X ---

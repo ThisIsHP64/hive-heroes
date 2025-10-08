@@ -36,10 +36,11 @@ public class GamePanel extends JPanel implements ActionListener{
 	private final int SCREEN_HEIGHT = 600;
 
 	private RainParticleSystem rainSystem;
-	private Timer gameLoopTimer;
-	private Timer rainTimer;
-
+	private int timer = 0;
 	private boolean isRaining = false;
+	private boolean rainCycleStarted = false;
+
+
 
 
 	// The JPanel and various important class instances are setup here
@@ -72,24 +73,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 
 		//initializing the rain system
-		rainSystem = new RainParticleSystem(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-		//timer for the game updates
-		gameLoopTimer = new Timer(16, (ActionListener) this);
-		gameLoopTimer.start();
-
-		isRaining = true;
-
-		//demo purpose for the rain to stop raining after 3 minutes
-		new Timer(180000, e -> {
-            isRaining = false;
-            rainSystem.clear();
-            ((Timer) e.getSource()).stop();
-        }).start();
-
-		// Timer for starting rain every 5 minutes (300000 ms)
-		rainTimer = new Timer(300000, e -> startRainCycle());
-		rainTimer.start();
+		rainSystem = new RainParticleSystem(SCREEN_WIDTH, SCREEN_HEIGHT); 
 	}
 
 	// this is called later after instantiation, and will initialize screenManager
@@ -121,19 +105,30 @@ public class GamePanel extends JPanel implements ActionListener{
 
 		if (!isGamePaused) {
 			screenManager.update();
-		}
-	}
 
-	private void startRainCycle() {
-        // Start raining again
-        isRaining = true;
-	
-        // Stop raining after 1 minute
-        new Timer(60000, e -> {
-            isRaining = false;
-            rainSystem.clear();
-            ((Timer) e.getSource()).stop();
-        }).start();
+			timer++;
+
+			int seconds = timer/60;
+
+			if (!isRaining && seconds == 30) {
+				isRaining = true;
+				rainCycleStarted = true;
+			}
+
+			if (isRaining && seconds == 90) {
+				isRaining = false;
+				rainSystem.clear();
+			}
+
+			if (!isRaining && rainCycleStarted && seconds >= 390) { 
+				timer = 0; 
+				rainCycleStarted = false;
+			}
+
+			if (isRaining) {
+				rainSystem.update();
+			}
+		}
 	}
 	
 	private void updatePauseState() {
