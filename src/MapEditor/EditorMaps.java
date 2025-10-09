@@ -1,8 +1,7 @@
 package MapEditor;
 
 import Level.Map;
-import Maps.SprintOneMap;
-import Maps.TestMap;
+import Maps.*;
 import java.util.ArrayList;
 
 public class EditorMaps {
@@ -11,6 +10,7 @@ public class EditorMaps {
             add("TestMap");
             add("TitleScreen");
             add("SprintOneMap");
+            add("DemoMap");
         }};
     }
 
@@ -20,6 +20,8 @@ public class EditorMaps {
                 return new TestMap();
             case "SprintOneMap":
                 return new SprintOneMap();
+            case "DemoMap":
+                return new DemoMap();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }

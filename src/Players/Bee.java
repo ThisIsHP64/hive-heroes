@@ -57,12 +57,14 @@ public class Bee extends Player {
     @Override
     public void update() {
         super.update();
+
         handleAttackInput();
-        
-        // both the Bee instance/class and ResourceHUD class have access to the get methods for the resources.
+
+        // both the Bee instance/class and ResourceHUD class have access to the get
+        // methods for the resources.
         resourceBars.update(this);
-        System.out.println(String.format("Health: %d  Stamina: %d  Nectar: %d", 
-                            this.getHealth(), this.getStamina(), this.getNectar()));
+        System.out.println(String.format("Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f",
+                this.getHealth(), this.getStamina(), this.getNectar(), this.getExperience(), this.getWalkSpeed()));
 
         // end attack window
         if (attacking && System.currentTimeMillis() - attackStart > ATTACK_ACTIVE_MS) {
@@ -89,12 +91,6 @@ public class Bee extends Player {
     public boolean isAttacking() {
         return attacking;
     }
-
-    //public void boolean isRaining(){
-       // if(isRaining==true){
-           // walkspeed -= walkspeed*0.5f;
-        //}
-    //}
 
     // rectangle hitbox in front of the bee while attacking
     public java.awt.Rectangle getAttackHitbox() {

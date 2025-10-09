@@ -42,12 +42,10 @@ public class ScreenCoordinator extends Screen {
 					case MENU:
 						currentScreen = new MenuScreen(this);
 						break;
-					
 					// note from Wilson: in order to switch between the "new" map and the old one, replace the LEVEL case
 					// with this: currentScreen = new PlayLevelScreen(this);
 					case LEVEL:
-						currentScreen = new SprintOneLevelScreen(this);
-						//currentScreen = new PlayLevelScreen(this);
+						currentScreen = new DemoLevelScreen(this);
 						break;
                     case OPTIONS:
                         currentScreen = new OptionsScreen(this);
