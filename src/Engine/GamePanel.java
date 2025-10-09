@@ -41,8 +41,6 @@ public class GamePanel extends JPanel implements ActionListener{
 	private boolean rainCycleStarted = false;
 
 
-
-
 	// The JPanel and various important class instances are setup here
 	public GamePanel() {
 		super();
@@ -186,6 +184,7 @@ public class GamePanel extends JPanel implements ActionListener{
 			graphicsHandler.setGraphics((Graphics2D) g);
 			draw();
 			Graphics2D g2d = (Graphics2D) g;
+			
 			if (isRaining) {
 				rainSystem.draw(g2d);
 			}
