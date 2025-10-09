@@ -57,6 +57,7 @@ public class Bee extends Player {
     @Override
     public void update() {
         super.update();
+
         handleAttackInput();
 
         // both the Bee instance/class and ResourceHUD class have access to the get
@@ -90,7 +91,6 @@ public class Bee extends Player {
     public boolean isAttacking() {
         return attacking;
     }
-
 
     // rectangle hitbox in front of the bee while attacking
     public java.awt.Rectangle getAttackHitbox() {
