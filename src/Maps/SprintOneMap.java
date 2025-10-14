@@ -56,7 +56,13 @@ public class SprintOneMap extends Map {
         // // spider 5 - upper area
         npcs.add(new Spider(1005, getMapTile(70, 40).getLocation().addY(6)));
         
-        System.out.println("[SprintOneMap] Spawned 5 spiders across the map");
+        npcs.add(new Spider(1006, getMapTile(50, 55).getLocation().addY(6)));
+        npcs.add(new Spider(1007, getMapTile(85, 45).getLocation().addY(6)));
+        npcs.add(new Spider(1008, getMapTile(65, 65).getLocation().addY(6)));
+        npcs.add(new Spider(1009, getMapTile(75, 55).getLocation().addY(6)));
+        npcs.add(new Spider(1010, getMapTile(55, 45).getLocation().addY(6)));
+        
+        System.out.println("[SprintOneMap] Spawned 10 spiders across the map");
         
         return npcs;
     }

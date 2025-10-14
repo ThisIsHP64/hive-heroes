@@ -5,7 +5,7 @@ import Level.Map;
 import Level.NPC;
 import NPCs.BigHive;
 import NPCs.RareSunflowerwithFlowers;
-import NPCs.Spider;
+import Enemies.Spider;
 import PowerUps.PowerUp;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.PowerUpScript;
@@ -41,19 +41,19 @@ public class DemoMap extends Map {
         BigHive bigHive = new BigHive(4, getMapTile(67, 51).getLocation());
         npcs.add(bigHive);
 
-        // --- SPIDER: place it down the path near the red X ---
-        // Tiles on this map are grid-based; use tile coords for easy nudging.
-        // Start is (70,50). The red X area is roughly ~12 tiles down and a hair right.
-        final int TX = 55; // tile X (move right: +1; left: -1)
-        final int TY = 62; // tile Y (move down: +1; up: -1)
+        // spawn multiple spiders across the map
+        npcs.add(new Spider(1001, getMapTile(55, 62).getLocation().addY(6)));
+        npcs.add(new Spider(1002, getMapTile(80, 50).getLocation().addY(6)));
+        npcs.add(new Spider(1003, getMapTile(70, 60).getLocation().addY(6)));
+        npcs.add(new Spider(1004, getMapTile(60, 50).getLocation().addY(6)));
+        npcs.add(new Spider(1005, getMapTile(70, 40).getLocation().addY(6)));
+        npcs.add(new Spider(1006, getMapTile(43, 55).getLocation().addY(6)));
+        npcs.add(new Spider(1007, getMapTile(50, 45).getLocation().addY(6)));
+        npcs.add(new Spider(1008, getMapTile(85, 55).getLocation().addY(6)));
+        npcs.add(new Spider(1009, getMapTile(65, 65).getLocation().addY(6)));
+        npcs.add(new Spider(1010, getMapTile(75, 45).getLocation().addY(6)));
 
-        // Grab the tile's pixel location and give a tiny Y offset so it sits nicely
-        Point spiderPos = getMapTile(43, 55).getLocation();
-
-        npcs.add(new Spider(1001, spiderPos));
-
-        System.out.println("[SprintOneMap] Spider at tile (" + TX + "," + TY + ") -> px("
-                + spiderPos.x + "," + spiderPos.y + ")");
+        System.out.println("[DemoMap] Spawned 10 spiders across the map");
 
         return npcs;
     }
