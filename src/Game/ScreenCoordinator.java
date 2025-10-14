@@ -10,62 +10,63 @@ import Screens.*;
  * There can only be one "currentScreen", although screens can have "nested" screens
  */
 public class ScreenCoordinator extends Screen {
-	// currently shown Screen
-	protected Screen currentScreen = new DefaultScreen();
+    // currently shown Screen
+    protected Screen currentScreen = new DefaultScreen();
+    
+    // keep track of gameState so ScreenCoordinator knows which Screen to show
+    protected GameState gameState;
+    protected GameState previousGameState;
 
-	// keep track of gameState so ScreenCoordinator knows which Screen to show
-	protected GameState gameState;
-	protected GameState previousGameState;
+    public GameState getGameState() {
+        return gameState;
+    }
 
-	public GameState getGameState() {
-		return gameState;
-	}
+    // Other Screens can set the gameState of this class to force it to change the currentScreen
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
 
-	// Other Screens can set the gameState of this class to force it to change the currentScreen
-	public void setGameState(GameState gameState) {
-		this.gameState = gameState;
-	}
+    @Override
+    public void initialize() {
+        // start game off with Menu Screen
+        gameState = GameState.MENU;
+    }
 
-	@Override
-	public void initialize() {
-		// start game off with Menu Screen
-		gameState = GameState.MENU;
-	}
-
-	@Override
-	public void update() {
-		do {
-			// if previousGameState does not equal gameState, it means there was a change in gameState
-			// this triggers ScreenCoordinator to bring up a new Screen based on what the gameState is
-			if (previousGameState != gameState) {
-				switch(gameState) {
-					case MENU:
-						currentScreen = new MenuScreen(this);
-						break;
-					// note from Wilson: in order to switch between the "new" map and the old one, replace the LEVEL case
-					// with this: currentScreen = new PlayLevelScreen(this);
-					case LEVEL:
-						currentScreen = new DemoLevelScreen(this);
-						break;
+    @Override
+    public void update() {
+        do {
+            // if previousGameState does not equal gameState, it means there was a change in gameState
+            // this triggers ScreenCoordinator to bring up a new Screen based on what the gameState is
+            if (previousGameState != gameState) {
+                switch(gameState) {
+                    case MENU:
+                        currentScreen = new MenuScreen(this);
+                        break;
+                    case LEVEL:
+                        currentScreen = new SprintOneLevelScreen(this);
+                        break;
                     case OPTIONS:
                         currentScreen = new OptionsScreen(this);
                         break;
-					case CREDITS:
-						currentScreen = new CreditsScreen(this);
-						break;
-				}
-				currentScreen.initialize();
-			}
-			previousGameState = gameState;
+                    case CREDITS:
+                        currentScreen = new CreditsScreen(this);
+                        break;
+                    case GAME_OVER:
+                        currentScreen = new GameOverScreen(this);
+                        break;
+                }
+                currentScreen.initialize();
+            }
+            previousGameState = gameState;
+            
+            // call the update method for the currentScreen
+            currentScreen.update();
+        } while (previousGameState != gameState);
+    }
 
-			// call the update method for the currentScreen
-			currentScreen.update();
-		} while (previousGameState != gameState);
-	}
-
-	@Override
-	public void draw(GraphicsHandler graphicsHandler) {
-		// call the draw method for the currentScreen
-		currentScreen.draw(graphicsHandler);
-	}
+    @Override
+    public void draw(GraphicsHandler graphicsHandler) {
+        // call the draw method for the currentScreen
+        currentScreen.draw(graphicsHandler);
+    }
 }

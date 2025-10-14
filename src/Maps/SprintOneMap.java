@@ -5,16 +5,15 @@ import Level.Map;
 import Level.NPC;
 import NPCs.BigHive;
 import NPCs.RareSunflowerwithFlowers;
-import NPCs.Spider;
+import Enemies.Spider;
 import PowerUps.PowerUp;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.PowerUpScript;
 import Tilesets.CommonTileset;
 import Utils.Point;
-import java.util.ArrayList;      // add spider
+import java.util.ArrayList;
 
 public class SprintOneMap extends Map {
-
     public SprintOneMap() {
         super("sprint_one_map.txt", new CommonTileset());
         // Bee starts here
@@ -29,31 +28,36 @@ public class SprintOneMap extends Map {
     @Override
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
-
-        // --- existing power-up ---
+        
+        // existing power-up
         PowerUp pu = new PowerUp(2000, getMapTile(70, 59).getLocation());
         pu.setInteractScript(new PowerUpScript());
         npcs.add(pu);
-
+        
         RareSunflowerwithFlowers rareSunflower = new RareSunflowerwithFlowers(4, getMapTile(67, 48).getLocation());
         npcs.add(rareSunflower);
-
+        
         BigHive bigHive = new BigHive(4, getMapTile(67, 51).getLocation());
         npcs.add(bigHive);
-
-        // --- SPIDER: place it down the path near the red X ---
-        // Tiles on this map are grid-based; use tile coords for easy nudging.
-        // Start is (70,50). The red X area is roughly ~12 tiles down and a hair right.
-        final int TX = 55;  // tile X (move right: +1; left: -1)
-        final int TY = 62;  // tile Y (move down: +1; up: -1)
-
-        // Grab the tile's pixel location and give a tiny Y offset so it sits nicely
-        Point spiderPos = getMapTile(TX, TY).getLocation().addY(6);
-        npcs.add(new Spider(1001, spiderPos));
-
-        System.out.println("[SprintOneMap] Spider at tile (" + TX + "," + TY + ") -> px("
-                + spiderPos.x + "," + spiderPos.y + ")");
-
+        
+        // spawn multiple spiders across the map
+        // spider 1 - original position near red X
+        npcs.add(new Spider(1001, getMapTile(55, 62).getLocation().addY(6)));
+        
+        // // spider 2 - right of start
+        npcs.add(new Spider(1002, getMapTile(80, 50).getLocation().addY(6)));
+        
+        // // spider 3 - below start
+        npcs.add(new Spider(1003, getMapTile(70, 60).getLocation().addY(6)));
+        
+        // spider 4 - left of start
+        npcs.add(new Spider(1004, getMapTile(60, 50).getLocation().addY(6)));
+        
+        // // spider 5 - upper area
+        npcs.add(new Spider(1005, getMapTile(70, 40).getLocation().addY(6)));
+        
+        System.out.println("[SprintOneMap] Spawned 5 spiders across the map");
+        
         return npcs;
     }
 
@@ -62,16 +66,12 @@ public class SprintOneMap extends Map {
         // Region labels
         getMapTile(71, 50).setInteractScript(new SimpleTextScript("The Hive"));
         getMapTile(72, 50).setInteractScript(new SimpleTextScript("The Hive"));
-
         getMapTile(0, 0).setInteractScript(new SimpleTextScript("Arctic Region?"));
         getMapTile(1, 0).setInteractScript(new SimpleTextScript("Arctic Region?"));
-
         getMapTile(123, 0).setInteractScript(new SimpleTextScript("Windy Region?"));
         getMapTile(124, 0).setInteractScript(new SimpleTextScript("Windy Region?"));
-
         getMapTile(123, 124).setInteractScript(new SimpleTextScript("Grassy Region?"));
         getMapTile(124, 124).setInteractScript(new SimpleTextScript("Grassy Region?"));
-
         getMapTile(0, 124).setInteractScript(new SimpleTextScript("Volcanic Region?"));
         getMapTile(1, 124).setInteractScript(new SimpleTextScript("Volcanic Region?"));
     }
