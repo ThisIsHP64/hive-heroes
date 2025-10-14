@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class CommonTileset extends Tileset {
 
     public CommonTileset() {
-        super(ImageLoader.load("Sprint1tiles.png"), 16, 16, 3);
+        super(ImageLoader.load("Sprint1tiles.png"), 16, 16, 3, 1);
     }
 
     @Override
