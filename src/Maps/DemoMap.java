@@ -9,6 +9,7 @@ import NPCs.Spider;
 import PowerUps.PowerUp;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.PowerUpScript;
+import Scripts.TestMap.TeleportScript;
 import Tilesets.CommonTileset;
 import Utils.Point;
 import java.util.ArrayList; // add spider
@@ -75,5 +76,7 @@ public class DemoMap extends Map {
 
         getMapTile(0, 124).setInteractScript(new SimpleTextScript("Volcanic Region?"));
         getMapTile(1, 124).setInteractScript(new SimpleTextScript("Volcanic Region?"));
+
+        getMapTile(0, 63).setInteractScript(new TeleportScript());
     }
 }

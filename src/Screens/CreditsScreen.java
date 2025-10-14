@@ -18,6 +18,7 @@ public class CreditsScreen extends Screen {
     protected SpriteFont creditsLabel;
     protected SpriteFont createdByLabel;
     protected SpriteFont returnInstructionsLabel;
+    protected SpriteFont originalCreatorLabel;
 
     public CreditsScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -33,7 +34,11 @@ public class CreditsScreen extends Screen {
         }
         creditsLabel = new SpriteFont("Credits", 15, 7, "Times New Roman", 30, Color.white);
         createdByLabel = new SpriteFont("Created by the Chaos Emeralds", 130, 121, "Times New Roman", 20, Color.white);
-        returnInstructionsLabel = new SpriteFont("Press Space to return to the menu", 20, 532, "Times New Roman", 30, Color.white);
+        originalCreatorLabel = new SpriteFont("Base Game made by Alex Thimineur", 130, 141, "Times New Roman", 20,
+                Color.white);
+
+        returnInstructionsLabel = new SpriteFont("Press Space to return to the menu", 20, 532, "Times New Roman", 30,
+                Color.white);
         keyLocker.lockKey(Key.SPACE);
     }
 
@@ -49,11 +54,12 @@ public class CreditsScreen extends Screen {
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
-        if(background != null) {
+        if (background != null) {
             graphicsHandler.drawImage(background, 0, 0, 800, 605);
         }
         creditsLabel.draw(graphicsHandler);
         createdByLabel.draw(graphicsHandler);
+        originalCreatorLabel.draw(graphicsHandler);
         returnInstructionsLabel.draw(graphicsHandler);
     }
 }

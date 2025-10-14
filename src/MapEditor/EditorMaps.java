@@ -11,6 +11,7 @@ public class EditorMaps {
             add("TitleScreen");
             add("SprintOneMap");
             add("DemoMap");
+            add("VolcanoMap");
         }};
     }
 
@@ -22,6 +23,8 @@ public class EditorMaps {
                 return new SprintOneMap();
             case "DemoMap":
                 return new DemoMap();
+            case "VolcanoMap":
+                return new VolcanoMap();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }
