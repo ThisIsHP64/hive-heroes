@@ -12,7 +12,7 @@ import javax.swing.*;
 /*
  * This is where the game loop process and render back buffer is setup
  */
-public class GamePanel extends JPanel implements ActionListener{
+public class GamePanel extends JPanel implements ActionListener {
 	// loads Screens on to the JPanel
 	// each screen has its own update and draw methods defined to handle a "section" of the game.
 	private ScreenManager screenManager;
