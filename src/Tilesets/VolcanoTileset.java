@@ -31,8 +31,14 @@ public class VolcanoTileset extends Tileset {
         ArrayList<MapTileBuilder> mapTiles = new ArrayList<>();
 
         // Lava rocks 
-        // NOTE: I CAN ALSO FLIP THEM ABOUT THE X OR Y AXIS FOR MORE FLEXIBILITY
+        /*
+        NOTES: 
+            I CAN ALSO FLIP THEM ABOUT THE X OR Y AXIS FOR MORE FLEXIBILITY.
+            For blocks that the bee walks on, I can take them from the pillars.
+            Need to credit the creators of the original spritesheets in both the credits section of the game 
+                                                                                   and on the readME.md file
 
+        */
         Frame lavaRock1Frame = new FrameBuilder(getSubImage(1, 0))
             .withScale(tileScale)
             .build();
