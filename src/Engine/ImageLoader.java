@@ -31,33 +31,33 @@ public class ImageLoader {
     public static BufferedImage loadSubImage(String imageFileName, int x, int y, int width, int height) {
         return ImageLoader.loadSubImage(imageFileName, Config.TRANSPARENT_COLOR, x, y, width, height);
     }
-// Loads an image and PRESERVES existing alpha (no color-keying).
-public static BufferedImage loadPreserveAlpha(String imageFileName) {
-    try {
 
-        BufferedImage raw = ImageIO.read(new File(Config.RESOURCES_PATH + imageFileName));
-        if (raw == null) {
-            throw new IOException("ImageIO.read returned null for: " + Config.RESOURCES_PATH + imageFileName);
+    // Loads an image and PRESERVES existing alpha (no color-keying).
+    public static BufferedImage loadPreserveAlpha(String imageFileName) {
+        try {
+            BufferedImage raw = ImageIO.read(new File(Config.RESOURCES_PATH + imageFileName));
+            if (raw == null) {
+                throw new IOException("ImageIO.read returned null for: " + Config.RESOURCES_PATH + imageFileName);
+            }
+
+            // If already ARGB, return as-is
+
+            if (raw.getType() == BufferedImage.TYPE_INT_ARGB) {
+                return raw;
+            }
+
+            // Convert to ARGB to guarantee alpha is preserved downstream
+            BufferedImage argb = new BufferedImage(raw.getWidth(), raw.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g = argb.createGraphics();
+            g.setComposite(AlphaComposite.Src); // keep incoming alpha exactly
+            g.drawImage(raw, 0, 0, null);
+            g.dispose();
+            return argb;
+        } catch (IOException e) {
+            System.out.println("Unable to find file " + Config.RESOURCES_PATH + imageFileName);
+            throw new RuntimeException(e);
         }
-
-        // If already ARGB, return as-is
-
-        if (raw.getType() == BufferedImage.TYPE_INT_ARGB) {
-            return raw;
-        }
-
-        // Convert to ARGB to guarantee alpha is preserved downstream
-        BufferedImage argb = new BufferedImage(raw.getWidth(), raw.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = argb.createGraphics();
-        g.setComposite(AlphaComposite.Src); // keep incoming alpha exactly
-        g.drawImage(raw, 0, 0, null);
-        g.dispose();
-        return argb;
-    } catch (IOException e) {
-        System.out.println("Unable to find file " + Config.RESOURCES_PATH + imageFileName);
-        throw new RuntimeException(e);
     }
-}
 
     // loads a piece of an image from an image file and allows the transparent color to be specified
     public static BufferedImage loadSubImage(String imageFileName, Color transparentColor, int x, int y, int width, int height) {

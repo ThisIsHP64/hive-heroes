@@ -19,12 +19,14 @@ public class FrameBuilder {
         if (this.delay < 0) {
             this.delay = 0;
         }
+        // when instantiated, scale is set to 1
         this.scale = 1;
         this.imageEffect = ImageEffect.NONE;
     }
 
     public FrameBuilder(BufferedImage image) {
         this.image = image;
+        // scale is still 1
         this.scale = 1;
         this.imageEffect = ImageEffect.NONE;
     }
@@ -40,8 +42,9 @@ public class FrameBuilder {
     }
 
     public FrameBuilder withScale(float scale) {
+        // convert the scale parameter to a float (which may be useless), but makes sure that its correct
         if (this.scale >= 0) {
-            this.scale = scale;
+            this.scale = (float) scale;
         } else {
             this.scale = 1;
         }
