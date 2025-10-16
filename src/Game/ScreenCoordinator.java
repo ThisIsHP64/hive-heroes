@@ -13,7 +13,15 @@ import Screens.*;
 public class ScreenCoordinator extends Screen {
     // currently shown Screen
     protected Screen currentScreen = new DefaultScreen();
-    
+
+    protected MenuScreen menuScreen;
+    protected DemoLevelScreen demoLevelScreen;
+    protected GameOverScreen gameOverScreen;
+    protected OptionsScreen optionsScreen;
+    protected CreditsScreen creditsScreen;
+    protected SprintOneLevelScreen grassScreen;
+    protected WinScreen winScreen;
+
     // keep track of gameState so ScreenCoordinator knows which Screen to show
     protected GameState gameState;
     protected GameState previousGameState;
@@ -29,6 +37,14 @@ public class ScreenCoordinator extends Screen {
 
     @Override
     public void initialize() {
+
+        menuScreen = new MenuScreen(this);
+        demoLevelScreen = new DemoLevelScreen(this);
+        gameOverScreen = new GameOverScreen(this);
+        optionsScreen = new OptionsScreen(this);
+        creditsScreen = new CreditsScreen(this);
+        grassScreen = new SprintOneLevelScreen(this);
+
         // start game off with Menu Screen
         gameState = GameState.MENU;
     }
@@ -41,19 +57,19 @@ public class ScreenCoordinator extends Screen {
             if (previousGameState != gameState) {
                 switch(gameState) {
                     case MENU:
-                        currentScreen = new MenuScreen(this);
+                        currentScreen = menuScreen;
                         break;
                     case LEVEL:
-                        currentScreen = new SprintOneLevelScreen(this);
+                        currentScreen = grassScreen;
                         break;
                     case OPTIONS:
-                        currentScreen = new OptionsScreen(this);
+                        currentScreen = optionsScreen;
                         break;
                     case CREDITS:
-                        currentScreen = new CreditsScreen(this);
+                        currentScreen = creditsScreen;
                         break;
                     case GAME_OVER:
-                        currentScreen = new GameOverScreen(this);
+                        currentScreen = gameOverScreen;
                         break;
                 }
                 currentScreen.initialize();
