@@ -14,37 +14,33 @@ import java.util.HashMap;
 
 public class Bee extends Player {
 
-    private static final int TILE = 64; // frames are 64x64
-    private static final float SCALE = 2.5f; // resize bee (2.0–3.0)
+    private static final int TILE = 64;
+    private static final float SCALE = 2.5f;
 
-    // row mapping in BOTH sheets (0-based)
     private static final int ROW_UP = 0;
     private static final int ROW_LEFT = 1;
     private static final int ROW_RIGHT = 2;
     private static final int ROW_DOWN = 3;
 
-    // attack timing
-    private static final int ATTACK_ACTIVE_MS = 120; // sting window
-    private static final int ATTACK_COOLDOWN_MS = 10; // delay before next attack
+    private static final int ATTACK_ACTIVE_MS = 120;
+    private static final int ATTACK_COOLDOWN_MS = 10;
 
     private boolean attacking = false;
     private long attackStart = 0L;
     private long lastAttackEnd = 0L;
 
-    private boolean prevSpaceDown = false; // edge detection
+    private boolean prevSpaceDown = false;
 
-    // Death state - tracks if bee is dead and playing death animation
     private boolean isDead = false;
     private boolean deathAnimationComplete = false;
 
-    // Slash effect when taking damage
+    // slash effect when taking damage
     private boolean showSlash = false;
     private long slashStartTime = 0;
-    private static final long SLASH_DISPLAY_MS = 400; // total duration
-    private static final long SLASH_SWITCH_MS = 200;  // when to flip direction
+    private static final long SLASH_DISPLAY_MS = 400;
+    private static final long SLASH_SWITCH_MS = 200;
     private SpriteSheet slashSheet;
     
-    // Attack FX when hitting enemies
     private SpriteSheet attackFxSheet;
 
     protected static boolean isRaining = false;
@@ -54,7 +50,6 @@ public class Bee extends Player {
                 x, y,
                 "STAND_DOWN");
 
-        // Controls: WASD
         MOVE_LEFT_KEY = Key.A;
         MOVE_RIGHT_KEY = Key.D;
         MOVE_UP_KEY = Key.W;
@@ -67,7 +62,6 @@ public class Bee extends Player {
         setExperience(5);
         resourceBars = new ResourceHUD(this);
 
-        // Load slash sprite for when bee takes damage
         try {
             slashSheet = new SpriteSheet(ImageLoader.load("spider_slash.png"), 32, 32);
             System.out.println("Bee: Slash sprite loaded!");
@@ -76,7 +70,6 @@ public class Bee extends Player {
             slashSheet = null;
         }
         
-        // Load attack FX sprite for when bee hits enemies
         try {
             attackFxSheet = new SpriteSheet(ImageLoader.load("bee_attack1.png"), 32, 32);
             System.out.println("Bee: Attack FX sprite loaded!");
@@ -86,9 +79,9 @@ public class Bee extends Player {
         }
     }
 
-    // Called by enemies to damage the bee
+    // called by spider to damage bee
     public void applyDamage(int amount) {
-        if (isDead) return; // already dead, can't take more damage
+        if (isDead) return;
         
         int currentHealth = getHealth();
         currentHealth -= amount;
@@ -97,16 +90,19 @@ public class Bee extends Player {
         
         System.out.println("Bee took " + amount + " damage! HP now: " + currentHealth);
         
-        // Trigger slash effect when damaged
         if (amount > 0) {
             showSlash = true;
             slashStartTime = System.currentTimeMillis();
+            
+            // trigger screen shake
+            if (map != null && map.getCamera() != null) {
+                map.getCamera().shake();
+            }
         }
         
-        // Check if this killed the bee
         if (currentHealth <= 0 && !isDead) {
             isDead = true;
-            walkSpeed = 0f; // freeze movement
+            walkSpeed = 0f;
             System.out.println("Bee died! Playing death animation...");
         }
     }
@@ -117,13 +113,10 @@ public class Bee extends Player {
 
         handleAttackInput();
 
-        // both the Bee instance/class and ResourceHUD class have access to the get
-        // methods for the resources.
         resourceBars.update(this);
         System.out.println(String.format("Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f",
                 this.getHealth(), this.getStamina(), this.getNectar(), this.getExperience(), this.getWalkSpeed()));
 
-        // end attack window
         if (attacking && System.currentTimeMillis() - attackStart > ATTACK_ACTIVE_MS) {
             attacking = false;
             lastAttackEnd = System.currentTimeMillis();
@@ -149,26 +142,22 @@ public class Bee extends Player {
         return attacking;
     }
 
-    // smaller, more accurate attack hitbox - bee needs to be close
     public java.awt.Rectangle getAttackHitbox() {
         if (!isAttacking()) {
             return new java.awt.Rectangle(0, 0, 0, 0);
         }
 
-        // bee renders at roughly 160x160 with SCALE=2.5, center is around 80,80
         int beeW = Math.round(TILE * SCALE);
         int beeH = Math.round(TILE * SCALE);
         int beeCenterX = (int) getX() + beeW / 2;
         int beeCenterY = (int) getY() + beeH / 2;
 
-        // smaller attack box - bee needs to be closer
         final int ATTACK_SIZE = 35;
-        final int REACH = 15; // closer range
+        final int REACH = 15;
 
         int x = beeCenterX - ATTACK_SIZE / 2;
         int y = beeCenterY - ATTACK_SIZE / 2;
 
-        // push the box forward based on facing direction
         switch (getFacingDirection()) {
             case RIGHT:
                 x += REACH;
@@ -189,7 +178,6 @@ public class Bee extends Player {
 
     @Override
     protected void handlePlayerAnimation() {
-        // Death animation overrides everything else
         if (isDead) {
             currentAnimationName = "DEATH";
             return;
@@ -243,7 +231,7 @@ public class Bee extends Player {
         super.draw(graphicsHandler);
         resourceBars.draw(graphicsHandler);
 
-        // slash shows when we get hit
+        // bigger slash effect when hit
         if (showSlash && slashSheet != null) {
             long currentTime = System.currentTimeMillis();
             long slashElapsed = currentTime - slashStartTime;
@@ -251,17 +239,15 @@ public class Bee extends Player {
             if (slashElapsed < SLASH_DISPLAY_MS) {
                 java.awt.image.BufferedImage slashImage = slashSheet.getSprite(0, 0);
 
-                // get camera-adjusted position
                 float cameraX = map.getCamera().getX();
                 float cameraY = map.getCamera().getY();
                 
-                // center slash on bee's body - bee is 64*2.5 = 160 pixels, slash is 40 pixels
-                // offset horizontally by (160-40)/2 = 60, vertically shifted up by 20
-                int slashSize = 40;
-                int slashX = Math.round(this.x - cameraX + 60);
+                // bigger slash - 80 pixels instead of 40
+                int slashSize = 80;
+                // bee is 160 pixels, center the bigger slash: (160-80)/2 = 40
+                int slashX = Math.round(this.x - cameraX + 40);
                 int slashY = Math.round(this.y - cameraY + 40);
 
-                // flip slash halfway through for double-slash effect
                 boolean firstSlash = slashElapsed < SLASH_SWITCH_MS;
 
                 if (firstSlash) {
@@ -279,33 +265,28 @@ public class Bee extends Player {
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet walkSheet) {
         SpriteSheet idleSheet = new SpriteSheet(ImageLoader.load("Bee_Idle.png"), TILE, TILE, 0);
         SpriteSheet attackSheet = new SpriteSheet(ImageLoader.load("Bee_Attack.png"), TILE, TILE, 0);
-        SpriteSheet deathSheet = new SpriteSheet(ImageLoader.load("Bee_Death.png"), TILE, TILE, 0); // death sprite
+        SpriteSheet deathSheet = new SpriteSheet(ImageLoader.load("Bee_Death.png"), TILE, TILE, 0);
 
         int hbX = Math.round(10 * SCALE), hbY = Math.round(8 * SCALE);
         int hbW = Math.round(5 * SCALE), hbH = Math.round(5 * SCALE);
 
         HashMap<String, Frame[]> map = new HashMap<>();
 
-        // IDLE hover animations
         map.put("STAND_UP", frames(idleSheet, ROW_UP, 0, 3, 7, hbX, hbY, hbW, hbH));
         map.put("STAND_LEFT", frames(idleSheet, ROW_LEFT, 0, 3, 7, hbX, hbY, hbW, hbH));
         map.put("STAND_RIGHT", frames(idleSheet, ROW_RIGHT, 0, 3, 7, hbX, hbY, hbW, hbH));
         map.put("STAND_DOWN", frames(idleSheet, ROW_DOWN, 0, 3, 7, hbX, hbY, hbW, hbH));
 
-        // WALK animations
         map.put("WALK_UP", frames(walkSheet, ROW_UP, 0, 3, 14, hbX, hbY, hbW, hbH));
         map.put("WALK_LEFT", frames(walkSheet, ROW_LEFT, 0, 3, 14, hbX, hbY, hbW, hbH));
         map.put("WALK_RIGHT", frames(walkSheet, ROW_RIGHT, 0, 3, 14, hbX, hbY, hbW, hbH));
         map.put("WALK_DOWN", frames(walkSheet, ROW_DOWN, 0, 3, 14, hbX, hbY, hbW, hbH));
 
-        // ATTACK animations
         map.put("ATTACK_UP", frames(attackSheet, ROW_UP, 0, 2, 6, hbX, hbY, hbW, hbH));
         map.put("ATTACK_LEFT", frames(attackSheet, ROW_LEFT, 0, 2, 6, hbX, hbY, hbW, hbH));
         map.put("ATTACK_RIGHT", frames(attackSheet, ROW_RIGHT, 0, 2, 6, hbX, hbY, hbW, hbH));
         map.put("ATTACK_DOWN", frames(attackSheet, ROW_DOWN, 0, 2, 6, hbX, hbY, hbW, hbH));
 
-        // DEATH - 4x4 grid (16 total frames)
-        // reads left to right, top to bottom
         Frame[] deathFrames = new Frame[16];
         int frameIdx = 0;
         for (int row = 0; row < 4; row++) {
@@ -322,7 +303,6 @@ public class Bee extends Player {
         return map;
     }
 
-    // Helper to create frame arrays from sprite sheet rows
     private Frame[] frames(SpriteSheet sheet, int row, int colStart, int colEnd, int duration,
             int hbX, int hbY, int hbW, int hbH) {
         int n = (colEnd - colStart) + 1;
@@ -368,21 +348,16 @@ public class Bee extends Player {
         this.experience = experience;
     }
 
-    // Getter for death state - useful for game over checks
     public boolean isDead() {
         return isDead;
     }
     
-    // check if death animation finished playing (16 frames at 10 delay each = 160 ticks)
     public boolean isDeathAnimationComplete() {
         if (!isDead) return false;
         
-        // death animation has 16 frames at 10 delay each
-        // after animation completes, we're ready for game over
         Frame[] deathAnim = animations.get("DEATH");
         if (deathAnim == null) return true;
         
-        // if we're on the last frame of death animation, it's complete
         return currentFrame == deathAnim[deathAnim.length - 1];
     }
 
