@@ -23,9 +23,8 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
     protected WinScreen winScreen;
     protected FlagManager flagManager;
 
-    // sting FX resources (drawn when spider is hit)
-    private SpriteSheet stingFxSheet;                  // 32x32 tiles, row 0 animated
-    private static final int STING_FX_FRAME_COUNT = 4; // set to your bee_attack1 frame count
+    // sting FX resource - single static image shown when spider is hit
+    private SpriteSheet stingFxSheet;
 
     public SprintOneLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -52,7 +51,7 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
 
         // spiders are now spawned in SprintOneMap.loadNPCs() instead of here
 
-        // load the sting FX sheet once (32x32 frames, row 0)
+        // load the sting FX - just one static sprite
         stingFxSheet = new SpriteSheet(ImageLoader.load("bee_attack1.png"), 32, 32);
     }
 
@@ -132,8 +131,6 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
                         if (npc instanceof Spider) {
                             Spider sp = (Spider) npc;
                             if (sp.isShowingAttackFx()) {
-                                int frame = sp.getAttackFxFrame(STING_FX_FRAME_COUNT);
-
                                 // position FX directly on spider sprite
                                 int fxSize = 64;
                                 
@@ -142,11 +139,11 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
                                 int fxY = Math.round(sp.getY() - cameraY);
                                 
                                 // shift down and left to center on spider body
-                                fxX -= 10; // shift left
-                                fxY += 15; // shift down more
+                                fxX -= 10;
+                                fxY += 15;
 
                                 graphicsHandler.drawImage(
-                                    stingFxSheet.getSprite(frame, 0),
+                                    stingFxSheet.getSprite(0, 0),
                                     fxX, fxY, fxSize, fxSize
                                 );
                             }
