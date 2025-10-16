@@ -13,7 +13,15 @@ public class VolcanoTileset extends Tileset {
 
 
     public VolcanoTileset() {
-        super(ImageLoader.load("lavatile_spritesheet.png"), 16, 16, 3, 0);
+        // uses an updated method (that supports a float scale) to load the image (48 by 48px)
+        // super(ImageLoader.load("volcano_tiles.png"), 32, 32, 1.5f, 0);
+        
+        // this utilzes the same spritesheet as above, but shrunk so that the tiles are 16x16 (with a scale of 3f)
+        // deferred because the resized spritesheet contains tiles of lower resolution quality 
+        // super(ImageLoader.load("resized_volcano_tiles.png"), 16, 16, 3.0f, 0);
+
+        // other spritesheet for the lava
+        super(ImageLoader.load("lavatile_spritesheet.png"), 16, 16, 3f, 0);
     }
 
 
@@ -22,8 +30,15 @@ public class VolcanoTileset extends Tileset {
         
         ArrayList<MapTileBuilder> mapTiles = new ArrayList<>();
 
-        // Lava rocks
+        // Lava rocks 
+        /*
+        NOTES: 
+            I CAN ALSO FLIP THEM ABOUT THE X OR Y AXIS FOR MORE FLEXIBILITY.
+            For blocks that the bee walks on, I can take them from the pillars.
+            Need to credit the creators of the original spritesheets in both the credits section of the game 
+                                                                                   and on the readME.md file
 
+        */
         Frame lavaRock1Frame = new FrameBuilder(getSubImage(1, 0))
             .withScale(tileScale)
             .build();
