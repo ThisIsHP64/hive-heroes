@@ -64,24 +64,6 @@ public class Spider extends NPC {
 
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
-
-
-        // uncomment to show hitbox
-        Rectangle bounds = getBounds();
-       float camX = map.getCamera().getX();
-       float camY = map.getCamera().getY();
-
-       int screenX = (int)(bounds.getX() - camX);
-       int screenY = (int)(bounds.getY() - camY);
-
-       graphicsHandler.drawRectangle(
-               screenX,
-               screenY,
-               bounds.getWidth(),
-               bounds.getHeight(),
-               java.awt.Color.GREEN,
-               2
-       );
         super.draw(graphicsHandler);
     }
 }

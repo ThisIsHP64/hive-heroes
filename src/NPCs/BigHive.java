@@ -5,6 +5,7 @@ import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import GameObject.Frame;
 import GameObject.ImageEffect;
+import GameObject.Rectangle;
 import GameObject.SpriteSheet;
 import Level.NPC;
 import Utils.Point;
@@ -15,25 +16,19 @@ import java.util.HashMap;
 public class BigHive extends NPC {
 
     public BigHive(int id, Point location) {
-        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("BigBeeHive.png"), 43, 43), "STAND_LEFT");
+        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("BigBeeHive.png"), 43, 43), "DEFAULT");
     }
 
     @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         return new HashMap<String, Frame[]>() {{
-            put("STAND_LEFT", new Frame[] {
+            put("DEFAULT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 0))
                             .withScale(3)
-                            .withBounds(7, 13, 11, 7)
+                            .withBounds(0, 0, 43, 43)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .build()
             });
-            put("STAND_RIGHT", new Frame[] {
-                   new FrameBuilder(spriteSheet.getSprite(0, 0))
-                           .withScale(3)
-                           .withBounds(7, 13, 11, 7)
-                           .build()
-           });
         }};
     }
 
