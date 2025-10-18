@@ -1,5 +1,6 @@
 package Level;
 
+import Engine.GamePanel;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
@@ -51,6 +52,7 @@ public abstract class Player extends GameObject {
     protected Key INTERACT_KEY = Key.SPACE;
 
     protected boolean isLocked = false;
+
 
     public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
         super(spriteSheet, x, y, startingAnimationName);
@@ -121,32 +123,75 @@ public abstract class Player extends GameObject {
             map.entityInteract(this);
         }
 
+        //float currentSpeed;
+
+        //if (GamePanel.getisRaining()==true){
+         //   currentSpeed = 0.5f;
+         //   walkSpeed *= currentSpeed;
+         //   System.out.println("I'm here");
+        //}
+       // else{
+        //    currentSpeed = 1f;
+            //walkSpeed *= currentSpeed; 
+        //}
+        
+
         // if walk left key is pressed, move player to the left
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
+            if (GamePanel.getisRaining()==true){
+                moveAmountX -= walkSpeed*0.5f;
+                facingDirection = Direction.LEFT;
+                currentWalkingXDirection = Direction.LEFT;
+                lastWalkingXDirection = Direction.LEFT;
+            }
+            else{
             moveAmountX -= walkSpeed;
             facingDirection = Direction.LEFT;
             currentWalkingXDirection = Direction.LEFT;
             lastWalkingXDirection = Direction.LEFT;
         }
+    }
 
         // if walk right key is pressed, move player to the right
         else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
+            if (GamePanel.getisRaining()==true){
+                moveAmountX += walkSpeed*0.5f;
+                facingDirection = Direction.RIGHT;
+                currentWalkingXDirection = Direction.RIGHT;
+                lastWalkingXDirection = Direction.RIGHT;
+            }
+            else{
             moveAmountX += walkSpeed;
             facingDirection = Direction.RIGHT;
             currentWalkingXDirection = Direction.RIGHT;
             lastWalkingXDirection = Direction.RIGHT;
+            }
         } else {
             currentWalkingXDirection = Direction.NONE;
         }
 
         if (Keyboard.isKeyDown(MOVE_UP_KEY)) {
+            if (GamePanel.getisRaining()==true){
+                moveAmountY -= walkSpeed*0.5f;
+                currentWalkingYDirection = Direction.UP;
+                lastWalkingYDirection = Direction.UP;
+            }
+            else{
             moveAmountY -= walkSpeed;
             currentWalkingYDirection = Direction.UP;
             lastWalkingYDirection = Direction.UP;
+            }
         } else if (Keyboard.isKeyDown(MOVE_DOWN_KEY)) {
+            if (GamePanel.getisRaining()==true){
+                moveAmountY += walkSpeed*0.5f;
+                currentWalkingYDirection = Direction.DOWN;
+                lastWalkingYDirection = Direction.DOWN;
+            }
+            else{
             moveAmountY += walkSpeed;
             currentWalkingYDirection = Direction.DOWN;
             lastWalkingYDirection = Direction.DOWN;
+        }
         } else {
             currentWalkingYDirection = Direction.NONE;
         }
@@ -296,5 +341,4 @@ public abstract class Player extends GameObject {
     public void setWalkSpeed(float walkSpeed) {
         this.walkSpeed = walkSpeed;
     }
-
 }

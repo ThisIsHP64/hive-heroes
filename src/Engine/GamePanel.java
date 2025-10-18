@@ -37,7 +37,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
 	private RainParticleSystem rainSystem;
 	private int timer = 0;
-	private boolean isRaining = false;
+	private static boolean isRaining = false;
 	private boolean rainCycleStarted = false;
 
 
@@ -189,6 +189,10 @@ public class GamePanel extends JPanel implements ActionListener {
 				rainSystem.draw(g2d);
 			}
 		}
+	}
+
+	public static Boolean getisRaining(){
+		return isRaining;
 	}
 }
  
