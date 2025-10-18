@@ -21,6 +21,7 @@ public class ScreenCoordinator extends Screen {
     protected CreditsScreen creditsScreen;
     protected SprintOneLevelScreen grassScreen;
     protected WinScreen winScreen;
+    protected VolcanoLevelScreen volcanoScreen;
 
     // keep track of gameState so ScreenCoordinator knows which Screen to show
     protected GameState gameState;
@@ -44,6 +45,7 @@ public class ScreenCoordinator extends Screen {
         optionsScreen = new OptionsScreen(this);
         creditsScreen = new CreditsScreen(this);
         grassScreen = new SprintOneLevelScreen(this);
+        volcanoScreen = new VolcanoLevelScreen(this);
 
         // start game off with Menu Screen
         gameState = GameState.MENU;
@@ -59,8 +61,11 @@ public class ScreenCoordinator extends Screen {
                     case MENU:
                         currentScreen = menuScreen;
                         break;
-                    case LEVEL:
+                    case GRASSLEVEL:
                         currentScreen = grassScreen;
+                        break;
+                    case VOLCANOLEVEL:
+                        currentScreen = volcanoScreen;
                         break;
                     case OPTIONS:
                         currentScreen = optionsScreen;

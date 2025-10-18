@@ -27,7 +27,7 @@ public class GameOverScreen extends Screen {
     public void update() {
         // press R to retry (restart level)
         if (Keyboard.isKeyDown(Key.R)) {
-            screenCoordinator.setGameState(GameState.LEVEL);
+            screenCoordinator.setGameState(GameState.GRASSLEVEL);
         }
         
         // press E to exit (back to main menu)
