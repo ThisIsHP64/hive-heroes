@@ -12,6 +12,7 @@ public class EditorMaps {
             add("SprintOneMap");
             add("DemoMap");
             add("VolcanoMap");
+            add("HiveMap");
         }};
     }
 
@@ -25,6 +26,8 @@ public class EditorMaps {
                 return new DemoMap();
             case "VolcanoMap":
                 return new VolcanoMap();
+            case "HiveMap":
+                return new HiveMap();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }
