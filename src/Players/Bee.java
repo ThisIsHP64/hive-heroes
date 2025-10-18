@@ -8,6 +8,7 @@ import Engine.Keyboard;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
 import Level.Player;
+import NPCs.HiveManager;
 import SpriteImage.ResourceHUD;
 import Utils.Direction;
 import java.util.HashMap;
@@ -114,8 +115,18 @@ public class Bee extends Player {
         handleAttackInput();
 
         resourceBars.update(this);
-        System.out.println(String.format("Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f",
-                this.getHealth(), this.getStamina(), this.getNectar(), this.getExperience(), this.getWalkSpeed()));
+        int tileX = (int)(getX() / TILE);
+        int tileY = (int)(getY() / TILE);
+
+        if((tileX == 49 || tileX == 50) && tileY == 36 && keyLocker.isKeyLocked(Key.SPACE) && this.getNectar() > 0) {
+            this.setNectar(this.getNectar() - 1);
+            HiveManager.depositNectar();
+        }
+
+        System.out.println(String.format(
+                "Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d",
+                this.getHealth(), this.getStamina(), this.getNectar(), this.getExperience(), this.getWalkSpeed(), HiveManager.getNectar()
+        ));
 
         if (attacking && System.currentTimeMillis() - attackStart > ATTACK_ACTIVE_MS) {
             attacking = false;
@@ -153,7 +164,7 @@ public class Bee extends Player {
         int beeCenterY = (int) getY() + beeH / 2;
 
         final int ATTACK_SIZE = 35;
-        final int REACH = 15;
+        final int REACH = 20;
 
         int x = beeCenterX - ATTACK_SIZE / 2;
         int y = beeCenterY - ATTACK_SIZE / 2;

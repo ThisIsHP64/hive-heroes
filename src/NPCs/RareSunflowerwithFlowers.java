@@ -25,15 +25,15 @@ public class RareSunflowerwithFlowers extends NPC {
                 put("STAND_LEFT", new Frame[] {
                         new FrameBuilder(spriteSheet.getSprite(0, 0), 65) // frame 1 for 200ms
                                 .withScale(3)
-                                .withBounds(0, 0, 11, 7)
+                                .withBounds(0, 0, 16, 16)
                                 .build(),
                         new FrameBuilder(spriteSheet.getSprite(0, 1), 65) // frame 2
                                 .withScale(3)
-                                .withBounds(0, 0, 11, 7)
+                                .withBounds(0, 0, 16, 16)
                                 .build(),
                         new FrameBuilder(spriteSheet.getSprite(0, 2), 65) // frame 3
                                 .withScale(3)
-                                .withBounds(0, 0, 11, 7)
+                                .withBounds(0, 0, 16, 16)
                                 .build()
                 });
             }
@@ -50,23 +50,6 @@ public class RareSunflowerwithFlowers extends NPC {
 
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
-
-        // uncomment to show hitbox
-        Rectangle bounds = getBounds();
-        float camX = map.getCamera().getX();
-        float camY = map.getCamera().getY();
-
-        int screenX = (int) (bounds.getX() - camX);
-        int screenY = (int) (bounds.getY() - camY);
-
-        graphicsHandler.drawRectangle(
-                screenX,
-                screenY,
-                bounds.getWidth(),
-                bounds.getHeight(),
-                java.awt.Color.GREEN,
-                5);
-
         super.draw(graphicsHandler);
     }
 }
