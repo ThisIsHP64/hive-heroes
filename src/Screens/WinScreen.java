@@ -49,4 +49,10 @@ public class WinScreen extends Screen {
         winMessage.draw(graphicsHandler);
         instructions.draw(graphicsHandler);
     }
+
+    @Override
+    public boolean hasInitialized() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'hasInitialized'");
+    }
 }

@@ -65,8 +65,7 @@ public class Bee extends Player {
 
     public Bee(float x, float y) {
         super(new SpriteSheet(ImageLoader.load("Bee_Walk.png"), TILE, TILE, 0),
-                x, y,
-                "STAND_DOWN");
+                x, y, "STAND_DOWN");
 
         // Controls: WASD
         MOVE_LEFT_KEY = Key.A;
