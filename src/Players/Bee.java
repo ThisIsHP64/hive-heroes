@@ -8,6 +8,7 @@ import Engine.Keyboard;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
 import Level.Player;
+import SpriteImage.PowerupHUD;
 import SpriteImage.ResourceHUD;
 import Utils.Direction;
 import java.util.HashMap;
@@ -49,6 +50,18 @@ public class Bee extends Player {
 
     protected static boolean isRaining = false;
 
+
+    // Necessary for the boost logic
+    private boolean hasPowerup = false;
+    private boolean boostActive = false;
+    private long boostStartTime = 0L;
+    private float originalSpeed = 0f;
+    private String powerupIconPath;
+    private static final int BOOST_DURATION_MS = 10_000;
+    private static final float BOOST_MULTIPLIER = 2.0f;
+
+    private PowerupHUD powerupHUD;
+
     public Bee(float x, float y) {
         super(new SpriteSheet(ImageLoader.load("Bee_Walk.png"), TILE, TILE, 0),
                 x, y,
@@ -66,6 +79,7 @@ public class Bee extends Player {
         setNectar(10);
         setExperience(5);
         resourceBars = new ResourceHUD(this);
+        powerupHUD = new PowerupHUD();
 
         // Load slash sprite for when bee takes damage
         try {
@@ -110,6 +124,14 @@ public class Bee extends Player {
             System.out.println("Bee died! Playing death animation...");
         }
     }
+    
+    // Powerup activation logic
+    public void collectPowerup(String iconPath) {
+        hasPowerup = true;
+        powerupIconPath = iconPath;
+        showPowerupIcon(iconPath, 999999);
+        System.out.println("Bee collected power-up! (Press 1 to activate)");
+    }
 
     @Override
     public void update() {
@@ -127,6 +149,15 @@ public class Bee extends Player {
         if (attacking && System.currentTimeMillis() - attackStart > ATTACK_ACTIVE_MS) {
             attacking = false;
             lastAttackEnd = System.currentTimeMillis();
+        }
+
+        // needs to be checked every frame (powerup)
+        handlePowerupInput();
+    }
+
+    public void showPowerupIcon(String spritePath, int durationMs) {
+        if (powerupHUD != null) {
+            powerupHUD.show(spritePath, durationMs);
         }
     }
 
@@ -242,6 +273,9 @@ public class Bee extends Player {
     public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
         resourceBars.draw(graphicsHandler);
+
+        if (powerupHUD != null) powerupHUD.draw(graphicsHandler);
+
 
         // slash shows when we get hit
         if (showSlash && slashSheet != null) {
@@ -386,4 +420,29 @@ public class Bee extends Player {
         return currentFrame == deathAnim[deathAnim.length - 1];
     }
 
+    // Helper method for the PowerUp
+    public void handlePowerupInput() {
+    if (hasPowerup && Keyboard.isKeyDown(Key.ONE)) {
+        System.out.println("Bee activated power-up! Speed boost for 10s!");
+        hasPowerup = false;
+        showPowerupIcon(powerupIconPath, 1); // hide HUD icon
+
+        // apply speed boost
+        originalSpeed = getWalkSpeed();
+        setWalkSpeed(originalSpeed * BOOST_MULTIPLIER);
+        boostStartTime = System.currentTimeMillis();
+        boostActive = true;
+    }
+
+    if (boostActive) {
+        long elapsed = System.currentTimeMillis() - boostStartTime;
+        if (elapsed > BOOST_DURATION_MS) {
+            setWalkSpeed(originalSpeed);
+            boostActive = false;
+            System.out.println("Speed boost ended!");
+            }
+        }
+    }
 }
+
+

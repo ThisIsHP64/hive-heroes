@@ -1,19 +1,17 @@
 package Screens;
 
+import Enemies.Spider;
 import Engine.GraphicsHandler;
+import Engine.ImageLoader;
 import Engine.Screen;
 import Game.GameState;
 import Game.ScreenCoordinator;
+import GameObject.SpriteSheet;
 import Level.*;
 import Maps.SprintOneMap;
+import NPCs.RareSunflowerwithFlowers;
 import Players.Bee;
 import Utils.Direction;
-import Utils.Point;
-import NPCs.RareSunflowerwithFlowers;
-import Enemies.Spider;
-
-import Engine.ImageLoader;
-import GameObject.SpriteSheet;
 
 public class SprintOneLevelScreen extends Screen implements GameListener {
     protected ScreenCoordinator screenCoordinator;
