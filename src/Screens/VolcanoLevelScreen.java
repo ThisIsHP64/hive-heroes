@@ -5,7 +5,8 @@ import Engine.Screen;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.*;
-import Maps.SprintOneMap;
+import Maps.GrassMap;
+import Maps.VolcanoMap;
 import Players.Bee;
 import Utils.Direction;
 import Utils.Point;
@@ -15,25 +16,27 @@ import Enemies.Spider;
 import Engine.ImageLoader;
 import GameObject.SpriteSheet;
 
-public class SprintOneLevelScreen extends Screen implements GameListener {
+public class VolcanoLevelScreen extends Screen implements GameListener {
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
     protected Player player;
     protected PlayLevelScreenState playLevelScreenState;
     protected WinScreen winScreen;
     protected FlagManager flagManager;
+    protected boolean hasInitialized = false;
 
     // sting FX resource - single static image shown when spider is hit
     private SpriteSheet stingFxSheet;
 
-    public SprintOneLevelScreen(ScreenCoordinator screenCoordinator) {
+    public VolcanoLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
 
     public void initialize() {
+        hasInitialized = true;
         flagManager = new FlagManager();
 
-        map = new SprintOneMap();
+        map = new VolcanoMap();
         map.setFlagManager(flagManager);
 
         // player (Bee) spawn
@@ -171,5 +174,9 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
 
     private enum PlayLevelScreenState { 
         RUNNING, LEVEL_COMPLETED 
+    }
+
+    public boolean hasInitialized() {
+        return hasInitialized;
     }
 }

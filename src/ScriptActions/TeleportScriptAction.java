@@ -5,7 +5,7 @@ import Maps.*;
 public class TeleportScriptAction extends ScriptAction {
     TestMap testMap;
     DemoMap demoMap;
-    SprintOneMap map;
+    GrassMap map;
     
     public TeleportScriptAction() {
 
@@ -23,7 +23,7 @@ public class TeleportScriptAction extends ScriptAction {
                 testMap = new TestMap();
                 player.setMap(testMap);
             case "Sprint Map":
-                map = new SprintOneMap();
+                map = new GrassMap();
                 player.setMap(map);
         }
     }
