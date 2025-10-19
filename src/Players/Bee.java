@@ -156,8 +156,8 @@ public class Bee extends Player {
         }
 
         System.out.println(String.format(
-                "Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d",
-                this.getHealth(), this.getStamina(), this.getNectar(), this.getExperience(), this.getWalkSpeed(), HiveManager.getNectar()
+                "Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d  X: %d  Y: %d",
+                this.getHealth(), this.getStamina(), this.getNectar(), this.getExperience(), this.getWalkSpeed(), HiveManager.getNectar(), tileX, tileY
         ));
 
         if (attacking && System.currentTimeMillis() - attackStart > ATTACK_ACTIVE_MS) {

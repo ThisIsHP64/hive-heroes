@@ -27,6 +27,7 @@ public class ScreenCoordinator extends Screen {
     protected DungeonLevelScreen dungeonLevelScreen;
     protected MazeLevelScreen mazeLevelScreen;
     protected SnowLevelScreen snowLevelScreen;
+    protected HiveLevelScreen hiveLevelScreen;
 
     // demo map
     protected DemoLevelScreen demoLevelScreen;
@@ -63,6 +64,7 @@ public class ScreenCoordinator extends Screen {
         dungeonLevelScreen = new DungeonLevelScreen(this);
         mazeLevelScreen = new MazeLevelScreen(this);
         snowLevelScreen = new SnowLevelScreen(this);
+        hiveLevelScreen = new HiveLevelScreen(this);
 
         // start game off with Menu Screen
         gameState = GameState.MENU;
@@ -109,6 +111,10 @@ public class ScreenCoordinator extends Screen {
                         
                     case MAZELEVEL:
                         currentScreen = mazeLevelScreen;
+                        break;
+
+                    case HIVELEVEL:
+                        currentScreen = hiveLevelScreen;
                         break;
                 }
 

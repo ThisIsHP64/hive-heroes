@@ -13,7 +13,11 @@ import java.util.HashMap;
 public class QueenBeeChair extends NPC {
 
     public QueenBeeChair(int id, Point location) {
-        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("QueenBeeChair.png"), 50, 33), "DEFAULT");
+        super(id, location.x, location.y,
+                new FrameBuilder(ImageLoader.load("QueenBeeChair.png"))
+                        .withScale(0.1f)
+                        .build()
+        );
     }
 
     @Override
