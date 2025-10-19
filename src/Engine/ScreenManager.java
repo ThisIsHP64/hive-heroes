@@ -27,6 +27,13 @@ public class ScreenManager {
         return currentScreen;
     }
 
+    public Level.Map getCurrentMap() {
+        if (currentScreen instanceof Screens.PlayLevelScreen playLevelScreen) {
+            return playLevelScreen.getMap();
+        }
+        return null;
+    }
+
     public void update() {
         currentScreen.update();
     }
