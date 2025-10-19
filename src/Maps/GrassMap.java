@@ -13,8 +13,8 @@ import Tilesets.CommonTileset;
 import Utils.Point;
 import java.util.ArrayList;
 
-public class SprintOneMap extends Map {
-    public SprintOneMap() {
+public class GrassMap extends Map {
+    public GrassMap() {
         super("sprint_one_map.txt", new CommonTileset());
         // Bee starts here
         this.playerStartPosition = getMapTile(70, 50).getLocation();

@@ -25,12 +25,15 @@ public class MenuScreen extends Screen {
     protected int keyPressTimer;
     protected KeyLocker keyLocker = new KeyLocker();
 
+    protected boolean hasInitialized = false;
+
     public MenuScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
 
     @Override
     public void initialize() {
+        hasInitialized = true;
         try {
             orbitronLarge = Font.createFont(Font.TRUETYPE_FONT, new File("Resources/fonts/orbitron.ttf")).deriveFont(60f);
             orbitronMed = Font.createFont(Font.TRUETYPE_FONT, new File("Resources/fonts/orbitron.ttf")).deriveFont(30f);
@@ -128,5 +131,9 @@ public class MenuScreen extends Screen {
         playGame.draw(graphicsHandler);
         options.draw(graphicsHandler);
         credits.draw(graphicsHandler);
+    }
+
+    public boolean hasInitialized() {
+        return hasInitialized;
     }
 }

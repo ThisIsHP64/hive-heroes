@@ -14,14 +14,23 @@ public class ScreenCoordinator extends Screen {
     // currently shown Screen
     protected Screen currentScreen = new DefaultScreen();
 
+    // default screens
     protected MenuScreen menuScreen;
-    protected DemoLevelScreen demoLevelScreen;
-    protected GameOverScreen gameOverScreen;
     protected OptionsScreen optionsScreen;
     protected CreditsScreen creditsScreen;
-    protected SprintOneLevelScreen grassScreen;
     protected WinScreen winScreen;
-    protected VolcanoLevelScreen volcanoScreen;
+    protected GameOverScreen gameOverScreen;
+
+    // level screens    
+    protected GrassLevelScreen grassLevelScreen;
+    protected VolcanoLevelScreen volcanoLevelScreen;
+    protected DungeonLevelScreen dungeonLevelScreen;
+    protected MazeLevelScreen mazeLevelScreen;
+    protected SnowLevelScreen snowLevelScreen;
+
+    // demo map
+    protected DemoLevelScreen demoLevelScreen;
+
 
     // keep track of gameState so ScreenCoordinator knows which Screen to show
     protected GameState gameState;
@@ -38,14 +47,22 @@ public class ScreenCoordinator extends Screen {
 
     @Override
     public void initialize() {
-
+        
+        // default screens
         menuScreen = new MenuScreen(this);
-        demoLevelScreen = new DemoLevelScreen(this);
         gameOverScreen = new GameOverScreen(this);
         optionsScreen = new OptionsScreen(this);
         creditsScreen = new CreditsScreen(this);
-        grassScreen = new SprintOneLevelScreen(this);
-        volcanoScreen = new VolcanoLevelScreen(this);
+
+        // demo level screen
+        demoLevelScreen = new DemoLevelScreen(this);
+
+        // screens for the regions
+        grassLevelScreen = new GrassLevelScreen(this);
+        volcanoLevelScreen = new VolcanoLevelScreen(this);
+        dungeonLevelScreen = new DungeonLevelScreen(this);
+        mazeLevelScreen = new MazeLevelScreen(this);
+        snowLevelScreen = new SnowLevelScreen(this);
 
         // start game off with Menu Screen
         gameState = GameState.MENU;
@@ -61,22 +78,40 @@ public class ScreenCoordinator extends Screen {
                     case MENU:
                         currentScreen = menuScreen;
                         break;
-                    case GRASSLEVEL:
-                        currentScreen = grassScreen;
-                        break;
-                    case VOLCANOLEVEL:
-                        currentScreen = volcanoScreen;
-                        break;
+
                     case OPTIONS:
                         currentScreen = optionsScreen;
                         break;
+
                     case CREDITS:
                         currentScreen = creditsScreen;
                         break;
+
                     case GAME_OVER:
                         currentScreen = gameOverScreen;
                         break;
+
+                    case GRASSLEVEL:
+                        currentScreen = grassLevelScreen;
+                        break;
+
+                    case VOLCANOLEVEL:
+                        currentScreen = volcanoLevelScreen;
+                        break;
+
+                    case DUNGEONLEVEL:
+                        currentScreen = dungeonLevelScreen;
+                        break;
+
+                    case SNOWLEVEL:
+                        currentScreen = snowLevelScreen;
+                        break;
+                        
+                    case MAZELEVEL:
+                        currentScreen = mazeLevelScreen;
+                        break;
                 }
+
                 currentScreen.initialize();
             }
             previousGameState = gameState;

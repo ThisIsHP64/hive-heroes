@@ -19,6 +19,8 @@ public class CreditsScreen extends Screen {
     protected SpriteFont createdByLabel;
     protected SpriteFont returnInstructionsLabel;
     protected SpriteFont originalCreatorLabel;
+    protected boolean hasInitialized = false;
+
 
     public CreditsScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -26,6 +28,7 @@ public class CreditsScreen extends Screen {
 
     @Override
     public void initialize() {
+        hasInitialized = true;
         // setup graphics on screen (background, spritefont text)
         try {
             background = ImageIO.read(new File("Resources/titleBg.jpg"));
@@ -61,5 +64,9 @@ public class CreditsScreen extends Screen {
         createdByLabel.draw(graphicsHandler);
         originalCreatorLabel.draw(graphicsHandler);
         returnInstructionsLabel.draw(graphicsHandler);
+    }
+
+    public boolean hasInitialized() {
+        return hasInitialized;
     }
 }

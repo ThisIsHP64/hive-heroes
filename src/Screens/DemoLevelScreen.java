@@ -20,12 +20,14 @@ public class DemoLevelScreen extends Screen implements GameListener {
     protected PlayLevelScreenState playLevelScreenState;
     protected WinScreen winScreen;
     protected FlagManager flagManager;
+    protected boolean hasInitialized = false;
 
     public DemoLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
 
     public void initialize() {
+        hasInitialized = true;
         flagManager = new FlagManager();
 
         map = new DemoMap();
@@ -130,5 +132,9 @@ public class DemoLevelScreen extends Screen implements GameListener {
 
     private enum PlayLevelScreenState { 
         RUNNING, LEVEL_COMPLETED 
+    }
+
+    public boolean hasInitialized() {
+        return hasInitialized;
     }
 }

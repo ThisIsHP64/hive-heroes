@@ -5,6 +5,7 @@ import Engine.Screen;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.*;
+import Maps.SnowMap;
 import Maps.GrassMap;
 import Maps.VolcanoMap;
 import Players.Bee;
@@ -16,7 +17,7 @@ import Enemies.Spider;
 import Engine.ImageLoader;
 import GameObject.SpriteSheet;
 
-public class VolcanoLevelScreen extends Screen implements GameListener {
+public class SnowLevelScreen extends Screen implements GameListener {
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
     protected Player player;
@@ -28,15 +29,16 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
     // sting FX resource - single static image shown when spider is hit
     private SpriteSheet stingFxSheet;
 
-    public VolcanoLevelScreen(ScreenCoordinator screenCoordinator) {
+    public SnowLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
 
     public void initialize() {
         hasInitialized = true;
+
         flagManager = new FlagManager();
 
-        map = new VolcanoMap();
+        map = new SnowMap();
         map.setFlagManager(flagManager);
 
         // player (Bee) spawn
