@@ -15,8 +15,6 @@ public abstract class Tileset extends SpriteSheet {
     // global scale of all tiles in the tileset
     protected float tileScale = 1f;
 
-    protected float tileScale2 = 1.5f;
-
     // stores tiles mapped to an index
     protected HashMap<Integer, MapTileBuilder> tiles;
 
@@ -25,15 +23,9 @@ public abstract class Tileset extends SpriteSheet {
         this.tiles = mapDefinedTilesToIndex();
     }
 
-    public Tileset(BufferedImage image, int tileWidth, int tileHeight, int tileScale, int gutter) {
+    public Tileset(BufferedImage image, int tileWidth, int tileHeight, float tileScale, int gutter) {
         super(image, tileWidth, tileHeight, gutter);
         this.tileScale = tileScale;
-        this.tiles = mapDefinedTilesToIndex();
-    }
-
-    public Tileset(BufferedImage image, int tileWidth, int tileHeight, float tileScale2) {
-        super(image, tileWidth, tileHeight);
-        this.tileScale2 = tileScale2;
         this.tiles = mapDefinedTilesToIndex();
     }
 

@@ -8,6 +8,7 @@ import Engine.Keyboard;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
 import Level.Player;
+import NPCs.HiveManager;
 import SpriteImage.PowerupHUD;
 import SpriteImage.ResourceHUD;
 import Utils.Direction;
@@ -79,7 +80,6 @@ public class Bee extends Player {
         setNectar(10);
         setExperience(5);
         resourceBars = new ResourceHUD(this);
-        powerupHUD = new PowerupHUD();
 
         // Load slash sprite for when bee takes damage
         try {
@@ -115,6 +115,11 @@ public class Bee extends Player {
         if (amount > 0) {
             showSlash = true;
             slashStartTime = System.currentTimeMillis();
+
+            // trigger screen shake
+            if (map != null && map.getCamera() != null) {
+                map.getCamera().shake();
+            }
         }
         
         // Check if this killed the bee
@@ -124,7 +129,7 @@ public class Bee extends Player {
             System.out.println("Bee died! Playing death animation...");
         }
     }
-    
+
     // Powerup activation logic
     public void collectPowerup(String iconPath) {
         hasPowerup = true;
@@ -142,10 +147,19 @@ public class Bee extends Player {
         // both the Bee instance/class and ResourceHUD class have access to the get
         // methods for the resources.
         resourceBars.update(this);
-        System.out.println(String.format("Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f",
-                this.getHealth(), this.getStamina(), this.getNectar(), this.getExperience(), this.getWalkSpeed()));
+        int tileX = (int)(getX() / TILE);
+        int tileY = (int)(getY() / TILE);
 
-        // end attack window
+        if((tileX == 49 || tileX == 50) && tileY == 36 && keyLocker.isKeyLocked(Key.SPACE) && this.getNectar() > 0) {
+            this.setNectar(this.getNectar() - 1);
+            HiveManager.depositNectar();
+        }
+
+        System.out.println(String.format(
+                "Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d",
+                this.getHealth(), this.getStamina(), this.getNectar(), this.getExperience(), this.getWalkSpeed(), HiveManager.getNectar()
+        ));
+
         if (attacking && System.currentTimeMillis() - attackStart > ATTACK_ACTIVE_MS) {
             attacking = false;
             lastAttackEnd = System.currentTimeMillis();
@@ -278,6 +292,7 @@ public class Bee extends Player {
 
 
         // slash shows when we get hit
+        // bigger slash effect when hit
         if (showSlash && slashSheet != null) {
             long currentTime = System.currentTimeMillis();
             long slashElapsed = currentTime - slashStartTime;
@@ -444,5 +459,3 @@ public class Bee extends Player {
         }
     }
 }
-
-

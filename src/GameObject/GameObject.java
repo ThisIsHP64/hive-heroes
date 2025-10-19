@@ -304,6 +304,22 @@ public class GameObject extends AnimatedSprite {
 				currentFrame.getHeight(),
 				currentFrame.getImageEffect()
 			);
+            // UNCOMMENT TO DRAW ALL HITBOXES
+//            Rectangle bounds = getBounds();
+//            float camX = map.getCamera().getX();
+//            float camY = map.getCamera().getY();
+//
+//            int screenX = (int)(bounds.getX() - camX);
+//            int screenY = (int)(bounds.getY() - camY);
+//
+//            graphicsHandler.drawRectangle(
+//                    screenX,
+//                    screenY,
+//                    bounds.getWidth(),
+//                    bounds.getHeight(),
+//                    java.awt.Color.RED,
+//                    2
+//            );
 		} else {
 			super.draw(graphicsHandler);
 		}

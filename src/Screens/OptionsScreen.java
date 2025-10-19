@@ -18,6 +18,7 @@ public class OptionsScreen extends Screen {
     protected SpriteFont opsLabel;
     protected SpriteFont commentLabel;
     protected SpriteFont returnInstructionsLabel;
+    protected boolean hasInitialized = false;
 
     public OptionsScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -25,6 +26,7 @@ public class OptionsScreen extends Screen {
 
     @Override
     public void initialize() {
+        hasInitialized = true;
         // setup graphics on screen (background, spritefont text)
         try {
             background = ImageIO.read(new File("Resources/titleBg.jpg"));
@@ -55,5 +57,9 @@ public class OptionsScreen extends Screen {
         opsLabel.draw(graphicsHandler);
         commentLabel.draw(graphicsHandler);
         returnInstructionsLabel.draw(graphicsHandler);
+    }
+
+    public boolean hasInitialized() {
+        return hasInitialized;
     }
 }

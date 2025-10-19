@@ -5,15 +5,20 @@ import Engine.Screen;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.*;
-import Maps.DemoMap;
+import Maps.DungeonMap;
+import Maps.MazeMap;
+import Maps.GrassMap;
+import Maps.VolcanoMap;
 import Players.Bee;
 import Utils.Direction;
 import Utils.Point;
 import NPCs.RareSunflowerwithFlowers;
-import NPCs.Spider;
+import Enemies.Spider;
 
-// main level screen; we add a spider and check Bee's sting vs Spider's body box
-public class DemoLevelScreen extends Screen implements GameListener {
+import Engine.ImageLoader;
+import GameObject.SpriteSheet;
+
+public class DungeonLevelScreen extends Screen implements GameListener {
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
     protected Player player;
@@ -21,8 +26,11 @@ public class DemoLevelScreen extends Screen implements GameListener {
     protected WinScreen winScreen;
     protected FlagManager flagManager;
     protected boolean hasInitialized = false;
+    
+    // sting FX resource - single static image shown when spider is hit
+    private SpriteSheet stingFxSheet;
 
-    public DemoLevelScreen(ScreenCoordinator screenCoordinator) {
+    public DungeonLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
 
@@ -30,7 +38,7 @@ public class DemoLevelScreen extends Screen implements GameListener {
         hasInitialized = true;
         flagManager = new FlagManager();
 
-        map = new DemoMap();
+        map = new DungeonMap();
         map.setFlagManager(flagManager);
 
         // player (Bee) spawn
@@ -46,12 +54,10 @@ public class DemoLevelScreen extends Screen implements GameListener {
         // let the map finish its own loading (avoids our NPC being overwritten)
         map.preloadScripts();
 
-        // === spawn one spider near Bee start (32px tiles on this sheet) ===
-        Point start = map.getPlayerStartPosition();
-        // Point spiderSpot = new Point(start.x + (2 * 32), start.y + (2 * 32)); // 2 right, 2 down
-        // Spider spider = new Spider(1001, spiderSpot);
-        // map.getNPCs().add(spider);
-        // ==================================================================
+        // spiders are now spawned in SprintOneMap.loadNPCs() instead of here
+
+        // load the sting FX - just one static sprite
+        stingFxSheet = new SpriteSheet(ImageLoader.load("bee_attack1.png"), 32, 32);
     }
 
     public void update() {
@@ -60,9 +66,15 @@ public class DemoLevelScreen extends Screen implements GameListener {
                 player.update();
                 map.update(player);
 
-                // === simple "hit" interaction: Space sting box vs Spider body box ===
+                // check if bee died and death animation finished
                 if (player instanceof Bee) {
                     Bee bee = (Bee) player;
+                    
+                    // transition to game over after death animation completes
+                    if (bee.isDead() && bee.isDeathAnimationComplete()) {
+                        screenCoordinator.setGameState(GameState.GAME_OVER);
+                        return;
+                    }
 
                     if (bee.isAttacking()) {
                         java.awt.Rectangle sting = bee.getAttackHitbox();
@@ -71,9 +83,10 @@ public class DemoLevelScreen extends Screen implements GameListener {
                             if (npc instanceof Spider) {
                                 Spider sp = (Spider) npc;
 
-                                if (sting.intersects(sp.getHitbox())) {
-                                    System.out.println("Spider hit!");
-                                    bee.setStamina(bee.getStamina() + 1);
+                                // only deal damage if spider isn't already dead
+                                if (!sp.isDead() && sting.intersects(sp.getHitbox())) {
+                                    sp.takeDamage(1);
+                                    System.out.println("Bee stung spider!");
                                 }
                             }
 
@@ -88,7 +101,9 @@ public class DemoLevelScreen extends Screen implements GameListener {
                         }
                     }
                 }
-                // ===================================================================
+                
+                // remove dead spiders after death animation lingers
+                map.getNPCs().removeIf(npc -> npc instanceof Spider && ((Spider) npc).canBeRemoved());
 
                 break;
 
@@ -111,6 +126,35 @@ public class DemoLevelScreen extends Screen implements GameListener {
         switch (playLevelScreenState) {
             case RUNNING:
                 map.draw(player, graphicsHandler);
+                
+                // draw attack FX on spiders that were just hit
+                if (stingFxSheet != null) {
+                    float cameraX = map.getCamera().getX();
+                    float cameraY = map.getCamera().getY();
+
+                    for (NPC npc : map.getNPCs()) {
+                        if (npc instanceof Spider) {
+                            Spider sp = (Spider) npc;
+                            if (sp.isShowingAttackFx()) {
+                                // position FX directly on spider sprite
+                                int fxSize = 64;
+                                
+                                // start at spider's sprite position
+                                int fxX = Math.round(sp.getX() - cameraX);
+                                int fxY = Math.round(sp.getY() - cameraY);
+                                
+                                // shift down and left to center on spider body
+                                fxX -= 10;
+                                fxY += 15;
+
+                                graphicsHandler.drawImage(
+                                    stingFxSheet.getSprite(0, 0),
+                                    fxX, fxY, fxSize, fxSize
+                                );
+                            }
+                        }
+                    }
+                }
                 break;
             case LEVEL_COMPLETED:
                 winScreen.draw(graphicsHandler);

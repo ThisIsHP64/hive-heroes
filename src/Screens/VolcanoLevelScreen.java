@@ -1,38 +1,42 @@
 package Screens;
 
-import Enemies.Spider;
 import Engine.GraphicsHandler;
-import Engine.ImageLoader;
 import Engine.Screen;
 import Game.GameState;
 import Game.ScreenCoordinator;
-import GameObject.SpriteSheet;
 import Level.*;
-import Maps.SprintOneMap;
-import NPCs.RareSunflowerwithFlowers;
+import Maps.GrassMap;
+import Maps.VolcanoMap;
 import Players.Bee;
 import Utils.Direction;
+import Utils.Point;
+import NPCs.RareSunflowerwithFlowers;
+import Enemies.Spider;
 
-public class SprintOneLevelScreen extends Screen implements GameListener {
+import Engine.ImageLoader;
+import GameObject.SpriteSheet;
+
+public class VolcanoLevelScreen extends Screen implements GameListener {
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
     protected Player player;
     protected PlayLevelScreenState playLevelScreenState;
     protected WinScreen winScreen;
     protected FlagManager flagManager;
+    protected boolean hasInitialized = false;
 
-    // sting FX resources (drawn when spider is hit)
-    private SpriteSheet stingFxSheet;                  // 32x32 tiles, row 0 animated
-    private static final int STING_FX_FRAME_COUNT = 4; // set to your bee_attack1 frame count
+    // sting FX resource - single static image shown when spider is hit
+    private SpriteSheet stingFxSheet;
 
-    public SprintOneLevelScreen(ScreenCoordinator screenCoordinator) {
+    public VolcanoLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
 
     public void initialize() {
+        hasInitialized = true;
         flagManager = new FlagManager();
 
-        map = new SprintOneMap();
+        map = new VolcanoMap();
         map.setFlagManager(flagManager);
 
         // player (Bee) spawn
@@ -50,7 +54,7 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
 
         // spiders are now spawned in SprintOneMap.loadNPCs() instead of here
 
-        // load the sting FX sheet once (32x32 frames, row 0)
+        // load the sting FX - just one static sprite
         stingFxSheet = new SpriteSheet(ImageLoader.load("bee_attack1.png"), 32, 32);
     }
 
@@ -130,8 +134,6 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
                         if (npc instanceof Spider) {
                             Spider sp = (Spider) npc;
                             if (sp.isShowingAttackFx()) {
-                                int frame = sp.getAttackFxFrame(STING_FX_FRAME_COUNT);
-
                                 // position FX directly on spider sprite
                                 int fxSize = 64;
                                 
@@ -140,11 +142,11 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
                                 int fxY = Math.round(sp.getY() - cameraY);
                                 
                                 // shift down and left to center on spider body
-                                fxX -= 10; // shift left
-                                fxY += 15; // shift down more
+                                fxX -= 10;
+                                fxY += 15;
 
                                 graphicsHandler.drawImage(
-                                    stingFxSheet.getSprite(frame, 0),
+                                    stingFxSheet.getSprite(0, 0),
                                     fxX, fxY, fxSize, fxSize
                                 );
                             }
@@ -172,5 +174,9 @@ public class SprintOneLevelScreen extends Screen implements GameListener {
 
     private enum PlayLevelScreenState { 
         RUNNING, LEVEL_COMPLETED 
+    }
+
+    public boolean hasInitialized() {
+        return hasInitialized;
     }
 }
