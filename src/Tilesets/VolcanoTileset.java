@@ -35,8 +35,6 @@ public class VolcanoTileset extends Tileset {
                                                                                    and on the readME.md file
         */
 
-        // used ChatGPT to generate all this code for the 180 pngs
-
         ArrayList<MapTileBuilder> mapTiles = new ArrayList<>();
 
         Frame tile_0_0Frame = new FrameBuilder(getSubImage(0, 0))
