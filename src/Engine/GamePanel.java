@@ -114,17 +114,14 @@ public class GamePanel extends JPanel implements ActionListener {
 				isRaining = true;
 				rainCycleStarted = true;
 			}
-
 			if (isRaining && seconds == 60) {
 				isRaining = false;
 				rainSystem.clear();
 			}
-
 			if (!isRaining && rainCycleStarted && seconds >= 600) {
 				timer = 0;
 				rainCycleStarted = false;
 			}
-
 			if (isRaining) {
 				rainSystem.update();
 			}
