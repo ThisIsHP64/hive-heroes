@@ -20,3 +20,28 @@ Changes to content in the `docs` folder will not show up on the website unless t
 
 ## Credits
 **Alex Thimineur**: Programmed the game, made the art.
+
+
+
+## External Art
+**HUD Resources**
+
+Heart: https://temok.itch.io/heart-container-animated-in-pixel-art
+
+All other icons were generated and/or polished up by Philip Kwiatkowski.
+
+____________________________________________________________________________
+
+**World Tilesets**
+
+Volcano: https://schwarnhild.itch.io/volcanoe-tileset-and-asset-pack-32x32-pixels
+
+Grass: https://schwarnhild.itch.io/basic-tileset-and-asset-pack-32x32-pixels
+
+Dungeon: https://0x72.itch.io/16x16-dungeon-tileset
+
+Zelda Maze/Dungeon: https://kuroren.itch.io/dungeon-tileset
+
+Cemetery: https://dreamir.itch.io/tilesets-cemetery
+
+Snow Region: https://maytch.itch.io/pixel
