@@ -14,7 +14,7 @@ public class VolcanoTileset extends Tileset {
 
     public VolcanoTileset() {
         // uses an updated method (that supports a float scale) to load the image (48 by 48px)
-        super(ImageLoader.load("volcano_tiles.png"), 32, 32, 1.5f, 0);
+        super(ImageLoader.load("volcano_spritesheet.png"), 32, 32, 1.5f, 0);
         
         // this utilzes the same spritesheet as above, but shrunk so that the tiles are 16x16 (with a scale of 3f)
         // deferred because the resized spritesheet contains tiles of lower resolution quality 
