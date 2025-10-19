@@ -1,16 +1,15 @@
 package Maps;
 
+import Enemies.Spider;
 import Engine.GraphicsHandler;
 import Level.Map;
 import Level.NPC;
 import NPCs.BigHive;
 import NPCs.RareSunflowerwithFlowers;
-import Enemies.Spider;
 import PowerUps.PowerUp;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.PowerUpScript;
 import Tilesets.CommonTileset;
-import Utils.Point;
 import java.util.ArrayList;
 
 public class GrassMap extends Map {
