@@ -6,8 +6,8 @@ import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.*;
 import Maps.TestMap;
-import Players.Bee;
 import NPCs.Spider;
+import Players.Bee;
 import Utils.Direction;
 import Utils.Point;
 
@@ -106,6 +106,10 @@ public class PlayLevelScreen extends Screen implements GameListener {
 
     public void goBackToMenu() {
         screenCoordinator.setGameState(GameState.MENU);
+    }
+
+    public Map getMap() {
+        return map;
     }
 
     // This enum represents the different states this screen can be in

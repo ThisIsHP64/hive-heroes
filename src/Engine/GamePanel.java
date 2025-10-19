@@ -103,31 +103,41 @@ public class GamePanel extends JPanel implements ActionListener {
 
 		if (!isGamePaused) {
 			screenManager.update();
+			Level.Map currentMap = screenManager.getCurrentMap();
+			boolean onGrassMap = currentMap instanceof Maps.GrassMap;
 
+		if (onGrassMap) {
 			timer++;
-
-			int seconds = timer/60;
+			int seconds = timer / 60;
 
 			if (!isRaining && seconds == 30) {
 				isRaining = true;
 				rainCycleStarted = true;
 			}
 
-			if (isRaining && seconds == 90) {
+			if (isRaining && seconds == 60) {
 				isRaining = false;
 				rainSystem.clear();
 			}
 
-			if (!isRaining && rainCycleStarted && seconds >= 390) { 
-				timer = 0; 
+			if (!isRaining && rainCycleStarted && seconds >= 600) {
+				timer = 0;
 				rainCycleStarted = false;
 			}
 
 			if (isRaining) {
 				rainSystem.update();
 			}
+		} else {
+			if (isRaining) {
+				isRaining = false;
+				rainSystem.clear();
+			}
+			timer = 0;
+			rainCycleStarted = false;
 		}
-	}
+		}
+		}
 	
 	private void updatePauseState() {
 		if (Keyboard.isKeyDown(pauseKey) && !keyLocker.isKeyLocked(pauseKey)) {
