@@ -118,7 +118,11 @@ public class ScreenCoordinator extends Screen {
                         break;
                 }
 
-                currentScreen.initialize();
+                if (currentScreen.hasInitialized()) {
+                    currentScreen.update();
+                } else {
+                    currentScreen.initialize();
+                }
             }
             previousGameState = gameState;
             
@@ -131,5 +135,11 @@ public class ScreenCoordinator extends Screen {
     public void draw(GraphicsHandler graphicsHandler) {
         // call the draw method for the currentScreen
         currentScreen.draw(graphicsHandler);
+    }
+
+    @Override
+    public boolean hasInitialized() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'hasInitialized'");
     }
 }
