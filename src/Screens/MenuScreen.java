@@ -119,7 +119,7 @@ public class MenuScreen extends Screen {
             if (menuItemSelected == 0) {
                 MusicManager.stopMenuLoop();
                 MusicManager.playGpLoop();
-                screenCoordinator.setGameState(GameState.GRASSLEVEL);
+                screenCoordinator.setGameState(GameState.VOLCANOLEVEL);
             } else if (menuItemSelected == 1) {
                 screenCoordinator.setGameState(GameState.OPTIONS);
             } else if (menuItemSelected == 2) {
