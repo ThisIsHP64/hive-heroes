@@ -33,6 +33,8 @@ public class HiveLevelScreen extends Screen implements GameListener {
     public void initialize() {
         hasInitialized = true;
         flagManager = new FlagManager();
+        flagManager.addFlag("hasTalkedToQueen", false);
+
 
         map = new HiveMap();
         map.setFlagManager(flagManager);

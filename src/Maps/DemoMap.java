@@ -9,9 +9,7 @@ import Enemies.Spider;
 import PowerUps.PowerUp;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.PowerUpScript;
-import Scripts.TestMap.TeleportScript;
 import Tilesets.CommonTileset;
-import Utils.Point;
 import java.util.ArrayList; // add spider
 
 public class DemoMap extends Map {
@@ -62,6 +60,7 @@ public class DemoMap extends Map {
     @Override
     public void loadScripts() {
         // Region labels
+        
         getMapTile(71, 50).setInteractScript(new SimpleTextScript("The Hive"));
         getMapTile(72, 50).setInteractScript(new SimpleTextScript("The Hive"));
 
@@ -77,6 +76,6 @@ public class DemoMap extends Map {
         getMapTile(0, 124).setInteractScript(new SimpleTextScript("Volcanic Region?"));
         getMapTile(1, 124).setInteractScript(new SimpleTextScript("Volcanic Region?"));
 
-        getMapTile(0, 63).setInteractScript(new TeleportScript());
+        // getMapTile(0, 63).setInteractScript(new TeleportScript());
     }
 }

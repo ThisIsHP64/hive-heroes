@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
-import Level.Tileset;
 import Level.Trigger;
-import Tilesets.CommonTileset;
 import Tilesets.MazeTileset;
 
 public class MazeMap extends Map {

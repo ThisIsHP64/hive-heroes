@@ -2,23 +2,11 @@ package Maps;
 
 import java.util.ArrayList;
 
-import EnhancedMapTiles.PushableRock;
 import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
-import NPCs.Bug;
-import NPCs.Dinosaur;
-import NPCs.Walrus;
-import PowerUps.PowerUp;
-import Scripts.SimpleTextScript;
-import Scripts.TestMap.BugScript;
-import Scripts.TestMap.DinoScript;
-import Scripts.TestMap.LostBallScript;
-import Scripts.TestMap.PowerUpScript;
-import Scripts.TestMap.TreeScript;
-import Scripts.TestMap.WalrusScript;
-import Tilesets.CommonTileset;
+
 import Tilesets.VolcanoTileset;
 
 public class VolcanoMap extends Map {

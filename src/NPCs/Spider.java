@@ -4,7 +4,6 @@ import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import GameObject.Frame;
-import GameObject.Rectangle;
 import GameObject.SpriteSheet;
 import Level.NPC;
 import Utils.Point;

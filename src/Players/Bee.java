@@ -7,6 +7,7 @@ import Engine.Key;
 import Engine.Keyboard;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
+import Level.Map;
 import Level.Player;
 import NPCs.HiveManager;
 import SpriteImage.PowerupHUD;
@@ -226,6 +227,8 @@ public class Bee extends Player {
             case DOWN:
                 y += REACH;
                 break;
+            case NONE:
+                break;
         }
 
         return new java.awt.Rectangle(x, y, ATTACK_SIZE, ATTACK_SIZE);
@@ -414,6 +417,14 @@ public class Bee extends Player {
 
     public void setExperience(int experience) {
         this.experience = experience;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
     }
 
     // Getter for death state - useful for game over checks

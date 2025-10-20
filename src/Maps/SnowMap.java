@@ -6,9 +6,7 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
-import Tilesets.CommonTileset;
 import Tilesets.SnowTileset;
-import Tilesets.VolcanoTileset;
 
 public class SnowMap extends Map {
     public SnowMap() {

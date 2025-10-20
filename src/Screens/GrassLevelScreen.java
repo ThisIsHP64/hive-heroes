@@ -8,7 +8,6 @@ import Level.*;
 import Maps.GrassMap;
 import Players.Bee;
 import Utils.Direction;
-import Utils.Point;
 import NPCs.RareSunflowerwithFlowers;
 import Enemies.Spider;
 

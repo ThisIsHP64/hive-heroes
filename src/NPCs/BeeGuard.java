@@ -1,5 +1,7 @@
 package NPCs;
 
+import java.util.HashMap;
+
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
@@ -9,25 +11,28 @@ import GameObject.SpriteSheet;
 import Level.NPC;
 import Utils.Point;
 
-import java.util.HashMap;
-
-// This class is for the bighive NPC
-public class BigHive extends NPC {
-
-    public BigHive(int id, Point location) {
-        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("BigBeeHive.png"), 43, 43), "DEFAULT");
+public class BeeGuard extends NPC {
+    
+    public BeeGuard(int id, Point location) {
+        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("Walrus.png"), 24, 24), "STAND_LEFT");
     }
 
     @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         return new HashMap<String, Frame[]>() {{
-            put("DEFAULT", new Frame[] {
+            put("STAND_LEFT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 0))
                             .withScale(3)
-                            .withBounds(0, 0, 43, 43)
+                            .withBounds(7, 13, 11, 7)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .build()
             });
+            put("STAND_RIGHT", new Frame[] {
+                   new FrameBuilder(spriteSheet.getSprite(0, 0))
+                           .withScale(3)
+                           .withBounds(7, 13, 11, 7)
+                           .build()
+           });
         }};
     }
 
