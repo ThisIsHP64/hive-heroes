@@ -12,7 +12,7 @@ public class DungeonMap extends Map {
 
     public DungeonMap() {
         super("dungeon_map.txt", new DungeonTileset());
-        this.playerStartPosition = getMapTile(17, 20).getLocation();
+        this.playerStartPosition = getMapTile(0, 0).getLocation();
     }
     
     @Override
