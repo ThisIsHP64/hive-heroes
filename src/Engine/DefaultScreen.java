@@ -16,4 +16,9 @@ public class DefaultScreen extends Screen {
 
     @Override
     public void draw(GraphicsHandler graphicsHandler) { }
+
+    @Override
+    public boolean hasInitialized() {
+        throw new UnsupportedOperationException("Unimplemented method 'hasInitialized'");
+    }
 }

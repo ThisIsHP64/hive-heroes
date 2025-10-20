@@ -1,12 +1,51 @@
 package Maps;
 
+import java.util.ArrayList;
+
+import Level.EnhancedMapTile;
 import Level.Map;
-import Tilesets.CommonTileset;
+import Level.NPC;
+import Level.Trigger;
+
 import Tilesets.VolcanoTileset;
 
 public class VolcanoMap extends Map {
     public VolcanoMap() {
         super("volcano_map.txt", new VolcanoTileset());
         this.playerStartPosition = getMapTile(17, 20).getLocation();
+    }
+
+    @Override
+    public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
+        ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
+
+        
+
+        return enhancedMapTiles;
+    }
+
+    @Override
+    public ArrayList<NPC> loadNPCs() {
+        ArrayList<NPC> npcs = new ArrayList<>();
+
+
+
+        return npcs;
+    }
+
+    @Override
+    public ArrayList<Trigger> loadTriggers() {
+        ArrayList<Trigger> triggers = new ArrayList<>();
+        
+
+
+        return triggers;
+    }
+
+    @Override
+    public void loadScripts() {
+        
+
+        
     }
 }

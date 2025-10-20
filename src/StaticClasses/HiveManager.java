@@ -1,4 +1,4 @@
-package NPCs;
+package StaticClasses;
 
 public class HiveManager {
     private static int nectar = 0;

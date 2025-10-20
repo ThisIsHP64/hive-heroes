@@ -6,11 +6,8 @@ import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.*;
 import Maps.MazeMap;
-import Maps.GrassMap;
-import Maps.VolcanoMap;
 import Players.Bee;
 import Utils.Direction;
-import Utils.Point;
 import NPCs.RareSunflowerwithFlowers;
 import Enemies.Spider;
 

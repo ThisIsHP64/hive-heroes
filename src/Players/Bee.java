@@ -5,12 +5,15 @@ import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import Engine.Key;
 import Engine.Keyboard;
+import Game.GameState;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
+import Level.Map;
 import Level.Player;
-import NPCs.HiveManager;
 import SpriteImage.PowerupHUD;
 import SpriteImage.ResourceHUD;
+import StaticClasses.HiveManager;
+import StaticClasses.TeleportManager;
 import Utils.Direction;
 import java.util.HashMap;
 
@@ -65,8 +68,7 @@ public class Bee extends Player {
 
     public Bee(float x, float y) {
         super(new SpriteSheet(ImageLoader.load("Bee_Walk.png"), TILE, TILE, 0),
-                x, y,
-                "STAND_DOWN");
+                x, y, "STAND_DOWN");
 
         // Controls: WASD
         MOVE_LEFT_KEY = Key.A;
@@ -151,8 +153,11 @@ public class Bee extends Player {
         int tileY = (int)(getY() / TILE);
 
         if((tileX == 49 || tileX == 50) && tileY == 36 && keyLocker.isKeyLocked(Key.SPACE) && this.getNectar() > 0) {
-            this.setNectar(this.getNectar() - 1);
-            HiveManager.depositNectar();
+            if (TeleportManager.getCurrentGameState() != GameState.HIVELEVEL) {
+                this.setNectar(this.getNectar() - 1);
+                HiveManager.depositNectar();
+            }
+            TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
         }
 
         System.out.println(String.format(
@@ -226,6 +231,8 @@ public class Bee extends Player {
                 break;
             case DOWN:
                 y += REACH;
+                break;
+            case NONE:
                 break;
         }
 
@@ -415,6 +422,14 @@ public class Bee extends Player {
 
     public void setExperience(int experience) {
         this.experience = experience;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
     }
 
     // Getter for death state - useful for game over checks

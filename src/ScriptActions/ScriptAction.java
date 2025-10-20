@@ -1,8 +1,6 @@
 package ScriptActions;
 
-import java.util.ArrayList;
 
-import Level.GameListener;
 import Level.Map;
 import Level.MapEntity;
 import Level.Player;
