@@ -15,7 +15,7 @@ public class HiveMap extends Map {
 
     public HiveMap() {
         super("hive_map.txt", new HiveTileset());
-        this.playerStartPosition = getMapTile(66, 117).getLocation();
+        this.playerStartPosition = getMapTile(10, 20).getLocation();
     } 
     
     @Override
@@ -31,10 +31,10 @@ public class HiveMap extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        QueenBeeChair queenbeechair = new QueenBeeChair(1, getMapTile(66, 110).getLocation());
+        QueenBeeChair queenbeechair = new QueenBeeChair(1, getMapTile(11, 10).getLocation());
         npcs.add(queenbeechair);
 
-        BeeGuard guard = new BeeGuard(1, getMapTile(50, 100).getLocation());
+        BeeGuard guard = new BeeGuard(1, getMapTile(15, 20).getLocation());
         guard.setInteractScript(new BeeGuardScript());
         npcs.add(guard);
         
