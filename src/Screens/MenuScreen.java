@@ -5,6 +5,8 @@ import Game.GameState;
 import Game.ScreenCoordinator;
 import Sound.MusicManager;
 import SpriteFont.SpriteFont;
+import StaticClasses.TeleportManager;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -25,6 +27,7 @@ public class MenuScreen extends Screen {
     protected int keyPressTimer;
     protected KeyLocker keyLocker = new KeyLocker();
 
+
     protected boolean hasInitialized = false;
 
     public MenuScreen(ScreenCoordinator screenCoordinator) {
@@ -34,6 +37,9 @@ public class MenuScreen extends Screen {
     @Override
     public void initialize() {
         hasInitialized = true;
+
+        TeleportManager.call(screenCoordinator);
+
         try {
             orbitronLarge = Font.createFont(Font.TRUETYPE_FONT, new File("Resources/fonts/orbitron.ttf")).deriveFont(60f);
             orbitronMed = Font.createFont(Font.TRUETYPE_FONT, new File("Resources/fonts/orbitron.ttf")).deriveFont(30f);
@@ -113,7 +119,7 @@ public class MenuScreen extends Screen {
             if (menuItemSelected == 0) {
                 MusicManager.stopMenuLoop();
                 MusicManager.playGpLoop();
-                screenCoordinator.setGameState(GameState.HIVELEVEL);
+                screenCoordinator.setGameState(GameState.GRASSLEVEL);
             } else if (menuItemSelected == 1) {
                 screenCoordinator.setGameState(GameState.OPTIONS);
             } else if (menuItemSelected == 2) {

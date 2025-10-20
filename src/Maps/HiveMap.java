@@ -34,7 +34,7 @@ public class HiveMap extends Map {
         QueenBeeChair queenbeechair = new QueenBeeChair(1, getMapTile(66, 110).getLocation());
         npcs.add(queenbeechair);
 
-        BeeGuard guard = new BeeGuard(1, getMapTile(4, 28).getLocation().subtractY(40));
+        BeeGuard guard = new BeeGuard(1, getMapTile(50, 100).getLocation());
         guard.setInteractScript(new BeeGuardScript());
         npcs.add(guard);
         

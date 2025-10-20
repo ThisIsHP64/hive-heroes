@@ -5,13 +5,15 @@ import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import Engine.Key;
 import Engine.Keyboard;
+import Game.GameState;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
 import Level.Map;
 import Level.Player;
-import NPCs.HiveManager;
 import SpriteImage.PowerupHUD;
 import SpriteImage.ResourceHUD;
+import StaticClasses.HiveManager;
+import StaticClasses.TeleportManager;
 import Utils.Direction;
 import java.util.HashMap;
 
@@ -151,8 +153,11 @@ public class Bee extends Player {
         int tileY = (int)(getY() / TILE);
 
         if((tileX == 49 || tileX == 50) && tileY == 36 && keyLocker.isKeyLocked(Key.SPACE) && this.getNectar() > 0) {
-            this.setNectar(this.getNectar() - 1);
-            HiveManager.depositNectar();
+            if (TeleportManager.getCurrentGameState() != GameState.HIVELEVEL) {
+                this.setNectar(this.getNectar() - 1);
+                HiveManager.depositNectar();
+            }
+            TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
         }
 
         System.out.println(String.format(

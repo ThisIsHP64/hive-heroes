@@ -7,6 +7,7 @@ import Game.ScreenCoordinator;
 import Level.*;
 import Maps.GrassMap;
 import Players.Bee;
+import StaticClasses.TeleportManager;
 import Utils.Direction;
 import NPCs.RareSunflowerwithFlowers;
 import Enemies.Spider;
@@ -92,6 +93,7 @@ public class GrassLevelScreen extends Screen implements GameListener {
                                 if (sting.intersects(rareSunflower.getHitbox())) {
                                     System.out.println("Sunflower hit!");
                                     bee.setNectar(bee.getNectar() + 1);
+                                    // TeleportManager.setCurrentScreen(GameState.VOLCANOLEVEL);
                                 }
                             }
                         }
