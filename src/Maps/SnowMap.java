@@ -11,7 +11,7 @@ import Tilesets.SnowTileset;
 public class SnowMap extends Map {
     public SnowMap() {
         super("snow_map.txt", new SnowTileset());
-        this.playerStartPosition = getMapTile(17, 20).getLocation();
+        this.playerStartPosition = getMapTile(0, 0).getLocation();
     }
 
     @Override

@@ -347,7 +347,7 @@ public class VolcanoTileset extends Tileset {
             .build();
 
         MapTileBuilder tile_1_16 = new MapTileBuilder(tile_1_16Frame)
-            .withTileType(TileType.PASSABLE);
+            .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(tile_1_16);
 
@@ -482,8 +482,8 @@ public class VolcanoTileset extends Tileset {
             .build();
 
         MapTileBuilder tile_2_13 = new MapTileBuilder(tile_2_13Frame)
-            .withTileType(TileType.PASSABLE);
-
+            .withTileType(TileType.NOT_PASSABLE);
+        
         mapTiles.add(tile_2_13);
 
         Frame tile_2_14Frame = new FrameBuilder(getSubImage(2, 14))

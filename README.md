@@ -28,6 +28,11 @@ Changes to content in the `docs` folder will not show up on the website unless t
 
 Heart: https://temok.itch.io/heart-container-animated-in-pixel-art
 
+
+**Queen Bee Sprite**
+Queen Bee: https://www.spriters-resource.com/pc_computer/songsforahero/asset/458622/
+
+
 All other icons were generated and/or polished up by Philip Kwiatkowski.
 
 ____________________________________________________________________________
@@ -45,3 +50,4 @@ Zelda Maze/Dungeon: https://kuroren.itch.io/dungeon-tileset
 Cemetery: https://dreamir.itch.io/tilesets-cemetery
 
 Snow Region: https://maytch.itch.io/pixel
+
