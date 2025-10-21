@@ -1,8 +1,11 @@
 package Engine;
 
 import Effects.RainParticleSystem;
+import Effects.WindSystem;
+import Game.GameState;
 import GameObject.Rectangle;
 import SpriteFont.SpriteFont;
+import StaticClasses.TeleportManager;
 import Utils.Colors;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -36,9 +39,11 @@ public class GamePanel extends JPanel implements ActionListener {
 	private final int SCREEN_HEIGHT = 600;
 
 	private RainParticleSystem rainSystem;
+    private WindSystem windSystem;
 	private int timer = 0;
 	private static boolean isRaining = false;
-	private boolean rainCycleStarted = false;
+    private static boolean isWindActive = false;
+
 
 
 	// The JPanel and various important class instances are setup here
@@ -72,6 +77,8 @@ public class GamePanel extends JPanel implements ActionListener {
 
 		//initializing the rain system
 		rainSystem = new RainParticleSystem(SCREEN_WIDTH, SCREEN_HEIGHT); 
+
+		windSystem = new WindSystem(SCREEN_WIDTH, SCREEN_HEIGHT);
 	}
 
 	// this is called later after instantiation, and will initialize screenManager
@@ -101,40 +108,51 @@ public class GamePanel extends JPanel implements ActionListener {
 		updatePauseState();
 		updateShowFPSState();
 
+
 		if (!isGamePaused) {
-			screenManager.update();
-			Level.Map currentMap = screenManager.getCurrentMap();
-			boolean onGrassMap = currentMap instanceof Maps.GrassMap;
+            screenManager.update();
 
-		if (onGrassMap) {
-			timer++;
-			int seconds = timer / 60;
+            if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) {
+                timer++;
+                int seconds = timer / 60; 
+                int cycleTime = seconds % 750;  
 
-			if (!isRaining && seconds == 30) {
-				isRaining = true;
-				rainCycleStarted = true;
-			}
-			if (isRaining && seconds == 60) {
-				isRaining = false;
-				rainSystem.clear();
-			}
-			if (!isRaining && rainCycleStarted && seconds >= 600) {
-				timer = 0;
-				rainCycleStarted = false;
-			}
-			if (isRaining) {
-				rainSystem.update();
-			}
-		} else {
-			if (isRaining) {
-				isRaining = false;
-				rainSystem.clear();
-			}
-			timer = 0;
-			rainCycleStarted = false;
-		}
-		}
-		}
+                if (cycleTime >= 30 && cycleTime < 90) {
+                    if (!isRaining) {
+                        isRaining = true;
+                        rainSystem.clear();
+                    }
+                    rainSystem.update();
+                } else if (isRaining) {
+                    isRaining = false;
+                    rainSystem.clear();
+                }
+
+                if (cycleTime >= 390 && cycleTime < 450) {
+                    if (!isWindActive) {
+                        isWindActive = true;
+                        windSystem.clear();
+                    }
+                    windSystem.update();
+                } else if (isWindActive) {
+                    isWindActive = false;
+                    windSystem.clear();
+                }
+
+            } else {
+                if (isRaining) {
+                    isRaining = false;
+                    rainSystem.clear();
+                }
+                if (isWindActive) {
+                    isWindActive = false;
+                    windSystem.clear();
+                }
+                timer = 0;
+            }
+        }
+    }
+
 	
 	private void updatePauseState() {
 		if (Keyboard.isKeyDown(pauseKey) && !keyLocker.isKeyLocked(pauseKey)) {
@@ -164,7 +182,6 @@ public class GamePanel extends JPanel implements ActionListener {
 		// draw current game state
 		screenManager.draw(graphicsHandler);
 
-		// if game is paused, draw pause gfx over Screen gfx
 		if (isGamePaused) {
 			pauseLabel.draw(graphicsHandler);
 			graphicsHandler.drawFilledRectangle(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight(), new Color(0, 0, 0, 100));
@@ -180,6 +197,11 @@ public class GamePanel extends JPanel implements ActionListener {
 			rainSystem.update();
 		}
 		repaint();
+
+		if (isWindActive) {
+			windSystem.update();
+		}
+		repaint();
 	}
 
 	@Override
@@ -192,8 +214,11 @@ public class GamePanel extends JPanel implements ActionListener {
 			draw();
 			Graphics2D g2d = (Graphics2D) g;
 			
-			if (isRaining) {
+            if (isRaining){
 				rainSystem.draw(g2d);
+			}
+            if (isWindActive){
+				 windSystem.draw(g2d);
 			}
 		}
 	}
@@ -201,5 +226,9 @@ public class GamePanel extends JPanel implements ActionListener {
 	public static Boolean getisRaining(){
 		return isRaining;
 	}
+
+	public static Boolean getisWindActive() {
+        return isWindActive;
+    }
 }
  
