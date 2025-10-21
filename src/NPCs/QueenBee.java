@@ -14,7 +14,7 @@ import Utils.Point;
 public class QueenBee extends NPC {
 
     public QueenBee(int id, Point location) {
-        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("queenBee.png"), 64, 64, 0), "STAND_LEFT");
+        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("queen_bee.png"), 64, 64, 0), "STAND_LEFT");
     }
 
     @Override
