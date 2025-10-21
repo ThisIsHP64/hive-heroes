@@ -1,14 +1,13 @@
 package SpriteImage;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import Players.Bee;
+import java.awt.Color;
+import java.util.ArrayList;
 
 public class ResourceHUD extends ImageLoader {
-    SpriteImage healthBar, staminaBar, nectarBar, experienceBar;
+    SpriteImage healthBar, staminaBar, nectarBar, experienceBar, shieldBar;
     ArrayList<SpriteImage> resourceBars;
 
     protected int x;
@@ -22,6 +21,7 @@ public class ResourceHUD extends ImageLoader {
         staminaBar = new SpriteImage("stamina_icon.png", 10, 45);
         nectarBar = new SpriteImage("honeypot_icon.png", 10, 75);
         experienceBar = new SpriteImage("experience_icon.png", 10, 105);
+        shieldBar = new SpriteImage("ShieldPU_hud.png", 10,135);
 
         // declares new arraylist containing the resource bars
         resourceBars = new ArrayList<>();
@@ -30,6 +30,7 @@ public class ResourceHUD extends ImageLoader {
         resourceBars.add(staminaBar);
         resourceBars.add(nectarBar);
         resourceBars.add(experienceBar);
+        
 
         this.bee = bee;
     }
@@ -80,5 +81,19 @@ public class ResourceHUD extends ImageLoader {
         //     graphicsHandler.drawImage(s.getSpriteImage(), s.getX(), s.getY());
         //     graphicsHandler.drawFilledRectangleWithBorder(s.getX() + 35, s.getY() + 3, 100, 24, Color.RED, Color.GREEN, 2);
         // }
+
+        // shield bar (this will be only visible when the bee has shield)
+        if (bee.hasShield()) {
+            graphicsHandler.drawImage(shieldBar.getSpriteImage(), shieldBar.getX(), shieldBar.getY());
+            graphicsHandler.drawFilledRectangleWithBorder(
+                shieldBar.getX() + 35,
+                shieldBar.getY() + 3,
+                bee.getShieldHealth(),  // width = current shield HP
+                24,
+                new Color(0, 255, 255, 180),  // semi-transparent cyan
+                Color.BLACK,
+                2
+            );
+        }
     }
 }

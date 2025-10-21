@@ -64,6 +64,11 @@ public class Bee extends Player {
     private static final int BOOST_DURATION_MS = 10_000;
     private static final float BOOST_MULTIPLIER = 2.0f;
 
+    // Shield variables
+    private boolean hasShield = false;
+    private int shieldHealth = 0;
+    private static final int MAX_SHIELD_HEALTH = 100;
+
     private PowerupHUD powerupHUD;
 
     public Bee(float x, float y) {
@@ -82,6 +87,8 @@ public class Bee extends Player {
         setNectar(10);
         setExperience(5);
         resourceBars = new ResourceHUD(this);
+
+        powerupHUD = new PowerupHUD();
 
         // Load slash sprite for when bee takes damage
         try {
@@ -106,6 +113,26 @@ public class Bee extends Player {
     public void applyDamage(int amount) {
         if (isDead) return; // already dead, can't take more damage
         
+        // Logic to check shield first when the powerup is picked up
+        // Check if shield can absorb damage first
+        if (hasShield && shieldHealth > 0) {
+            shieldHealth -= amount;
+            System.out.println("Shield absorbed " + amount + " damage! Shield left: " + shieldHealth);
+
+        if (shieldHealth <= 0) {
+            hasShield = false;
+            shieldHealth = 0;
+            System.out.println("Shield depleted!");
+
+            // remove shield icon when it's gone
+            if (powerupHUD != null) {
+                powerupHUD.removeIcon("ShieldPU_hud.png");
+            }
+        }
+        return; // stop here so health isn't reduced
+    }
+
+
         int currentHealth = getHealth();
         currentHealth -= amount;
         if (currentHealth < 0) currentHealth = 0;
@@ -452,17 +479,21 @@ public class Bee extends Player {
 
     // Helper method for the PowerUp
     public void handlePowerupInput() {
-    if (hasPowerup && Keyboard.isKeyDown(Key.ONE)) {
-        System.out.println("Bee activated power-up! Speed boost for 10s!");
-        hasPowerup = false;
-        showPowerupIcon(powerupIconPath, 1); // hide HUD icon
+        if (hasPowerup && Keyboard.isKeyDown(Key.ONE)) {
+            System.out.println("Bee activated power-up! Speed boost for 10s!");
+            hasPowerup = false;
 
-        // apply speed boost
-        originalSpeed = getWalkSpeed();
-        setWalkSpeed(originalSpeed * BOOST_MULTIPLIER);
-        boostStartTime = System.currentTimeMillis();
-        boostActive = true;
-    }
+            // remove the speed icon
+            if (powerupHUD != null) {
+                powerupHUD.removeIcon("SpeedPU_hud.png");
+            }
+
+            // apply speed boost
+            originalSpeed = getWalkSpeed();
+            setWalkSpeed(originalSpeed * BOOST_MULTIPLIER);
+            boostStartTime = System.currentTimeMillis();
+            boostActive = true;
+        }
 
     if (boostActive) {
         long elapsed = System.currentTimeMillis() - boostStartTime;
@@ -473,4 +504,26 @@ public class Bee extends Player {
             }
         }
     }
+
+    // Activate Shield Powerup logic
+    public void activateShield(String iconPath) {
+        hasShield = true;
+        shieldHealth = MAX_SHIELD_HEALTH;
+        showPowerupIcon(iconPath, 999999); // show icon indefinitely
+        System.out.println("Shield activated! (" + shieldHealth + " HP)");
+    }
+
+    // Helper and Getters for the shield powerup
+    public boolean hasShield() {
+        return hasShield;
+    }
+
+    public int getShieldHealth() {
+        return shieldHealth;
+    }
+
+    public int getMaxShieldHealth() {
+        return MAX_SHIELD_HEALTH;
+    }
+
 }
