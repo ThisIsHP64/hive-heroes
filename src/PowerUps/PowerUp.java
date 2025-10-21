@@ -71,14 +71,14 @@ public class PowerUp extends NPC {
                 animationStartTime = System.currentTimeMillis();
 
                 // give bee the power-up
-                bee.collectPowerup("powerup_speed.png");
+                bee.collectPowerup("SpeedPU_hud.png");
 
                 // mark as used so it can’t be picked up again
                 used = true;
             }
         }
 
-        // Step 2: once animation finishes, remove from map
+        // once animation finishes, remove from map
         if (animationPlaying && System.currentTimeMillis() - animationStartTime > ACTIVATED_ANIM_DURATION_MS) {
             animationPlaying = false;
             setMapEntityStatus(MapEntityStatus.REMOVED);

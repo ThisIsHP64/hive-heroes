@@ -7,6 +7,7 @@ import Level.NPC;
 import NPCs.BigHive;
 import NPCs.RareSunflowerwithFlowers;
 import PowerUps.PowerUp;
+import PowerUps.ShieldPowerUp;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.PowerUpScript;
 import Tilesets.CommonTileset;
@@ -33,6 +34,10 @@ public class GrassMap extends Map {
         PowerUp pu = new PowerUp(2000, getMapTile(70, 59).getLocation());
         pu.setInteractScript(new PowerUpScript());
         npcs.add(pu);
+
+        // Shield powerup spawn
+        ShieldPowerUp shield = new ShieldPowerUp(2001, getMapTile(76, 59).getLocation());
+        npcs.add(shield);
         
         RareSunflowerwithFlowers rareSunflower = new RareSunflowerwithFlowers(4, getMapTile(67, 48).getLocation());
         npcs.add(rareSunflower);
