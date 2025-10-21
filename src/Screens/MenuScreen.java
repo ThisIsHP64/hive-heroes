@@ -6,7 +6,6 @@ import Game.ScreenCoordinator;
 import Sound.MusicManager;
 import SpriteFont.SpriteFont;
 import StaticClasses.TeleportManager;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
