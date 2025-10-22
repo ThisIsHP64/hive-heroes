@@ -1,4 +1,4 @@
-package Scripts.GrassMap;
+package Scripts.HiveMap;
 
 import java.util.ArrayList;
 
@@ -37,7 +37,7 @@ public class BeeGuardScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToQueen", true));
                 scriptActions.add(new TextboxScriptAction() {{
-                    addText("Do you wish to exit the hive?", new String[] { "Yes", "No" });
+                    addText("Do you need a rundown of your duties?", new String[] { "Yes", "No" });
                 }});
 
             scriptActions.add(new ConditionalScriptAction() {{
@@ -50,9 +50,10 @@ public class BeeGuardScript extends Script {
                         } 
                     });
 
+                    addScriptAction(new ChangeFlagScriptAction("hasTalkedToQueen", false));
+
                     addScriptAction(new TextboxScriptAction() {{
-                        addText("I knew you were a cool cat!");
-                        addText("I'm going to let you in on a little secret...\nYou can push some rocks out of the way.");
+                        addText("Talk to your Majesty.");
                     }});
 
                 }});
@@ -66,7 +67,7 @@ public class BeeGuardScript extends Script {
                         }
                     });
 
-                    addScriptAction(new TextboxScriptAction("Hurry up."));
+                    addScriptAction(new TextboxScriptAction("Good luck out there."));
 
                     }});
                 }});

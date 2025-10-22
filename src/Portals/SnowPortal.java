@@ -15,10 +15,9 @@ import Utils.Point;
 public class SnowPortal extends NPC {
 
     public SnowPortal(int id, Point location) {
-        super(id, location.x, location.y,new FrameBuilder(ImageLoader.load("snow_portal.png"))
-            .withScale(3f)
-            .build()
-        );
+        super(id, location.x, location.y, 
+            new SpriteSheet(ImageLoader.load("snow_portal.png"), 
+            42, 42), "DEFAULT");
     }
     
     @Override

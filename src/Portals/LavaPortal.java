@@ -16,8 +16,10 @@ import Utils.Point;
 public class LavaPortal extends NPC {
 
     public LavaPortal(int id, Point location) {
-        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("lava_portal.png"), 42, 42),
-                "DEFAULT");
+        super(id, location.x, location.y, 
+            new SpriteSheet(ImageLoader.load("lava_portal.png"), 
+            42, 42),
+            "DEFAULT");
     }
     
     
@@ -48,8 +50,6 @@ public class LavaPortal extends NPC {
 
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
-        graphicsHandler.drawRectangle(59, 59, 10, 30, Color.BLACK);
-
         super.draw(graphicsHandler);
     }
 }
