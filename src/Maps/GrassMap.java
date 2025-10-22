@@ -5,7 +5,9 @@ import Engine.GraphicsHandler;
 import Level.Map;
 import Level.NPC;
 import NPCs.BigHive;
+import NPCs.Portal;
 import NPCs.RareSunflowerwithFlowers;
+import NPCs.ReversePortal;
 import Portals.LavaPortal;
 import Portals.SnowPortal;
 import PowerUps.PowerUp;
@@ -52,6 +54,12 @@ public class GrassMap extends Map {
 
         SnowPortal snowPortal = new SnowPortal(1, getMapTile(64, 122).getLocation().addY(25));
         npcs.add(snowPortal);
+
+        Portal portal1 = new Portal(1, getMapTile(1, 63).getLocation());
+        npcs.add(portal1);
+
+        ReversePortal portal2 = new ReversePortal(1, getMapTile(122, 63).getLocation());
+        npcs.add(portal2);
 
         // spawn multiple spiders across the map
         // spider 1 - original position near red X

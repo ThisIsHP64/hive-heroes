@@ -13,7 +13,9 @@ import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
 import NPCs.BigHive;
+import NPCs.Portal;
 import NPCs.RareSunflowerwithFlowers;
+import NPCs.ReversePortal;
 import Enemies.Spider;
 
 import Engine.ImageLoader;
@@ -122,6 +124,22 @@ public class GrassLevelScreen extends Screen implements GameListener {
 
                                 if (sting.intersects(bigHive.getHitbox())) {
                                     TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
+                                }
+                            }
+
+                            if (npc instanceof Portal) {
+                                Portal portal = (Portal) npc;
+
+                                if(sting.intersects(portal.getHitbox())) {
+                                    TeleportManager.setCurrentScreen(GameState.DUNGEONLEVEL);
+                                }
+                            }
+
+                            if (npc instanceof ReversePortal) {
+                                ReversePortal reversePortal = (ReversePortal) npc;
+
+                                if(sting.intersects(reversePortal.getHitbox())) {
+                                    TeleportManager.setCurrentScreen(GameState.MAZELEVEL);
                                 }
                             }
                         }
