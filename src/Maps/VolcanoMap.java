@@ -8,8 +8,10 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
+import NPCs.Volcano;
 import Scripts.SimpleTextScript;
 import Tilesets.VolcanoTileset;
+import Utils.Point;
 
 public class VolcanoMap extends Map {
 
@@ -47,6 +49,9 @@ public class VolcanoMap extends Map {
         npcs.add(new Spider(2008, getMapTile(65, 65).getLocation().addY(6)));
         npcs.add(new Spider(2009, getMapTile(75, 55).getLocation().addY(6)));
         npcs.add(new Spider(2010, getMapTile(58, 46).getLocation().addY(6)));
+
+        // Volcano in the center of the map
+        npcs.add(new Volcano(3001, getMapTile(41, 41).getLocation()));
 
         System.out.println("[VolcanoMap] Spawned 10 spiders across the volcano region");
 
