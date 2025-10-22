@@ -6,6 +6,8 @@ import Level.Map;
 import Level.NPC;
 import NPCs.BigHive;
 import NPCs.RareSunflowerwithFlowers;
+import Portals.LavaPortal;
+import Portals.SnowPortal;
 import PowerUps.PowerUp;
 import PowerUps.ShieldPowerUp;
 import Scripts.SimpleTextScript;
@@ -44,7 +46,13 @@ public class GrassMap extends Map {
         
         BigHive bigHive = new BigHive(4, getMapTile(67, 51).getLocation());
         npcs.add(bigHive);
-        
+
+        LavaPortal lavaPortal = new LavaPortal(1, getMapTile(64, 0).getLocation());
+        npcs.add(lavaPortal);
+
+        SnowPortal snowPortal = new SnowPortal(1, getMapTile(64, 122).getLocation().addY(25));
+        npcs.add(snowPortal);
+
         // spawn multiple spiders across the map
         // spider 1 - original position near red X
         npcs.add(new Spider(1001, getMapTile(55, 62).getLocation().addY(6)));
