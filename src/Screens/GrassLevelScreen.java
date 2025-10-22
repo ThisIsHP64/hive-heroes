@@ -12,6 +12,7 @@ import Portals.SnowPortal;
 import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
+import NPCs.BigHive;
 import NPCs.RareSunflowerwithFlowers;
 import Enemies.Spider;
 
@@ -113,6 +114,14 @@ public class GrassLevelScreen extends Screen implements GameListener {
 
                                 if(sting.intersects(snowPortal.getHitbox())) {
                                     TeleportManager.setCurrentScreen(GameState.SNOWLEVEL);
+                                }
+                            }
+
+                            if (npc instanceof BigHive) {
+                                BigHive bigHive = (BigHive) npc;
+
+                                if (sting.intersects(bigHive.getHitbox())) {
+                                    TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
                                 }
                             }
                         }

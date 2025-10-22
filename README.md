@@ -32,6 +32,8 @@ Heart: https://temok.itch.io/heart-container-animated-in-pixel-art
 **Queen Bee Sprite**
 Queen Bee: https://www.spriters-resource.com/pc_computer/songsforahero/asset/458622/
 
+**Portal Sprite**
+https://www.spriters-resource.com/pc_computer/patchmeifyoucan/asset/482001/
 
 All other icons were generated and/or polished up by Philip Kwiatkowski.
 
