@@ -181,9 +181,6 @@ public class Bee extends Player {
         int tileX = (int)(getX() / TILE);
         int tileY = (int)(getY() / TILE);
 
-        System.out.println(tileX);
-                System.out.println(tileY);
-
         if((tileX == 49 || tileX == 50) && tileY == 36 && keyLocker.isKeyLocked(Key.SPACE) && BeeStats.getNectar() > 0) {
             if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) {
                 BeeStats.setNectar(BeeStats.getNectar() - 1);
@@ -207,13 +204,6 @@ public class Bee extends Player {
         handlePowerupInput();
     }
 
-    public void handleCollision() {
-        int tileX = (int)(getX() / TILE);
-        int tileY = (int)(getY() / TILE);
-
-        if(tileX >= map.getWidth()) {
-        }
-    }
 
     public void showPowerupIcon(String spritePath, int durationMs) {
         if (powerupHUD != null) {

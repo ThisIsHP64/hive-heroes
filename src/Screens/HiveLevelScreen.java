@@ -17,6 +17,7 @@ import NPCs.QueenBee;
 import NPCs.RareSunflowerwithFlowers;
 import Players.Bee;
 import StaticClasses.BeeStats;
+import StaticClasses.HiveManager;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
 
@@ -93,7 +94,10 @@ public class HiveLevelScreen extends Screen implements GameListener {
 
                         if (npc instanceof QueenBee) {
                             QueenBee queenBee = (QueenBee) npc;
-
+                            if (sting.intersects(queenBee.getHitbox()) && BeeStats.getNectar() > 0) {
+                                HiveManager.depositNectar();
+                                BeeStats.setNectar(BeeStats.getNectar() - 1);
+                            }
                         }
 
                     }
