@@ -8,7 +8,9 @@ import Level.*;
 import Maps.VolcanoMap;
 import Players.Bee;
 import StaticClasses.BeeStats;
+import StaticClasses.TeleportManager;
 import Utils.Direction;
+import NPCs.Portal;
 import NPCs.RareSunflowerwithFlowers;
 import Enemies.Spider;
 
@@ -93,6 +95,14 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                 if (sting.intersects(rareSunflower.getHitbox())) {
                                     System.out.println("Sunflower hit!");
                                     BeeStats.setNectar(BeeStats.getNectar() + 1);
+                                }
+                            }
+
+                            if (npc instanceof Portal) {
+                                Portal portal = (Portal) npc;
+
+                                if (sting.intersects(portal.getHitbox())) {
+                                    TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
                                 }
                             }
                         }

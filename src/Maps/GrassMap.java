@@ -58,7 +58,7 @@ public class GrassMap extends Map {
         Portal portal1 = new Portal(1, getMapTile(1, 63).getLocation());
         npcs.add(portal1);
 
-        ReversePortal portal2 = new ReversePortal(1, getMapTile(122, 63).getLocation());
+        ReversePortal portal2 = new ReversePortal(1, getMapTile(121, 63).getLocation());
         npcs.add(portal2);
 
         // spawn multiple spiders across the map
