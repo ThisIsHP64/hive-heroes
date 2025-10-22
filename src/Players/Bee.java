@@ -182,11 +182,11 @@ public class Bee extends Player {
                 BeeStats.setNectar(BeeStats.getNectar() - 1);
                 HiveManager.depositNectar();
             }
-            // TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
+            TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
         }
 
         System.out.println(String.format(
-                "Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %d  Hive Nectar: %d  X: %d  Y: %d",
+                "Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d  X: %d  Y: %d",
                 BeeStats.getHealth(), BeeStats.getStamina(), BeeStats.getNectar(), BeeStats.getExperience(), BeeStats.getWalkSpeed(), HiveManager.getNectar(), tileX, tileY
         ));
 
@@ -444,12 +444,12 @@ public class Bee extends Player {
 
             // remove the speed icon
             if (powerupHUD != null) {
-                powerupHUD.removeIcon("SpeedPU_hud.png");
+                powerupHUD.removeIcon("speed_icon.png");
             }
 
             // apply speed boost
-            originalSpeed = getWalkSpeed();
-            setWalkSpeed(originalSpeed * BOOST_MULTIPLIER);
+            originalSpeed = BeeStats.getWalkSpeed();
+            BeeStats.setWalkSpeed(originalSpeed * BOOST_MULTIPLIER);
             boostStartTime = System.currentTimeMillis();
             boostActive = true;
         }
@@ -457,7 +457,7 @@ public class Bee extends Player {
     if (boostActive) {
         long elapsed = System.currentTimeMillis() - boostStartTime;
         if (elapsed > BOOST_DURATION_MS) {
-            setWalkSpeed(originalSpeed);
+            BeeStats.setWalkSpeed(originalSpeed);
             boostActive = false;
             System.out.println("Speed boost ended!");
             }

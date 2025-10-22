@@ -70,7 +70,7 @@ public class ShieldPowerUp extends NPC {
                 animationStartTime = System.currentTimeMillis();
 
                 // Activate the bee's shield
-                bee.activateShield("ShieldPU_hud.png");
+                bee.activateShield("shield_icon.png");
 
                 used = true;
             }

@@ -14,8 +14,8 @@ public class BeeStats {
     private static int experience = 1;
     private static int maxExperience = 100;
 
-    private static int walkSpeed = 10;
-    private static int maxWalkSpeed = 10;
+    private static float walkSpeed = 10f;
+    private static float maxWalkSpeed = 10f;
 
     private static boolean isDead = false;
 
@@ -103,19 +103,19 @@ public class BeeStats {
     }
 
     // walk speed getters and setters
-    public static int getWalkSpeed() {
+    public static float getWalkSpeed() {
         return walkSpeed;
     }
 
-    public static void setWalkSpeed(int newWalkSpeed) {
+    public static void setWalkSpeed(float newWalkSpeed) {
         walkSpeed = newWalkSpeed;
     }
 
-    public static int getMaxWalkSpeed() {
+    public static float getMaxWalkSpeed() {
         return maxWalkSpeed;
     }
 
-    public static void setMaxWalkSpeed(int newMaxWalkSpeed) {
+    public static void setMaxWalkSpeed(float newMaxWalkSpeed) {
         maxWalkSpeed = newMaxWalkSpeed;
     }
 }
