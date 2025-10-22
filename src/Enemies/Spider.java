@@ -452,8 +452,8 @@ public class Spider extends NPC {
 
     @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
-        int hitboxX = 6;
-        int hitboxY = 10;
+        int hitboxX = 5;
+        int hitboxY = 20;
         int hitboxW = 20;
         int hitboxH = 14;
         
