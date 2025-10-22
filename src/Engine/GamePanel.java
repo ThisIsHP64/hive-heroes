@@ -128,7 +128,7 @@ public class GamePanel extends JPanel implements ActionListener {
                     rainSystem.clear();
                 }
 
-                if (cycleTime >= 390 && cycleTime < 450) {
+                if (cycleTime >= 150 && cycleTime < 210) {
                     if (!isWindActive) {
                         isWindActive = true;
                         windSystem.clear();
