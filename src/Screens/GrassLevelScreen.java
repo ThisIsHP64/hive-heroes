@@ -7,9 +7,12 @@ import Game.ScreenCoordinator;
 import Level.*;
 import Maps.GrassMap;
 import Players.Bee;
+import Portals.LavaPortal;
+import Portals.SnowPortal;
 import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
+import NPCs.BigHive;
 import NPCs.RareSunflowerwithFlowers;
 import Enemies.Spider;
 
@@ -94,7 +97,31 @@ public class GrassLevelScreen extends Screen implements GameListener {
                                 if (sting.intersects(rareSunflower.getHitbox())) {
                                     System.out.println("Sunflower hit!");
                                     BeeStats.setNectar(BeeStats.getNectar() + 1);
-                                    // TeleportManager.setCurrentScreen(GameState.VOLCANOLEVEL);
+                                    TeleportManager.setCurrentScreen(GameState.VOLCANOLEVEL);
+                                }
+                            }
+
+                            if (npc instanceof LavaPortal) {
+                                LavaPortal lavaPortal = (LavaPortal) npc;
+
+                                if(sting.intersects(lavaPortal.getHitbox())) {
+                                    TeleportManager.setCurrentScreen(GameState.VOLCANOLEVEL);
+                                }
+                            }
+
+                            if (npc instanceof SnowPortal) {
+                                SnowPortal snowPortal = (SnowPortal) npc;
+
+                                if(sting.intersects(snowPortal.getHitbox())) {
+                                    TeleportManager.setCurrentScreen(GameState.SNOWLEVEL);
+                                }
+                            }
+
+                            if (npc instanceof BigHive) {
+                                BigHive bigHive = (BigHive) npc;
+
+                                if (sting.intersects(bigHive.getHitbox())) {
+                                    TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
                                 }
                             }
                         }

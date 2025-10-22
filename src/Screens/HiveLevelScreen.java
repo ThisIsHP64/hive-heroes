@@ -9,10 +9,15 @@ import GameObject.SpriteSheet;
 import Level.FlagManager;
 import Level.GameListener;
 import Level.Map;
+import Level.NPC;
 import Level.Player;
 import Maps.HiveMap;
+import NPCs.Portal;
+import NPCs.QueenBee;
+import NPCs.RareSunflowerwithFlowers;
 import Players.Bee;
 import StaticClasses.BeeStats;
+import StaticClasses.TeleportManager;
 import Utils.Direction;
 
 public class HiveLevelScreen extends Screen implements GameListener {
@@ -74,6 +79,25 @@ public class HiveLevelScreen extends Screen implements GameListener {
                         screenCoordinator.setGameState(GameState.GAME_OVER);
                         return;
                     }
+
+                    for (NPC npc : map.getNPCs()) {
+                        java.awt.Rectangle sting = bee.getAttackHitbox();
+
+                        if (npc instanceof Portal) {
+                            Portal portal = (Portal) npc;
+
+                            if (sting.intersects(portal.getHitbox())) {
+                                TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
+                            }
+                        }
+
+                        if (npc instanceof QueenBee) {
+                            QueenBee queenBee = (QueenBee) npc;
+
+                        }
+
+                    }
+                    
                 }
                 break;
 

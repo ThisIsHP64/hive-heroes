@@ -1,4 +1,7 @@
-package NPCs;
+package Portals;
+
+import java.awt.Color;
+import java.util.HashMap;
 
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
@@ -10,23 +13,23 @@ import GameObject.SpriteSheet;
 import Level.NPC;
 import Utils.Point;
 
-import java.util.HashMap;
+public class LavaPortal extends NPC {
 
-// This class is for the bighive NPC
-public class BigHive extends NPC {
-
-    public BigHive(int id, Point location) {
-        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("BigBeeHive.png"), 43, 43), "DEFAULT");
+    public LavaPortal(int id, Point location) {
+        super(id, location.x, location.y, 
+            new SpriteSheet(ImageLoader.load("lava_portal.png"), 
+            42, 42),
+            "DEFAULT");
     }
-
+    
+    
     @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         return new HashMap<String, Frame[]>() {{
             put("DEFAULT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 0))
                             .withScale(3)
-                            .withBounds(0, 0, 43, 43)
-                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(0, 0, 42, 42)
                             .build()
             });
         }};
