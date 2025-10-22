@@ -188,7 +188,7 @@ public class MazeTileset extends Tileset {
             .build();
 
         MapTileBuilder tile_2_2 = new MapTileBuilder(tile_2_2Frame)
-            .withTileType(TileType.PASSABLE);
+            .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(tile_2_2);
 
@@ -197,7 +197,7 @@ public class MazeTileset extends Tileset {
             .build();
 
         MapTileBuilder tile_2_3 = new MapTileBuilder(tile_2_3Frame)
-            .withTileType(TileType.PASSABLE);
+            .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(tile_2_3);
 
@@ -269,7 +269,7 @@ public class MazeTileset extends Tileset {
             .build();
 
         MapTileBuilder tile_3_3 = new MapTileBuilder(tile_3_3Frame)
-            .withTileType(TileType.PASSABLE);
+            .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(tile_3_3);
 
@@ -332,7 +332,7 @@ public class MazeTileset extends Tileset {
             .build();
 
         MapTileBuilder tile_4_2 = new MapTileBuilder(tile_4_2Frame)
-            .withTileType(TileType.PASSABLE);
+            .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(tile_4_2);
 
@@ -341,7 +341,7 @@ public class MazeTileset extends Tileset {
             .build();
 
         MapTileBuilder tile_4_3 = new MapTileBuilder(tile_4_3Frame)
-            .withTileType(TileType.PASSABLE);
+            .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(tile_4_3);
 
@@ -350,7 +350,7 @@ public class MazeTileset extends Tileset {
             .build();
 
         MapTileBuilder tile_4_4 = new MapTileBuilder(tile_4_4Frame)
-            .withTileType(TileType.PASSABLE);
+            .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(tile_4_4);
 
@@ -359,7 +359,7 @@ public class MazeTileset extends Tileset {
             .build();
 
         MapTileBuilder tile_4_5 = new MapTileBuilder(tile_4_5Frame)
-            .withTileType(TileType.PASSABLE);
+            .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(tile_4_5);
 
@@ -413,7 +413,7 @@ public class MazeTileset extends Tileset {
             .build();
 
         MapTileBuilder tile_5_3 = new MapTileBuilder(tile_5_3Frame)
-            .withTileType(TileType.PASSABLE);
+            .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(tile_5_3);
 
@@ -638,7 +638,7 @@ public class MazeTileset extends Tileset {
             .build();
 
         MapTileBuilder tile_8_4 = new MapTileBuilder(tile_8_4Frame)
-            .withTileType(TileType.PASSABLE);
+            .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(tile_8_4);
 
@@ -647,7 +647,7 @@ public class MazeTileset extends Tileset {
             .build();
 
         MapTileBuilder tile_8_5 = new MapTileBuilder(tile_8_5Frame)
-            .withTileType(TileType.PASSABLE);
+            .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(tile_8_5);
 
@@ -656,7 +656,7 @@ public class MazeTileset extends Tileset {
             .build();
 
         MapTileBuilder tile_8_6 = new MapTileBuilder(tile_8_6Frame)
-            .withTileType(TileType.PASSABLE);
+            .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(tile_8_6);
 
@@ -665,7 +665,7 @@ public class MazeTileset extends Tileset {
             .build();
 
         MapTileBuilder tile_8_7 = new MapTileBuilder(tile_8_7Frame)
-            .withTileType(TileType.PASSABLE);
+            .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(tile_8_7);
 
@@ -710,7 +710,7 @@ public class MazeTileset extends Tileset {
             .build();
 
         MapTileBuilder tile_9_4 = new MapTileBuilder(tile_9_4Frame)
-            .withTileType(TileType.PASSABLE);
+            .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(tile_9_4);
 
@@ -719,7 +719,7 @@ public class MazeTileset extends Tileset {
             .build();
 
         MapTileBuilder tile_9_5 = new MapTileBuilder(tile_9_5Frame)
-            .withTileType(TileType.PASSABLE);
+            .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(tile_9_5);
 
@@ -728,7 +728,7 @@ public class MazeTileset extends Tileset {
             .build();
 
         MapTileBuilder tile_9_6 = new MapTileBuilder(tile_9_6Frame)
-            .withTileType(TileType.PASSABLE);
+            .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(tile_9_6);
 
@@ -737,7 +737,7 @@ public class MazeTileset extends Tileset {
             .build();
 
         MapTileBuilder tile_9_7 = new MapTileBuilder(tile_9_7Frame)
-            .withTileType(TileType.PASSABLE);
+            .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(tile_9_7);
 

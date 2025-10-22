@@ -12,7 +12,7 @@ public class MazeMap extends Map {
 
     public MazeMap() {
         super("maze_map.txt", new MazeTileset());
-        this.playerStartPosition = getMapTile(0, 0).getLocation();
+        this.playerStartPosition = getMapTile(5, 10).getLocation();
     }
     
     @Override

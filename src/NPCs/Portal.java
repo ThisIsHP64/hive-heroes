@@ -16,7 +16,7 @@ public class Portal extends NPC {
 
     public Portal(int id, Point location) {
         super(id, location.x, location.y, 
-            new SpriteSheet(ImageLoader.load("portal.png"), 
+            new SpriteSheet(ImageLoader.load("portal1.png"), 
             83, 68, 0), 
             "STAND_LEFT");
     }

@@ -169,6 +169,10 @@ public class Bee extends Player {
     public void update() {
         super.update();
 
+        System.out.println(map.getWidth());
+        System.out.println(map.getHeight());
+        
+
         handleAttackInput();
 
         // both the Bee instance/class and ResourceHUD class have access to the get
@@ -177,6 +181,9 @@ public class Bee extends Player {
         int tileX = (int)(getX() / TILE);
         int tileY = (int)(getY() / TILE);
 
+        System.out.println(tileX);
+                System.out.println(tileY);
+
         if((tileX == 49 || tileX == 50) && tileY == 36 && keyLocker.isKeyLocked(Key.SPACE) && BeeStats.getNectar() > 0) {
             if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) {
                 BeeStats.setNectar(BeeStats.getNectar() - 1);
@@ -184,6 +191,7 @@ public class Bee extends Player {
             }
             TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
         }
+
 
         System.out.println(String.format(
                 "Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d  X: %d  Y: %d",
@@ -197,6 +205,14 @@ public class Bee extends Player {
 
         // needs to be checked every frame (powerup)
         handlePowerupInput();
+    }
+
+    public void handleCollision() {
+        int tileX = (int)(getX() / TILE);
+        int tileY = (int)(getY() / TILE);
+
+        if(tileX >= map.getWidth()) {
+        }
     }
 
     public void showPowerupIcon(String spritePath, int durationMs) {

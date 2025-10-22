@@ -17,12 +17,15 @@ public class DungeonTileset extends Tileset {
     @Override
     public ArrayList<MapTileBuilder> defineTiles() {
         ArrayList<MapTileBuilder> mapTiles = new ArrayList<>();
+
         Frame tile_0_0Frame = new FrameBuilder(getSubImage(0, 0)).withScale(tileScale).build();
         MapTileBuilder tile_0_0 = new MapTileBuilder(tile_0_0Frame).withTileType(TileType.PASSABLE);
         mapTiles.add(tile_0_0);
+
         Frame tile_1_0Frame = new FrameBuilder(getSubImage(1, 0)).withScale(tileScale).build();
-        MapTileBuilder tile_1_0 = new MapTileBuilder(tile_1_0Frame).withTileType(TileType.PASSABLE);
+        MapTileBuilder tile_1_0 = new MapTileBuilder(tile_1_0Frame).withTileType(TileType.NOT_PASSABLE);
         mapTiles.add(tile_1_0);
+
         Frame tile_2_0Frame = new FrameBuilder(getSubImage(2, 0)).withScale(tileScale).build();
         MapTileBuilder tile_2_0 = new MapTileBuilder(tile_2_0Frame).withTileType(TileType.PASSABLE);
         mapTiles.add(tile_2_0);
