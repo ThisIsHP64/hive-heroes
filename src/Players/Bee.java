@@ -169,6 +169,10 @@ public class Bee extends Player {
     public void update() {
         super.update();
 
+        System.out.println(map.getWidth());
+        System.out.println(map.getHeight());
+        
+
         handleAttackInput();
 
         // both the Bee instance/class and ResourceHUD class have access to the get
@@ -185,6 +189,7 @@ public class Bee extends Player {
             TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
         }
 
+
         System.out.println(String.format(
                 "Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d  X: %d  Y: %d",
                 BeeStats.getHealth(), BeeStats.getStamina(), BeeStats.getNectar(), BeeStats.getExperience(), BeeStats.getWalkSpeed(), HiveManager.getNectar(), tileX, tileY
@@ -198,6 +203,7 @@ public class Bee extends Player {
         // needs to be checked every frame (powerup)
         handlePowerupInput();
     }
+
 
     public void showPowerupIcon(String spritePath, int durationMs) {
         if (powerupHUD != null) {

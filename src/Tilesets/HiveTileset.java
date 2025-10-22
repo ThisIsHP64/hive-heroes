@@ -4,6 +4,7 @@ import Builders.FrameBuilder;
 import Builders.MapTileBuilder;
 import Engine.ImageLoader;
 import GameObject.Frame;
+import Level.TileType;
 import Level.Tileset;
 import java.util.ArrayList;
 
@@ -203,7 +204,8 @@ public class HiveTileset extends Tileset {
                 .withScale(tileScale)
                 .build();
 
-        MapTileBuilder chairSpot1Tile = new MapTileBuilder(chairSpot1Frame);
+        MapTileBuilder chairSpot1Tile = new MapTileBuilder(chairSpot1Frame)
+                .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(chairSpot1Tile);
 

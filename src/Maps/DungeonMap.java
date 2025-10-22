@@ -6,13 +6,14 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
+import NPCs.Portal;
 import Tilesets.DungeonTileset;
 
 public class DungeonMap extends Map {
 
     public DungeonMap() {
         super("dungeon_map.txt", new DungeonTileset());
-        this.playerStartPosition = getMapTile(0, 0).getLocation();
+        this.playerStartPosition = getMapTile(91, 50).getLocation();
     }
     
     @Override
@@ -28,7 +29,8 @@ public class DungeonMap extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-
+        Portal portal = new Portal(1, getMapTile(95, 49).getLocation());
+        npcs.add(portal);
 
         return npcs;
     }

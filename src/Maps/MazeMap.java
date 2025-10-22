@@ -6,13 +6,14 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
+import NPCs.Portal;
 import Tilesets.MazeTileset;
 
 public class MazeMap extends Map {
 
     public MazeMap() {
         super("maze_map.txt", new MazeTileset());
-        this.playerStartPosition = getMapTile(0, 0).getLocation();
+        this.playerStartPosition = getMapTile(5, 10).getLocation();
     }
     
     @Override
@@ -28,6 +29,8 @@ public class MazeMap extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
+        Portal portal = new Portal(1, getMapTile(1, 11).getLocation());
+        npcs.add(portal);
 
 
         return npcs;

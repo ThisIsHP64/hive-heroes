@@ -8,6 +8,7 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
+import NPCs.Portal;
 import NPCs.Volcano;
 import Scripts.SimpleTextScript;
 import Tilesets.VolcanoTileset;
@@ -18,7 +19,7 @@ public class VolcanoMap extends Map {
     public VolcanoMap() {
         super("volcano_map.txt", new VolcanoTileset());
         // place Bee safely inside the volcanic map walls
-        this.playerStartPosition = getMapTile(70, 50).getLocation();
+        this.playerStartPosition = getMapTile(85, 50).getLocation();
     }
 
     @Override
@@ -34,6 +35,9 @@ public class VolcanoMap extends Map {
     @Override
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
+
+        Portal portal = new Portal(1, getMapTile(92, 49).getLocation());
+        npcs.add(portal);
 
         // Mirror the GrassMap style: give each spider a unique ID, use tile-based placement,
         // and nudge down a bit with addY(6) so feet align with the ground.

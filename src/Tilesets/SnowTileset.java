@@ -20,11 +20,11 @@ public class SnowTileset extends Tileset {
         ArrayList<MapTileBuilder> mapTiles = new ArrayList<>();
         // Row 0
         Frame tile_0_0Frame = new FrameBuilder(getSubImage(0, 0)).withScale(tileScale).build();
-        MapTileBuilder tile_0_0 = new MapTileBuilder(tile_0_0Frame).withTileType(TileType.PASSABLE);
+        MapTileBuilder tile_0_0 = new MapTileBuilder(tile_0_0Frame).withTileType(TileType.NOT_PASSABLE);
         mapTiles.add(tile_0_0);
         
         Frame tile_1_0Frame = new FrameBuilder(getSubImage(1, 0)).withScale(tileScale).build();
-        MapTileBuilder tile_1_0 = new MapTileBuilder(tile_1_0Frame).withTileType(TileType.PASSABLE);
+        MapTileBuilder tile_1_0 = new MapTileBuilder(tile_1_0Frame).withTileType(TileType.NOT_PASSABLE);
         mapTiles.add(tile_1_0);
 
         Frame tile_2_0Frame = new FrameBuilder(getSubImage(2, 0)).withScale(tileScale).build();
@@ -70,7 +70,7 @@ public class SnowTileset extends Tileset {
 
         // Row 1
         Frame tile_0_1Frame = new FrameBuilder(getSubImage(0, 1)).withScale(tileScale).build();
-        MapTileBuilder tile_0_1 = new MapTileBuilder(tile_0_1Frame).withTileType(TileType.PASSABLE);
+        MapTileBuilder tile_0_1 = new MapTileBuilder(tile_0_1Frame).withTileType(TileType.NOT_PASSABLE);
         mapTiles.add(tile_0_1);
         Frame tile_1_1Frame = new FrameBuilder(getSubImage(1, 1)).withScale(tileScale).build();
         MapTileBuilder tile_1_1 = new MapTileBuilder(tile_1_1Frame).withTileType(TileType.PASSABLE);
@@ -117,7 +117,7 @@ public class SnowTileset extends Tileset {
         MapTileBuilder tile_0_2 = new MapTileBuilder(tile_0_2Frame).withTileType(TileType.PASSABLE);
         mapTiles.add(tile_0_2);
         Frame tile_1_2Frame = new FrameBuilder(getSubImage(1, 2)).withScale(tileScale).build();
-        MapTileBuilder tile_1_2 = new MapTileBuilder(tile_1_2Frame).withTileType(TileType.PASSABLE);
+        MapTileBuilder tile_1_2 = new MapTileBuilder(tile_1_2Frame).withTileType(TileType.NOT_PASSABLE);
         mapTiles.add(tile_1_2);
         Frame tile_2_2Frame = new FrameBuilder(getSubImage(2, 2)).withScale(tileScale).build();
         MapTileBuilder tile_2_2 = new MapTileBuilder(tile_2_2Frame).withTileType(TileType.PASSABLE);
@@ -158,13 +158,13 @@ public class SnowTileset extends Tileset {
 
         // Row 3
         Frame tile_0_3Frame = new FrameBuilder(getSubImage(0, 3)).withScale(tileScale).build();
-        MapTileBuilder tile_0_3 = new MapTileBuilder(tile_0_3Frame).withTileType(TileType.PASSABLE);
+        MapTileBuilder tile_0_3 = new MapTileBuilder(tile_0_3Frame).withTileType(TileType.NOT_PASSABLE);
         mapTiles.add(tile_0_3);
         Frame tile_1_3Frame = new FrameBuilder(getSubImage(1, 3)).withScale(tileScale).build();
-        MapTileBuilder tile_1_3 = new MapTileBuilder(tile_1_3Frame).withTileType(TileType.PASSABLE);
+        MapTileBuilder tile_1_3 = new MapTileBuilder(tile_1_3Frame).withTileType(TileType.NOT_PASSABLE);
         mapTiles.add(tile_1_3);
         Frame tile_2_3Frame = new FrameBuilder(getSubImage(2, 3)).withScale(tileScale).build();
-        MapTileBuilder tile_2_3 = new MapTileBuilder(tile_2_3Frame).withTileType(TileType.PASSABLE);
+        MapTileBuilder tile_2_3 = new MapTileBuilder(tile_2_3Frame).withTileType(TileType.NOT_PASSABLE);
         mapTiles.add(tile_2_3);
         Frame tile_3_3Frame = new FrameBuilder(getSubImage(3, 3)).withScale(tileScale).build();
         MapTileBuilder tile_3_3 = new MapTileBuilder(tile_3_3Frame).withTileType(TileType.PASSABLE);

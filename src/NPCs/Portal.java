@@ -16,7 +16,7 @@ public class Portal extends NPC {
 
     public Portal(int id, Point location) {
         super(id, location.x, location.y, 
-            new SpriteSheet(ImageLoader.load("portal.png"), 
+            new SpriteSheet(ImageLoader.load("portal1.png"), 
             83, 68, 0), 
             "STAND_LEFT");
     }
@@ -26,19 +26,19 @@ public class Portal extends NPC {
         return new HashMap<String, Frame[]>() {{
             put("STAND_LEFT", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
-                        .withScale(3)
+                        .withScale(2)
                         .withBounds(7, 13, 30, 35)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 1), 8)
-                        .withScale(3)
+                        .withScale(2)
                         .withBounds(7, 13, 30, 35)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 2), 8)
-                        .withScale(3)
+                        .withScale(2)
                         .withBounds(7, 13, 30, 35)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 3), 8)
-                        .withScale(3)
+                        .withScale(2)
                         .withBounds(7, 13, 30, 35)
                         .build(),
             });
