@@ -554,31 +554,31 @@ public class Spider extends NPC {
             });
             
             put("DEATH", new Frame[] {
-                new FrameBuilder(spriteSheet.getSprite(3, 0), 8)
+                new FrameBuilder(spriteSheet.getSprite(3, 0), 10)
                     .withScale(SCALE)
                     .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
                     .build(),
-                new FrameBuilder(spriteSheet.getSprite(3, 1), 8)
+                new FrameBuilder(spriteSheet.getSprite(3, 1), 10)
                     .withScale(SCALE)
                     .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
                     .build(),
-                new FrameBuilder(spriteSheet.getSprite(3, 2), 8)
+                new FrameBuilder(spriteSheet.getSprite(3, 2), 10)
                     .withScale(SCALE)
                     .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
                     .build(),
-                new FrameBuilder(spriteSheet.getSprite(3, 3), 8)
+                new FrameBuilder(spriteSheet.getSprite(3, 3), 10)
                     .withScale(SCALE)
                     .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
                     .build(),
-                new FrameBuilder(spriteSheet.getSprite(3, 4), 8)
+                new FrameBuilder(spriteSheet.getSprite(3, 4), 10)
                     .withScale(SCALE)
                     .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
                     .build(),
-                new FrameBuilder(spriteSheet.getSprite(3, 5), 8)
+                new FrameBuilder(spriteSheet.getSprite(3, 5), 10)
                     .withScale(SCALE)
                     .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
                     .build(),
-                new FrameBuilder(spriteSheet.getSprite(3, 6), 8)
+                new FrameBuilder(spriteSheet.getSprite(3, 6), 10)
                     .withScale(SCALE)
                     .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
                     .build()

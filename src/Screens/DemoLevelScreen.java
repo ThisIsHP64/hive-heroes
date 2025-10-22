@@ -7,6 +7,7 @@ import Game.ScreenCoordinator;
 import Level.*;
 import Maps.DemoMap;
 import Players.Bee;
+import StaticClasses.BeeStats;
 import Utils.Direction;
 import Utils.Point;
 import NPCs.RareSunflowerwithFlowers;
@@ -73,7 +74,7 @@ public class DemoLevelScreen extends Screen implements GameListener {
 
                                 if (sting.intersects(sp.getHitbox())) {
                                     System.out.println("Spider hit!");
-                                    bee.setStamina(bee.getStamina() + 1);
+                                    BeeStats.setStamina(BeeStats.getStamina() + 1);
                                 }
                             }
 
@@ -82,7 +83,7 @@ public class DemoLevelScreen extends Screen implements GameListener {
                                 
                                 if (sting.intersects(rareSunflower.getHitbox())) {
                                     System.out.println("Sunflower hit!");
-                                    bee.setNectar(bee.getNectar() + 1);
+                                    BeeStats.setNectar(BeeStats.getNectar() + 1);
                                 }
                             }
                         }

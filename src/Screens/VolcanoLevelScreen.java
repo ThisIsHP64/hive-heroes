@@ -7,6 +7,7 @@ import Game.ScreenCoordinator;
 import Level.*;
 import Maps.VolcanoMap;
 import Players.Bee;
+import StaticClasses.BeeStats;
 import Utils.Direction;
 import NPCs.RareSunflowerwithFlowers;
 import Enemies.Spider;
@@ -91,7 +92,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                 
                                 if (sting.intersects(rareSunflower.getHitbox())) {
                                     System.out.println("Sunflower hit!");
-                                    bee.setNectar(bee.getNectar() + 1);
+                                    BeeStats.setNectar(BeeStats.getNectar() + 1);
                                 }
                             }
                         }

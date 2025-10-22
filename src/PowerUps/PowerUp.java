@@ -71,7 +71,7 @@ public class PowerUp extends NPC {
                 animationStartTime = System.currentTimeMillis();
 
                 // give bee the power-up
-                bee.collectPowerup("SpeedPU_hud.png");
+                bee.collectPowerup("speed_icon.png");
 
                 // mark as used so it can’t be picked up again
                 used = true;

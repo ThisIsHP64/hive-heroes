@@ -12,6 +12,7 @@ import Level.Map;
 import Level.Player;
 import Maps.HiveMap;
 import Players.Bee;
+import StaticClasses.BeeStats;
 import Utils.Direction;
 
 public class HiveLevelScreen extends Screen implements GameListener {
@@ -30,7 +31,9 @@ public class HiveLevelScreen extends Screen implements GameListener {
         this.screenCoordinator = screenCoordinator;
     }
 
+    
     public void initialize() {
+        
         hasInitialized = true;
         flagManager = new FlagManager();
         flagManager.addFlag("hasTalkedToQueen", false);

@@ -12,6 +12,7 @@ import Level.Map;
 import Level.Player;
 import SpriteImage.PowerupHUD;
 import SpriteImage.ResourceHUD;
+import StaticClasses.BeeStats;
 import StaticClasses.HiveManager;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
@@ -39,7 +40,6 @@ public class Bee extends Player {
     private boolean prevSpaceDown = false; // edge detection
 
     // Death state - tracks if bee is dead and playing death animation
-    private boolean isDead = false;
     private boolean deathAnimationComplete = false;
 
     // Slash effect when taking damage
@@ -82,10 +82,7 @@ public class Bee extends Player {
         MOVE_DOWN_KEY = Key.S;
 
         walkSpeed = 10f;
-        setHealth(100);
-        setStamina(25);
-        setNectar(10);
-        setExperience(5);
+
         resourceBars = new ResourceHUD(this);
 
         powerupHUD = new PowerupHUD();
@@ -111,7 +108,7 @@ public class Bee extends Player {
 
     // Called by enemies to damage the bee
     public void applyDamage(int amount) {
-        if (isDead) return; // already dead, can't take more damage
+        if (BeeStats.isDead()) return; // already dead, can't take more damage
         
         // Logic to check shield first when the powerup is picked up
         // Check if shield can absorb damage first
@@ -126,17 +123,17 @@ public class Bee extends Player {
 
             // remove shield icon when it's gone
             if (powerupHUD != null) {
-                powerupHUD.removeIcon("ShieldPU_hud.png");
+                powerupHUD.removeIcon("shield_icon.png");
             }
         }
         return; // stop here so health isn't reduced
     }
 
 
-        int currentHealth = getHealth();
+        int currentHealth = BeeStats.getHealth();
         currentHealth -= amount;
         if (currentHealth < 0) currentHealth = 0;
-        setHealth(currentHealth);
+        BeeStats.setHealth(currentHealth);
         
         System.out.println("Bee took " + amount + " damage! HP now: " + currentHealth);
         
@@ -152,9 +149,10 @@ public class Bee extends Player {
         }
         
         // Check if this killed the bee
-        if (currentHealth <= 0 && !isDead) {
-            isDead = true;
-            walkSpeed = 0f; // freeze movement
+        if (currentHealth <= 0) {
+            System.out.println(BeeStats.isDead());
+            BeeStats.setDead(true);
+            BeeStats.setWalkSpeed(0); // freeze movement
             System.out.println("Bee died! Playing death animation...");
         }
     }
@@ -175,13 +173,13 @@ public class Bee extends Player {
 
         // both the Bee instance/class and ResourceHUD class have access to the get
         // methods for the resources.
-        resourceBars.update(this);
+        resourceBars.update();
         int tileX = (int)(getX() / TILE);
         int tileY = (int)(getY() / TILE);
 
-        if((tileX == 49 || tileX == 50) && tileY == 36 && keyLocker.isKeyLocked(Key.SPACE) && this.getNectar() > 0) {
-            if (TeleportManager.getCurrentGameState() != GameState.HIVELEVEL) {
-                this.setNectar(this.getNectar() - 1);
+        if((tileX == 49 || tileX == 50) && tileY == 36 && keyLocker.isKeyLocked(Key.SPACE) && BeeStats.getNectar() > 0) {
+            if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) {
+                BeeStats.setNectar(BeeStats.getNectar() - 1);
                 HiveManager.depositNectar();
             }
             TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
@@ -189,7 +187,7 @@ public class Bee extends Player {
 
         System.out.println(String.format(
                 "Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d  X: %d  Y: %d",
-                this.getHealth(), this.getStamina(), this.getNectar(), this.getExperience(), this.getWalkSpeed(), HiveManager.getNectar(), tileX, tileY
+                BeeStats.getHealth(), BeeStats.getStamina(), BeeStats.getNectar(), BeeStats.getExperience(), BeeStats.getWalkSpeed(), HiveManager.getNectar(), tileX, tileY
         ));
 
         if (attacking && System.currentTimeMillis() - attackStart > ATTACK_ACTIVE_MS) {
@@ -269,7 +267,7 @@ public class Bee extends Player {
     @Override
     protected void handlePlayerAnimation() {
         // Death animation overrides everything else
-        if (isDead) {
+        if (BeeStats.isDead()) {
             currentAnimationName = "DEATH";
             return;
         }
@@ -419,54 +417,15 @@ public class Bee extends Player {
         return out;
     }
 
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public int getStamina() {
-        return stamina;
-    }
-
-    public void setStamina(int stamina) {
-        this.stamina = stamina;
-    }
-
-    public int getNectar() {
-        return nectar;
-    }
-
-    public void setNectar(int nectar) {
-        this.nectar = nectar;
-    }
-
-    public int getExperience() {
-        return experience;
-    }
-
-    public void setExperience(int experience) {
-        this.experience = experience;
-    }
-
-    public Map getMap() {
-        return map;
-    }
-
-    public void setMap(Map map) {
-        this.map = map;
-    }
 
     // Getter for death state - useful for game over checks
     public boolean isDead() {
-        return isDead;
+        return BeeStats.isDead();
     }
     
     // check if death animation finished playing (16 frames at 10 delay each = 160 ticks)
     public boolean isDeathAnimationComplete() {
-        if (!isDead) return false;
+        if (!BeeStats.isDead()) return false;
         
         // death animation has 16 frames at 10 delay each
         // after animation completes, we're ready for game over
@@ -485,12 +444,12 @@ public class Bee extends Player {
 
             // remove the speed icon
             if (powerupHUD != null) {
-                powerupHUD.removeIcon("SpeedPU_hud.png");
+                powerupHUD.removeIcon("speed_icon.png");
             }
 
             // apply speed boost
-            originalSpeed = getWalkSpeed();
-            setWalkSpeed(originalSpeed * BOOST_MULTIPLIER);
+            originalSpeed = BeeStats.getWalkSpeed();
+            BeeStats.setWalkSpeed(originalSpeed * BOOST_MULTIPLIER);
             boostStartTime = System.currentTimeMillis();
             boostActive = true;
         }
@@ -498,7 +457,7 @@ public class Bee extends Player {
     if (boostActive) {
         long elapsed = System.currentTimeMillis() - boostStartTime;
         if (elapsed > BOOST_DURATION_MS) {
-            setWalkSpeed(originalSpeed);
+            BeeStats.setWalkSpeed(originalSpeed);
             boostActive = false;
             System.out.println("Speed boost ended!");
             }
