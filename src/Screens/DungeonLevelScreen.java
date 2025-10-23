@@ -11,7 +11,8 @@ import Players.Bee;
 import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
-import NPCs.Portal;
+import Portals.GrassPortal;
+import Portals.Portal;
 import NPCs.RareSunflowerwithFlowers;
 import Enemies.Spider;
 
@@ -26,7 +27,7 @@ public class DungeonLevelScreen extends Screen implements GameListener {
     protected WinScreen winScreen;
     protected FlagManager flagManager;
     protected boolean hasInitialized = false;
-    
+
     // sting FX resource - single static image shown when spider is hit
     private SpriteSheet stingFxSheet;
 
@@ -69,7 +70,7 @@ public class DungeonLevelScreen extends Screen implements GameListener {
                 // check if bee died and death animation finished
                 if (player instanceof Bee) {
                     Bee bee = (Bee) player;
-                    
+
                     // transition to game over after death animation completes
                     if (bee.isDead() && bee.isDeathAnimationComplete()) {
                         screenCoordinator.setGameState(GameState.GAME_OVER);
@@ -92,7 +93,7 @@ public class DungeonLevelScreen extends Screen implements GameListener {
 
                             if (npc instanceof RareSunflowerwithFlowers) {
                                 RareSunflowerwithFlowers rareSunflower = (RareSunflowerwithFlowers) npc;
-                                
+
                                 if (sting.intersects(rareSunflower.getHitbox())) {
                                     System.out.println("Sunflower hit!");
                                     BeeStats.setNectar(BeeStats.getNectar() + 1);
@@ -106,10 +107,19 @@ public class DungeonLevelScreen extends Screen implements GameListener {
                                     TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
                                 }
                             }
+
+                            if (npc instanceof GrassPortal) {
+                                GrassPortal grassPortal = (GrassPortal) npc;
+
+                                if (sting.intersects(grassPortal.getHitbox())) {
+                                    TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
+                                }
+                            }
+
                         }
                     }
                 }
-                
+
                 // remove dead spiders after death animation lingers
                 map.getNPCs().removeIf(npc -> npc instanceof Spider && ((Spider) npc).canBeRemoved());
 
@@ -134,7 +144,7 @@ public class DungeonLevelScreen extends Screen implements GameListener {
         switch (playLevelScreenState) {
             case RUNNING:
                 map.draw(player, graphicsHandler);
-                
+
                 // draw attack FX on spiders that were just hit
                 if (stingFxSheet != null) {
                     float cameraX = map.getCamera().getX();
@@ -146,19 +156,18 @@ public class DungeonLevelScreen extends Screen implements GameListener {
                             if (sp.isShowingAttackFx()) {
                                 // position FX directly on spider sprite
                                 int fxSize = 64;
-                                
+
                                 // start at spider's sprite position
                                 int fxX = Math.round(sp.getX() - cameraX);
                                 int fxY = Math.round(sp.getY() - cameraY);
-                                
+
                                 // shift down and left to center on spider body
                                 fxX -= 10;
                                 fxY += 15;
 
                                 graphicsHandler.drawImage(
-                                    stingFxSheet.getSprite(0, 0),
-                                    fxX, fxY, fxSize, fxSize
-                                );
+                                        stingFxSheet.getSprite(0, 0),
+                                        fxX, fxY, fxSize, fxSize);
                             }
                         }
                     }
@@ -174,16 +183,16 @@ public class DungeonLevelScreen extends Screen implements GameListener {
         return playLevelScreenState;
     }
 
-    public void resetLevel() { 
-        initialize(); 
+    public void resetLevel() {
+        initialize();
     }
 
-    public void goBackToMenu() { 
-        screenCoordinator.setGameState(GameState.MENU); 
+    public void goBackToMenu() {
+        screenCoordinator.setGameState(GameState.MENU);
     }
 
-    private enum PlayLevelScreenState { 
-        RUNNING, LEVEL_COMPLETED 
+    private enum PlayLevelScreenState {
+        RUNNING, LEVEL_COMPLETED
     }
 
     public boolean hasInitialized() {

@@ -1,4 +1,4 @@
-package NPCs;
+package Portals;
 
 import java.util.HashMap;
 
@@ -12,9 +12,9 @@ import GameObject.SpriteSheet;
 import Level.NPC;
 import Utils.Point;
 
-public class Portal extends NPC {
+public class ReversePortal extends NPC {
 
-    public Portal(int id, Point location) {
+    public ReversePortal(int id, Point location) {
         super(id, location.x, location.y, 
             new SpriteSheet(ImageLoader.load("portal1.png"), 
             83, 68, 0), 
@@ -27,19 +27,23 @@ public class Portal extends NPC {
             put("STAND_LEFT", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
                         .withScale(2)
-                        .withBounds(7, 13, 30, 35)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                        .withBounds(7, 13, 50, 35)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 1), 8)
                         .withScale(2)
-                        .withBounds(7, 13, 30, 35)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                        .withBounds(7, 13, 50, 35)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 2), 8)
                         .withScale(2)
-                        .withBounds(7, 13, 30, 35)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                        .withBounds(7, 13, 50, 35)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 3), 8)
                         .withScale(2)
-                        .withBounds(7, 13, 30, 35)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                        .withBounds(7, 13, 50, 35)
                         .build(),
             });
         }};

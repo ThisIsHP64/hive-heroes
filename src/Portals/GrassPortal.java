@@ -11,15 +11,13 @@ import GameObject.SpriteSheet;
 import Level.NPC;
 import Utils.Point;
 
-public class LavaPortal extends NPC {
+public class GrassPortal extends NPC {
 
-    public LavaPortal(int id, Point location) {
+    public GrassPortal(int id, Point location) {
         super(id, location.x, location.y, 
-            new SpriteSheet(ImageLoader.load("lava_portal.png"), 
-            42, 42),
-            "DEFAULT");
+            new SpriteSheet(ImageLoader.load("grass_portal.png"), 
+            42, 42), "DEFAULT");
     }
-    
     
     @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
@@ -27,14 +25,13 @@ public class LavaPortal extends NPC {
             put("DEFAULT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 0))
                             .withScale(3)
-                            .withBounds(0, 0, 42, 42)
+                            .withBounds(0, 0, 35, 43)
                             .build()
             });
         }};
     }
 
     public java.awt.Rectangle getHitbox() {
-
         Rectangle bounds = getBounds();
         
         int w = bounds.getWidth();

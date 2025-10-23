@@ -23,6 +23,8 @@ public class BeeStats {
     // related to bee death and respawn
     public static void respawn() {
         health = maxHealth;
+        nectar = 0;
+        
     }
 
     public static boolean isDead() {

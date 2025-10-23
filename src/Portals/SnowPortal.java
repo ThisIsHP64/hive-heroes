@@ -6,7 +6,6 @@ import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import GameObject.Frame;
-import GameObject.ImageEffect;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
 import Level.NPC;

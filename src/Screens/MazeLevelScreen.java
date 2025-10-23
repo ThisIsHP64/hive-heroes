@@ -10,7 +10,8 @@ import Players.Bee;
 import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
-import NPCs.Portal;
+import Portals.GrassPortal;
+import Portals.Portal;
 import NPCs.RareSunflowerwithFlowers;
 import Enemies.Spider;
 
@@ -102,6 +103,14 @@ public class MazeLevelScreen extends Screen implements GameListener {
                                 Portal portal = (Portal) npc;
 
                                 if (sting.intersects(portal.getHitbox())) {
+                                    TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
+                                }
+                            }
+
+                            if (npc instanceof GrassPortal) {
+                                GrassPortal grassPortal = (GrassPortal) npc;
+
+                                if (sting.intersects(grassPortal.getHitbox())) {
                                     TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
                                 }
                             }

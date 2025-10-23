@@ -12,7 +12,8 @@ import Level.Map;
 import Level.NPC;
 import Level.Player;
 import Maps.HiveMap;
-import NPCs.Portal;
+import Portals.GrassPortal;
+import Portals.Portal;
 import NPCs.QueenBee;
 import NPCs.RareSunflowerwithFlowers;
 import Players.Bee;
@@ -43,7 +44,7 @@ public class HiveLevelScreen extends Screen implements GameListener {
         hasInitialized = true;
         flagManager = new FlagManager();
         flagManager.addFlag("hasTalkedToQueen", false);
-
+        flagManager.addFlag("introductionAdministered", false);
 
         map = new HiveMap();
         map.setFlagManager(flagManager);
@@ -98,6 +99,14 @@ public class HiveLevelScreen extends Screen implements GameListener {
                                 HiveManager.depositNectar();
                                 BeeStats.setNectar(BeeStats.getNectar() - 1);
                             }
+                        }
+
+                        if (npc instanceof GrassPortal) {
+                                GrassPortal grassPortal = (GrassPortal) npc;
+
+                                if (sting.intersects(grassPortal.getHitbox())) {
+                                    TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
+                                }
                         }
 
                     }

@@ -6,7 +6,8 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
-import NPCs.Portal;
+import Portals.GrassPortal;
+import Portals.Portal;
 import Tilesets.SnowTileset;
 
 public class SnowMap extends Map {
@@ -28,8 +29,11 @@ public class SnowMap extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        Portal portal = new Portal(1, getMapTile(47, 13).getLocation());
-        npcs.add(portal);
+        // Portal portal = new Portal(1, getMapTile(47, 13).getLocation());
+        // npcs.add(portal);
+
+        GrassPortal grassPortal = new GrassPortal(1, getMapTile(47, 13).getLocation().addX(10).addY(15));
+        npcs.add(grassPortal);
 
 
         return npcs;
