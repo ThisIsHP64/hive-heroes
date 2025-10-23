@@ -12,6 +12,7 @@ import Level.Map;
 import Level.NPC;
 import Level.Player;
 import Maps.HiveMap;
+import Portals.GrassPortal;
 import Portals.Portal;
 import NPCs.QueenBee;
 import NPCs.RareSunflowerwithFlowers;
@@ -98,6 +99,14 @@ public class HiveLevelScreen extends Screen implements GameListener {
                                 HiveManager.depositNectar();
                                 BeeStats.setNectar(BeeStats.getNectar() - 1);
                             }
+                        }
+
+                        if (npc instanceof GrassPortal) {
+                                GrassPortal grassPortal = (GrassPortal) npc;
+
+                                if (sting.intersects(grassPortal.getHitbox())) {
+                                    TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
+                                }
                         }
 
                     }

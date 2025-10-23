@@ -8,6 +8,7 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
+import Portals.GrassPortal;
 import Portals.Portal;
 import NPCs.Volcano;
 import Scripts.SimpleTextScript;
@@ -35,8 +36,11 @@ public class VolcanoMap extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        Portal portal = new Portal(1, getMapTile(92, 49).getLocation());
-        npcs.add(portal);
+        // Portal portal = new Portal(1, getMapTile(92, 49).getLocation());
+        // npcs.add(portal);
+
+        GrassPortal grassPortal = new GrassPortal(1, getMapTile(92, 49).getLocation());
+        npcs.add(grassPortal);
 
         // Mirror the GrassMap style: give each spider a unique ID, use tile-based placement,
         // and nudge down a bit with addY(6) so feet align with the ground.

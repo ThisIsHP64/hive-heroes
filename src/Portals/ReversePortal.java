@@ -28,22 +28,22 @@ public class ReversePortal extends NPC {
                 new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
                         .withScale(2)
                         .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                        .withBounds(7, 13, 30, 35)
+                        .withBounds(7, 13, 50, 35)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 1), 8)
                         .withScale(2)
                         .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                        .withBounds(7, 13, 30, 35)
+                        .withBounds(7, 13, 50, 35)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 2), 8)
                         .withScale(2)
                         .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                        .withBounds(7, 13, 30, 35)
+                        .withBounds(7, 13, 50, 35)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 3), 8)
                         .withScale(2)
                         .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                        .withBounds(7, 13, 30, 35)
+                        .withBounds(7, 13, 50, 35)
                         .build(),
             });
         }};

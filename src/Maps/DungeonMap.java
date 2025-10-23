@@ -6,6 +6,7 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
+import Portals.GrassPortal;
 import Portals.Portal;
 import Tilesets.DungeonTileset;
 
@@ -29,8 +30,11 @@ public class DungeonMap extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        Portal portal = new Portal(1, getMapTile(95, 49).getLocation());
-        npcs.add(portal);
+        // Portal portal = new Portal(1, getMapTile(95, 49).getLocation());
+        // npcs.add(portal);
+
+        GrassPortal grassPortal = new GrassPortal(1, getMapTile(95, 49).getLocation());
+        npcs.add(grassPortal);
 
         return npcs;
     }

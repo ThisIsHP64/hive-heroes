@@ -6,6 +6,7 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
+import Portals.GrassPortal;
 import Portals.Portal;
 import Tilesets.MazeTileset;
 
@@ -29,9 +30,8 @@ public class MazeMap extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        Portal portal = new Portal(1, getMapTile(1, 11).getLocation());
-        npcs.add(portal);
-
+        GrassPortal grassPortal = new GrassPortal(1, getMapTile(19, 21).getLocation().addX(35).addY(20));
+        npcs.add(grassPortal);
 
         return npcs;
     }
