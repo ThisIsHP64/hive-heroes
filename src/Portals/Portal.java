@@ -1,4 +1,4 @@
-package NPCs;
+package Portals;
 
 import java.util.HashMap;
 

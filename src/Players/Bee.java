@@ -169,8 +169,8 @@ public class Bee extends Player {
     public void update() {
         super.update();
 
-        System.out.println(map.getWidth());
-        System.out.println(map.getHeight());
+        // System.out.println(this.getWidth());
+        // System.out.println(this.getHeight());
         
 
         handleAttackInput();
@@ -181,13 +181,16 @@ public class Bee extends Player {
         int tileX = (int)(getX() / TILE);
         int tileY = (int)(getY() / TILE);
 
-        if((tileX == 49 || tileX == 50) && tileY == 36 && keyLocker.isKeyLocked(Key.SPACE) && BeeStats.getNectar() > 0) {
-            if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) {
-                BeeStats.setNectar(BeeStats.getNectar() - 1);
-                HiveManager.depositNectar();
-            }
-            TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
-        }
+        // for positioning triggers
+        // System.out.println(getX() + ", " + getY());
+
+        // if((tileX == 49 || tileX == 50) && tileY == 36 && keyLocker.isKeyLocked(Key.SPACE) && BeeStats.getNectar() > 0) {
+        //     if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) {
+        //         BeeStats.setNectar(BeeStats.getNectar() - 1);
+        //         HiveManager.depositNectar();
+        //     }
+        //     TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
+        // }
 
 
         System.out.println(String.format(

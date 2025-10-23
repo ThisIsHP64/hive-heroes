@@ -19,14 +19,16 @@ public class QueenBeeScript extends Script {
                     addText("Rise, brave one of the hive.");
                     addText("You are the spark that will light the sky once more. ");
                     addText("Beyond the plains lie uncharted lands, filled with \ndangers and resources.");
-                    addText("Claim its nectar, and our song will echo through the \nfields again!");
+                    addText("Claim its nectar, and our song will echo through \nthe fields again!");
                 }});
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("In order to attack your foes, press the SPACE key.");
                     addText("Use WASD to move and outsmart your enemies!");
+                    addText("In order to attack your foes, press the SPACE key \nnear them.");
                     addText("Press E to claim potent powerups, and press 1 to \nactivate them.");
-                    addText("To extract nectar from flowers, or to enter worlds, \npress SPACE near them!");
+                    addText("To extract nectar from flowers, enter worlds, and to \ninteract with NPCs, press SPACE near them!");
+                    addText("To transfer collected nectar to me, press SPACE \nnear my head!");
+                    addText("Now go, my soldier.");
                 }});
 
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToQueen", true));
@@ -34,7 +36,37 @@ public class QueenBeeScript extends Script {
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToQueen", true));
-                addScriptAction(new TextboxScriptAction("I sure love doing walrus things!"));
+                scriptActions.add(new TextboxScriptAction() {{
+                    addText("Do you need a rundown of your duties?", new String[] { "Yes", "No" });
+                }});
+
+            scriptActions.add(new ConditionalScriptAction() {{
+                addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
+                    addRequirement(new CustomRequirement() {
+                        @Override
+                        public boolean isRequirementMet() {
+                            int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
+                            return answer == 0;
+                        } 
+                    });
+
+                    addScriptAction(new ChangeFlagScriptAction("hasTalkedToQueen", false));
+
+                }});
+
+                addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
+                    addRequirement(new CustomRequirement() {
+                        @Override
+                        public boolean isRequirementMet() {
+                            int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
+                            return answer == 1;
+                        }
+                    });
+
+                    addScriptAction(new TextboxScriptAction("Good luck out there."));
+
+                    }});
+                }});
             }});
         }});
         

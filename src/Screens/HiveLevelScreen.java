@@ -12,7 +12,7 @@ import Level.Map;
 import Level.NPC;
 import Level.Player;
 import Maps.HiveMap;
-import NPCs.Portal;
+import Portals.Portal;
 import NPCs.QueenBee;
 import NPCs.RareSunflowerwithFlowers;
 import Players.Bee;
@@ -43,7 +43,7 @@ public class HiveLevelScreen extends Screen implements GameListener {
         hasInitialized = true;
         flagManager = new FlagManager();
         flagManager.addFlag("hasTalkedToQueen", false);
-
+        flagManager.addFlag("introductionAdministered", false);
 
         map = new HiveMap();
         map.setFlagManager(flagManager);

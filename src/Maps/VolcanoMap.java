@@ -8,11 +8,10 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
-import NPCs.Portal;
+import Portals.Portal;
 import NPCs.Volcano;
 import Scripts.SimpleTextScript;
 import Tilesets.VolcanoTileset;
-import Utils.Point;
 
 public class VolcanoMap extends Map {
 

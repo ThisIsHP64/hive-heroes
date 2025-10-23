@@ -13,9 +13,9 @@ import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
 import NPCs.BigHive;
-import NPCs.Portal;
+import Portals.Portal;
 import NPCs.RareSunflowerwithFlowers;
-import NPCs.ReversePortal;
+import Portals.ReversePortal;
 import Enemies.Spider;
 
 import Engine.ImageLoader;

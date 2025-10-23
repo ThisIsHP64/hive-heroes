@@ -6,7 +6,7 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
-import NPCs.Portal;
+import Portals.Portal;
 import Tilesets.DungeonTileset;
 
 public class DungeonMap extends Map {

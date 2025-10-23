@@ -11,7 +11,7 @@ import Players.Bee;
 import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
-import NPCs.Portal;
+import Portals.Portal;
 import NPCs.RareSunflowerwithFlowers;
 import Enemies.Spider;
 

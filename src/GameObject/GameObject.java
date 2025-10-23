@@ -304,7 +304,8 @@ public class GameObject extends AnimatedSprite {
 				currentFrame.getHeight(),
 				currentFrame.getImageEffect()
 			);
-            // UNCOMMENT TO DRAW ALL HITBOXES
+
+        // UNCOMMENT TO DRAW ALL HITBOXES
         //    Rectangle bounds = getBounds();
         //    float camX = map.getCamera().getX();
         //    float camY = map.getCamera().getY();
@@ -320,6 +321,7 @@ public class GameObject extends AnimatedSprite {
         //            java.awt.Color.RED,
         //            2
         //    );
+
 		} else {
 			super.draw(graphicsHandler);
 		}
