@@ -28,7 +28,7 @@ public class QueenBeeScript extends Script {
                     addText("Press E to claim potent powerups, and press 1 to \nactivate them.");
                     addText("To extract nectar from flowers, enter worlds, and to \ninteract with NPCs, press SPACE near them!");
                     addText("To transfer collected nectar to me, press SPACE \nnear my head!");
-                    addText("Now go, my soldier.");
+                    addText("Now go, my soldier follow the path of the flower to new regions and prevail!");
                 }});
 
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToQueen", true));
