@@ -46,14 +46,13 @@ public class Bee extends Player {
     private boolean showSlash = false;
     private long slashStartTime = 0;
     private static final long SLASH_DISPLAY_MS = 400; // total duration
-    private static final long SLASH_SWITCH_MS = 200;  // when to flip direction
+    private static final long SLASH_SWITCH_MS = 200; // when to flip direction
     private SpriteSheet slashSheet;
-    
+
     // Attack FX when hitting enemies
     private SpriteSheet attackFxSheet;
 
     protected static boolean isRaining = false;
-
 
     // Necessary for the boost logic
     private boolean hasPowerup = false;
@@ -68,6 +67,41 @@ public class Bee extends Player {
     private boolean hasShield = false;
     private int shieldHealth = 0;
     private static final int MAX_SHIELD_HEALTH = 100;
+
+    public int getNectar() {
+        return BeeStats.getNectar();
+    }
+
+    public int getNectarCap() {
+        return BeeStats.getMaxNectar();
+    }
+
+    public boolean isNectarFull() {
+        return BeeStats.getNectar() >= BeeStats.getMaxNectar();
+    }
+
+    // Try to add nectar, never exceeding cap. Returns how much was actually added.//
+    public int tryAddNectar(int amount) {
+        if (amount <= 0)
+            return 0;
+        int before = BeeStats.getNectar();
+        int cap = BeeStats.getMaxNectar();
+        int after = Math.min(cap, before + amount);
+        int added = after - before;
+        if (added > 0) {
+            BeeStats.setNectar(after);
+            // TODO soon: if (after >= cap) UnleashMayhem.fire();
+        }
+        return added;
+    }
+
+    // Deposit everything the Bee is carrying; returns deposited amount. //
+    public int drainAllNectar() {
+        int carried = BeeStats.getNectar();
+        if (carried > 0)
+            BeeStats.setNectar(0);
+        return carried;
+    }
 
     private PowerupHUD powerupHUD;
 
@@ -95,7 +129,7 @@ public class Bee extends Player {
             System.out.println("Bee: ERROR loading slash sprite: " + e.getMessage());
             slashSheet = null;
         }
-        
+
         // Load attack FX sprite for when bee hits enemies
         try {
             attackFxSheet = new SpriteSheet(ImageLoader.load("bee_attack1.png"), 32, 32);
@@ -108,35 +142,36 @@ public class Bee extends Player {
 
     // Called by enemies to damage the bee
     public void applyDamage(int amount) {
-        if (BeeStats.isDead()) return; // already dead, can't take more damage
-        
+        if (BeeStats.isDead())
+            return; // already dead, can't take more damage
+
         // Logic to check shield first when the powerup is picked up
         // Check if shield can absorb damage first
         if (hasShield && shieldHealth > 0) {
             shieldHealth -= amount;
             System.out.println("Shield absorbed " + amount + " damage! Shield left: " + shieldHealth);
 
-        if (shieldHealth <= 0) {
-            hasShield = false;
-            shieldHealth = 0;
-            System.out.println("Shield depleted!");
+            if (shieldHealth <= 0) {
+                hasShield = false;
+                shieldHealth = 0;
+                System.out.println("Shield depleted!");
 
-            // remove shield icon when it's gone
-            if (powerupHUD != null) {
-                powerupHUD.removeIcon("shield_icon.png");
+                // remove shield icon when it's gone
+                if (powerupHUD != null) {
+                    powerupHUD.removeIcon("shield_icon.png");
+                }
             }
+            return; // stop here so health isn't reduced
         }
-        return; // stop here so health isn't reduced
-    }
-
 
         int currentHealth = BeeStats.getHealth();
         currentHealth -= amount;
-        if (currentHealth < 0) currentHealth = 0;
+        if (currentHealth < 0)
+            currentHealth = 0;
         BeeStats.setHealth(currentHealth);
-        
+
         System.out.println("Bee took " + amount + " damage! HP now: " + currentHealth);
-        
+
         // Trigger slash effect when damaged
         if (amount > 0) {
             showSlash = true;
@@ -147,7 +182,7 @@ public class Bee extends Player {
                 map.getCamera().shake();
             }
         }
-        
+
         // Check if this killed the bee
         if (currentHealth <= 0) {
             System.out.println(BeeStats.isDead());
@@ -171,32 +206,31 @@ public class Bee extends Player {
 
         // System.out.println(this.getWidth());
         // System.out.println(this.getHeight());
-        
 
         handleAttackInput();
 
         // both the Bee instance/class and ResourceHUD class have access to the get
         // methods for the resources.
         resourceBars.update();
-        int tileX = (int)(getX() / TILE);
-        int tileY = (int)(getY() / TILE);
+        int tileX = (int) (getX() / TILE);
+        int tileY = (int) (getY() / TILE);
 
         // for positioning triggers
         // System.out.println(getX() + ", " + getY());
 
-        // if((tileX == 49 || tileX == 50) && tileY == 36 && keyLocker.isKeyLocked(Key.SPACE) && BeeStats.getNectar() > 0) {
-        //     if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) {
-        //         BeeStats.setNectar(BeeStats.getNectar() - 1);
-        //         HiveManager.depositNectar();
-        //     }
-        //     TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
+        // if((tileX == 49 || tileX == 50) && tileY == 36 &&
+        // keyLocker.isKeyLocked(Key.SPACE) && BeeStats.getNectar() > 0) {
+        // if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) {
+        // BeeStats.setNectar(BeeStats.getNectar() - 1);
+        // HiveManager.depositNectar();
         // }
-
+        // TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
+        // }
 
         System.out.println(String.format(
                 "Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d  X: %d  Y: %d",
-                BeeStats.getHealth(), BeeStats.getStamina(), BeeStats.getNectar(), BeeStats.getExperience(), BeeStats.getWalkSpeed(), HiveManager.getNectar(), tileX, tileY
-        ));
+                BeeStats.getHealth(), BeeStats.getStamina(), BeeStats.getNectar(), BeeStats.getExperience(),
+                BeeStats.getWalkSpeed(), HiveManager.getNectar(), tileX, tileY));
 
         if (attacking && System.currentTimeMillis() - attackStart > ATTACK_ACTIVE_MS) {
             attacking = false;
@@ -206,7 +240,6 @@ public class Bee extends Player {
         // needs to be checked every frame (powerup)
         handlePowerupInput();
     }
-
 
     public void showPowerupIcon(String spritePath, int durationMs) {
         if (powerupHUD != null) {
@@ -280,7 +313,7 @@ public class Bee extends Player {
             currentAnimationName = "DEATH";
             return;
         }
-        
+
         if (attacking) {
             currentAnimationName = "ATTACK_" + facingDirection.name();
             return;
@@ -329,8 +362,8 @@ public class Bee extends Player {
         super.draw(graphicsHandler);
         resourceBars.draw(graphicsHandler);
 
-        if (powerupHUD != null) powerupHUD.draw(graphicsHandler);
-
+        if (powerupHUD != null)
+            powerupHUD.draw(graphicsHandler);
 
         // slash shows when we get hit
         // bigger slash effect when hit
@@ -344,7 +377,7 @@ public class Bee extends Player {
                 // get camera-adjusted position
                 float cameraX = map.getCamera().getX();
                 float cameraY = map.getCamera().getY();
-                
+
                 // center slash on bee's body - bee is 64*2.5 = 160 pixels, slash is 40 pixels
                 // offset horizontally by (160-40)/2 = 60, vertically shifted up by 20
                 int slashSize = 40;
@@ -426,21 +459,23 @@ public class Bee extends Player {
         return out;
     }
 
-
     // Getter for death state - useful for game over checks
     public boolean isDead() {
         return BeeStats.isDead();
     }
-    
-    // check if death animation finished playing (16 frames at 10 delay each = 160 ticks)
+
+    // check if death animation finished playing (16 frames at 10 delay each = 160
+    // ticks)
     public boolean isDeathAnimationComplete() {
-        if (!BeeStats.isDead()) return false;
-        
+        if (!BeeStats.isDead())
+            return false;
+
         // death animation has 16 frames at 10 delay each
         // after animation completes, we're ready for game over
         Frame[] deathAnim = animations.get("DEATH");
-        if (deathAnim == null) return true;
-        
+        if (deathAnim == null)
+            return true;
+
         // if we're on the last frame of death animation, it's complete
         return currentFrame == deathAnim[deathAnim.length - 1];
     }
@@ -463,12 +498,12 @@ public class Bee extends Player {
             boostActive = true;
         }
 
-    if (boostActive) {
-        long elapsed = System.currentTimeMillis() - boostStartTime;
-        if (elapsed > BOOST_DURATION_MS) {
-            BeeStats.setWalkSpeed(originalSpeed);
-            boostActive = false;
-            System.out.println("Speed boost ended!");
+        if (boostActive) {
+            long elapsed = System.currentTimeMillis() - boostStartTime;
+            if (elapsed > BOOST_DURATION_MS) {
+                BeeStats.setWalkSpeed(originalSpeed);
+                boostActive = false;
+                System.out.println("Speed boost ended!");
             }
         }
     }

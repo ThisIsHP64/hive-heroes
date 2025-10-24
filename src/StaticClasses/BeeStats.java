@@ -6,10 +6,10 @@ public class BeeStats {
     private static int maxHealth = 50;
 
     private static int stamina = 25;
-    private static int maxStamina = 25; 
-    
-    private static int nectar = 5;
-    private static int maxNectar = 50;
+    private static int maxStamina = 25;
+
+    private static int nectar = 0;
+    private static int maxNectar = 15;
 
     private static int experience = 1;
     private static int maxExperience = 100;
@@ -19,12 +19,11 @@ public class BeeStats {
 
     private static boolean isDead = false;
 
-
     // related to bee death and respawn
     public static void respawn() {
         health = maxHealth;
         nectar = 0;
-        
+
     }
 
     public static boolean isDead() {
@@ -51,7 +50,7 @@ public class BeeStats {
     public static void setMaxHealth(int newMaxHealth) {
         maxHealth = newMaxHealth;
     }
-    
+
     // stamina getters and setters
     public static int getStamina() {
         return stamina;
@@ -75,6 +74,10 @@ public class BeeStats {
     }
 
     public static void setNectar(int newNectar) {
+        if (newNectar < 0)
+            newNectar = 0;
+        if (newNectar > maxNectar)
+            newNectar = maxNectar; // hard cap
         nectar = newNectar;
     }
 
@@ -85,7 +88,6 @@ public class BeeStats {
     public static void setMaxNectar(int newMaxNectar) {
         maxNectar = newMaxNectar;
     }
-
 
     // experience setters and getters
     public static int getExperience() {
