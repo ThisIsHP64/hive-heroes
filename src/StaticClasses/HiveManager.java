@@ -7,7 +7,8 @@ public class HiveManager {
         return nectar;
     }
 
-    public static void depositNectar() {
+    public static void depositNectar(Level.Map map) {
         nectar++;
+        HordeManager.onDeposit(map);
     }
 }

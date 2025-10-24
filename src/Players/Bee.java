@@ -80,7 +80,7 @@ public class Bee extends Player {
         return BeeStats.getNectar() >= BeeStats.getMaxNectar();
     }
 
-    // Try to add nectar, never exceeding cap. Returns how much was actually added.//
+    // Try to add nectar, never exceeding cap. Returns how much was actually added.
     public int tryAddNectar(int amount) {
         if (amount <= 0)
             return 0;
@@ -90,7 +90,11 @@ public class Bee extends Player {
         int added = after - before;
         if (added > 0) {
             BeeStats.setNectar(after);
-            // TODO soon: if (after >= cap) UnleashMayhem.fire();
+
+            // 🔔 Trigger the spider horde when we reach the cap
+            if (after >= cap) {
+                StaticClasses.UnleashMayhem.fire(this.map, this);
+            }
         }
         return added;
     }

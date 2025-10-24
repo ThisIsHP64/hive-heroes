@@ -96,7 +96,7 @@ public class HiveLevelScreen extends Screen implements GameListener {
                         if (npc instanceof QueenBee) {
                             QueenBee queenBee = (QueenBee) npc;
                             if (sting.intersects(queenBee.getHitbox()) && BeeStats.getNectar() > 0) {
-                                HiveManager.depositNectar();
+                                HiveManager.depositNectar(map);
                                 BeeStats.setNectar(BeeStats.getNectar() - 1);
                             }
                         }

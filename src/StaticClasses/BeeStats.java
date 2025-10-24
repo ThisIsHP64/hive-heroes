@@ -2,8 +2,8 @@ package StaticClasses;
 
 public class BeeStats {
 
-    private static int health = 50;
-    private static int maxHealth = 50;
+    private static int health = 100;
+    private static int maxHealth = 100;
 
     private static int stamina = 25;
     private static int maxStamina = 25;
