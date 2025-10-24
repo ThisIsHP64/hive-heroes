@@ -8,6 +8,7 @@ import Enemies.Spider;
 import Level.Map;
 import Players.Bee;
 import Utils.Point;
+import Effects.SmokeParticle;
 
 public final class HordeManager {
     // --- Tuning knobs (v1) ---
@@ -16,7 +17,7 @@ public final class HordeManager {
     private static final int HORDE_MAX = 18;
     private static final long REINFORCE_AT_MS = 25_000;
     private static final long TIMEOUT_MS = 90_000;
-    private static final float SPEED_MULT = 1.6f;
+    private static final float SPEED_MULT = 2.0f;
 
     private static final int ROAM_NEAR_TARGET = 6;
     private static final int ROAM_GLOBAL_CAP = 12;
@@ -25,6 +26,7 @@ public final class HordeManager {
     private static boolean running = false;
     private static long startedAt = 0L;
     private static final ArrayList<Spider> horde = new ArrayList<>();
+    private static final ArrayList<SmokeParticle> particles = new ArrayList<>();
     private static final Random rng = new Random();
 
     public static boolean isRunning() {
@@ -84,6 +86,19 @@ public final class HordeManager {
         }
     }
 
+    public static void updateParticles() {
+        particles.removeIf(p -> {
+            p.update();
+            return p.isDead();
+        });
+    }
+
+    public static void drawParticles(Engine.GraphicsHandler graphicsHandler, float cameraX, float cameraY) {
+        for (SmokeParticle p : particles) {
+            p.draw(graphicsHandler, cameraX, cameraY);
+        }
+    }
+
     private static void spawnWave(Map map, Bee bee, int count) {
         System.out.println("[HordeManager] spawnWave called - spawning " + count + " spiders");
         System.out.println("[HordeManager] Bee position: " + bee.getX() + ", " + bee.getY());
@@ -96,6 +111,12 @@ public final class HordeManager {
             map.getNPCs().add(s);
             s.setMap(map);
             horde.add(s);
+            
+            // spawn smoke particles at spider location
+            for (int p = 0; p < 8; p++) {
+                particles.add(new SmokeParticle(spawn.x, spawn.y));
+            }
+            
             System.out.println("[HordeManager] Spawned horde spider #" + i + " at: " + spawn.x + ", " + spawn.y);
         }
         
@@ -137,15 +158,16 @@ public final class HordeManager {
         return c;
     }
 
-private static Point pickSpawnOutsideCamera(Map map, Bee bee) {
-    int tile = 64;
-    int minTiles = 3, maxTiles = 5; // spawn very close - 3-5 tiles (192-320 pixels)
-    int dist = (rng.nextInt(maxTiles - minTiles + 1) + minTiles) * tile;
-    double ang = rng.nextDouble() * Math.PI * 2;
-    int x = (int) (bee.getX() + Math.cos(ang) * dist);
-    int y = (int) (bee.getY() + Math.sin(ang) * dist);
-    return new Point(x, y);
-}
+    private static Point pickSpawnOutsideCamera(Map map, Bee bee) {
+        int tile = 64;
+        int minTiles = 3, maxTiles = 5;
+        int dist = (rng.nextInt(maxTiles - minTiles + 1) + minTiles) * tile;
+        double ang = rng.nextDouble() * Math.PI * 2;
+        int x = (int) (bee.getX() + Math.cos(ang) * dist);
+        int y = (int) (bee.getY() + Math.sin(ang) * dist);
+        return new Point(x, y);
+    }
+
     public static void onDeposit(Map map) {
         if (running)
             UnleashMayhem.cease(map);

@@ -72,10 +72,11 @@ public void update() {
             player.update();
             map.update(player);
             
-            // update horde manager every frame
-            if (player instanceof Bee) {
-                StaticClasses.HordeManager.update(map, (Bee) player);
-            }
+    // update horde manager every frame
+if (player instanceof Bee) {
+    StaticClasses.HordeManager.update(map, (Bee) player);
+    StaticClasses.HordeManager.updateParticles();
+}
             
             // check if bee died and death animation finished
             if (player instanceof Bee) {
@@ -178,14 +179,22 @@ public void update() {
         playLevelScreenState = PlayLevelScreenState.LEVEL_COMPLETED;
     }
 
-    public void draw(GraphicsHandler graphicsHandler) {
-        if (map == null || player == null || playLevelScreenState == null) {
-            return; // wait until initialize() runs
-        }
+   public void draw(GraphicsHandler graphicsHandler) {
+    if (map == null || player == null || playLevelScreenState == null) {
+        return; // wait until initialize() runs
+    }
 
-        switch (playLevelScreenState) {
-            case RUNNING:
-                map.draw(player, graphicsHandler);
+    switch (playLevelScreenState) {
+        case RUNNING:
+            map.draw(player, graphicsHandler);
+
+            // draw smoke particles
+            StaticClasses.HordeManager.drawParticles(graphicsHandler, 
+                map.getCamera().getX(), 
+                map.getCamera().getY());
+
+            // draw attack FX on spiders that were just hit
+
 
                 // draw attack FX on spiders that were just hit
                 if (stingFxSheet != null) {
