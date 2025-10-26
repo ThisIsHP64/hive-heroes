@@ -66,34 +66,34 @@ public class GrassLevelScreen extends Screen implements GameListener {
         stingFxSheet = new SpriteSheet(ImageLoader.load("bee_attack1.png"), 32, 32);
     }
 
-public void update() {
-    switch (playLevelScreenState) {
-        case RUNNING:
-            player.update();
-            map.update(player);
-            
-    // update horde manager every frame
-if (player instanceof Bee) {
-    StaticClasses.HordeManager.update(map, (Bee) player);
-    StaticClasses.HordeManager.updateParticles();
-}
-            
-            // check if bee died and death animation finished
-            if (player instanceof Bee) {
-                Bee bee = (Bee) player;
-                // transition to game over after death animation completes
-                if (bee.isDead() && bee.isDeathAnimationComplete()) {
-                    screenCoordinator.setGameState(GameState.GAME_OVER);
-                    return;
+    public void update() {
+        switch (playLevelScreenState) {
+            case RUNNING:
+                player.update();
+                map.update(player);
+                
+                // update horde manager every frame
+                if (player instanceof Bee) {
+                    StaticClasses.HordeManager.update(map, (Bee) player);
+                    StaticClasses.HordeManager.updateParticles();
                 }
-                if (bee.isAttacking()) {
-                    java.awt.Rectangle sting = bee.getAttackHitbox();
-                    // create a copy to avoid concurrent modification when spiders are added during
-                    // horde
-                    ArrayList<NPC> npcsCopy = new ArrayList<>(map.getNPCs());
-                    for (NPC npc : npcsCopy) {
-                        if (npc instanceof Spider) {
-                            Spider sp = (Spider) npc;
+                
+                // check if bee died and death animation finished
+                if (player instanceof Bee) {
+                    Bee bee = (Bee) player;
+                    // transition to game over after death animation completes
+                    if (bee.isDead() && bee.isDeathAnimationComplete()) {
+                        screenCoordinator.setGameState(GameState.GAME_OVER);
+                        return;
+                    }
+                    if (bee.isAttacking()) {
+                        java.awt.Rectangle sting = bee.getAttackHitbox();
+                        // create a copy to avoid concurrent modification when spiders are added during
+                        // horde
+                        ArrayList<NPC> npcsCopy = new ArrayList<>(map.getNPCs());
+                        for (NPC npc : npcsCopy) {
+                            if (npc instanceof Spider) {
+                                Spider sp = (Spider) npc;
 
                                 // only deal damage if spider isn't already dead
                                 if (!sp.isDead() && sting.intersects(sp.getHitbox())) {
@@ -171,7 +171,6 @@ if (player instanceof Bee) {
                 winScreen.update();
                 break;
         }
-
     }
 
     @Override
@@ -179,22 +178,19 @@ if (player instanceof Bee) {
         playLevelScreenState = PlayLevelScreenState.LEVEL_COMPLETED;
     }
 
-   public void draw(GraphicsHandler graphicsHandler) {
-    if (map == null || player == null || playLevelScreenState == null) {
-        return; // wait until initialize() runs
-    }
+    public void draw(GraphicsHandler graphicsHandler) {
+        if (map == null || player == null || playLevelScreenState == null) {
+            return; // wait until initialize() runs
+        }
 
-    switch (playLevelScreenState) {
-        case RUNNING:
-            map.draw(player, graphicsHandler);
+        switch (playLevelScreenState) {
+            case RUNNING:
+                map.draw(player, graphicsHandler);
 
-            // draw smoke particles
-            StaticClasses.HordeManager.drawParticles(graphicsHandler, 
-                map.getCamera().getX(), 
-                map.getCamera().getY());
-
-            // draw attack FX on spiders that were just hit
-
+                // draw smoke particles
+                StaticClasses.HordeManager.drawParticles(graphicsHandler, 
+                    map.getCamera().getX(), 
+                    map.getCamera().getY());
 
                 // draw attack FX on spiders that were just hit
                 if (stingFxSheet != null) {
@@ -235,6 +231,7 @@ if (player instanceof Bee) {
     }
 
     public void resetLevel() {
+        StaticClasses.UnleashMayhem.reset(); // stop horde on retry
         initialize();
     }
 

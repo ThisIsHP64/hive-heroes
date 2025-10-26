@@ -67,10 +67,16 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                 player.update();
                 map.update(player);
 
+                // update horde manager every frame
+                if (player instanceof Bee) {
+                    StaticClasses.HordeManager.update(map, (Bee) player);
+                    StaticClasses.HordeManager.updateParticles();
+                }
+
                 // check if bee died and death animation finished
                 if (player instanceof Bee) {
                     Bee bee = (Bee) player;
-
+                    
                     // transition to game over after death animation completes
                     if (bee.isDead() && bee.isDeathAnimationComplete()) {
                         screenCoordinator.setGameState(GameState.GAME_OVER);
@@ -80,7 +86,10 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                     if (bee.isAttacking()) {
                         java.awt.Rectangle sting = bee.getAttackHitbox();
 
-                        for (NPC npc : map.getNPCs()) {
+                        // create a copy to avoid concurrent modification when enemies spawn during horde
+                        java.util.ArrayList<NPC> npcsCopy = new java.util.ArrayList<>(map.getNPCs());
+
+                        for (NPC npc : npcsCopy) {
                             if (npc instanceof Spider) {
                                 Spider sp = (Spider) npc;
 
@@ -102,12 +111,20 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                 }
                             }
 
+                            // handle sunflower nectar collection
                             if (npc instanceof RareSunflowerwithFlowers) {
                                 RareSunflowerwithFlowers rareSunflower = (RareSunflowerwithFlowers) npc;
-
+                                
                                 if (sting.intersects(rareSunflower.getHitbox())) {
                                     System.out.println("Sunflower hit!");
-                                    BeeStats.setNectar(BeeStats.getNectar() + 1);
+                                    
+                                    // use Bee's nectar API so cap logic + mayhem trigger run properly
+                                    int added = bee.tryAddNectar(1);
+                                    if (added > 0) {
+                                        System.out.println("Nectar collected: " + bee.getNectar() + "/" + bee.getNectarCap());
+                                    } else {
+                                        System.out.println("Pouch full! Deposit at the hive.");
+                                    }
                                 }
                             }
 
@@ -129,7 +146,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                         }
                     }
                 }
-
+                
                 // remove dead spiders after death animation lingers
                 map.getNPCs().removeIf(npc -> npc instanceof Spider && ((Spider) npc).canBeRemoved());
 
@@ -149,86 +166,92 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
         playLevelScreenState = PlayLevelScreenState.LEVEL_COMPLETED;
     }
 
- public void draw(GraphicsHandler graphicsHandler) {
-    if (map == null || player == null || playLevelScreenState == null) {
-        return; // wait until initialize() runs
-    }
+    public void draw(GraphicsHandler graphicsHandler) {
+        if (map == null || player == null || playLevelScreenState == null) {
+            return; // wait until initialize() runs
+        }
 
-    switch (playLevelScreenState) {
-        case RUNNING:
-            map.draw(player, graphicsHandler);
-            
-            // draw attack FX on spiders and bats that were just hit
-            if (stingFxSheet != null) {
-                float cameraX = map.getCamera().getX();
-                float cameraY = map.getCamera().getY();
+        switch (playLevelScreenState) {
+            case RUNNING:
+                map.draw(player, graphicsHandler);
+                
+                // draw smoke particles from horde spawns
+                StaticClasses.HordeManager.drawParticles(graphicsHandler, 
+                    map.getCamera().getX(), 
+                    map.getCamera().getY());
+                
+                // draw attack FX on spiders and bats that were just hit
+                if (stingFxSheet != null) {
+                    float cameraX = map.getCamera().getX();
+                    float cameraY = map.getCamera().getY();
 
-                for (NPC npc : map.getNPCs()) {
-                    if (npc instanceof Spider) {
-                        Spider sp = (Spider) npc;
-                        if (sp.isShowingAttackFx()) {
-                            // position FX directly on spider sprite
-                            int fxSize = 64;
-                            
-                            // start at spider's sprite position
-                            int fxX = Math.round(sp.getX() - cameraX);
-                            int fxY = Math.round(sp.getY() - cameraY);
-                            
-                            // shift down and left to center on spider body
-                            fxX -= 10;
-                            fxY += 15;
+                    for (NPC npc : map.getNPCs()) {
+                        if (npc instanceof Spider) {
+                            Spider sp = (Spider) npc;
+                            if (sp.isShowingAttackFx()) {
+                                // position FX directly on spider sprite
+                                int fxSize = 64;
+                                
+                                // start at spider's sprite position
+                                int fxX = Math.round(sp.getX() - cameraX);
+                                int fxY = Math.round(sp.getY() - cameraY);
+                                
+                                // shift down and left to center on spider body
+                                fxX -= 10;
+                                fxY += 15;
 
-                            graphicsHandler.drawImage(
-                                stingFxSheet.getSprite(0, 0),
-                                fxX, fxY, fxSize, fxSize
-                            );
+                                graphicsHandler.drawImage(
+                                    stingFxSheet.getSprite(0, 0),
+                                    fxX, fxY, fxSize, fxSize
+                                );
+                            }
                         }
-                    }
-                    
-                    // draw attack FX on bats
-                    if (npc instanceof Bat) {
-                        Bat bat = (Bat) npc;
-                        if (bat.isShowingAttackFx()) {
-                            // position FX directly on bat sprite
-                            int fxSize = 64;
-                            
-                            // start at bat's sprite position
-                            int fxX = Math.round(bat.getX() - cameraX);
-                            int fxY = Math.round(bat.getY() - cameraY);
-                            
-                            // center on bat body (adjust if needed)
-                            fxX += 32;
-                            fxY += 32;
+                        
+                        // draw attack FX on bats
+                        if (npc instanceof Bat) {
+                            Bat bat = (Bat) npc;
+                            if (bat.isShowingAttackFx()) {
+                                // position FX directly on bat sprite
+                                int fxSize = 64;
+                                
+                                // start at bat's sprite position
+                                int fxX = Math.round(bat.getX() - cameraX);
+                                int fxY = Math.round(bat.getY() - cameraY);
+                                
+                                // center on bat body - adjust these to position on bat
+                                fxX += 32; // shift right to center on scaled bat
+                                fxY += 32; // shift down to center on scaled bat
 
-                            graphicsHandler.drawImage(
-                                stingFxSheet.getSprite(0, 0),
-                                fxX, fxY, fxSize, fxSize
-                            );
+                                graphicsHandler.drawImage(
+                                    stingFxSheet.getSprite(0, 0),
+                                    fxX, fxY, fxSize, fxSize
+                                );
+                            }
                         }
                     }
                 }
-            }
-            break;
-        case LEVEL_COMPLETED:
-            winScreen.draw(graphicsHandler);
-            break;
+                break;
+            case LEVEL_COMPLETED:
+                winScreen.draw(graphicsHandler);
+                break;
+        }
     }
-}
-    
+
     public PlayLevelScreenState getPlayLevelScreenState() {
         return playLevelScreenState;
     }
 
-    public void resetLevel() {
-        initialize();
+    public void resetLevel() { 
+        StaticClasses.UnleashMayhem.reset(); // stop horde on retry
+        initialize(); 
     }
 
-    public void goBackToMenu() {
-        screenCoordinator.setGameState(GameState.MENU);
+    public void goBackToMenu() { 
+        screenCoordinator.setGameState(GameState.MENU); 
     }
 
-    private enum PlayLevelScreenState {
-        RUNNING, LEVEL_COMPLETED
+    private enum PlayLevelScreenState { 
+        RUNNING, LEVEL_COMPLETED 
     }
 
     public boolean hasInitialized() {

@@ -12,6 +12,7 @@ import Level.Trigger;
 import Portals.GrassPortal;
 import Portals.Portal;
 import NPCs.Volcano;
+import NPCs.RareSunflowerwithFlowers; // add this import
 import Scripts.SimpleTextScript;
 import Tilesets.VolcanoTileset;
 
@@ -43,6 +44,10 @@ public class VolcanoMap extends Map {
         GrassPortal grassPortal = new GrassPortal(1, getMapTile(92, 49).getLocation());
         npcs.add(grassPortal);
 
+        // TEST SUNFLOWER - spawn near bee for horde testing
+        RareSunflowerwithFlowers testSunflower = new RareSunflowerwithFlowers(5000, getMapTile(83, 50).getLocation());
+        npcs.add(testSunflower);
+
         // Mirror the GrassMap style: give each spider a unique ID, use tile-based placement,
         // and nudge down a bit with addY(6) so feet align with the ground.
         npcs.add(new Spider(2001, getMapTile(55, 62).getLocation().addY(6)));
@@ -68,7 +73,7 @@ public class VolcanoMap extends Map {
         // Volcano in the center of the map
         npcs.add(new Volcano(3001, getMapTile(41, 41).getLocation()));
 
-        System.out.println("[VolcanoMap] Spawned 10 spiders and 5 bats across the volcano region");
+        System.out.println("[VolcanoMap] Spawned 10 spiders, 5 bats, and 1 TEST sunflower");
 
         return npcs;
     }

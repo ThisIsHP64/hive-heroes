@@ -27,6 +27,24 @@ public class Bat extends NPC {
     private static final float PATROL_SPEED = 1.0f;
     private static final float CHASE_SPEED = 2.0f;
 
+    // --- Horde mode ---
+    private boolean hordeMode = false;
+    private float hordeSpeedMult = 1.0f;
+
+    private float currentChaseSpeed() {
+        return hordeMode ? CHASE_SPEED * hordeSpeedMult : CHASE_SPEED;
+    }
+
+    private float currentPatrolSpeed() {
+        return hordeMode ? PATROL_SPEED * hordeSpeedMult : PATROL_SPEED;
+    }
+
+    /** Called by HordeManager to flip aggression on/off. */
+    public void setHordeAggression(float speedMult, boolean on) {
+        this.hordeMode = on;
+        this.hordeSpeedMult = (speedMult <= 0f) ? 1.0f : speedMult;
+    }
+
     // detection and attack ranges
     private static final float CHASE_RANGE = 200f;
     private static final float GIVE_UP_RANGE = 350f;
@@ -66,6 +84,7 @@ public class Bat extends NPC {
     private long attackStartTime = 0;
     private long lastAttackTime = -10000;
     private boolean hasDealtDamageThisAttack = false;
+    private Direction attackFacingDirection = null;
 
     // hit flash effect
     private boolean showAttackFx = false;
@@ -170,8 +189,8 @@ public class Bat extends NPC {
                     chase(player);
                 }
 
-                // give up chase if player escapes
-                if (distanceToBee > GIVE_UP_RANGE) {
+                // give up chase if player escapes (but never give up in horde mode)
+                if (!hordeMode && distanceToBee > GIVE_UP_RANGE) {
                     currentState = State.PATROL;
                     setRandomPatrolTarget();
                     System.out.println("Bee escaped! Returning to patrol...");
@@ -197,15 +216,20 @@ public class Bat extends NPC {
         float beeX = player.getX();
         float batX = getX();
         facing = (beeX > batX) ? Direction.RIGHT : Direction.LEFT;
+        attackFacingDirection = facing;
 
         currentAnimationName = (facing == Direction.RIGHT) ? "ATTACK_RIGHT" : "ATTACK_LEFT";
 
-        System.out.println("Bat attacking toward " + facing);
+        System.out.println("Bat attacking toward " + facing + " at bat pos: " + batX + ", player pos: " + beeX);
     }
 
     // handle attack animation and damage
     private void updateAttack(Player player, long currentTime) {
         long attackElapsed = currentTime - attackStartTime;
+        
+        // lock facing direction throughout entire attack
+        facing = attackFacingDirection;
+        currentAnimationName = (facing == Direction.RIGHT) ? "ATTACK_RIGHT" : "ATTACK_LEFT";
 
         // check for damage during middle of attack
         if (!hasDealtDamageThisAttack && attackElapsed >= ATTACK_DURATION_MS / 2) {
@@ -217,6 +241,7 @@ public class Bat extends NPC {
             isAttacking = false;
             lastAttackTime = currentTime;
             currentState = State.CHASE;
+            attackFacingDirection = null;
             System.out.println("Attack finished, resuming chase");
         }
     }
@@ -271,8 +296,8 @@ public class Bat extends NPC {
         float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
         if (distance > 0.1f) {
-            float moveX = (dx / distance) * CHASE_SPEED;
-            float moveY = (dy / distance) * CHASE_SPEED;
+            float moveX = (dx / distance) * currentChaseSpeed();
+            float moveY = (dy / distance) * currentChaseSpeed();
 
             moveXHandleCollision(moveX);
             moveYHandleCollision(moveY);
@@ -298,8 +323,8 @@ public class Bat extends NPC {
         }
 
         if (distance > 0.1f) {
-            float moveX = (dx / distance) * PATROL_SPEED;
-            float moveY = (dy / distance) * PATROL_SPEED;
+            float moveX = (dx / distance) * currentPatrolSpeed();
+            float moveY = (dy / distance) * currentPatrolSpeed();
 
             moveXHandleCollision(moveX);
             moveYHandleCollision(moveY);
@@ -364,8 +389,9 @@ public class Bat extends NPC {
                     .build();
         }
 
-        animations.put("ATTACK_RIGHT", attackFrames);
-        animations.put("ATTACK_LEFT", attackFramesFlipped);
+        // original sprite faces LEFT, so flip it for RIGHT
+        animations.put("ATTACK_RIGHT", attackFramesFlipped);
+        animations.put("ATTACK_LEFT", attackFrames);
 
         // load hurt sprites - 5 frames in one row, NO GUTTER
         SpriteSheet hurtSheet = new SpriteSheet(ImageLoader.load("Bat-Hurt.png"), TILE_W, TILE_H, 0);

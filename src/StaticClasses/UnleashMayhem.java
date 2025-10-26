@@ -32,6 +32,15 @@ public final class UnleashMayhem {
     }
 
     public static void reset() {
+        if (!active) {
+            // even if not active, force clear any lingering horde
+            HordeManager.stopHorde(null);
+            return;
+        }
         active = false;
+        HordeManager.stopHorde(null);
+        Sound.MusicManager.stopSiegeLoop();
+        Sound.MusicManager.playGpLoop();
+        System.out.println("[Mayhem] HORDE RESET");
     }
 }
