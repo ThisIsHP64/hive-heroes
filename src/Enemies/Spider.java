@@ -92,7 +92,7 @@ public class Spider extends NPC {
     private Direction facing = Direction.RIGHT;
 
     // health tracking
-    private int health = 5;
+    private int health = 50;
     private boolean isDead = false;
     private long deathTime = 0;
     private static final long DEATH_LINGER_MS = 2000; // how long spider stays visible after death

@@ -14,6 +14,7 @@ import Portals.GrassPortal;
 import Portals.Portal;
 import NPCs.RareSunflowerwithFlowers;
 import Enemies.Spider;
+import Enemies.Bat;
 
 import Engine.ImageLoader;
 import GameObject.SpriteSheet;
@@ -69,7 +70,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                 // check if bee died and death animation finished
                 if (player instanceof Bee) {
                     Bee bee = (Bee) player;
-                    
+
                     // transition to game over after death animation completes
                     if (bee.isDead() && bee.isDeathAnimationComplete()) {
                         screenCoordinator.setGameState(GameState.GAME_OVER);
@@ -90,9 +91,20 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                 }
                             }
 
+                            // handle bat collisions
+                            if (npc instanceof Bat) {
+                                Bat bat = (Bat) npc;
+
+                                // only deal damage if bat isn't already dead
+                                if (!bat.isDead() && sting.intersects(bat.getHitbox())) {
+                                    bat.takeDamage(1);
+                                    System.out.println("Bee stung bat!");
+                                }
+                            }
+
                             if (npc instanceof RareSunflowerwithFlowers) {
                                 RareSunflowerwithFlowers rareSunflower = (RareSunflowerwithFlowers) npc;
-                                
+
                                 if (sting.intersects(rareSunflower.getHitbox())) {
                                     System.out.println("Sunflower hit!");
                                     BeeStats.setNectar(BeeStats.getNectar() + 1);
@@ -117,9 +129,12 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                         }
                     }
                 }
-                
+
                 // remove dead spiders after death animation lingers
                 map.getNPCs().removeIf(npc -> npc instanceof Spider && ((Spider) npc).canBeRemoved());
+
+                // remove dead bats after death animation lingers
+                map.getNPCs().removeIf(npc -> npc instanceof Bat && ((Bat) npc).shouldRemove());
 
                 break;
 
@@ -134,64 +149,86 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
         playLevelScreenState = PlayLevelScreenState.LEVEL_COMPLETED;
     }
 
-    public void draw(GraphicsHandler graphicsHandler) {
-        if (map == null || player == null || playLevelScreenState == null) {
-            return; // wait until initialize() runs
-        }
+ public void draw(GraphicsHandler graphicsHandler) {
+    if (map == null || player == null || playLevelScreenState == null) {
+        return; // wait until initialize() runs
+    }
 
-        switch (playLevelScreenState) {
-            case RUNNING:
-                map.draw(player, graphicsHandler);
-                
-                // draw attack FX on spiders that were just hit
-                if (stingFxSheet != null) {
-                    float cameraX = map.getCamera().getX();
-                    float cameraY = map.getCamera().getY();
+    switch (playLevelScreenState) {
+        case RUNNING:
+            map.draw(player, graphicsHandler);
+            
+            // draw attack FX on spiders and bats that were just hit
+            if (stingFxSheet != null) {
+                float cameraX = map.getCamera().getX();
+                float cameraY = map.getCamera().getY();
 
-                    for (NPC npc : map.getNPCs()) {
-                        if (npc instanceof Spider) {
-                            Spider sp = (Spider) npc;
-                            if (sp.isShowingAttackFx()) {
-                                // position FX directly on spider sprite
-                                int fxSize = 64;
-                                
-                                // start at spider's sprite position
-                                int fxX = Math.round(sp.getX() - cameraX);
-                                int fxY = Math.round(sp.getY() - cameraY);
-                                
-                                // shift down and left to center on spider body
-                                fxX -= 10;
-                                fxY += 15;
+                for (NPC npc : map.getNPCs()) {
+                    if (npc instanceof Spider) {
+                        Spider sp = (Spider) npc;
+                        if (sp.isShowingAttackFx()) {
+                            // position FX directly on spider sprite
+                            int fxSize = 64;
+                            
+                            // start at spider's sprite position
+                            int fxX = Math.round(sp.getX() - cameraX);
+                            int fxY = Math.round(sp.getY() - cameraY);
+                            
+                            // shift down and left to center on spider body
+                            fxX -= 10;
+                            fxY += 15;
 
-                                graphicsHandler.drawImage(
-                                    stingFxSheet.getSprite(0, 0),
-                                    fxX, fxY, fxSize, fxSize
-                                );
-                            }
+                            graphicsHandler.drawImage(
+                                stingFxSheet.getSprite(0, 0),
+                                fxX, fxY, fxSize, fxSize
+                            );
+                        }
+                    }
+                    
+                    // draw attack FX on bats
+                    if (npc instanceof Bat) {
+                        Bat bat = (Bat) npc;
+                        if (bat.isShowingAttackFx()) {
+                            // position FX directly on bat sprite
+                            int fxSize = 64;
+                            
+                            // start at bat's sprite position
+                            int fxX = Math.round(bat.getX() - cameraX);
+                            int fxY = Math.round(bat.getY() - cameraY);
+                            
+                            // center on bat body (adjust if needed)
+                            fxX += 32;
+                            fxY += 32;
+
+                            graphicsHandler.drawImage(
+                                stingFxSheet.getSprite(0, 0),
+                                fxX, fxY, fxSize, fxSize
+                            );
                         }
                     }
                 }
-                break;
-            case LEVEL_COMPLETED:
-                winScreen.draw(graphicsHandler);
-                break;
-        }
+            }
+            break;
+        case LEVEL_COMPLETED:
+            winScreen.draw(graphicsHandler);
+            break;
     }
-
+}
+    
     public PlayLevelScreenState getPlayLevelScreenState() {
         return playLevelScreenState;
     }
 
-    public void resetLevel() { 
-        initialize(); 
+    public void resetLevel() {
+        initialize();
     }
 
-    public void goBackToMenu() { 
-        screenCoordinator.setGameState(GameState.MENU); 
+    public void goBackToMenu() {
+        screenCoordinator.setGameState(GameState.MENU);
     }
 
-    private enum PlayLevelScreenState { 
-        RUNNING, LEVEL_COMPLETED 
+    private enum PlayLevelScreenState {
+        RUNNING, LEVEL_COMPLETED
     }
 
     public boolean hasInitialized() {

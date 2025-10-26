@@ -3,6 +3,7 @@ package Maps;
 import java.util.ArrayList;
 
 import Enemies.Spider;
+import Enemies.Bat;
 import Engine.GraphicsHandler;
 import Level.EnhancedMapTile;
 import Level.Map;
@@ -57,10 +58,17 @@ public class VolcanoMap extends Map {
         npcs.add(new Spider(2009, getMapTile(75, 55).getLocation().addY(6)));
         npcs.add(new Spider(2010, getMapTile(58, 46).getLocation().addY(6)));
 
+        // spawn bats - flying enemies scattered throughout
+        npcs.add(new Bat(getMapTile(52, 48).getLocation()));
+        npcs.add(new Bat(getMapTile(68, 52).getLocation()));
+        npcs.add(new Bat(getMapTile(78, 58).getLocation()));
+        npcs.add(new Bat(getMapTile(62, 44).getLocation()));
+        npcs.add(new Bat(getMapTile(72, 48).getLocation()));
+
         // Volcano in the center of the map
         npcs.add(new Volcano(3001, getMapTile(41, 41).getLocation()));
 
-        System.out.println("[VolcanoMap] Spawned 10 spiders across the volcano region");
+        System.out.println("[VolcanoMap] Spawned 10 spiders and 5 bats across the volcano region");
 
         return npcs;
     }
