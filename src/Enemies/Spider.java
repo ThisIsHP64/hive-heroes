@@ -1,7 +1,9 @@
 package Enemies;
 
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 
@@ -15,6 +17,7 @@ import Level.NPC;
 import Level.Player;
 import Utils.Direction;
 import Utils.Point;
+import Effects.FloatingText;
 
 public class Spider extends NPC {
 
@@ -46,10 +49,10 @@ public class Spider extends NPC {
     }
 
     // detection distances
-    private static final float CHASE_RANGE = 150f; // spider starts chasing when player gets this close
-    private static final float GIVE_UP_RANGE = 250f; // spider gives up chase at this distance
+    private static final float CHASE_RANGE = 150f;
+    private static final float GIVE_UP_RANGE = 250f;
     private static final float TOO_CLOSE_RANGE = 25f;
-    private static final float JUMP_RANGE = 60f; // distance where spider will jump attack
+    private static final float JUMP_RANGE = 60f;
 
     // jump attack settings
     private static final int JUMP_DAMAGE = 25;
@@ -75,10 +78,10 @@ public class Spider extends NPC {
     private boolean hasDealtDamageThisJump = false;
     private Direction lockedJumpDirection = null;
 
-    // spawn timing - reduced for faster reactions
+    // spawn timing
     private final long spawnTime = System.currentTimeMillis();
-    private static final long STARTUP_FREEZE_MS = 1000; // initial freeze time after spawn
-    private static final long CHASE_ENABLE_MS = 1500; // time before spider can start chasing
+    private static final long STARTUP_FREEZE_MS = 1000;
+    private static final long CHASE_ENABLE_MS = 1500;
     private boolean hasMovedAwayFromSpawn = false;
 
     // patrol zone boundaries
@@ -95,12 +98,15 @@ public class Spider extends NPC {
     private int health = 50;
     private boolean isDead = false;
     private long deathTime = 0;
-    private static final long DEATH_LINGER_MS = 2000; // how long spider stays visible after death
+    private static final long DEATH_LINGER_MS = 2000;
 
     // hit flash effect when taking damage
     private boolean showAttackFx = false;
     private long attackFxStartTime = 0;
     private static final long ATTACK_FX_DURATION = 450;
+
+    // floating damage numbers
+    private ArrayList<FloatingText> floatingTexts = new ArrayList<>();
 
     // state machine for spider behavior
     private enum State {
@@ -136,6 +142,11 @@ public class Spider extends NPC {
         // show hit flash
         triggerHitFx();
 
+        // spawn red damage number above spider
+        float textX = getX() + (TILE_W * SCALE) / 2f;
+        float textY = getY();
+        floatingTexts.add(new FloatingText(textX, textY, "-" + amount, Color.RED));
+
         if (health <= 0) {
             die();
         }
@@ -166,6 +177,12 @@ public class Spider extends NPC {
 
     @Override
     public void update(Player player) {
+        // update floating damage numbers
+        floatingTexts.removeIf(text -> {
+            text.update();
+            return text.isDead();
+        });
+
         // just play death animation if dead
         if (isDead) {
             super.update(player);
@@ -216,8 +233,6 @@ public class Spider extends NPC {
                     hasMovedAwayFromSpawn = true;
                 }
 
-                // check if player is in range and spider is ready to chase
-                // check if player is in range and spider is ready to chase
                 if (hordeMode || (timeSinceSpawn >= CHASE_ENABLE_MS &&
                         hasMovedAwayFromSpawn &&
                         distanceToBee < CHASE_RANGE &&
@@ -231,15 +246,12 @@ public class Spider extends NPC {
             case CHASE:
                 boolean canJump = (currentTime - lastJumpTime) > JUMP_COOLDOWN_MS;
 
-                // try to jump if close enough and cooldown is done
                 if (distanceToBee < JUMP_RANGE && canJump) {
                     startJumpAttack(player, currentTime);
                 } else {
                     chase(player);
                 }
 
-                // give up chase if player escapes
-                // give up chase if player escapes (but never give up in horde mode)
                 if (!hordeMode && (distanceToBee > GIVE_UP_RANGE || !beeInTerritory)) {
                     currentState = State.PATROL;
                     System.out.println("Bee escaped! Returning to patrol...");
@@ -280,14 +292,12 @@ public class Spider extends NPC {
         if (isWindingUp) {
             long windupElapsed = currentTime - windupStartTime;
 
-            // track player during windup
             float beeX = player.getX();
             float spiderX = getX();
             facing = (beeX > spiderX) ? Direction.RIGHT : Direction.LEFT;
 
             currentAnimationName = (facing == Direction.RIGHT) ? "JUMP_RIGHT" : "JUMP_LEFT";
 
-            // launch jump after windup
             if (windupElapsed >= JUMP_WINDUP_MS) {
                 isWindingUp = false;
                 isJumping = true;
@@ -300,7 +310,6 @@ public class Spider extends NPC {
 
         long jumpElapsed = currentTime - jumpStartTime;
 
-        // move toward player during jump
         if (jumpElapsed < JUMP_DURATION_MS) {
             float beeX = player.getX();
             float beeY = player.getY();
@@ -323,7 +332,6 @@ public class Spider extends NPC {
                 moveYHandleCollision(moveY);
             }
 
-            // check for damage during damage window
             if (!hasDealtDamageThisJump &&
                     jumpElapsed >= DAMAGE_WINDOW_START &&
                     jumpElapsed <= DAMAGE_WINDOW_END) {
@@ -364,7 +372,6 @@ public class Spider extends NPC {
         float dy = beeCenterY - spiderCenterY;
         float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
-        // only hit if player is in front of spider
         boolean beeIsInFacingDirection = false;
         if (lockedJumpDirection == Direction.RIGHT && dx > 0) {
             beeIsInFacingDirection = true;
@@ -372,7 +379,6 @@ public class Spider extends NPC {
             beeIsInFacingDirection = true;
         }
 
-        // apply damage if close enough and in front
         if (distance < HIT_DISTANCE && beeIsInFacingDirection) {
             int attackBoxSize = 25;
             int attackX = (int) spiderCenterX - attackBoxSize / 2;
@@ -440,7 +446,6 @@ public class Spider extends NPC {
             moveXHandleCollision(moveX);
             moveYHandleCollision(moveY);
 
-            // update facing direction
             if (lockedJumpDirection == null && Math.abs(dx) > 10) {
                 Direction newFacing = (dx > 0) ? Direction.RIGHT : Direction.LEFT;
                 if (newFacing != facing) {
@@ -465,7 +470,6 @@ public class Spider extends NPC {
         boolean hitRightBoundary = currentX >= patrolRightX;
         boolean gotBlocked = Math.abs(actualMove) < 0.1f;
 
-        // turn around at boundaries or obstacles
         if ((hitLeftBoundary && direction < 0) ||
                 (hitRightBoundary && direction > 0) ||
                 gotBlocked) {
@@ -635,6 +639,13 @@ public class Spider extends NPC {
             g2d.setComposite(originalComposite);
         } else {
             super.draw(graphicsHandler);
+        }
+    }
+
+    // draw floating damage numbers
+    public void drawFloatingTexts(GraphicsHandler graphicsHandler, float cameraX, float cameraY) {
+        for (FloatingText text : floatingTexts) {
+            text.draw(graphicsHandler, cameraX, cameraY);
         }
     }
 

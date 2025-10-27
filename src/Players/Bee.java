@@ -119,7 +119,7 @@ public class Bee extends Player {
         MOVE_UP_KEY = Key.W;
         MOVE_DOWN_KEY = Key.S;
 
-        walkSpeed = 10f;
+        walkSpeed = 5f;
 
         resourceBars = new ResourceHUD(this);
 

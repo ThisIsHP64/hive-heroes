@@ -1,8 +1,10 @@
 package Enemies;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import Builders.FrameBuilder;
@@ -15,6 +17,7 @@ import Level.NPC;
 import Level.Player;
 import Utils.Direction;
 import Utils.Point;
+import Effects.FloatingText;
 
 public class Bat extends NPC {
 
@@ -39,7 +42,6 @@ public class Bat extends NPC {
         return hordeMode ? PATROL_SPEED * hordeSpeedMult : PATROL_SPEED;
     }
 
-    /** Called by HordeManager to flip aggression on/off. */
     public void setHordeAggression(float speedMult, boolean on) {
         this.hordeMode = on;
         this.hordeSpeedMult = (speedMult <= 0f) ? 1.0f : speedMult;
@@ -91,21 +93,22 @@ public class Bat extends NPC {
     private long attackFxStartTime = 0;
     private static final long ATTACK_FX_DURATION = 450;
 
+    // floating damage numbers
+    private ArrayList<FloatingText> floatingTexts = new ArrayList<>();
+
     public Bat(Point location) {
         super(
-                0, // bats don't need unique IDs
+                0,
                 location.x,
                 location.y,
                 new SpriteSheet(ImageLoader.load("Bat-Run.png"), TILE_W, TILE_H, 0),
                 "FLY_RIGHT");
 
-        // set patrol center
         this.patrolCenterX = location.x;
         this.patrolCenterY = location.y;
         setRandomPatrolTarget();
     }
 
-    // bee calls this when it attacks
     public void takeDamage(int amount) {
         if (isDead)
             return;
@@ -113,15 +116,18 @@ public class Bat extends NPC {
         health -= amount;
         System.out.println("Bat took " + amount + " damage! HP: " + health);
 
-        // show hit flash
         triggerHitFx();
+
+        // spawn red damage number above bat
+        float textX = getX() + (TILE_W * SCALE) / 2f;
+        float textY = getY();
+        floatingTexts.add(new FloatingText(textX, textY, "-" + amount, Color.RED));
 
         if (health <= 0) {
             die();
         }
     }
 
-    // handle death
     private void die() {
         if (isDead)
             return;
@@ -137,7 +143,6 @@ public class Bat extends NPC {
         return isDead;
     }
 
-    // check if bat should be removed from game
     public boolean shouldRemove() {
         if (!isDead)
             return false;
@@ -146,13 +151,17 @@ public class Bat extends NPC {
 
     @Override
     public void update(Player player) {
-        // just play death animation if dead
+        // update floating damage numbers
+        floatingTexts.removeIf(text -> {
+            text.update();
+            return text.isDead();
+        });
+
         if (isDead) {
             super.update(player);
             return;
         }
 
-        // clear hit flash after duration
         if (showAttackFx && (System.currentTimeMillis() - attackFxStartTime) >= ATTACK_FX_DURATION) {
             showAttackFx = false;
         }
@@ -172,7 +181,6 @@ public class Bat extends NPC {
             case PATROL:
                 patrol();
 
-                // check if player is in range
                 if (distanceToBee < CHASE_RANGE) {
                     currentState = State.CHASE;
                     System.out.println("Bat spotted bee! Starting chase...");
@@ -182,14 +190,12 @@ public class Bat extends NPC {
             case CHASE:
                 boolean canAttack = (currentTime - lastAttackTime) > ATTACK_COOLDOWN_MS;
 
-                // try to attack if close enough
                 if (distanceToBee < ATTACK_RANGE && canAttack) {
                     startAttack(player, currentTime);
                 } else {
                     chase(player);
                 }
 
-                // give up chase if player escapes (but never give up in horde mode)
                 if (!hordeMode && distanceToBee > GIVE_UP_RANGE) {
                     currentState = State.PATROL;
                     setRandomPatrolTarget();
@@ -206,7 +212,6 @@ public class Bat extends NPC {
         }
     }
 
-    // begin attack sequence
     private void startAttack(Player player, long currentTime) {
         currentState = State.ATTACK;
         isAttacking = true;
@@ -223,20 +228,16 @@ public class Bat extends NPC {
         System.out.println("Bat attacking toward " + facing + " at bat pos: " + batX + ", player pos: " + beeX);
     }
 
-    // handle attack animation and damage
     private void updateAttack(Player player, long currentTime) {
         long attackElapsed = currentTime - attackStartTime;
         
-        // lock facing direction throughout entire attack
         facing = attackFacingDirection;
         currentAnimationName = (facing == Direction.RIGHT) ? "ATTACK_RIGHT" : "ATTACK_LEFT";
 
-        // check for damage during middle of attack
         if (!hasDealtDamageThisAttack && attackElapsed >= ATTACK_DURATION_MS / 2) {
             checkAttackDamage(player);
         }
 
-        // end attack after duration
         if (attackElapsed >= ATTACK_DURATION_MS) {
             isAttacking = false;
             lastAttackTime = currentTime;
@@ -246,7 +247,6 @@ public class Bat extends NPC {
         }
     }
 
-    // check if attack hits player
     private void checkAttackDamage(Player player) {
         float batCenterX = getX() + (TILE_W * SCALE) / 2f;
         float batCenterY = getY() + (TILE_H * SCALE) / 2f;
@@ -258,7 +258,6 @@ public class Bat extends NPC {
         float dy = beeCenterY - batCenterY;
         float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
-        // only hit if player is in front of bat
         boolean beeIsInFacingDirection = false;
         if (facing == Direction.RIGHT && dx > 0) {
             beeIsInFacingDirection = true;
@@ -266,7 +265,6 @@ public class Bat extends NPC {
             beeIsInFacingDirection = true;
         }
 
-        // apply damage if close enough and in front
         if (distance < HIT_DISTANCE && beeIsInFacingDirection) {
             if (player instanceof Players.Bee) {
                 Players.Bee bee = (Players.Bee) player;
@@ -277,14 +275,12 @@ public class Bat extends NPC {
         }
     }
 
-    // calculate distance to player
     private float getDistanceToBee(Player player) {
         float dx = player.getX() - getX();
         float dy = player.getY() - getY();
         return (float) Math.sqrt(dx * dx + dy * dy);
     }
 
-    // move toward player
     private void chase(Player player) {
         float beeX = player.getX();
         float beeY = player.getY();
@@ -302,7 +298,6 @@ public class Bat extends NPC {
             moveXHandleCollision(moveX);
             moveYHandleCollision(moveY);
 
-            // update facing direction
             if (Math.abs(dx) > 10) {
                 facing = (dx > 0) ? Direction.RIGHT : Direction.LEFT;
             }
@@ -311,13 +306,11 @@ public class Bat extends NPC {
         currentAnimationName = (facing == Direction.RIGHT) ? "FLY_RIGHT" : "FLY_LEFT";
     }
 
-    // fly around patrol zone
     private void patrol() {
         float dx = patrolTargetX - getX();
         float dy = patrolTargetY - getY();
         float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
-        // pick new target when reached current one
         if (distance < 20f) {
             setRandomPatrolTarget();
         }
@@ -335,7 +328,6 @@ public class Bat extends NPC {
         currentAnimationName = (facing == Direction.RIGHT) ? "FLY_RIGHT" : "FLY_LEFT";
     }
 
-    // pick random point in patrol radius
     private void setRandomPatrolTarget() {
         double angle = Math.random() * 2 * Math.PI;
         float distance = (float) (Math.random() * PATROL_RADIUS);
@@ -348,7 +340,6 @@ public class Bat extends NPC {
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         HashMap<String, Frame[]> animations = new HashMap<>();
 
-        // load run/fly sprites - 8 frames in one row, NO GUTTER
         SpriteSheet runSheet = new SpriteSheet(ImageLoader.load("Bat-Run.png"), TILE_W, TILE_H, 0);
         Frame[] flyFrames = new Frame[8];
         for (int i = 0; i < 8; i++) {
@@ -370,7 +361,6 @@ public class Bat extends NPC {
         animations.put("FLY_RIGHT", flyFrames);
         animations.put("FLY_LEFT", flyFramesFlipped);
 
-        // load attack sprites - 8 frames in one row, NO GUTTER
         SpriteSheet attackSheet = new SpriteSheet(ImageLoader.load("Bat-Attack1.png"), TILE_W, TILE_H, 0);
         Frame[] attackFrames = new Frame[8];
         for (int i = 0; i < 8; i++) {
@@ -389,11 +379,9 @@ public class Bat extends NPC {
                     .build();
         }
 
-        // original sprite faces LEFT, so flip it for RIGHT
         animations.put("ATTACK_RIGHT", attackFramesFlipped);
         animations.put("ATTACK_LEFT", attackFrames);
 
-        // load hurt sprites - 5 frames in one row, NO GUTTER
         SpriteSheet hurtSheet = new SpriteSheet(ImageLoader.load("Bat-Hurt.png"), TILE_W, TILE_H, 0);
         Frame[] hurtFrames = new Frame[5];
         for (int i = 0; i < 5; i++) {
@@ -404,7 +392,6 @@ public class Bat extends NPC {
         }
         animations.put("HURT", hurtFrames);
 
-        // load death sprites - 8 frames in one row, NO GUTTER
         SpriteSheet dieSheet = new SpriteSheet(ImageLoader.load("Bat-Die.png"), TILE_W, TILE_H, 0);
         Frame[] dieFrames = new Frame[8];
         for (int i = 0; i < 8; i++) {
@@ -420,7 +407,6 @@ public class Bat extends NPC {
 
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
-        // fade out corpse over time
         if (isDead) {
             long timeSinceDeath = System.currentTimeMillis() - deathTime;
             float fadeProgress = (float) timeSinceDeath / DEATH_LINGER_MS;
@@ -442,7 +428,13 @@ public class Bat extends NPC {
         }
     }
 
-    // collision box for bee attacks
+    // draw floating damage numbers
+    public void drawFloatingTexts(GraphicsHandler graphicsHandler, float cameraX, float cameraY) {
+        for (FloatingText text : floatingTexts) {
+            text.draw(graphicsHandler, cameraX, cameraY);
+        }
+    }
+
     public java.awt.Rectangle getHitbox() {
         int w = 32;
         int h = 32;
@@ -454,13 +446,11 @@ public class Bat extends NPC {
                 w, h);
     }
 
-    // trigger hit flash effect
     private void triggerHitFx() {
         showAttackFx = true;
         attackFxStartTime = System.currentTimeMillis();
     }
 
-    // check if hit flash should be displayed
     public boolean isShowingAttackFx() {
         return !isDead
                 && showAttackFx
