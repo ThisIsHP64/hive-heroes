@@ -64,6 +64,15 @@ public class GrassLevelScreen extends Screen implements GameListener {
         map.preloadScripts();
 
         stingFxSheet = new SpriteSheet(ImageLoader.load("bee_attack1.png"), 32, 32);
+        
+        // check if bee has max nectar when entering level - trigger horde if so
+        if (player instanceof Bee) {
+            Bee bee = (Bee) player;
+            if (bee.getNectar() >= bee.getNectarCap()) {
+                System.out.println("GrassLevel: Bee entered with full nectar! Starting horde...");
+                StaticClasses.UnleashMayhem.fire(map, bee);
+            }
+        }
     }
 
     public void update() {

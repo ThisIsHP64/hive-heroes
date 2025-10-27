@@ -14,12 +14,12 @@ import Effects.SmokeParticle;
 
 public final class HordeManager {
     // --- Tuning knobs (v2) - toned down ---
-    private static final int HORDE_INITIAL = 5; // reduced from 10
-    private static final int HORDE_REINFORCE = 2; // reduced from 4
-    private static final int HORDE_MAX = 12; // reduced from 18
-    private static final long REINFORCE_AT_MS = 30_000; // increased from 25s to 30s
+    private static final int HORDE_INITIAL = 5;
+    private static final int HORDE_REINFORCE = 2;
+    private static final int HORDE_MAX = 12;
+    private static final long REINFORCE_AT_MS = 30_000;
     private static final long TIMEOUT_MS = 90_000;
-    private static final float SPEED_MULT = 4.0f; // reduced from 5.0f to 4.0f
+    private static final float SPEED_MULT = 4.0f;
 
     private static final int ROAM_NEAR_TARGET = 6;
     private static final int ROAM_GLOBAL_CAP = 12;
@@ -46,7 +46,6 @@ public final class HordeManager {
 
     public static void stopHorde(Map map) {
         setHordeMode(false);
-        // mark horde enemies as dead so they fade out naturally
         for (NPC npc : horde) {
             if (npc instanceof Spider) {
                 ((Spider) npc).takeDamage(999);
@@ -58,11 +57,24 @@ public final class HordeManager {
         running = false;
     }
 
+    // spawns a fresh wave when entering a new level while horde is active
+    public static void respawnWaveForNewLevel(Map map, Bee bee) {
+        if (!running || map == null || bee == null) 
+            return;
+        
+        System.out.println("[HordeManager] Respawning wave for new level");
+        
+        // clear old horde enemies from previous level
+        horde.clear();
+        
+        // spawn new wave appropriate for this level
+        spawnWave(map, bee, HORDE_INITIAL);
+    }
+
     public static void update(Map map, Bee bee) {
         if (map == null || bee == null)
             return;
 
-        // Clean up any dead/removed enemies in our list
         for (Iterator<NPC> it = horde.iterator(); it.hasNext();) {
             NPC npc = it.next();
             if (npc == null) {
@@ -84,17 +96,14 @@ public final class HordeManager {
 
         if (running) {
             long now = System.currentTimeMillis();
-            // Reinforce once at 30s (up to HORDE_MAX)
             if ((now - startedAt) >= REINFORCE_AT_MS && countAlive() < HORDE_MAX) {
                 int need = Math.min(HORDE_REINFORCE, HORDE_MAX - countAlive());
                 spawnWave(map, bee, need);
             }
-            // Timeout failsafe
             if ((now - startedAt) >= TIMEOUT_MS) {
                 UnleashMayhem.cease(map);
             }
         } else {
-            // Maintain a small roaming population near the player
             int globalEnemies = countMapEnemies(map);
             if (globalEnemies < ROAM_GLOBAL_CAP) {
                 int near = countEnemiesNear(map, bee, 25 * 64);
@@ -157,7 +166,6 @@ public final class HordeManager {
             map.getNPCs().add(enemy);
             horde.add(enemy);
             
-            // spawn smoke particles at enemy location
             for (int p = 0; p < 8; p++) {
                 particles.add(new SmokeParticle(spawn.x, spawn.y));
             }

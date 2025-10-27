@@ -11,8 +11,16 @@ public final class UnleashMayhem {
     }
 
     public static void fire(Map map, Bee bee) {
-        if (active || map == null || bee == null) 
+        if (map == null || bee == null) 
             return;
+        
+        // if already active, respawn a wave instead of restarting
+        if (active) {
+            System.out.println("[Mayhem] Already active - spawning reinforcements for new level");
+            HordeManager.respawnWaveForNewLevel(map, bee);
+            return;
+        }
+        
         active = true;
         HordeManager.startHorde(map, bee);
         map.getCamera().hordeShake();
@@ -33,7 +41,6 @@ public final class UnleashMayhem {
 
     public static void reset() {
         if (!active) {
-            // even if not active, force clear any lingering horde
             HordeManager.stopHorde(null);
             return;
         }
