@@ -109,7 +109,7 @@ public class HiveLevelScreen extends Screen implements GameListener {
                                 // spawn green -1 floating text at queen (showing deposit)
                                 float textX = queenBee.getX() + 24;
                                 float textY = queenBee.getY();
-                                floatingTexts.add(new FloatingText(textX, textY, "-1", new Color(0, 255, 0)));
+                                floatingTexts.add(new FloatingText(textX, textY, "+1", new Color(0, 255, 0)));
                             }
                         }
 

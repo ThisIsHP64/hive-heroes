@@ -9,8 +9,9 @@ public class FloatingText {
     private String text;
     private Color color;
     private long startTime;
-    private static final long DURATION_MS = 1000;
-    private static final float FLOAT_SPEED = 0.5f;
+    private static final long DURATION_MS = 800;
+    private static final float FLOAT_SPEED = 1.2f;
+    private float xOffset; // random horizontal offset
     
     public FloatingText(float x, float y, String text, Color color) {
         this.x = x;
@@ -18,6 +19,9 @@ public class FloatingText {
         this.text = text;
         this.color = color;
         this.startTime = System.currentTimeMillis();
+        
+        // random horizontal spread to prevent stacking
+        this.xOffset = (float) (Math.random() * 40 - 20); // -20 to +20 pixels
     }
     
     public void update() {
@@ -32,22 +36,21 @@ public class FloatingText {
         long elapsed = System.currentTimeMillis() - startTime;
         float progress = (float) elapsed / DURATION_MS;
         
-        // fade out over time
         int alpha = (int) ((1.0f - progress) * 255);
         if (alpha < 0) alpha = 0;
         if (alpha > 255) alpha = 255;
         
         Color fadeColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
         
-        // draw text at position (adjusted for camera)
-        int screenX = (int) (x - cameraX);
+        // apply random horizontal offset
+        int screenX = (int) (x + xOffset - cameraX);
         int screenY = (int) (y - cameraY);
         
         graphicsHandler.drawStringWithOutline(
             text,
             screenX,
             screenY,
-            new Font("Arial", Font.BOLD, 20),
+            new Font("Arial", Font.BOLD, 24),
             fadeColor,
             new Color(0, 0, 0, alpha),
             2
