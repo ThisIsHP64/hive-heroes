@@ -71,6 +71,10 @@ public class GrassLevelScreen extends Screen implements GameListener {
             if (bee.getNectar() >= bee.getNectarCap()) {
                 System.out.println("GrassLevel: Bee entered with full nectar! Starting horde...");
                 StaticClasses.UnleashMayhem.fire(map, bee);
+            } else if (!StaticClasses.UnleashMayhem.isActive()) {
+                // if horde is not active, clean up any leftover enemies from previous horde
+                System.out.println("GrassLevel: Horde not active, cleaning up leftover enemies");
+                map.getNPCs().removeIf(npc -> npc instanceof Spider || npc instanceof Bat);
             }
         }
     }

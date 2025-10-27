@@ -46,6 +46,8 @@ public final class HordeManager {
 
     public static void stopHorde(Map map) {
         setHordeMode(false);
+        
+        // kill all enemies in the horde list
         for (NPC npc : horde) {
             if (npc instanceof Spider) {
                 ((Spider) npc).takeDamage(999);
@@ -53,6 +55,27 @@ public final class HordeManager {
                 ((Bat) npc).takeDamage(999);
             }
         }
+        
+        // also clean up any horde enemies that might be on the current map's NPC list
+        if (map != null) {
+            map.getNPCs().removeIf(npc -> {
+                if (npc instanceof Spider) {
+                    Spider sp = (Spider) npc;
+                    if (!sp.isDead()) {
+                        sp.takeDamage(999);
+                    }
+                    return sp.canBeRemoved();
+                } else if (npc instanceof Bat) {
+                    Bat bat = (Bat) npc;
+                    if (!bat.isDead()) {
+                        bat.takeDamage(999);
+                    }
+                    return bat.shouldRemove();
+                }
+                return false;
+            });
+        }
+        
         horde.clear();
         running = false;
     }
