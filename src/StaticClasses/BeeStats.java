@@ -14,7 +14,7 @@ public class BeeStats {
     private static int experience = 1;
     private static int maxExperience = 100;
 
-    private static float walkSpeed = 10f;
+    private static float walkSpeed = 6f;
     private static float maxWalkSpeed = 10f;
 
     private static boolean isDead = false;
@@ -23,7 +23,7 @@ public class BeeStats {
     // related to bee death and respawn
     public static void respawn() {
         health = maxHealth;
-        nectar = 0;
+        nectar = 5;
         
     }
 
@@ -75,7 +75,10 @@ public class BeeStats {
     }
 
     public static void setNectar(int newNectar) {
-        nectar = newNectar;
+        if(newNectar < maxNectar) {
+            nectar = newNectar;
+        }
+
     }
 
     public static int getMaxNectar() {

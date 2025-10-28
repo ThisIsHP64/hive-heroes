@@ -37,10 +37,10 @@ public class BigHive extends NPC {
         Rectangle bounds = getBounds();
         
         int w = bounds.getWidth();
-        int h = bounds.getHeight();
+        int h = bounds.getHeight() - 100;
 
         int x = (int) getX();
-        int y = (int) getY();
+        int y = (int) getY() + 100;
         
         return new java.awt.Rectangle(x, y, w, h);
     }

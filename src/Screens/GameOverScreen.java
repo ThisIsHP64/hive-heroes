@@ -33,8 +33,8 @@ public class GameOverScreen extends Screen {
         if (Keyboard.isKeyDown(Key.R)) {
             BeeStats.setDead(false);
             BeeStats.respawn();
-            BeeStats.setWalkSpeed(BeeStats.getMaxWalkSpeed());
-            screenCoordinator.setGameState(GameState.GRASSLEVEL);
+            BeeStats.setWalkSpeed(6f);
+            screenCoordinator.setGameState(GameState.HIVELEVEL);
         }
         
         // press E to exit (back to main menu)

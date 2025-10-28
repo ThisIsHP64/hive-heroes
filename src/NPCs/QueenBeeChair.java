@@ -7,6 +7,8 @@ import GameObject.Frame;
 import GameObject.SpriteSheet;
 import Level.NPC;
 import Utils.Point;
+
+import java.awt.*;
 import java.util.HashMap;
 
 // This class is for the bighive NPC
@@ -34,5 +36,17 @@ public class QueenBeeChair extends NPC {
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
+    }
+
+    public Rectangle getHitbox() {
+        GameObject.Rectangle bounds = getBounds();
+
+        int w = bounds.getWidth();
+        int h = bounds.getHeight();
+
+        int x = (int) getX();
+        int y = (int) getY();
+
+        return new java.awt.Rectangle(x, y, w, h);
     }
 }

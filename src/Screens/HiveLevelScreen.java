@@ -12,6 +12,7 @@ import Level.Map;
 import Level.NPC;
 import Level.Player;
 import Maps.HiveMap;
+import NPCs.QueenBeeChair;
 import Portals.GrassPortal;
 import Portals.Portal;
 import NPCs.QueenBee;
@@ -95,7 +96,15 @@ public class HiveLevelScreen extends Screen implements GameListener {
 
                         if (npc instanceof QueenBee) {
                             QueenBee queenBee = (QueenBee) npc;
-                            if (sting.intersects(queenBee.getHitbox()) && BeeStats.getNectar() > 0) {
+//                            if (sting.intersects(queenBee.getHitbox()) && BeeStats.getNectar() > 0) {
+//                                HiveManager.depositNectar();
+//                                BeeStats.setNectar(BeeStats.getNectar() - 1);
+//                            }
+                        }
+
+                        if (npc instanceof QueenBeeChair) {
+                            QueenBeeChair queenBeeChair = (QueenBeeChair) npc;
+                            if (sting.intersects(queenBeeChair.getHitbox()) && BeeStats.getNectar() > 0) {
                                 HiveManager.depositNectar();
                                 BeeStats.setNectar(BeeStats.getNectar() - 1);
                             }
