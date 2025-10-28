@@ -16,7 +16,13 @@ import NPCs.BigHive;
 import Portals.Portal;
 import NPCs.RareSunflowerwithFlowers;
 import Portals.ReversePortal;
+import Effects.FloatingText;
+
+import java.awt.Color;
+import java.util.ArrayList;
+
 import Enemies.Spider;
+import Enemies.Bat;
 
 import Engine.ImageLoader;
 import GameObject.SpriteSheet;
@@ -30,8 +36,10 @@ public class GrassLevelScreen extends Screen implements GameListener {
     protected FlagManager flagManager;
     protected boolean hasInitialized = false;
 
-    // sting FX resource - single static image shown when spider is hit
     private SpriteSheet stingFxSheet;
+    
+    // floating text for nectar collection
+    private ArrayList<FloatingText> floatingTexts = new ArrayList<>();
 
     public GrassLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -44,7 +52,6 @@ public class GrassLevelScreen extends Screen implements GameListener {
         map = new GrassMap();
         map.setFlagManager(flagManager);
 
-        // player (Bee) spawn
         player = new Bee(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         player.setMap(map);
         playLevelScreenState = PlayLevelScreenState.RUNNING;
@@ -54,13 +61,22 @@ public class GrassLevelScreen extends Screen implements GameListener {
         map.getTextbox().setInteractKey(player.getInteractKey());
         map.addListener(this);
 
-        // let the map finish its own loading (avoids our NPC being overwritten)
         map.preloadScripts();
 
-        // spiders are now spawned in SprintOneMap.loadNPCs() instead of here
-
-        // load the sting FX - just one static sprite
         stingFxSheet = new SpriteSheet(ImageLoader.load("bee_attack1.png"), 32, 32);
+        
+        // check if bee has max nectar when entering level - trigger horde if so
+        if (player instanceof Bee) {
+            Bee bee = (Bee) player;
+            if (bee.getNectar() >= bee.getNectarCap()) {
+                System.out.println("GrassLevel: Bee entered with full nectar! Starting horde...");
+                StaticClasses.UnleashMayhem.fire(map, bee);
+            } else if (!StaticClasses.UnleashMayhem.isActive()) {
+                // if horde is not active, clean up any leftover enemies from previous horde
+                System.out.println("GrassLevel: Horde not active, cleaning up leftover enemies");
+                map.getNPCs().removeIf(npc -> npc instanceof Spider || npc instanceof Bat);
+            }
+        }
     }
 
     public void update() {
@@ -68,44 +84,71 @@ public class GrassLevelScreen extends Screen implements GameListener {
             case RUNNING:
                 player.update();
                 map.update(player);
-
-                // check if bee died and death animation finished
+                
+                // update floating texts
+                floatingTexts.removeIf(text -> {
+                    text.update();
+                    return text.isDead();
+                });
+                
+                if (player instanceof Bee) {
+                    StaticClasses.HordeManager.update(map, (Bee) player);
+                    StaticClasses.HordeManager.updateParticles();
+                }
+                
                 if (player instanceof Bee) {
                     Bee bee = (Bee) player;
-                    
-                    // transition to game over after death animation completes
                     if (bee.isDead() && bee.isDeathAnimationComplete()) {
                         screenCoordinator.setGameState(GameState.GAME_OVER);
                         return;
                     }
-
                     if (bee.isAttacking()) {
                         java.awt.Rectangle sting = bee.getAttackHitbox();
-
-                        for (NPC npc : map.getNPCs()) {
+                        ArrayList<NPC> npcsCopy = new ArrayList<>(map.getNPCs());
+                        for (NPC npc : npcsCopy) {
                             if (npc instanceof Spider) {
                                 Spider sp = (Spider) npc;
 
-                                // only deal damage if spider isn't already dead
                                 if (!sp.isDead() && sting.intersects(sp.getHitbox())) {
                                     sp.takeDamage(1);
                                     System.out.println("Bee stung spider!");
                                 }
                             }
+                            
+                            if (npc instanceof Bat) {
+                                Bat bat = (Bat) npc;
+
+                                if (!bat.isDead() && sting.intersects(bat.getHitbox())) {
+                                    bat.takeDamage(1);
+                                    System.out.println("Bee stung bat!");
+                                }
+                            }
 
                             if (npc instanceof RareSunflowerwithFlowers) {
                                 RareSunflowerwithFlowers rareSunflower = (RareSunflowerwithFlowers) npc;
-                                
+
                                 if (sting.intersects(rareSunflower.getHitbox())) {
                                     System.out.println("Sunflower hit!");
-                                    BeeStats.setNectar(BeeStats.getNectar() + 1);
+
+                                    int added = bee.tryAddNectar(1);
+                                    if (added > 0) {
+                                        System.out.println(
+                                                "Nectar collected: " + bee.getNectar() + "/" + bee.getNectarCap());
+                                        
+                                        // spawn yellow +1 floating text at sunflower
+                                        float textX = rareSunflower.getX() + 24;
+                                        float textY = rareSunflower.getY();
+                                        floatingTexts.add(new FloatingText(textX, textY, "+1", new Color(255, 215, 0)));
+                                    } else {
+                                        System.out.println("Pouch full! Deposit at the hive.");
+                                    }
                                 }
                             }
 
                             if (npc instanceof LavaPortal) {
                                 LavaPortal lavaPortal = (LavaPortal) npc;
 
-                                if(sting.intersects(lavaPortal.getHitbox())) {
+                                if (sting.intersects(lavaPortal.getHitbox())) {
                                     TeleportManager.setCurrentScreen(GameState.VOLCANOLEVEL);
                                 }
                             }
@@ -113,7 +156,7 @@ public class GrassLevelScreen extends Screen implements GameListener {
                             if (npc instanceof SnowPortal) {
                                 SnowPortal snowPortal = (SnowPortal) npc;
 
-                                if(sting.intersects(snowPortal.getHitbox())) {
+                                if (sting.intersects(snowPortal.getHitbox())) {
                                     TeleportManager.setCurrentScreen(GameState.SNOWLEVEL);
                                 }
                             }
@@ -129,7 +172,7 @@ public class GrassLevelScreen extends Screen implements GameListener {
                             if (npc instanceof Portal) {
                                 Portal portal = (Portal) npc;
 
-                                if(sting.intersects(portal.getHitbox())) {
+                                if (sting.intersects(portal.getHitbox())) {
                                     TeleportManager.setCurrentScreen(GameState.DUNGEONLEVEL);
                                 }
                             }
@@ -137,16 +180,16 @@ public class GrassLevelScreen extends Screen implements GameListener {
                             if (npc instanceof ReversePortal) {
                                 ReversePortal reversePortal = (ReversePortal) npc;
 
-                                if(sting.intersects(reversePortal.getHitbox())) {
+                                if (sting.intersects(reversePortal.getHitbox())) {
                                     TeleportManager.setCurrentScreen(GameState.MAZELEVEL);
                                 }
                             }
                         }
                     }
                 }
-                
-                // remove dead spiders after death animation lingers
+
                 map.getNPCs().removeIf(npc -> npc instanceof Spider && ((Spider) npc).canBeRemoved());
+                map.getNPCs().removeIf(npc -> npc instanceof Bat && ((Bat) npc).shouldRemove());
 
                 break;
 
@@ -163,14 +206,17 @@ public class GrassLevelScreen extends Screen implements GameListener {
 
     public void draw(GraphicsHandler graphicsHandler) {
         if (map == null || player == null || playLevelScreenState == null) {
-            return; // wait until initialize() runs
+            return;
         }
 
         switch (playLevelScreenState) {
             case RUNNING:
                 map.draw(player, graphicsHandler);
-                
-                // draw attack FX on spiders that were just hit
+
+                StaticClasses.HordeManager.drawParticles(graphicsHandler, 
+                    map.getCamera().getX(), 
+                    map.getCamera().getY());
+
                 if (stingFxSheet != null) {
                     float cameraX = map.getCamera().getX();
                     float cameraY = map.getCamera().getY();
@@ -179,25 +225,50 @@ public class GrassLevelScreen extends Screen implements GameListener {
                         if (npc instanceof Spider) {
                             Spider sp = (Spider) npc;
                             if (sp.isShowingAttackFx()) {
-                                // position FX directly on spider sprite
                                 int fxSize = 64;
-                                
-                                // start at spider's sprite position
+
                                 int fxX = Math.round(sp.getX() - cameraX);
                                 int fxY = Math.round(sp.getY() - cameraY);
-                                
-                                // shift down and left to center on spider body
+
                                 fxX -= 10;
                                 fxY += 15;
 
                                 graphicsHandler.drawImage(
-                                    stingFxSheet.getSprite(0, 0),
-                                    fxX, fxY, fxSize, fxSize
-                                );
+                                        stingFxSheet.getSprite(0, 0),
+                                        fxX, fxY, fxSize, fxSize);
                             }
+                            
+                            // draw floating damage numbers for spiders
+                            sp.drawFloatingTexts(graphicsHandler, cameraX, cameraY);
+                        }
+                        
+                        if (npc instanceof Bat) {
+                            Bat bat = (Bat) npc;
+                            if (bat.isShowingAttackFx()) {
+                                int fxSize = 64;
+                                
+                                int fxX = Math.round(bat.getX() - cameraX);
+                                int fxY = Math.round(bat.getY() - cameraY);
+                                
+                                fxX += 32;
+                                fxY += 32;
+
+                                graphicsHandler.drawImage(
+                                        stingFxSheet.getSprite(0, 0),
+                                        fxX, fxY, fxSize, fxSize);
+                            }
+                            
+                            // draw floating damage numbers for bats
+                            bat.drawFloatingTexts(graphicsHandler, cameraX, cameraY);
                         }
                     }
                 }
+                
+                // draw floating texts for nectar collection
+                for (FloatingText text : floatingTexts) {
+                    text.draw(graphicsHandler, map.getCamera().getX(), map.getCamera().getY());
+                }
+                
                 break;
             case LEVEL_COMPLETED:
                 winScreen.draw(graphicsHandler);
@@ -209,16 +280,17 @@ public class GrassLevelScreen extends Screen implements GameListener {
         return playLevelScreenState;
     }
 
-    public void resetLevel() { 
-        initialize(); 
+    public void resetLevel() {
+        StaticClasses.UnleashMayhem.reset();
+        initialize();
     }
 
-    public void goBackToMenu() { 
-        screenCoordinator.setGameState(GameState.MENU); 
+    public void goBackToMenu() {
+        screenCoordinator.setGameState(GameState.MENU);
     }
 
-    private enum PlayLevelScreenState { 
-        RUNNING, LEVEL_COMPLETED 
+    private enum PlayLevelScreenState {
+        RUNNING, LEVEL_COMPLETED
     }
 
     public boolean hasInitialized() {

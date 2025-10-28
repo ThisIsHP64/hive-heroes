@@ -8,6 +8,7 @@ import Engine.Screen;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import StaticClasses.BeeStats;
+import StaticClasses.UnleashMayhem;
 
 import java.awt.image.BufferedImage;
 
@@ -31,14 +32,16 @@ public class GameOverScreen extends Screen {
     public void update() {
         // press R to retry (restart level)
         if (Keyboard.isKeyDown(Key.R)) {
+            UnleashMayhem.reset(); // stop horde and reset music
             BeeStats.setDead(false);
             BeeStats.respawn();
             BeeStats.setWalkSpeed(BeeStats.getMaxWalkSpeed());
             screenCoordinator.setGameState(GameState.GRASSLEVEL);
         }
-        
+       
         // press E to exit (back to main menu)
         if (Keyboard.isKeyDown(Key.E)) {
+            UnleashMayhem.reset(); // stop horde and reset music
             BeeStats.setDead(false);
             BeeStats.respawn();
             BeeStats.setWalkSpeed(BeeStats.getMaxWalkSpeed());

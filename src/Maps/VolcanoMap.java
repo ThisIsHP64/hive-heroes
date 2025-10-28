@@ -3,6 +3,7 @@ package Maps;
 import java.util.ArrayList;
 
 import Enemies.Spider;
+import Enemies.Bat;
 import Engine.GraphicsHandler;
 import Level.EnhancedMapTile;
 import Level.Map;
@@ -11,6 +12,7 @@ import Level.Trigger;
 import Portals.GrassPortal;
 import Portals.Portal;
 import NPCs.Volcano;
+import NPCs.RareSunflowerwithFlowers; // add this import
 import Scripts.SimpleTextScript;
 import Tilesets.VolcanoTileset;
 
@@ -42,6 +44,10 @@ public class VolcanoMap extends Map {
         GrassPortal grassPortal = new GrassPortal(1, getMapTile(92, 49).getLocation());
         npcs.add(grassPortal);
 
+        // TEST SUNFLOWER - spawn near bee for horde testing
+        RareSunflowerwithFlowers testSunflower = new RareSunflowerwithFlowers(5000, getMapTile(83, 50).getLocation());
+        npcs.add(testSunflower);
+
         // Mirror the GrassMap style: give each spider a unique ID, use tile-based placement,
         // and nudge down a bit with addY(6) so feet align with the ground.
         npcs.add(new Spider(2001, getMapTile(55, 62).getLocation().addY(6)));
@@ -57,10 +63,17 @@ public class VolcanoMap extends Map {
         npcs.add(new Spider(2009, getMapTile(75, 55).getLocation().addY(6)));
         npcs.add(new Spider(2010, getMapTile(58, 46).getLocation().addY(6)));
 
+        // spawn bats - flying enemies scattered throughout
+        npcs.add(new Bat(getMapTile(52, 48).getLocation()));
+        npcs.add(new Bat(getMapTile(68, 52).getLocation()));
+        npcs.add(new Bat(getMapTile(78, 58).getLocation()));
+        npcs.add(new Bat(getMapTile(62, 44).getLocation()));
+        npcs.add(new Bat(getMapTile(72, 48).getLocation()));
+
         // Volcano in the center of the map
         npcs.add(new Volcano(3001, getMapTile(41, 41).getLocation()));
 
-        System.out.println("[VolcanoMap] Spawned 10 spiders across the volcano region");
+        System.out.println("[VolcanoMap] Spawned 10 spiders, 5 bats, and 1 TEST sunflower");
 
         return npcs;
     }
