@@ -122,6 +122,10 @@ public abstract class Player extends GameObject {
         if (!keyLocker.isKeyLocked(INTERACT_KEY) && Keyboard.isKeyDown(INTERACT_KEY)) {
             keyLocker.lockKey(INTERACT_KEY);
             map.entityInteract(this);
+            if (currentWalkingXDirection != Direction.NONE && currentWalkingYDirection != Direction.NONE) {
+                moveAmountX *= 0.7071f;
+                moveAmountY *= 0.7071f;
+            }
         }
         
 

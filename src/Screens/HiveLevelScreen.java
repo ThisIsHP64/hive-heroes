@@ -12,6 +12,7 @@ import Level.Map;
 import Level.NPC;
 import Level.Player;
 import Maps.HiveMap;
+import NPCs.QueenBeeChair;
 import Portals.GrassPortal;
 import Portals.Portal;
 import NPCs.QueenBee;

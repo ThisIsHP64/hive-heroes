@@ -76,7 +76,7 @@ public class CommonTileset extends Tileset {
 
         MapTileBuilder leftEndBranchTile = new MapTileBuilder(leftEndBranchFrame)
                 .withTopLayer(leftEndBranchFrame)
-                .withTileType(TileType.PASSABLE);
+                .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(leftEndBranchTile);
 
@@ -89,7 +89,7 @@ public class CommonTileset extends Tileset {
 
         MapTileBuilder rightEndBranchTile = new MapTileBuilder(rightEndBranchFrame)
                 .withTopLayer(rightEndBranchFrame)
-                .withTileType(TileType.PASSABLE);
+                .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(rightEndBranchTile);
         
@@ -100,7 +100,7 @@ public class CommonTileset extends Tileset {
 
         MapTileBuilder treeTrunkTile = new MapTileBuilder(treeTrunkFrame)
                 .withTopLayer(treeTrunkFrame)
-                .withTileType(TileType.PASSABLE);
+                .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(treeTrunkTile);
 
@@ -111,7 +111,7 @@ public class CommonTileset extends Tileset {
 
         MapTileBuilder treeTopAppleleavesTile = new MapTileBuilder(treeTopAppleleavesFrame)
                 .withTopLayer(treeTopAppleleavesFrame)
-                .withTileType(TileType.PASSABLE);
+                .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(treeTopAppleleavesTile);
         
@@ -163,7 +163,7 @@ public class CommonTileset extends Tileset {
 
         MapTileBuilder middleBranchTile = new MapTileBuilder(middleBranchFrame)
                 .withTopLayer(middleBranchFrame)
-                .withTileType(TileType.PASSABLE);
+                .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(middleBranchTile);
 
@@ -194,7 +194,7 @@ public class CommonTileset extends Tileset {
                 .build();
 
         MapTileBuilder greyRockTile = new MapTileBuilder(greyRockFrame)
-                .withTileType(TileType.PASSABLE);
+                .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(greyRockTile);
 
