@@ -102,4 +102,13 @@ public class GraphicsHandler {
         g.setStroke(originalStroke);
         g.setRenderingHints(originalHints);
     }
+
+    // draw a semi-transparent overlay across the entire screen
+public void drawOverlay(Color color, float alpha) {
+    Composite originalComposite = g.getComposite();
+    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+    g.setColor(color);
+    g.fillRect(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight());
+    g.setComposite(originalComposite);
+}
 }

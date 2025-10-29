@@ -8,8 +8,6 @@ import GameObject.Rectangle;
 import java.awt.*;
 import java.util.ArrayList;
 
-// This class represents a Map's "Camera", aka a piece of the map that is currently included in a level's update/draw logic based on what should be shown on screen.
-// A majority of its job is just determining which map tiles, enemies, npcs, and enhanced map tiles are "active" each frame (active = included in update/draw cycle)
 public class Camera extends Rectangle {
 
     private Map map;
@@ -30,6 +28,11 @@ public class Camera extends Rectangle {
     private long shakeStartTime = 0;
     private static final long SHAKE_DURATION_MS = 300;
     private static final float SHAKE_INTENSITY = 8f;
+
+    // horde shake - more intense
+    private static final long HORDE_SHAKE_DURATION_MS = 1200;
+    private static final float HORDE_SHAKE_INTENSITY = 20f;
+    private boolean isHordeShake = false;
 
     public Camera(int startX, int startY, int tileWidth, int tileHeight, Map map) {
         super(startX, startY, ScreenManager.getScreenWidth() / tileWidth, ScreenManager.getScreenHeight() / tileHeight);
@@ -53,26 +56,33 @@ public class Camera extends Rectangle {
         updateScripts();
     }
 
-    // update screen shake effect
     private void updateShake() {
         long currentTime = System.currentTimeMillis();
         long elapsed = currentTime - shakeStartTime;
         
-        if (elapsed < SHAKE_DURATION_MS) {
-            // random shake decreases over time
-            float progress = (float) elapsed / SHAKE_DURATION_MS;
-            float intensity = SHAKE_INTENSITY * (1f - progress);
+        long duration = isHordeShake ? HORDE_SHAKE_DURATION_MS : SHAKE_DURATION_MS;
+        float intensity = isHordeShake ? HORDE_SHAKE_INTENSITY : SHAKE_INTENSITY;
+        
+        if (elapsed < duration) {
+            float progress = (float) elapsed / duration;
+            float currentIntensity = intensity * (1f - progress);
             
-            shakeOffsetX = (float) (Math.random() * intensity * 2 - intensity);
-            shakeOffsetY = (float) (Math.random() * intensity * 2 - intensity);
+            shakeOffsetX = (float) (Math.random() * currentIntensity * 2 - currentIntensity);
+            shakeOffsetY = (float) (Math.random() * currentIntensity * 2 - currentIntensity);
         } else {
             shakeOffsetX = 0;
             shakeOffsetY = 0;
+            isHordeShake = false;
         }
     }
 
-    // trigger screen shake (called when bee takes damage)
     public void shake() {
+        isHordeShake = false;
+        shakeStartTime = System.currentTimeMillis();
+    }
+
+    public void hordeShake() {
+        isHordeShake = true;
         shakeStartTime = System.currentTimeMillis();
     }
 
@@ -164,25 +174,21 @@ public class Camera extends Rectangle {
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
-        // apply shake offset to graphics
         graphicsHandler.getGraphics().translate((int) shakeOffsetX, (int) shakeOffsetY);
         
         drawMapTilesBottomLayer(graphicsHandler);
         drawMapTilesTopLayer(graphicsHandler);
         
-        // reset translation
         graphicsHandler.getGraphics().translate(-(int) shakeOffsetX, -(int) shakeOffsetY);
     }
 
     public void draw(Player player, GraphicsHandler graphicsHandler) {
-        // apply shake offset to graphics
         graphicsHandler.getGraphics().translate((int) shakeOffsetX, (int) shakeOffsetY);
         
         drawMapTilesBottomLayer(graphicsHandler);
         drawMapEntities(player, graphicsHandler);
         drawMapTilesTopLayer(graphicsHandler);
         
-        // reset translation
         graphicsHandler.getGraphics().translate(-(int) shakeOffsetX, -(int) shakeOffsetY);
     }
 
@@ -242,7 +248,6 @@ public class Camera extends Rectangle {
             npc.draw(graphicsHandler);
         }
     }
-
 
     public boolean containsUpdate(GameObject gameObject) {
         return getX1() - (tileWidth * UPDATE_OFF_SCREEN_RANGE) < gameObject.getX() + gameObject.getWidth() &&

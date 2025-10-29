@@ -22,6 +22,10 @@ import StaticClasses.BeeStats;
 import StaticClasses.HiveManager;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
+import Effects.FloatingText;
+
+import java.awt.Color;
+import java.util.ArrayList;
 
 public class HiveLevelScreen extends Screen implements GameListener {
     protected ScreenCoordinator screenCoordinator;
@@ -32,8 +36,10 @@ public class HiveLevelScreen extends Screen implements GameListener {
     protected FlagManager flagManager;
     protected boolean hasInitialized = false;
 
-    // sting FX resource - single static image shown when spider is hit
     private SpriteSheet stingFxSheet;
+    
+    // floating text for nectar deposits
+    private ArrayList<FloatingText> floatingTexts = new ArrayList<>();
 
     public HiveLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -50,7 +56,6 @@ public class HiveLevelScreen extends Screen implements GameListener {
         map = new HiveMap();
         map.setFlagManager(flagManager);
 
-        // player (Bee) spawn
         player = new Bee(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         player.setMap(map);
         playLevelScreenState = PlayLevelScreenState.RUNNING;
@@ -60,10 +65,8 @@ public class HiveLevelScreen extends Screen implements GameListener {
         map.getTextbox().setInteractKey(player.getInteractKey());
         map.addListener(this);
 
-        // let the map finish its own loading (avoids our NPC being overwritten)
         map.preloadScripts();
 
-        // load the sting FX - just one static sprite
         stingFxSheet = new SpriteSheet(ImageLoader.load("bee_attack1.png"), 32, 32);
     }
 
@@ -73,11 +76,15 @@ public class HiveLevelScreen extends Screen implements GameListener {
                 player.update();
                 map.update(player);
 
-                // check if bee died and death animation finished
+                // update floating texts
+                floatingTexts.removeIf(text -> {
+                    text.update();
+                    return text.isDead();
+                });
+
                 if (player instanceof Bee) {
                     Bee bee = (Bee) player;
 
-                    // transition to game over after death animation completes
                     if (bee.isDead() && bee.isDeathAnimationComplete()) {
                         screenCoordinator.setGameState(GameState.GAME_OVER);
                         return;
@@ -96,17 +103,14 @@ public class HiveLevelScreen extends Screen implements GameListener {
 
                         if (npc instanceof QueenBee) {
                             QueenBee queenBee = (QueenBee) npc;
-//                            if (sting.intersects(queenBee.getHitbox()) && BeeStats.getNectar() > 0) {
-//                                HiveManager.depositNectar();
-//                                BeeStats.setNectar(BeeStats.getNectar() - 1);
-//                            }
-                        }
-
-                        if (npc instanceof QueenBeeChair) {
-                            QueenBeeChair queenBeeChair = (QueenBeeChair) npc;
-                            if (sting.intersects(queenBeeChair.getHitbox()) && BeeStats.getNectar() > 0) {
-                                HiveManager.depositNectar();
+                            if (sting.intersects(queenBee.getHitbox()) && BeeStats.getNectar() > 0) {
+                                HiveManager.depositNectar(map);
                                 BeeStats.setNectar(BeeStats.getNectar() - 1);
+                                
+                                // spawn green -1 floating text at queen (showing deposit)
+                                float textX = queenBee.getX() + 24;
+                                float textY = queenBee.getY();
+                                floatingTexts.add(new FloatingText(textX, textY, "+1", new Color(0, 255, 0)));
                             }
                         }
 
@@ -136,12 +140,18 @@ public class HiveLevelScreen extends Screen implements GameListener {
 
     public void draw(GraphicsHandler graphicsHandler) {
         if (map == null || player == null || playLevelScreenState == null) {
-            return; // wait until initialize() runs
+            return;
         }
 
         switch (playLevelScreenState) {
             case RUNNING:
                 map.draw(player, graphicsHandler);
+                
+                // draw floating texts for nectar deposits
+                for (FloatingText text : floatingTexts) {
+                    text.draw(graphicsHandler, map.getCamera().getX(), map.getCamera().getY());
+                }
+                
                 break;
             case LEVEL_COMPLETED:
                 winScreen.draw(graphicsHandler);
