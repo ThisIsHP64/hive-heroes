@@ -1,19 +1,19 @@
 package Maps;
 
-import java.util.ArrayList;
-
-import Enemies.Spider;
 import Enemies.Bat;
+import Enemies.Spider;
 import Engine.GraphicsHandler;
 import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
-import Portals.GrassPortal;
+import NPCs.FireFlower;
+import NPCs.RareSunflowerwithFlowers;
 import NPCs.Volcano;
-import NPCs.RareSunflowerwithFlowers; // add this import
+import Portals.GrassPortal;
 import Scripts.SimpleTextScript;
-import Tilesets.VolcanoTileset;
+import Tilesets.VolcanoTileset; // add this import
+import java.util.ArrayList;
 
 public class VolcanoMap extends Map {
 
@@ -43,6 +43,9 @@ public class VolcanoMap extends Map {
         // TEST SUNFLOWER - spawn near bee for horde testing
         RareSunflowerwithFlowers testSunflower = new RareSunflowerwithFlowers(5000, getMapTile(83, 50).getLocation());
         npcs.add(testSunflower);
+
+        FireFlower fireFlower = new FireFlower(4, getMapTile(80, 50).getLocation());
+        npcs.add(fireFlower);
 
         // Mirror the GrassMap style: give each spider a unique ID, use tile-based placement,
         // and nudge down a bit with addY(6) so feet align with the ground.
