@@ -1,15 +1,15 @@
-package Scripts.TeleportScripts;
+package Scripts.TeleportScriptActions;
 
 import Game.GameState;
 import Level.ScriptState;
 import ScriptActions.ScriptAction;
 import StaticClasses.TeleportManager;
 
-public class TeleportSnowScriptAction extends ScriptAction {
+public class TeleportVolcanoScriptAction extends ScriptAction {
     
     @Override
     public ScriptState execute() {
-        TeleportManager.setCurrentScreen(GameState.SNOWLEVEL);
+        TeleportManager.setCurrentScreen(GameState.VOLCANOLEVEL);
         return ScriptState.COMPLETED;
     }
 }

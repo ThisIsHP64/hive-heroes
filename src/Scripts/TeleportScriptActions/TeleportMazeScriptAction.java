@@ -1,4 +1,4 @@
-package Scripts.TeleportScripts;
+package Scripts.TeleportScriptActions;
 
 import Game.GameState;
 import Level.ScriptState;

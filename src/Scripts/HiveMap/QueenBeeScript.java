@@ -63,7 +63,7 @@ public class QueenBeeScript extends Script {
                         }
                     });
 
-                    addScriptAction(new TextboxScriptAction("Good luck out there."));
+                    addScriptAction(new TextboxScriptAction("Fulfill your destiny!"));
 
                     }});
                 }});

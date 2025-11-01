@@ -9,7 +9,6 @@ import Maps.DemoMap;
 import Players.Bee;
 import StaticClasses.BeeStats;
 import Utils.Direction;
-import Utils.Point;
 import NPCs.RareSunflowerwithFlowers;
 import NPCs.Spider;
 
@@ -48,7 +47,7 @@ public class DemoLevelScreen extends Screen implements GameListener {
         map.preloadScripts();
 
         // === spawn one spider near Bee start (32px tiles on this sheet) ===
-        Point start = map.getPlayerStartPosition();
+        // Point start = map.getPlayerStartPosition();
         // Point spiderSpot = new Point(start.x + (2 * 32), start.y + (2 * 32)); // 2 right, 2 down
         // Spider spider = new Spider(1001, spiderSpot);
         // map.getNPCs().add(spider);

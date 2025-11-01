@@ -1,15 +1,20 @@
-package Scripts.HiveMap;
+package Scripts.GrassMap;
 
 import java.util.ArrayList;
 
 import Level.Script;
-import ScriptActions.*;
-import Scripts.TeleportScriptActions.TeleportGrassScriptAction;
+import ScriptActions.ConditionalScriptAction;
+import ScriptActions.ConditionalScriptActionGroup;
+import ScriptActions.CustomRequirement;
+import ScriptActions.FlagRequirement;
+import ScriptActions.LockPlayerScriptAction;
+import ScriptActions.ScriptAction;
+import ScriptActions.TextboxScriptAction;
+import ScriptActions.UnlockPlayerScriptAction;
+import Scripts.TeleportScriptActions.TeleportSnowScriptAction;
 
+public class GrassToSnowScript extends Script{
 
-public class GrassPortalScript extends Script {
-
-    // check to see if the bee has talked to the bee yet, and then make it appear/disappear based off that
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
         ArrayList<ScriptAction> scriptActions = new ArrayList<>();
@@ -18,17 +23,17 @@ public class GrassPortalScript extends Script {
 
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("hasTalkedToQueen", false));
+                addRequirement(new FlagRequirement("isLevel7", false));
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("You feel a looming dread.");
-                    addText("Maybe I should talk to the Queen Bee first.");
+                    addText("You peer into the harsh winters ahead.");
+                    addText("You may need some sort of weather protection.");
                 }});
             }});
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("hasTalkedToQueen", true));
+                addRequirement(new FlagRequirement("isLevel7", true));
                 scriptActions.add(new TextboxScriptAction() {{
-                    addText("Would you like to exit the Hive into the Grasslands?", new String[] { "Yes", "No" });
+                    addText("Would you like to enter the Snow Map?", new String[] { "Yes", "No" });
                 }});
 
             scriptActions.add(new ConditionalScriptAction() {{
@@ -41,7 +46,7 @@ public class GrassPortalScript extends Script {
                         } 
                     });
 
-                    addScriptAction(new TeleportGrassScriptAction());
+                    addScriptAction(new TeleportSnowScriptAction());
                 }});
 
                 addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
@@ -53,7 +58,7 @@ public class GrassPortalScript extends Script {
                         }
                     });
 
-                    addScriptAction(new TextboxScriptAction("Okay."));
+                    addScriptAction(new TextboxScriptAction("..."));
 
                     }});
                 }});

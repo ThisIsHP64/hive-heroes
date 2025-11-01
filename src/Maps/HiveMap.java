@@ -6,7 +6,6 @@ import Level.NPC;
 import Level.Trigger;
 import NPCs.BeeGuard;
 import Portals.GrassPortal;
-import Portals.Portal;
 import NPCs.QueenBeeChair;
 import Scripts.HiveMap.BeeGuardScript;
 import Scripts.HiveMap.GrassPortalScript;

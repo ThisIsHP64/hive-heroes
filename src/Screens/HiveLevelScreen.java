@@ -3,24 +3,27 @@ package Screens;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import Engine.Screen;
+
 import Game.GameState;
 import Game.ScreenCoordinator;
+
 import GameObject.SpriteSheet;
+
 import Level.FlagManager;
 import Level.GameListener;
 import Level.Map;
 import Level.NPC;
 import Level.Player;
+
 import Maps.HiveMap;
-import NPCs.QueenBeeChair;
-import Portals.GrassPortal;
-import Portals.Portal;
+
 import NPCs.QueenBee;
-import NPCs.RareSunflowerwithFlowers;
+
 import Players.Bee;
+
 import StaticClasses.BeeStats;
 import StaticClasses.HiveManager;
-import StaticClasses.TeleportManager;
+
 import Utils.Direction;
 import Effects.FloatingText;
 
@@ -44,7 +47,6 @@ public class HiveLevelScreen extends Screen implements GameListener {
     public HiveLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
-
     
     public void initialize() {
         
@@ -93,14 +95,6 @@ public class HiveLevelScreen extends Screen implements GameListener {
                     for (NPC npc : map.getNPCs()) {
                         java.awt.Rectangle sting = bee.getAttackHitbox();
 
-                        if (npc instanceof Portal) {
-                            Portal portal = (Portal) npc;
-
-                            if (sting.intersects(portal.getHitbox())) {
-                                TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
-                            }
-                        }
-
                         if (npc instanceof QueenBee) {
                             QueenBee queenBee = (QueenBee) npc;
                             if (sting.intersects(queenBee.getHitbox()) && BeeStats.getNectar() > 0) {
@@ -113,14 +107,6 @@ public class HiveLevelScreen extends Screen implements GameListener {
                                 floatingTexts.add(new FloatingText(textX, textY, "+1", new Color(0, 255, 0)));
                             }
                         }
-
-                        // if (npc instanceof GrassPortal) {
-                        //         GrassPortal grassPortal = (GrassPortal) npc;
-
-                        //         if (sting.intersects(grassPortal.getHitbox())) {
-                        //             TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
-                        //         }
-                        // }
 
                     }
                     

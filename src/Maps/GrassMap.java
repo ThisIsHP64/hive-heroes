@@ -13,7 +13,10 @@ import Portals.SnowPortal;
 import PowerUps.PowerUp;
 import PowerUps.ShieldPowerUp;
 import Scripts.SimpleTextScript;
-import Scripts.TestMap.PowerUpScript;
+import Scripts.GrassMap.GrassToDungeonScript;
+import Scripts.GrassMap.GrassToMazeScript;
+import Scripts.GrassMap.GrassToSnowScript;
+import Scripts.GrassMap.GrassToVolcanoScript;
 import Tilesets.CommonTileset;
 import java.util.ArrayList;
 
@@ -49,16 +52,20 @@ public class GrassMap extends Map {
         npcs.add(bigHive);
 
         LavaPortal lavaPortal = new LavaPortal(1, getMapTile(64, 0).getLocation());
+        lavaPortal.setInteractScript(new GrassToVolcanoScript());
         npcs.add(lavaPortal);
 
         SnowPortal snowPortal = new SnowPortal(1, getMapTile(64, 122).getLocation().addY(25));
+        snowPortal.setInteractScript(new GrassToSnowScript());
         npcs.add(snowPortal);
 
-        Portal portal1 = new Portal(1, getMapTile(1, 63).getLocation());
-        npcs.add(portal1);
+        Portal dungeonPortal = new Portal(1, getMapTile(1, 63).getLocation());
+        dungeonPortal.setInteractScript(new GrassToDungeonScript());
+        npcs.add(dungeonPortal);
 
-        ReversePortal portal2 = new ReversePortal(1, getMapTile(121, 63).getLocation());
-        npcs.add(portal2);
+        ReversePortal mazePortal = new ReversePortal(1, getMapTile(121, 63).getLocation());
+        mazePortal.setInteractScript(new GrassToMazeScript());
+        npcs.add(mazePortal);
 
         // spawn multiple spiders across the map
         // spider 1 - original position near red X

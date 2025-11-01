@@ -7,7 +7,6 @@ import Game.ScreenCoordinator;
 import Level.*;
 import Maps.VolcanoMap;
 import Players.Bee;
-import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
 import Portals.GrassPortal;

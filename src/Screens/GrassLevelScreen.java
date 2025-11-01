@@ -7,15 +7,12 @@ import Game.ScreenCoordinator;
 import Level.*;
 import Maps.GrassMap;
 import Players.Bee;
-import Portals.LavaPortal;
-import Portals.SnowPortal;
-import StaticClasses.BeeStats;
+
 import StaticClasses.TeleportManager;
+import StaticClasses.UnleashMayhem;
 import Utils.Direction;
 import NPCs.BigHive;
-import Portals.Portal;
 import NPCs.RareSunflowerwithFlowers;
-import Portals.ReversePortal;
 import Effects.FloatingText;
 
 import java.awt.Color;
@@ -48,6 +45,11 @@ public class GrassLevelScreen extends Screen implements GameListener {
     public void initialize() {
         hasInitialized = true;
         flagManager = new FlagManager();
+        flagManager.addFlag("isLevel1", true);
+        flagManager.addFlag("isLevel3", true);
+        flagManager.addFlag("isLevel5", true);
+        flagManager.addFlag("isLevel7", true);
+
 
         map = new GrassMap();
         map.setFlagManager(flagManager);
@@ -70,7 +72,7 @@ public class GrassLevelScreen extends Screen implements GameListener {
             Bee bee = (Bee) player;
             if (bee.getNectar() >= bee.getNectarCap()) {
                 System.out.println("GrassLevel: Bee entered with full nectar! Starting horde...");
-                StaticClasses.UnleashMayhem.fire(map, bee);
+                UnleashMayhem.fire(map, bee);
             } else if (!StaticClasses.UnleashMayhem.isActive()) {
                 // if horde is not active, clean up any leftover enemies from previous horde
                 System.out.println("GrassLevel: Horde not active, cleaning up leftover enemies");
@@ -145,21 +147,21 @@ public class GrassLevelScreen extends Screen implements GameListener {
                                 }
                             }
 
-                            if (npc instanceof LavaPortal) {
-                                LavaPortal lavaPortal = (LavaPortal) npc;
+                            // if (npc instanceof LavaPortal) {
+                            //     LavaPortal lavaPortal = (LavaPortal) npc;
 
-                                if (sting.intersects(lavaPortal.getHitbox())) {
-                                    TeleportManager.setCurrentScreen(GameState.VOLCANOLEVEL);
-                                }
-                            }
+                            //     if (sting.intersects(lavaPortal.getHitbox())) {
+                            //         TeleportManager.setCurrentScreen(GameState.VOLCANOLEVEL);
+                            //     }
+                            // }
 
-                            if (npc instanceof SnowPortal) {
-                                SnowPortal snowPortal = (SnowPortal) npc;
+                            // if (npc instanceof SnowPortal) {
+                            //     SnowPortal snowPortal = (SnowPortal) npc;
 
-                                if (sting.intersects(snowPortal.getHitbox())) {
-                                    TeleportManager.setCurrentScreen(GameState.SNOWLEVEL);
-                                }
-                            }
+                            //     if (sting.intersects(snowPortal.getHitbox())) {
+                            //         TeleportManager.setCurrentScreen(GameState.SNOWLEVEL);
+                            //     }
+                            // }
 
                             if (npc instanceof BigHive) {
                                 BigHive bigHive = (BigHive) npc;
@@ -169,21 +171,21 @@ public class GrassLevelScreen extends Screen implements GameListener {
                                 }
                             }
 
-                            if (npc instanceof Portal) {
-                                Portal portal = (Portal) npc;
+                            // if (npc instanceof Portal) {
+                            //     Portal portal = (Portal) npc;
 
-                                if (sting.intersects(portal.getHitbox())) {
-                                    TeleportManager.setCurrentScreen(GameState.DUNGEONLEVEL);
-                                }
-                            }
+                            //     if (sting.intersects(portal.getHitbox())) {
+                            //         TeleportManager.setCurrentScreen(GameState.DUNGEONLEVEL);
+                            //     }
+                            // }
 
-                            if (npc instanceof ReversePortal) {
-                                ReversePortal reversePortal = (ReversePortal) npc;
+                            // if (npc instanceof ReversePortal) {
+                            //     ReversePortal reversePortal = (ReversePortal) npc;
 
-                                if (sting.intersects(reversePortal.getHitbox())) {
-                                    TeleportManager.setCurrentScreen(GameState.MAZELEVEL);
-                                }
-                            }
+                            //     if (sting.intersects(reversePortal.getHitbox())) {
+                            //         TeleportManager.setCurrentScreen(GameState.MAZELEVEL);
+                            //     }
+                            // }
                         }
                     }
                 }
