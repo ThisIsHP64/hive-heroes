@@ -21,9 +21,10 @@ public class GrassToMazeScript extends Script {
 
         scriptActions.add(new LockPlayerScriptAction());
 
+        scriptActions.add(new ProcessLevelUpScriptAction());
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("isLevel3", false));
+                addRequirement(new FlagRequirement("isLevel2", false));
                 addScriptAction(new TextboxScriptAction() {{
                     addText("What could be in here?");
                     addText("You peek in, and become captivated by the infinitely \nmesmerizing patterns.");
@@ -33,7 +34,7 @@ public class GrassToMazeScript extends Script {
             }});
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("isLevel3", true));
+                addRequirement(new FlagRequirement("isLevel2", true));
                 scriptActions.add(new TextboxScriptAction() {{
                     addText("Would you like to enter the Maze?", new String[] { "Yes", "No" });
                 }});

@@ -204,7 +204,7 @@ public class Bee extends Player {
     @Override
     public void update() {
         super.update();
-
+        BeeStats.checkLevelUp();
         // update floating damage numbers
         floatingTexts.removeIf(text -> {
             text.update();
@@ -218,8 +218,8 @@ public class Bee extends Player {
         int tileY = (int) (getY() / TILE);
 
         System.out.println(String.format(
-                "Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d  X: %d  Y: %d",
-                BeeStats.getHealth(), BeeStats.getStamina(), BeeStats.getNectar(), BeeStats.getExperience(),
+                "Level: %d  Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d  X: %d  Y: %d",
+                BeeStats.getCurrentLevel(), BeeStats.getHealth(), BeeStats.getStamina(), BeeStats.getNectar(), BeeStats.getExperience(),
                 BeeStats.getWalkSpeed(), HiveManager.getNectar(), tileX, tileY));
 
         if (attacking && System.currentTimeMillis() - attackStart > ATTACK_ACTIVE_MS) {

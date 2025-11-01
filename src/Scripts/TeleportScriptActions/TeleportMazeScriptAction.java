@@ -7,6 +7,7 @@ import StaticClasses.TeleportManager;
 
 public class TeleportMazeScriptAction extends ScriptAction {
     
+
     @Override
     public ScriptState execute() {
         TeleportManager.setCurrentScreen(GameState.MAZELEVEL);
