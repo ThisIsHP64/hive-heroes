@@ -8,7 +8,6 @@ import NPCs.RareSunflowerwithFlowers;
 import Enemies.Spider;
 import PowerUps.PowerUp;
 import Scripts.SimpleTextScript;
-import Scripts.TestMap.PowerUpScript;
 import Tilesets.CommonTileset;
 import java.util.ArrayList; // add spider
 
@@ -31,7 +30,6 @@ public class DemoMap extends Map {
 
         // --- existing power-up ---
         PowerUp pu = new PowerUp(2000, getMapTile(37, 55).getLocation());
-        pu.setInteractScript(new PowerUpScript());
         npcs.add(pu);
 
         RareSunflowerwithFlowers rareSunflower = new RareSunflowerwithFlowers(4, getMapTile(40, 55).getLocation());

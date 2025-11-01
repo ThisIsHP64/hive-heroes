@@ -10,7 +10,6 @@ import Level.Map;
 import Level.NPC;
 import Level.Trigger;
 import Portals.GrassPortal;
-import Portals.Portal;
 import NPCs.Volcano;
 import NPCs.RareSunflowerwithFlowers; // add this import
 import Scripts.SimpleTextScript;
@@ -37,9 +36,6 @@ public class VolcanoMap extends Map {
     @Override
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
-
-        // Portal portal = new Portal(1, getMapTile(92, 49).getLocation());
-        // npcs.add(portal);
 
         GrassPortal grassPortal = new GrassPortal(1, getMapTile(92, 49).getLocation());
         npcs.add(grassPortal);

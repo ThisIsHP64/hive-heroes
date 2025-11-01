@@ -1,43 +1,41 @@
-package Scripts.HiveMap;
+package Scripts.GrassMap;
 
 import java.util.ArrayList;
 
 import Level.Script;
-import ScriptActions.ChangeFlagScriptAction;
 import ScriptActions.ConditionalScriptAction;
 import ScriptActions.ConditionalScriptActionGroup;
 import ScriptActions.CustomRequirement;
 import ScriptActions.FlagRequirement;
 import ScriptActions.LockPlayerScriptAction;
-import ScriptActions.NPCFacePlayerScriptAction;
 import ScriptActions.ScriptAction;
 import ScriptActions.TextboxScriptAction;
 import ScriptActions.UnlockPlayerScriptAction;
+import Scripts.TeleportScriptActions.TeleportMazeScriptAction;
 
-public class BeeGuardScript extends Script {
+public class GrassToMazeScript extends Script {
 
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
         ArrayList<ScriptAction> scriptActions = new ArrayList<>();
-        scriptActions.add(new LockPlayerScriptAction());
 
-        scriptActions.add(new NPCFacePlayerScriptAction());
+        scriptActions.add(new LockPlayerScriptAction());
 
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("hasTalkedToQueen", false));
+                addRequirement(new FlagRequirement("isLevel3", false));
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Halt.");
-                    addText("Has the Queen Bee given you your orders?");
-                    addText("Let's hope you don't fail.");
+                    addText("What could be in here?");
+                    addText("You peek in, and become captivated by the infinitely \nmesmerizing patterns.");
+                    addText("You feel like exploring it later.");
+
                 }});
-                addScriptAction(new ChangeFlagScriptAction("hasTalkedToQueen", false));
             }});
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("hasTalkedToQueen", true));
+                addRequirement(new FlagRequirement("isLevel3", true));
                 scriptActions.add(new TextboxScriptAction() {{
-                    addText("Do you need a rundown of your duties?", new String[] { "Yes", "No" });
+                    addText("Would you like to enter the Maze?", new String[] { "Yes", "No" });
                 }});
 
             scriptActions.add(new ConditionalScriptAction() {{
@@ -50,12 +48,7 @@ public class BeeGuardScript extends Script {
                         } 
                     });
 
-                    addScriptAction(new ChangeFlagScriptAction("hasTalkedToQueen", false));
-
-                    addScriptAction(new TextboxScriptAction() {{
-                        addText("Talk to your Majesty.");
-                    }});
-
+                    addScriptAction(new TeleportMazeScriptAction());
                 }});
 
                 addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
@@ -67,7 +60,7 @@ public class BeeGuardScript extends Script {
                         }
                     });
 
-                    addScriptAction(new TextboxScriptAction("Good luck out there."));
+                    addScriptAction(new TextboxScriptAction("..."));
 
                     }});
                 }});

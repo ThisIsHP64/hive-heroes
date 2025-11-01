@@ -7,7 +7,6 @@ import Level.Map;
 import Level.NPC;
 import Level.Trigger;
 import Portals.GrassPortal;
-import Portals.Portal;
 import Tilesets.MazeTileset;
 
 public class MazeMap extends Map {
