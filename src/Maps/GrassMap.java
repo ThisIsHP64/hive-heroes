@@ -4,6 +4,7 @@ import Enemies.Spider;
 import Engine.GraphicsHandler;
 import Level.Map;
 import Level.NPC;
+import Level.Trigger;
 import NPCs.BigHive;
 import Portals.Portal;
 import NPCs.RareSunflowerwithFlowers;
@@ -17,6 +18,9 @@ import Scripts.GrassMap.GrassToDungeonScript;
 import Scripts.GrassMap.GrassToMazeScript;
 import Scripts.GrassMap.GrassToSnowScript;
 import Scripts.GrassMap.GrassToVolcanoScript;
+import Scripts.GrassMap.LevelUpgradeScript;
+import Scripts.GrassMap.ProcessLevelUpScriptAction;
+import Scripts.HiveMap.IntroductionScript;
 import Tilesets.CommonTileset;
 import java.util.ArrayList;
 
@@ -107,5 +111,25 @@ public class GrassMap extends Map {
         getMapTile(124, 124).setInteractScript(new SimpleTextScript("Grassy Region?"));
         getMapTile(0, 124).setInteractScript(new SimpleTextScript("Volcanic Region?"));
         getMapTile(1, 124).setInteractScript(new SimpleTextScript("Volcanic Region?"));
+    }
+
+    @Override
+    public ArrayList<Trigger> loadTriggers() {
+        ArrayList<Trigger> triggers = new ArrayList<>();
+        
+        // vertical triggers
+        // triggers.add(new Trigger(0, 0, 6000, 6000, 
+        //     new LevelUpgradeScript(), "isLevel1"));
+
+        // triggers.add(new Trigger(0, 0, 6000, 6000, 
+        //     new LevelUpgradeScript(), "isLevel2"));
+        
+        // triggers.add(new Trigger(0, 0, 6000, 6000, 
+        //     new LevelUpgradeScript(), "isLevel3"));
+        
+        // triggers.add(new Trigger(0, 0, 6000, 6000, 
+        //     new LevelUpgradeScript(), "isLevel4"));
+
+        return triggers;
     }
 }

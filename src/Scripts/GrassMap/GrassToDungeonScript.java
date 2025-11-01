@@ -20,10 +20,12 @@ public class GrassToDungeonScript extends Script{
         ArrayList<ScriptAction> scriptActions = new ArrayList<>();
 
         scriptActions.add(new LockPlayerScriptAction());
+        
+        scriptActions.add(new ProcessLevelUpScriptAction());
 
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("isLevel5", false));
+                addRequirement(new FlagRequirement("isLevel3", false));
                 addScriptAction(new TextboxScriptAction() {{
                     addText("You hear sounds coming from within the dungeon.");
                     addText("The screams send shivers down your spine. \nMaybe I'll come back later.");
@@ -31,7 +33,7 @@ public class GrassToDungeonScript extends Script{
             }});
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("isLevel5", true));
+                addRequirement(new FlagRequirement("isLevel3", true));
                 scriptActions.add(new TextboxScriptAction() {{
                     addText("Would you like to enter the Dungeon?", new String[] { "Yes", "No" });
                 }});

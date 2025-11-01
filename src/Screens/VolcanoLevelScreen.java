@@ -7,6 +7,7 @@ import Game.ScreenCoordinator;
 import Level.*;
 import Maps.VolcanoMap;
 import Players.Bee;
+import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
 import Portals.GrassPortal;
@@ -109,7 +110,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                 Spider sp = (Spider) npc;
 
                                 if (!sp.isDead() && sting.intersects(sp.getHitbox())) {
-                                    sp.takeDamage(1);
+                                    sp.takeDamage(BeeStats.getAttackDamage());
                                     System.out.println("Bee stung spider!");
                                 }
                             }
@@ -118,7 +119,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                 Bat bat = (Bat) npc;
 
                                 if (!bat.isDead() && sting.intersects(bat.getHitbox())) {
-                                    bat.takeDamage(1);
+                                    bat.takeDamage(BeeStats.getAttackDamage());
                                     System.out.println("Bee stung bat!");
                                 }
                             }

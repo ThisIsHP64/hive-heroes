@@ -7,7 +7,7 @@ import Game.ScreenCoordinator;
 import Level.*;
 import Maps.GrassMap;
 import Players.Bee;
-
+import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
 import StaticClasses.UnleashMayhem;
 import Utils.Direction;
@@ -45,10 +45,10 @@ public class GrassLevelScreen extends Screen implements GameListener {
     public void initialize() {
         hasInitialized = true;
         flagManager = new FlagManager();
-        flagManager.addFlag("isLevel1", true);
-        flagManager.addFlag("isLevel3", true);
-        flagManager.addFlag("isLevel5", true);
-        flagManager.addFlag("isLevel7", true);
+        flagManager.addFlag("isLevel1", false);
+        flagManager.addFlag("isLevel2", false);
+        flagManager.addFlag("isLevel3", false);
+        flagManager.addFlag("isLevel4", false);
 
 
         map = new GrassMap();
@@ -112,7 +112,9 @@ public class GrassLevelScreen extends Screen implements GameListener {
                                 Spider sp = (Spider) npc;
 
                                 if (!sp.isDead() && sting.intersects(sp.getHitbox())) {
-                                    sp.takeDamage(1);
+                                    sp.takeDamage(BeeStats.getAttackDamage());
+                                    BeeStats.setExperience(BeeStats.getExperience() + 1);
+                                    
                                     System.out.println("Bee stung spider!");
                                 }
                             }
@@ -121,7 +123,8 @@ public class GrassLevelScreen extends Screen implements GameListener {
                                 Bat bat = (Bat) npc;
 
                                 if (!bat.isDead() && sting.intersects(bat.getHitbox())) {
-                                    bat.takeDamage(1);
+                                    bat.takeDamage(BeeStats.getAttackDamage());
+                                    BeeStats.setExperience(BeeStats.getExperience() + 1);
                                     System.out.println("Bee stung bat!");
                                 }
                             }
