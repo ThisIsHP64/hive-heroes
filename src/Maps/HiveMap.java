@@ -9,6 +9,7 @@ import Portals.GrassPortal;
 import Portals.Portal;
 import NPCs.QueenBeeChair;
 import Scripts.HiveMap.BeeGuardScript;
+import Scripts.HiveMap.GrassPortalScript;
 import Scripts.HiveMap.IntroductionScript;
 import Scripts.HiveMap.QueenBeeScript;
 import Tilesets.HiveTileset;
@@ -51,6 +52,7 @@ public class HiveMap extends Map {
         // npcs.add(portal);
 
         GrassPortal grassPortal = new GrassPortal(1, getMapTile(1, 20).getLocation().addY(60));
+        grassPortal.setInteractScript(new GrassPortalScript());
         npcs.add(grassPortal);
 
         return npcs;

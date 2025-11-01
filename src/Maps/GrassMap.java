@@ -36,7 +36,6 @@ public class GrassMap extends Map {
         
         // existing power-up
         PowerUp pu = new PowerUp(2000, getMapTile(70, 59).getLocation());
-        pu.setInteractScript(new PowerUpScript());
         npcs.add(pu);
 
         // Shield powerup spawn

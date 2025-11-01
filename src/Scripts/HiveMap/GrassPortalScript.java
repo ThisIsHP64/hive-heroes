@@ -2,42 +2,35 @@ package Scripts.HiveMap;
 
 import java.util.ArrayList;
 
+import Game.GameState;
 import Level.Script;
-import ScriptActions.ChangeFlagScriptAction;
-import ScriptActions.ConditionalScriptAction;
-import ScriptActions.ConditionalScriptActionGroup;
-import ScriptActions.CustomRequirement;
-import ScriptActions.FlagRequirement;
-import ScriptActions.LockPlayerScriptAction;
-import ScriptActions.NPCFacePlayerScriptAction;
-import ScriptActions.ScriptAction;
-import ScriptActions.TextboxScriptAction;
-import ScriptActions.UnlockPlayerScriptAction;
+import ScriptActions.*;
+import Scripts.TeleportScripts.TeleportGrassScriptAction;
+import StaticClasses.TeleportManager;
+import Utils.Visibility;
 
-public class BeeGuardScript extends Script {
+public class GrassPortalScript extends Script {
 
+    // check to see if the bee has talked to the bee yet, and then make it appear/disappear based off that
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
         ArrayList<ScriptAction> scriptActions = new ArrayList<>();
-        scriptActions.add(new LockPlayerScriptAction());
 
-        scriptActions.add(new NPCFacePlayerScriptAction());
+        scriptActions.add(new LockPlayerScriptAction());
 
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToQueen", false));
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Halt.");
-                    addText("Has the Queen Bee given you your orders?");
-                    addText("Let's hope you don't fail.");
+                    addText("You feel a looming dread.");
+                    addText("Maybe I should talk to the Queen Bee first.");
                 }});
-                addScriptAction(new ChangeFlagScriptAction("hasTalkedToQueen", false));
             }});
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToQueen", true));
                 scriptActions.add(new TextboxScriptAction() {{
-                    addText("Do you need a rundown of your duties?", new String[] { "Yes", "No" });
+                    addText("Would you like to exit the Hive into the Grasslands?", new String[] { "Yes", "No" });
                 }});
 
             scriptActions.add(new ConditionalScriptAction() {{
@@ -50,12 +43,7 @@ public class BeeGuardScript extends Script {
                         } 
                     });
 
-                    addScriptAction(new ChangeFlagScriptAction("hasTalkedToQueen", false));
-
-                    addScriptAction(new TextboxScriptAction() {{
-                        addText("Talk to your Majesty.");
-                    }});
-
+                    addScriptAction(new TeleportGrassScriptAction());
                 }});
 
                 addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
@@ -67,7 +55,7 @@ public class BeeGuardScript extends Script {
                         }
                     });
 
-                    addScriptAction(new TextboxScriptAction("Good luck out there."));
+                    addScriptAction(new TextboxScriptAction("Okay."));
 
                     }});
                 }});

@@ -114,13 +114,13 @@ public class HiveLevelScreen extends Screen implements GameListener {
                             }
                         }
 
-                        if (npc instanceof GrassPortal) {
-                                GrassPortal grassPortal = (GrassPortal) npc;
+                        // if (npc instanceof GrassPortal) {
+                        //         GrassPortal grassPortal = (GrassPortal) npc;
 
-                                if (sting.intersects(grassPortal.getHitbox())) {
-                                    TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
-                                }
-                        }
+                        //         if (sting.intersects(grassPortal.getHitbox())) {
+                        //             TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
+                        //         }
+                        // }
 
                     }
                     
