@@ -13,6 +13,8 @@ import Utils.Direction;
 import Portals.GrassPortal;
 import Portals.Portal;
 import NPCs.RareSunflowerwithFlowers;
+import NPCs.OneRing;
+import NPCs.FireTunic;
 import Enemies.Spider;
 
 import Engine.ImageLoader;
@@ -29,6 +31,10 @@ public class MazeLevelScreen extends Screen implements GameListener {
 
     // sting FX resource - single static image shown when spider is hit
     private SpriteSheet stingFxSheet;
+    
+    // track if items have been collected
+    private boolean oneRingCollected = false;
+    private boolean fireTunicCollected = false;
 
     public MazeLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -41,7 +47,7 @@ public class MazeLevelScreen extends Screen implements GameListener {
         map = new MazeMap();
         map.setFlagManager(flagManager);
 
-        // player (Bee) spawn
+        // player (Bee) spawn at X:1, Y:1
         player = new Bee(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         player.setMap(map);
         playLevelScreenState = PlayLevelScreenState.RUNNING;
@@ -54,10 +60,12 @@ public class MazeLevelScreen extends Screen implements GameListener {
         // let the map finish its own loading (avoids our NPC being overwritten)
         map.preloadScripts();
 
-        // spiders are now spawned in SprintOneMap.loadNPCs() instead of here
-
         // load the sting FX - just one static sprite
         stingFxSheet = new SpriteSheet(ImageLoader.load("bee_attack1.png"), 32, 32);
+        
+        // reset collection flags
+        oneRingCollected = false;
+        fireTunicCollected = false;
     }
 
     public void update() {
@@ -80,6 +88,35 @@ public class MazeLevelScreen extends Screen implements GameListener {
                         java.awt.Rectangle sting = bee.getAttackHitbox();
 
                         for (NPC npc : map.getNPCs()) {
+                            // Check for OneRing collection
+                            if (npc instanceof NPCs.OneRing) {
+                                NPCs.OneRing ring = (NPCs.OneRing) npc;
+                                
+                                if (!ring.isCollected() && ring.intersects(bee)) {
+                                    ring.collect();
+                                    oneRingCollected = true;
+                                    // Display message on screen
+                                    map.getTextbox().addText("Picked up some random ring...");
+                                    map.getTextbox().setIsActive(true);
+                                }
+                            }
+                            
+                            // Check for FireTunic collection
+                            if (npc instanceof NPCs.FireTunic) {
+                                NPCs.FireTunic tunic = (NPCs.FireTunic) npc;
+                                
+                                if (!tunic.isCollected() && tunic.intersects(bee)) {
+                                    tunic.collect();
+                                    fireTunicCollected = true;
+                                    // Display message on screen
+                                    map.getTextbox().addText("Acquired Volcanic Tunic.");
+                                    map.getTextbox().addText("Seems to be made of something that can withstand tremendous heat.");
+                                    map.getTextbox().setIsActive(true);
+                                    // Teleport back to grass level after message
+                                    TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
+                                }
+                            }
+                            
                             if (npc instanceof Spider) {
                                 Spider sp = (Spider) npc;
 
