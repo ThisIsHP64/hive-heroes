@@ -6,21 +6,23 @@ import Level.Map;
 import Level.NPC;
 import Level.Trigger;
 import NPCs.BigHive;
-import Portals.Portal;
+import NPCs.BlueBorah;
+import NPCs.Daisy;
+import NPCs.Poppy;
 import NPCs.RareSunflowerwithFlowers;
-import Portals.ReversePortal;
+import NPCs.Rose;
+import NPCs.Yarrow;
 import Portals.LavaPortal;
+import Portals.Portal;
+import Portals.ReversePortal;
 import Portals.SnowPortal;
 import PowerUps.PowerUp;
 import PowerUps.ShieldPowerUp;
-import Scripts.SimpleTextScript;
 import Scripts.GrassMap.GrassToDungeonScript;
 import Scripts.GrassMap.GrassToMazeScript;
 import Scripts.GrassMap.GrassToSnowScript;
 import Scripts.GrassMap.GrassToVolcanoScript;
-import Scripts.GrassMap.LevelUpgradeScript;
-import Scripts.GrassMap.ProcessLevelUpScriptAction;
-import Scripts.HiveMap.IntroductionScript;
+import Scripts.SimpleTextScript;
 import Tilesets.CommonTileset;
 import java.util.ArrayList;
 
@@ -51,6 +53,21 @@ public class GrassMap extends Map {
         
         RareSunflowerwithFlowers rareSunflower = new RareSunflowerwithFlowers(4, getMapTile(67, 48).getLocation());
         npcs.add(rareSunflower);
+
+        BlueBorah blueBorah = new BlueBorah(4, getMapTile(50, 55).getLocation());
+        npcs.add(blueBorah);
+
+        Rose rose = new Rose(4, getMapTile(43, 54).getLocation());
+        npcs.add(rose);
+
+        Yarrow yarrow = new Yarrow(4, getMapTile(90, 50).getLocation());
+        npcs.add(yarrow);
+
+        Poppy poppy = new Poppy(4, getMapTile(45, 40).getLocation());
+        npcs.add(poppy);
+
+        Daisy daisy = new Daisy(4, getMapTile(35, 35).getLocation());
+        npcs.add(daisy);
         
         BigHive bigHive = new BigHive(4, getMapTile(67, 51).getLocation());
         npcs.add(bigHive);
