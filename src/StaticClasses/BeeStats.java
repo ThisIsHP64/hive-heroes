@@ -37,6 +37,9 @@ public class BeeStats {
     private static boolean hasTunic = false;
     private static boolean tunicActive = false;
 
+    // ring variable (OneRing)
+    private static boolean hasRing = false;
+
 
 
     public static int getAttackDamage() {
@@ -189,5 +192,14 @@ public class BeeStats {
 
     public static void setTunicActive(boolean value) {
         tunicActive = value;
-    }   
+    }
+
+    // ring getters and setters
+    public static boolean hasRing() {
+        return hasRing;
+    }
+
+    public static void setHasRing(boolean value) {
+        hasRing = value;
+    }
 }

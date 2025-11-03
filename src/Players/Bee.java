@@ -148,6 +148,10 @@ public class Bee extends Player {
                 swapToRedBeeSprites();
             }
         }
+
+        if (BeeStats.hasRing()) {
+            powerupHUD.show("onering.png", Integer.MAX_VALUE);
+        }
     }
 
     public void applyDamage(int amount) {
@@ -225,6 +229,13 @@ public class Bee extends Player {
             swapToRedBeeSprites();
         }
         System.out.println("You received the Red Tunic");
+    }
+
+    public void showRingIcon() {
+        if (BeeStats.hasRing() && powerupHUD != null) {
+            powerupHUD.show("onering.png", Integer.MAX_VALUE);
+            System.out.println("Ring icon shown in HUD!");
+        }
     }
 
     @Override

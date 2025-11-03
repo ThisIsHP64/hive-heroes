@@ -10,6 +10,7 @@ import Game.ScreenCoordinator;
 import Level.*;
 import Maps.MazeMap;
 import Players.Bee;
+import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
 import Portals.GrassPortal;
@@ -104,6 +105,10 @@ public class MazeLevelScreen extends Screen implements GameListener {
                                 if (!ring.isCollected() && distance < 80) {
                                     ring.collect();
                                     oneRingCollected = true;
+                                    // Add ring to inventory
+                                    BeeStats.setHasRing(true);
+                                    // Show ring icon in HUD
+                                    bee.showRingIcon();
                                     map.getTextbox().addText("Random Ring.");
                                     map.getTextbox().addText("Looks shiny, I'll grab it.");
                                     map.getTextbox().setIsActive(true);
@@ -164,11 +169,19 @@ public class MazeLevelScreen extends Screen implements GameListener {
                     }
                 }
                 
-                // Remove fully faded OneRing
+                // Remove fully faded OneRing and dismiss textbox
                 map.getNPCs().removeIf(npc -> {
                     if (npc instanceof NPCs.OneRing) {
                         NPCs.OneRing ring = (NPCs.OneRing) npc;
-                        return ring.isCollected() && ring.hasFadedOut();
+                        if (ring.isCollected() && ring.hasFadedOut()) {
+                            // Close textbox when ring fade completes
+                            if (map.getTextbox().isActive()) {
+                                map.getTextbox().setIsActive(false);
+                                keyLocker.unlockKey(Key.SPACE);
+                                System.out.println("Ring faded - textbox closed and SPACE unlocked");
+                            }
+                            return true;
+                        }
                     }
                     return false;
                 });
