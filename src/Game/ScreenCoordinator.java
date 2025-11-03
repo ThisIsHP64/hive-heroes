@@ -71,6 +71,16 @@ public class ScreenCoordinator extends Screen {
         gameState = GameState.MENU;
     }
 
+    public void resetAll() {
+        // screens for the regions
+        grassLevelScreen = new GrassLevelScreen(this);
+        volcanoLevelScreen = new VolcanoLevelScreen(this);
+        dungeonLevelScreen = new DungeonLevelScreen(this);
+        mazeLevelScreen = new MazeLevelScreen(this);
+        snowLevelScreen = new SnowLevelScreen(this);
+        hiveLevelScreen = new HiveLevelScreen(this);
+    }
+
     @Override
     public void update() {
         do {
