@@ -3,6 +3,7 @@ package Screens;
 import Engine.GraphicsHandler;
 import Engine.Screen;
 import Flowers.Cosmo;
+import Flowers.Flower;
 import Flowers.RareSunflowerwithFlowers;
 import Game.GameState;
 import Game.ScreenCoordinator;
@@ -130,10 +131,31 @@ public class GrassLevelScreen extends Screen implements GameListener {
                                 }
                             }
 
-                            if (npc instanceof RareSunflowerwithFlowers) {
-                                RareSunflowerwithFlowers rareSunflower = (RareSunflowerwithFlowers) npc;
+                            // if (npc instanceof RareSunflowerwithFlowers) {
+                            //     RareSunflowerwithFlowers rareSunflower = (RareSunflowerwithFlowers) npc;
 
-                                if (sting.intersects(rareSunflower.getHitbox())) {
+                            //     if (sting.intersects(rareSunflower.getHitbox())) {
+                            //         System.out.println("Sunflower hit!");
+
+                            //         int added = bee.tryAddNectar(1);
+                            //         if (added > 0) {
+                            //             System.out.println(
+                            //                     "Nectar collected: " + bee.getNectar() + "/" + bee.getNectarCap());
+                                        
+                            //             // spawn yellow +1 floating text at sunflower
+                            //             float textX = rareSunflower.getX() + 24;
+                            //             float textY = rareSunflower.getY();
+                            //             floatingTexts.add(new FloatingText(textX, textY, "+1", new Color(255, 215, 0)));
+                            //         } else {
+                            //             System.out.println("Pouch full! Deposit at the hive.");
+                            //         }
+                            //     }
+                            // }
+
+                            if (npc instanceof Flower) {
+                                Flower flower = (Flower) npc;
+
+                                if (sting.intersects(flower.getHitbox())) {
                                     System.out.println("Sunflower hit!");
 
                                     int added = bee.tryAddNectar(1);
@@ -142,8 +164,8 @@ public class GrassLevelScreen extends Screen implements GameListener {
                                                 "Nectar collected: " + bee.getNectar() + "/" + bee.getNectarCap());
                                         
                                         // spawn yellow +1 floating text at sunflower
-                                        float textX = rareSunflower.getX() + 24;
-                                        float textY = rareSunflower.getY();
+                                        float textX = flower.getX() + 24;
+                                        float textY = flower.getY();
                                         floatingTexts.add(new FloatingText(textX, textY, "+1", new Color(255, 215, 0)));
                                     } else {
                                         System.out.println("Pouch full! Deposit at the hive.");
@@ -151,24 +173,11 @@ public class GrassLevelScreen extends Screen implements GameListener {
                                 }
                             }
 
-                            if (npc instanceof Cosmo) {
-                                Cosmo cosmo = (Cosmo) npc;
+                            if (npc instanceof BigHive) {
+                                BigHive bigHive = (BigHive) npc;
 
-                                if (sting.intersects(cosmo.getHitbox())) {
-                                    System.out.println("Sunflower hit!");
-
-                                    int added = bee.tryAddNectar(1);
-                                    if (added > 0) {
-                                        System.out.println(
-                                                "Nectar collected: " + bee.getNectar() + "/" + bee.getNectarCap());
-                                        
-                                        // spawn yellow +1 floating text at sunflower
-                                        float textX = cosmo.getX() + 24;
-                                        float textY = cosmo.getY();
-                                        floatingTexts.add(new FloatingText(textX, textY, "+1", new Color(255, 215, 0)));
-                                    } else {
-                                        System.out.println("Pouch full! Deposit at the hive.");
-                                    }
+                                if (sting.intersects(bigHive.getHitbox())) {
+                                    TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
                                 }
                             }
 
@@ -187,14 +196,6 @@ public class GrassLevelScreen extends Screen implements GameListener {
                             //         TeleportManager.setCurrentScreen(GameState.SNOWLEVEL);
                             //     }
                             // }
-
-                            if (npc instanceof BigHive) {
-                                BigHive bigHive = (BigHive) npc;
-
-                                if (sting.intersects(bigHive.getHitbox())) {
-                                    TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
-                                }
-                            }
 
                             // if (npc instanceof Portal) {
                             //     Portal portal = (Portal) npc;

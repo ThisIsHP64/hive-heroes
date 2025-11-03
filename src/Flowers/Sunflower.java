@@ -14,7 +14,7 @@ public class Sunflower extends Flower {
 
     public Sunflower(int id, Point location) {
         super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("SunflowerOUTLINED.png"), 
-                20, 20), "STAND_LEFT");
+                32, 32), "STAND_LEFT");
     }
 
     @Override

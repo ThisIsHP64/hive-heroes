@@ -14,7 +14,7 @@ public class Lavender extends Flower {
 
     public Lavender(int id, Point location) {
         super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("LavenderOUTLINED.png"), 
-                20, 20), "STAND_LEFT");
+                32, 32), "STAND_LEFT");
     }
 
     @Override

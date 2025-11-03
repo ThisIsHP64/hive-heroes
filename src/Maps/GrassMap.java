@@ -2,13 +2,7 @@ package Maps;
 
 import Enemies.Spider;
 import Engine.GraphicsHandler;
-import Flowers.BlueBorah;
-import Flowers.Cosmo;
-import Flowers.Daisy;
-import Flowers.Poppy;
-import Flowers.RareSunflowerwithFlowers;
-import Flowers.Rose;
-import Flowers.Yarrow;
+import Flowers.*;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
@@ -58,8 +52,14 @@ public class GrassMap extends Map {
         BlueBorah blueBorah = new BlueBorah(4, getMapTile(50, 55).getLocation());
         npcs.add(blueBorah);
 
-        Cosmo cosmo = new Cosmo(4, getMapTile(52,55).getLocation());
+        Cosmo cosmo = new Cosmo(4, getMapTile(52, 55).getLocation());
         npcs.add(cosmo);
+
+        Daffodil daffodil = new Daffodil(4, getMapTile(45, 57).getLocation());
+        npcs.add(daffodil);
+
+        Daisy2 daisy2 = new Daisy2(4, getMapTile(46,57).getLocation());
+        npcs.add(daisy2);
 
         Rose rose = new Rose(4, getMapTile(43, 54).getLocation());
         npcs.add(rose);

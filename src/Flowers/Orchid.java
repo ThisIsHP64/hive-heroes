@@ -14,7 +14,7 @@ public class Orchid extends Flower {
 
     public Orchid(int id, Point location) {
         super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("OrchidOUTLINED.png"), 
-                20, 20), "STAND_LEFT");
+                32, 32), "STAND_LEFT");
     }
 
     @Override

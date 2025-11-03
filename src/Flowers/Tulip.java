@@ -14,7 +14,7 @@ public class Tulip extends Flower {
 
     public Tulip(int id, Point location) {
         super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("TulipOUTLINED.png"), 
-                20, 20), "STAND_LEFT");
+                32, 32), "STAND_LEFT");
     }
     
     @Override

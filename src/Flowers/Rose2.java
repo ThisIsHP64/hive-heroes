@@ -14,7 +14,7 @@ public class Rose2 extends Flower {
 
     public Rose2(int id, Point location) {
         super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("RoseOUTLINED.png"), 
-                20, 20), "STAND_LEFT");
+                32, 32), "STAND_LEFT");
     }
 
     @Override

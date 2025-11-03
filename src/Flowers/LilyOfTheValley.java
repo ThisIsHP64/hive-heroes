@@ -14,7 +14,7 @@ public class LilyOfTheValley extends Flower {
 
     public LilyOfTheValley(int id, Point location) {
         super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("LilyOfTheValleyOUTLINED.png"), 
-                20, 20), "STAND_LEFT");
+                32, 32), "STAND_LEFT");
     }
 
     @Override
