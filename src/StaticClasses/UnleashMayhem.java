@@ -2,6 +2,7 @@ package StaticClasses;
 
 import Level.Map;
 import Players.Bee;
+import Sound.Music;
 
 public final class UnleashMayhem {
     private static boolean active = false;
@@ -24,8 +25,8 @@ public final class UnleashMayhem {
         active = true;
         HordeManager.startHorde(map, bee);
         map.getCamera().hordeShake();
-        Sound.MusicManager.stopGpLoop();
-        Sound.MusicManager.playSiegeLoop();
+        Sound.MusicManager.stopAll();
+        Sound.MusicManager.playLoop(Music.SIEGE);
         System.out.println("[Mayhem] HORDE STARTED");
     }
 
@@ -34,8 +35,8 @@ public final class UnleashMayhem {
             return;
         active = false;
         HordeManager.stopHorde(map);
-        Sound.MusicManager.stopSiegeLoop();
-        Sound.MusicManager.playGpLoop();
+        Sound.MusicManager.stopAll();
+        Sound.MusicManager.playLoop(Music.GRASS);
         System.out.println("[Mayhem] HORDE STOPPED");
     }
 
@@ -46,8 +47,8 @@ public final class UnleashMayhem {
         }
         active = false;
         HordeManager.stopHorde(null);
-        Sound.MusicManager.stopSiegeLoop();
-        Sound.MusicManager.playGpLoop();
+        Sound.MusicManager.stopAll();
+        Sound.MusicManager.playLoop(Music.GRASS);
         System.out.println("[Mayhem] HORDE RESET");
     }
 }

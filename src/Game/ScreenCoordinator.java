@@ -4,6 +4,8 @@ import Engine.DefaultScreen;
 import Engine.GraphicsHandler;
 import Engine.Screen;
 import Screens.*;
+import Sound.Music;
+import Sound.MusicManager;
 
 /*
  * Based on the current game state, this class determines which Screen should be shown
@@ -77,6 +79,8 @@ public class ScreenCoordinator extends Screen {
             if (previousGameState != gameState) {
                 switch(gameState) {
                     case MENU:
+                        MusicManager.stopAll();
+                        MusicManager.playLoop(Music.MENU);
                         currentScreen = menuScreen;
                         break;
 
@@ -93,26 +97,38 @@ public class ScreenCoordinator extends Screen {
                         break;
 
                     case GRASSLEVEL:
+                        MusicManager.stopAll();
+                        MusicManager.playLoop(Music.GRASS);
                         currentScreen = grassLevelScreen;
                         break;
 
                     case VOLCANOLEVEL:
+                        MusicManager.stopAll();
+                        MusicManager.playLoop(Music.VOLCANO);
                         currentScreen = volcanoLevelScreen;
                         break;
 
                     case DUNGEONLEVEL:
+                        MusicManager.stopAll();
+                        MusicManager.playLoop(Music.DUNGEON);
                         currentScreen = dungeonLevelScreen;
                         break;
 
                     case SNOWLEVEL:
+                        MusicManager.stopAll();
+                        MusicManager.playLoop(Music.SNOW);
                         currentScreen = snowLevelScreen;
                         break;
                         
                     case MAZELEVEL:
+                        MusicManager.stopAll();
+                        MusicManager.playLoop(Music.MAZE);
                         currentScreen = mazeLevelScreen;
                         break;
 
                     case HIVELEVEL:
+                        MusicManager.stopAll();
+                        MusicManager.playLoop(Music.HIVE);
                         currentScreen = hiveLevelScreen;
                         break;
                 }
