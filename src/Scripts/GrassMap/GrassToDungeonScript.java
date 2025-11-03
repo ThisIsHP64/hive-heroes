@@ -1,7 +1,5 @@
 package Scripts.GrassMap;
 
-import java.util.ArrayList;
-
 import Level.Script;
 import ScriptActions.ConditionalScriptAction;
 import ScriptActions.ConditionalScriptActionGroup;
@@ -12,6 +10,7 @@ import ScriptActions.ScriptAction;
 import ScriptActions.TextboxScriptAction;
 import ScriptActions.UnlockPlayerScriptAction;
 import Scripts.TeleportScriptActions.TeleportDungeonScriptAction;
+import java.util.ArrayList;
 
 public class GrassToDungeonScript extends Script{
 

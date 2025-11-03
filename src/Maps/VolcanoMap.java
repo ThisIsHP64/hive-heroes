@@ -9,10 +9,18 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
+<<<<<<< HEAD
 import NPCs.Volcano;
 import Portals.GrassPortal;
 import Scripts.SimpleTextScript;
 import Tilesets.VolcanoTileset; // add this import
+=======
+import NPCs.RareSunflowerwithFlowers;
+import NPCs.Volcano;
+import Portals.GrassPortal;
+import Scripts.SimpleTextScript; // add this import
+import Tilesets.VolcanoTileset;
+>>>>>>> 5af4132 (in progress - blue tunic)
 import java.util.ArrayList;
 
 public class VolcanoMap extends Map {
@@ -69,10 +77,11 @@ public class VolcanoMap extends Map {
         npcs.add(new Bat(getMapTile(62, 44).getLocation()));
         npcs.add(new Bat(getMapTile(72, 48).getLocation()));
 
+
         // Volcano in the center of the map
         npcs.add(new Volcano(3001, getMapTile(41, 41).getLocation()));
 
-        System.out.println("[VolcanoMap] Spawned 10 spiders, 5 bats, and 1 TEST sunflower");
+        System.out.println("[VolcanoMap] Spawned 10 spiders, 5 bats, 3 goblins, and 1 TEST sunflower");
 
         return npcs;
     }

@@ -1,30 +1,34 @@
 package Screens;
 
+import Effects.FloatingText;
+import Enemies.Bat;
+import Enemies.Spider;
 import Engine.GraphicsHandler;
+import Engine.ImageLoader;
 import Engine.Screen;
 import Flowers.Cosmo;
 import Flowers.Flower;
 import Flowers.RareSunflowerwithFlowers;
 import Game.GameState;
 import Game.ScreenCoordinator;
+import GameObject.SpriteSheet;
 import Level.*;
 import Maps.GrassMap;
+import NPCs.BigHive;
+import NPCs.RareSunflowerwithFlowers;
 import Players.Bee;
 import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
 import StaticClasses.UnleashMayhem;
 import Utils.Direction;
+<<<<<<< HEAD
 import NPCs.BigHive;
 import Effects.FloatingText;
 
+=======
+>>>>>>> 5af4132 (in progress - blue tunic)
 import java.awt.Color;
 import java.util.ArrayList;
-
-import Enemies.Spider;
-import Enemies.Bat;
-
-import Engine.ImageLoader;
-import GameObject.SpriteSheet;
 
 public class GrassLevelScreen extends Screen implements GameListener {
     protected ScreenCoordinator screenCoordinator;
@@ -47,10 +51,10 @@ public class GrassLevelScreen extends Screen implements GameListener {
     public void initialize() {
         hasInitialized = true;
         flagManager = new FlagManager();
-        flagManager.addFlag("isLevel1", false);
-        flagManager.addFlag("isLevel2", false);
-        flagManager.addFlag("isLevel3", false);
-        flagManager.addFlag("isLevel4", false);
+        flagManager.addFlag("isLevel1", true);
+        flagManager.addFlag("isLevel2", true);
+        flagManager.addFlag("isLevel3", true);
+        flagManager.addFlag("isLevel4", true);
 
 
         map = new GrassMap();

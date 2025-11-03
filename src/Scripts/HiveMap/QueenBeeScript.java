@@ -48,7 +48,7 @@ public class QueenBeeScript extends Script {
 
                 addScriptAction(new ConditionalScriptAction() {{
 
-                    // ✅ “Yes” → repeat duties
+                    // “Yes” → repeat duties
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                         addRequirement(new CustomRequirement() {
                             @Override
@@ -60,7 +60,7 @@ public class QueenBeeScript extends Script {
                         addScriptAction(new ChangeFlagScriptAction("hasTalkedToQueen", false));
                     }});
 
-                    // ❌ “No” → offer Land of Inferno
+                    // no - offer Land of Inferno
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                         addRequirement(new CustomRequirement() {
                             @Override
@@ -74,11 +74,8 @@ public class QueenBeeScript extends Script {
                             addText("Do you wish to travel to the Land of Inferno?", new String[]{"Yes", "No"});
                         }});
 
-<<<<<<< HEAD
-                    addScriptAction(new TextboxScriptAction("Fulfill your destiny!"));
-=======
                         addScriptAction(new ConditionalScriptAction() {{
-                            // ✅ “Yes” → gets tunic
+                            // yes - gets tunic
                             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                                 addRequirement(new CustomRequirement() {
                                     @Override
@@ -87,11 +84,10 @@ public class QueenBeeScript extends Script {
                                         return answer == 0;
                                     }
                                 });
->>>>>>> ae87630 (Red tunic in progress)
 
                                 addScriptAction(new TextboxScriptAction("Then take this Red Tunic. It will protect you from the flames!"));
 
-                                // ✅ Correct ScriptAction override (returns ScriptState)
+                                // Scriptaction override
                                 addScriptAction(new ScriptAction() {
                                     @Override
                                     public ScriptState execute() {

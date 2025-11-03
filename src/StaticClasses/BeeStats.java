@@ -33,6 +33,10 @@ public class BeeStats {
 
     private static int attackDamage = 1;
 
+    // tunic variable (red)
+    private static boolean hasTunic = false;
+    private static boolean tunicActive = false;
+
 
 
     public static int getAttackDamage() {
@@ -170,4 +174,20 @@ public class BeeStats {
     public static void setCurrentLevel(int currentLevel) {
         BeeStats.currentLevel = currentLevel;
     }
+
+    public static boolean hasTunic() {
+        return hasTunic;
+    }
+
+    public static void setHasTunic(boolean value) {
+    hasTunic = value;
+    }
+
+    public static boolean isTunicActive() {
+        return tunicActive;
+    }
+
+    public static void setTunicActive(boolean value) {
+        tunicActive = value;
+    }   
 }
