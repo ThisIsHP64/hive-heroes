@@ -287,6 +287,12 @@ public class Skull extends NPC {
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         HashMap<String, Frame[]> map = new HashMap<>();
 
+        // Collision bounds - much smaller to fit just the skull head
+        int hitboxX = 23;  // offset from left
+        int hitboxY = 23;  // offset from top
+        int hitboxW = 18;  // width of hitbox
+        int hitboxH = 18;  // height of hitbox
+
         // Sprite is a 3x3 grid (192x192 sheet, 64x64 per frame)
         Frame[] flyRight = new Frame[9];
         Frame[] flyLeft = new Frame[9];
@@ -296,12 +302,14 @@ public class Skull extends NPC {
             for (int col = 0; col < 3; col++) {
                 Frame f = new FrameBuilder(spriteSheet.getSprite(row, col), 8)
                         .withScale(SCALE)
+                        .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
                         .build();
                 flyRight[frameIndex] = f;
 
                 Frame fFlip = new FrameBuilder(spriteSheet.getSprite(row, col), 8)
                         .withScale(SCALE)
                         .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                        .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
                         .build();
                 flyLeft[frameIndex] = fFlip;
 
@@ -338,10 +346,10 @@ public class Skull extends NPC {
     
     // Collision box for bee attacks
     public java.awt.Rectangle getHitbox() {
-        int w = 40 * SCALE;
-        int h = 40 * SCALE;
-        int offsetX = 12 * SCALE;
-        int offsetY = 12 * SCALE;
+        int w = 18 * SCALE;      // 36 pixels wide
+        int h = 18 * SCALE;      // 36 pixels tall
+        int offsetX = 23 * SCALE; // 46 pixel offset to center
+        int offsetY = 23 * SCALE; // 46 pixel offset to center
         return new java.awt.Rectangle(
                 (int) getX() + offsetX,
                 (int) getY() + offsetY,
