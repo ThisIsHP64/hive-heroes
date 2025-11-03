@@ -7,6 +7,8 @@ import Level.Map;
 import Level.NPC;
 import Level.Trigger;
 import NPCs.BigHive;
+import NPCs.Cat;
+import NPCs.Hut;
 import Portals.LavaPortal;
 import Portals.Portal;
 import Portals.ReversePortal;
@@ -20,7 +22,6 @@ import Scripts.GrassMap.GrassToVolcanoScript;
 import Scripts.SimpleTextScript;
 import Tilesets.CommonTileset;
 import java.util.ArrayList;
-
 
 public class GrassMap extends Map {
     public GrassMap() {
@@ -96,16 +97,16 @@ public class GrassMap extends Map {
         // spider 1 - original position near red X
         npcs.add(new Spider(1001, getMapTile(55, 62).getLocation().addY(6)));
         
-        // // spider 2 - right of start
+        // spider 2 - right of start
         npcs.add(new Spider(1002, getMapTile(80, 50).getLocation().addY(6)));
         
-        // // spider 3 - below start
+        // spider 3 - below start
         npcs.add(new Spider(1003, getMapTile(70, 60).getLocation().addY(6)));
         
         // spider 4 - left of start
         npcs.add(new Spider(1004, getMapTile(60, 50).getLocation().addY(6)));
         
-        // // spider 5 - upper area
+        // spider 5 - upper area
         npcs.add(new Spider(1005, getMapTile(70, 40).getLocation().addY(6)));
         
         npcs.add(new Spider(1006, getMapTile(50, 55).getLocation().addY(6)));
@@ -115,6 +116,10 @@ public class GrassMap extends Map {
         npcs.add(new Spider(1010, getMapTile(55, 45).getLocation().addY(6)));
         
         System.out.println("[SprintOneMap] Spawned 10 spiders across the map");
+
+        npcs.add(new Hut(4000, getMapTile(84, 70).getLocation()));
+
+        npcs.add(new Cat(5000, getMapTile(83, 71).getLocation()));
         
         return npcs;
     }
@@ -150,7 +155,6 @@ public class GrassMap extends Map {
         
         // triggers.add(new Trigger(0, 0, 6000, 6000, 
         //     new LevelUpgradeScript(), "isLevel4"));
-
         return triggers;
     }
 }

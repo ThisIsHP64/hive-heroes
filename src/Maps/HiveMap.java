@@ -1,19 +1,20 @@
 package Maps;
 
+import Enemies.Skull;
 import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
 import NPCs.BeeGuard;
-import Portals.GrassPortal;
+import NPCs.QueenBee;
 import NPCs.QueenBeeChair;
+import Portals.GrassPortal;
 import Scripts.HiveMap.BeeGuardScript;
 import Scripts.HiveMap.GrassPortalScript;
 import Scripts.HiveMap.IntroductionScript;
 import Scripts.HiveMap.QueenBeeScript;
 import Tilesets.HiveTileset;
 import java.util.ArrayList;
-import NPCs.QueenBee;
 
 public class HiveMap extends Map {
 
@@ -53,6 +54,8 @@ public class HiveMap extends Map {
         GrassPortal grassPortal = new GrassPortal(1, getMapTile(1, 20).getLocation().addY(60));
         grassPortal.setInteractScript(new GrassPortalScript());
         npcs.add(grassPortal);
+
+        npcs.add(new Skull(getMapTile(7, 14).getLocation().addY(8)));
 
         return npcs;
     }
