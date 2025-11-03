@@ -7,12 +7,8 @@ import Level.Map;
 import Level.NPC;
 import Level.Trigger;
 import NPCs.BigHive;
-<<<<<<< HEAD
-=======
 import NPCs.Cat;
 import NPCs.Hut;
-import NPCs.RareSunflowerwithFlowers;
->>>>>>> 5af4132 (in progress - blue tunic)
 import Portals.LavaPortal;
 import Portals.Portal;
 import Portals.ReversePortal;

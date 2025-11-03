@@ -9,18 +9,10 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
-<<<<<<< HEAD
 import NPCs.Volcano;
 import Portals.GrassPortal;
 import Scripts.SimpleTextScript;
 import Tilesets.VolcanoTileset; // add this import
-=======
-import NPCs.RareSunflowerwithFlowers;
-import NPCs.Volcano;
-import Portals.GrassPortal;
-import Scripts.SimpleTextScript; // add this import
-import Tilesets.VolcanoTileset;
->>>>>>> 5af4132 (in progress - blue tunic)
 import java.util.ArrayList;
 
 public class VolcanoMap extends Map {
