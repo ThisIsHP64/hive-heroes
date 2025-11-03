@@ -2,6 +2,7 @@ package Screens;
 
 import Engine.GraphicsHandler;
 import Engine.Screen;
+import Flowers.RareSunflowerwithFlowers;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.*;
@@ -9,7 +10,6 @@ import Maps.DemoMap;
 import Players.Bee;
 import StaticClasses.BeeStats;
 import Utils.Direction;
-import NPCs.RareSunflowerwithFlowers;
 import NPCs.Spider;
 
 // main level screen; we add a spider and check Bee's sting vs Spider's body box

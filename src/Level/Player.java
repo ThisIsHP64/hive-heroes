@@ -131,81 +131,59 @@ public abstract class Player extends GameObject {
 
         // if walk left key is pressed, move player to the left
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
-            if (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true){
-                if(BeeStats.getStamina() >= 0) {
-                    moveAmountX = BeeStats.getWalkSpeed();
-                    BeeStats.setStamina(BeeStats.getStamina() - 1);
-                } else {
-                    moveAmountX -= BeeStats.getWalkSpeed() *0.5f;
-                    facingDirection = Direction.LEFT;
-                    currentWalkingXDirection = Direction.LEFT;
-                    lastWalkingXDirection = Direction.LEFT;
-                }
+            if (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true) {
+                moveAmountX -= BeeStats.getWalkSpeed() *0.5f;
+                facingDirection = Direction.LEFT;
+                currentWalkingXDirection = Direction.LEFT;
+                lastWalkingXDirection = Direction.LEFT;
+            } else {
+                moveAmountX -= BeeStats.getWalkSpeed();
+                facingDirection = Direction.LEFT;
+                currentWalkingXDirection = Direction.LEFT;
+                lastWalkingXDirection = Direction.LEFT;
             }
-            else{
-            moveAmountX -= BeeStats.getWalkSpeed();
-            facingDirection = Direction.LEFT;
-            currentWalkingXDirection = Direction.LEFT;
-            lastWalkingXDirection = Direction.LEFT;
         }
-    }
 
         // if walk right key is pressed, move player to the right
         else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
-            if (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true){
-                if(BeeStats.getStamina() >= 0) {
-                    moveAmountX = BeeStats.getWalkSpeed();
-                    BeeStats.setStamina(BeeStats.getStamina() - 1);
-                } else {
-                    moveAmountX += BeeStats.getWalkSpeed()*0.5f;
-                    facingDirection = Direction.RIGHT;
-                    currentWalkingXDirection = Direction.RIGHT;
-                    lastWalkingXDirection = Direction.RIGHT;
-                }
+            if (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true) {
+                moveAmountX += BeeStats.getWalkSpeed()*0.5f;
+                facingDirection = Direction.RIGHT;
+                currentWalkingXDirection = Direction.RIGHT;
+                lastWalkingXDirection = Direction.RIGHT;
+            } else {
+                moveAmountX += BeeStats.getWalkSpeed();
+                facingDirection = Direction.RIGHT;
+                currentWalkingXDirection = Direction.RIGHT;
+                lastWalkingXDirection = Direction.RIGHT;
             }
-
-            else {
-            moveAmountX += BeeStats.getWalkSpeed();
-            facingDirection = Direction.RIGHT;
-            currentWalkingXDirection = Direction.RIGHT;
-            lastWalkingXDirection = Direction.RIGHT;
-            }
+        
         } else {
             currentWalkingXDirection = Direction.NONE;
         }
 
         if (Keyboard.isKeyDown(MOVE_UP_KEY)) {
             if (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true){
-                if(BeeStats.getStamina() >= 0) {
-                    moveAmountX = BeeStats.getWalkSpeed();
-                    BeeStats.setStamina(BeeStats.getStamina() - 1);
-                } else {
-                    moveAmountY -= BeeStats.getWalkSpeed()*0.5f;
-                    currentWalkingYDirection = Direction.UP;
-                    lastWalkingYDirection = Direction.UP;
-                }
+                moveAmountY -= BeeStats.getWalkSpeed()*0.5f;
+                currentWalkingYDirection = Direction.UP;
+                lastWalkingYDirection = Direction.UP;
+            } else {
+                moveAmountY -= BeeStats.getWalkSpeed();
+                currentWalkingYDirection = Direction.UP;
+                lastWalkingYDirection = Direction.UP;
             }
-            else{
-            moveAmountY -= BeeStats.getWalkSpeed();
-            currentWalkingYDirection = Direction.UP;
-            lastWalkingYDirection = Direction.UP;
-            }
+        
         } else if (Keyboard.isKeyDown(MOVE_DOWN_KEY)) {
-            if (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true){
-                if(BeeStats.getStamina() >= 0) {
-                    moveAmountX = BeeStats.getWalkSpeed();
-                    BeeStats.setStamina(BeeStats.getStamina() - 1);
-                } else {
-                    moveAmountY += BeeStats.getWalkSpeed()*0.5f;
-                    currentWalkingYDirection = Direction.DOWN;
-                    lastWalkingYDirection = Direction.DOWN;
-                }
+            if (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true) {
+                moveAmountY += BeeStats.getWalkSpeed()*0.5f;
+                currentWalkingYDirection = Direction.DOWN;
+                lastWalkingYDirection = Direction.DOWN;
+            } else {
+                moveAmountY += BeeStats.getWalkSpeed();
+                currentWalkingYDirection = Direction.DOWN;
+                lastWalkingYDirection = Direction.DOWN;
             }
-            else{
-            moveAmountY += BeeStats.getWalkSpeed();
-            currentWalkingYDirection = Direction.DOWN;
-            lastWalkingYDirection = Direction.DOWN;
-        }
+        
         } else {
             currentWalkingYDirection = Direction.NONE;
         }
@@ -349,10 +327,10 @@ public abstract class Player extends GameObject {
 
     // Line 276 - 273 is implemented for the speed power
     public float getWalkSpeed() {
-        return walkSpeed;
+        return BeeStats.getWalkSpeed();
     }
 
     public void setWalkSpeed(float walkSpeed) {
-        this.walkSpeed = walkSpeed;
+        BeeStats.setWalkSpeed(walkSpeed);
     }
 }

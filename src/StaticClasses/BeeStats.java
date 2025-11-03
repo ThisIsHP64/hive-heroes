@@ -7,7 +7,7 @@ public class BeeStats {
     private static int maxHealth = 100;
 
     // stamina variables
-    private static int stamina = 25;
+    private static int stamina = 1000;
     private static int maxStamina = 25;
 
     // nectar variables

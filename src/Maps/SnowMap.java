@@ -4,10 +4,11 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
-import NPCs.SnowFlower;
 import Portals.GrassPortal;
 import Tilesets.SnowTileset;
 import java.util.ArrayList;
+
+import Flowers.SnowFlower;
 
 public class SnowMap extends Map {
     public SnowMap() {

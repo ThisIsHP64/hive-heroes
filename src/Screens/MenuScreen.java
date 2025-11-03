@@ -3,7 +3,6 @@ package Screens;
 import Engine.*;
 import Game.GameState;
 import Game.ScreenCoordinator;
-import Sound.MusicManager;
 import SpriteFont.SpriteFont;
 import StaticClasses.TeleportManager;
 import java.awt.*;
