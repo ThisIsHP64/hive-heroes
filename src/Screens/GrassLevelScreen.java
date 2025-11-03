@@ -2,6 +2,8 @@ package Screens;
 
 import Engine.GraphicsHandler;
 import Engine.Screen;
+import Flowers.Cosmo;
+import Flowers.RareSunflowerwithFlowers;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.*;
@@ -12,7 +14,6 @@ import StaticClasses.TeleportManager;
 import StaticClasses.UnleashMayhem;
 import Utils.Direction;
 import NPCs.BigHive;
-import NPCs.RareSunflowerwithFlowers;
 import Effects.FloatingText;
 
 import java.awt.Color;
@@ -143,6 +144,27 @@ public class GrassLevelScreen extends Screen implements GameListener {
                                         // spawn yellow +1 floating text at sunflower
                                         float textX = rareSunflower.getX() + 24;
                                         float textY = rareSunflower.getY();
+                                        floatingTexts.add(new FloatingText(textX, textY, "+1", new Color(255, 215, 0)));
+                                    } else {
+                                        System.out.println("Pouch full! Deposit at the hive.");
+                                    }
+                                }
+                            }
+
+                            if (npc instanceof Cosmo) {
+                                Cosmo cosmo = (Cosmo) npc;
+
+                                if (sting.intersects(cosmo.getHitbox())) {
+                                    System.out.println("Sunflower hit!");
+
+                                    int added = bee.tryAddNectar(1);
+                                    if (added > 0) {
+                                        System.out.println(
+                                                "Nectar collected: " + bee.getNectar() + "/" + bee.getNectarCap());
+                                        
+                                        // spawn yellow +1 floating text at sunflower
+                                        float textX = cosmo.getX() + 24;
+                                        float textY = cosmo.getY();
                                         floatingTexts.add(new FloatingText(textX, textY, "+1", new Color(255, 215, 0)));
                                     } else {
                                         System.out.println("Pouch full! Deposit at the hive.");

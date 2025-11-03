@@ -1,5 +1,7 @@
 package Flowers;
 
+import java.util.HashMap;
+
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
@@ -7,13 +9,12 @@ import GameObject.Frame;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
 import Utils.Point;
-import java.util.HashMap;
 
-public class Cosmo extends Flower {
+public class Rose2 extends Flower {
 
-    public Cosmo(int id, Point location) {
-        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("CosmoOUTLINED.png"), 
-                32, 32), "STAND_LEFT");
+    public Rose2(int id, Point location) {
+        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("RoseOUTLINED.png"), 
+                20, 20), "STAND_LEFT");
     }
 
     @Override

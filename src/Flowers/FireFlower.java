@@ -1,18 +1,18 @@
-package NPCs;
+package Flowers;
 
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import GameObject.Frame;
+import GameObject.Rectangle;
 import GameObject.SpriteSheet;
-import Level.NPC;
 import Utils.Point;
 import java.util.HashMap;
 
-public class SnowFlower extends NPC {
+public class FireFlower extends Flower {
 
-    public SnowFlower(int id, Point location) {
-        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("SnowFlower.png"), 20, 20),
+    public FireFlower(int id, Point location) {
+        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("FireFlower.png"), 20, 20),
                 "STAND_LEFT");
     }
 
@@ -52,10 +52,14 @@ public class SnowFlower extends NPC {
     }
 
     public java.awt.Rectangle getHitbox() {
+        Rectangle bounds = getBounds();
+        
+        int w = bounds.getWidth();
+        int h = bounds.getHeight();
+
         int x = (int) getX();
         int y = (int) getY();
-        int w = (4);
-        int h = (4);
+        
         return new java.awt.Rectangle(x, y, w, h);
     }
 

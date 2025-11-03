@@ -2,16 +2,17 @@ package Maps;
 
 import Enemies.Spider;
 import Engine.GraphicsHandler;
+import Flowers.BlueBorah;
+import Flowers.Cosmo;
+import Flowers.Daisy;
+import Flowers.Poppy;
+import Flowers.RareSunflowerwithFlowers;
+import Flowers.Rose;
+import Flowers.Yarrow;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
 import NPCs.BigHive;
-import NPCs.BlueBorah;
-import NPCs.Daisy;
-import NPCs.Poppy;
-import NPCs.RareSunflowerwithFlowers;
-import NPCs.Rose;
-import NPCs.Yarrow;
 import Portals.LavaPortal;
 import Portals.Portal;
 import Portals.ReversePortal;
@@ -56,6 +57,9 @@ public class GrassMap extends Map {
 
         BlueBorah blueBorah = new BlueBorah(4, getMapTile(50, 55).getLocation());
         npcs.add(blueBorah);
+
+        Cosmo cosmo = new Cosmo(4, getMapTile(52,55).getLocation());
+        npcs.add(cosmo);
 
         Rose rose = new Rose(4, getMapTile(43, 54).getLocation());
         npcs.add(rose);

@@ -1,16 +1,16 @@
-package NPCs;
+package Flowers;
 
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import GameObject.Frame;
+import GameObject.Rectangle;
 import GameObject.SpriteSheet;
-import Level.NPC;
 import Utils.Point;
 import java.util.HashMap;
 
 // This class is for the walrus NPC
-public class Yarrow extends NPC {
+public class Yarrow extends Flower {
 
     public Yarrow(int id, Point location) {
         super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("Yarrow.png"), 20, 20), "STAND_LEFT");
@@ -26,6 +26,18 @@ public class Yarrow extends NPC {
                             .build()
             });
         }};
+    }
+
+    public java.awt.Rectangle getHitbox() {
+        Rectangle bounds = getBounds();
+        
+        int w = bounds.getWidth();
+        int h = bounds.getHeight();
+
+        int x = (int) getX();
+        int y = (int) getY();
+        
+        return new java.awt.Rectangle(x, y, w, h);
     }
 
     @Override

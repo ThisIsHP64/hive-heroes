@@ -2,6 +2,7 @@ package Screens;
 
 import Engine.GraphicsHandler;
 import Engine.Screen;
+import Flowers.RareSunflowerwithFlowers;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.*;
@@ -13,7 +14,6 @@ import StaticClasses.TeleportManager;
 import Utils.Direction;
 import Portals.GrassPortal;
 import Portals.Portal;
-import NPCs.RareSunflowerwithFlowers;
 import Enemies.Spider;
 
 import Engine.ImageLoader;
