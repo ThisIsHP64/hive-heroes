@@ -2,6 +2,7 @@ package Maps;
 
 import Enemies.Bat;
 import Enemies.Spider;
+import Enemies.Skull;
 import Engine.GraphicsHandler;
 import Flowers.FireFlower;
 import Flowers.RareSunflowerwithFlowers;
@@ -69,11 +70,18 @@ public class VolcanoMap extends Map {
         npcs.add(new Bat(getMapTile(62, 44).getLocation()));
         npcs.add(new Bat(getMapTile(72, 48).getLocation()));
 
+        // spawn skulls - flying undead enemies
+        npcs.add(new Skull(getMapTile(48, 52).getLocation()));
+        npcs.add(new Skull(getMapTile(76, 46).getLocation()));
+        npcs.add(new Skull(getMapTile(64, 58).getLocation()));
+        npcs.add(new Skull(getMapTile(82, 52).getLocation()));
+        npcs.add(new Skull(getMapTile(56, 42).getLocation()));
+        npcs.add(new Skull(getMapTile(88, 48).getLocation()));
 
         // Volcano in the center of the map
         npcs.add(new Volcano(3001, getMapTile(41, 41).getLocation()));
 
-        System.out.println("[VolcanoMap] Spawned 10 spiders, 5 bats, 3 goblins, and 1 TEST sunflower");
+        System.out.println("[VolcanoMap] Spawned 10 spiders, 5 bats, 6 skulls, and 1 TEST sunflower");
 
         return npcs;
     }
