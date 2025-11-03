@@ -21,9 +21,10 @@ public class GrassToSnowScript extends Script{
 
         scriptActions.add(new LockPlayerScriptAction());
 
+        scriptActions.add(new ProcessLevelUpScriptAction());
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("isLevel7", false));
+                addRequirement(new FlagRequirement("isLevel4", false));
                 addScriptAction(new TextboxScriptAction() {{
                     addText("You peer into the harsh winters ahead.");
                     addText("You may need some sort of weather protection.");
@@ -31,7 +32,7 @@ public class GrassToSnowScript extends Script{
             }});
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("isLevel7", true));
+                addRequirement(new FlagRequirement("isLevel4", true));
                 scriptActions.add(new TextboxScriptAction() {{
                     addText("Would you like to enter the Snow Map?", new String[] { "Yes", "No" });
                 }});

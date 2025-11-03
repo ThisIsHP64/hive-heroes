@@ -1,28 +1,25 @@
 package Screens;
 
+import Effects.FloatingText;
+import Enemies.Bat;
+import Enemies.Spider;
 import Engine.GraphicsHandler;
+import Engine.ImageLoader;
 import Engine.Screen;
+import Flowers.Flower;
 import Game.GameState;
 import Game.ScreenCoordinator;
+import GameObject.SpriteSheet;
 import Level.*;
 import Maps.GrassMap;
+import NPCs.BigHive;
 import Players.Bee;
-
+import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
 import StaticClasses.UnleashMayhem;
 import Utils.Direction;
-import NPCs.BigHive;
-import NPCs.RareSunflowerwithFlowers;
-import Effects.FloatingText;
-
 import java.awt.Color;
 import java.util.ArrayList;
-
-import Enemies.Spider;
-import Enemies.Bat;
-
-import Engine.ImageLoader;
-import GameObject.SpriteSheet;
 
 public class GrassLevelScreen extends Screen implements GameListener {
     protected ScreenCoordinator screenCoordinator;
@@ -46,9 +43,9 @@ public class GrassLevelScreen extends Screen implements GameListener {
         hasInitialized = true;
         flagManager = new FlagManager();
         flagManager.addFlag("isLevel1", true);
+        flagManager.addFlag("isLevel2", true);
         flagManager.addFlag("isLevel3", true);
-        flagManager.addFlag("isLevel5", true);
-        flagManager.addFlag("isLevel7", true);
+        flagManager.addFlag("isLevel4", true);
 
 
         map = new GrassMap();
@@ -112,7 +109,9 @@ public class GrassLevelScreen extends Screen implements GameListener {
                                 Spider sp = (Spider) npc;
 
                                 if (!sp.isDead() && sting.intersects(sp.getHitbox())) {
-                                    sp.takeDamage(1);
+                                    sp.takeDamage(BeeStats.getAttackDamage());
+                                    BeeStats.setExperience(BeeStats.getExperience() + 1);
+                                    
                                     System.out.println("Bee stung spider!");
                                 }
                             }
@@ -121,15 +120,37 @@ public class GrassLevelScreen extends Screen implements GameListener {
                                 Bat bat = (Bat) npc;
 
                                 if (!bat.isDead() && sting.intersects(bat.getHitbox())) {
-                                    bat.takeDamage(1);
+                                    bat.takeDamage(BeeStats.getAttackDamage());
+                                    BeeStats.setExperience(BeeStats.getExperience() + 1);
                                     System.out.println("Bee stung bat!");
                                 }
                             }
 
-                            if (npc instanceof RareSunflowerwithFlowers) {
-                                RareSunflowerwithFlowers rareSunflower = (RareSunflowerwithFlowers) npc;
+                            // if (npc instanceof RareSunflowerwithFlowers) {
+                            //     RareSunflowerwithFlowers rareSunflower = (RareSunflowerwithFlowers) npc;
 
-                                if (sting.intersects(rareSunflower.getHitbox())) {
+                            //     if (sting.intersects(rareSunflower.getHitbox())) {
+                            //         System.out.println("Sunflower hit!");
+
+                            //         int added = bee.tryAddNectar(1);
+                            //         if (added > 0) {
+                            //             System.out.println(
+                            //                     "Nectar collected: " + bee.getNectar() + "/" + bee.getNectarCap());
+                                        
+                            //             // spawn yellow +1 floating text at sunflower
+                            //             float textX = rareSunflower.getX() + 24;
+                            //             float textY = rareSunflower.getY();
+                            //             floatingTexts.add(new FloatingText(textX, textY, "+1", new Color(255, 215, 0)));
+                            //         } else {
+                            //             System.out.println("Pouch full! Deposit at the hive.");
+                            //         }
+                            //     }
+                            // }
+
+                            if (npc instanceof Flower) {
+                                Flower flower = (Flower) npc;
+
+                                if (sting.intersects(flower.getHitbox())) {
                                     System.out.println("Sunflower hit!");
 
                                     int added = bee.tryAddNectar(1);
@@ -138,12 +159,20 @@ public class GrassLevelScreen extends Screen implements GameListener {
                                                 "Nectar collected: " + bee.getNectar() + "/" + bee.getNectarCap());
                                         
                                         // spawn yellow +1 floating text at sunflower
-                                        float textX = rareSunflower.getX() + 24;
-                                        float textY = rareSunflower.getY();
+                                        float textX = flower.getX() + 24;
+                                        float textY = flower.getY();
                                         floatingTexts.add(new FloatingText(textX, textY, "+1", new Color(255, 215, 0)));
                                     } else {
                                         System.out.println("Pouch full! Deposit at the hive.");
                                     }
+                                }
+                            }
+
+                            if (npc instanceof BigHive) {
+                                BigHive bigHive = (BigHive) npc;
+
+                                if (sting.intersects(bigHive.getHitbox())) {
+                                    TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
                                 }
                             }
 
@@ -162,14 +191,6 @@ public class GrassLevelScreen extends Screen implements GameListener {
                             //         TeleportManager.setCurrentScreen(GameState.SNOWLEVEL);
                             //     }
                             // }
-
-                            if (npc instanceof BigHive) {
-                                BigHive bigHive = (BigHive) npc;
-
-                                if (sting.intersects(bigHive.getHitbox())) {
-                                    TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
-                                }
-                            }
 
                             // if (npc instanceof Portal) {
                             //     Portal portal = (Portal) npc;

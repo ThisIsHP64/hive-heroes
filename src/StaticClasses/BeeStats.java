@@ -2,22 +2,50 @@ package StaticClasses;
 
 public class BeeStats {
 
+    // health variables
     private static int health = 100;
     private static int maxHealth = 100;
 
-    private static int stamina = 25;
+    // stamina variables
+    private static int stamina = 1000;
     private static int maxStamina = 25;
 
+    // nectar variables
     private static int nectar = 0;
     private static int maxNectar = 15;
 
-    private static int experience = 1;
-    private static int maxExperience = 100;
+    // experience variables
+    private static int experience = 0;
+    private static int[] experienceThresholds = {100, 250, 450, 700};
 
+    // walk speed variables
     private static float walkSpeed = 6f;
     private static float maxWalkSpeed = 10f;
 
+    // is Bee dead?
     private static boolean isDead = false;
+
+    // bee starts at level 1
+    private static int currentLevel = 1;
+
+    // the max level the bee can get to
+    private static final int maxLevel = 4;
+
+    private static int attackDamage = 1;
+
+    // tunic variable (red)
+    private static boolean hasTunic = false;
+    private static boolean tunicActive = false;
+
+
+
+    public static int getAttackDamage() {
+        return attackDamage;
+    }
+
+    public static void setAttackDamage(int attackDamage) {
+        BeeStats.attackDamage = attackDamage;
+    }
 
     // related to bee death and respawn
     public static void respawn() {
@@ -97,12 +125,29 @@ public class BeeStats {
         experience = newExperience;
     }
 
-    public static int getMaxExperience() {
-        return maxExperience;
+    // if the player's current experience is greater than or equal to the current 
+    // threshold, subtract the experience and level them up.
+    public static void checkLevelUp() {
+        if (experience >= experienceThresholds[currentLevel - 1]) {
+            experience -= experienceThresholds[currentLevel - 1];
+            currentLevel += 1;
+            processLevelUp();
+        }
     }
 
-    public static void setMaxExperience(int newMaxExperience) {
-        maxExperience = newMaxExperience;
+    public static void processLevelUp() {
+        setMaxHealth(maxHealth + 25);
+        setMaxStamina(maxStamina + 15);
+        setWalkSpeed(walkSpeed + 1.5f);
+        setMaxNectar(maxNectar + 10);
+        setAttackDamage(attackDamage + 1);
+
+        restoreAllStats();
+    }
+
+    public static void restoreAllStats() {
+        setHealth(maxHealth);
+        setStamina(maxStamina);
     }
 
     // walk speed getters and setters
@@ -121,4 +166,28 @@ public class BeeStats {
     public static void setMaxWalkSpeed(float newMaxWalkSpeed) {
         maxWalkSpeed = newMaxWalkSpeed;
     }
+
+    public static int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public static void setCurrentLevel(int currentLevel) {
+        BeeStats.currentLevel = currentLevel;
+    }
+
+    public static boolean hasTunic() {
+        return hasTunic;
+    }
+
+    public static void setHasTunic(boolean value) {
+    hasTunic = value;
+    }
+
+    public static boolean isTunicActive() {
+        return tunicActive;
+    }
+
+    public static void setTunicActive(boolean value) {
+        tunicActive = value;
+    }   
 }

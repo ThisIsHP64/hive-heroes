@@ -3,7 +3,6 @@ package Screens;
 import Engine.*;
 import Game.GameState;
 import Game.ScreenCoordinator;
-import Sound.MusicManager;
 import SpriteFont.SpriteFont;
 import StaticClasses.TeleportManager;
 import java.awt.*;
@@ -70,7 +69,6 @@ public class MenuScreen extends Screen {
         keyPressTimer = 0;
         menuItemSelected = -1;
         keyLocker.lockKey(Key.SPACE);
-        MusicManager.playMenuLoop();
     }
 
     public void update() {
@@ -116,9 +114,7 @@ public class MenuScreen extends Screen {
         if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
             menuItemSelected = currentMenuItemHovered;
             if (menuItemSelected == 0) {
-                MusicManager.stopMenuLoop();
-                MusicManager.playGpLoop();
-                screenCoordinator.setGameState(GameState.MAZELEVEL);
+                screenCoordinator.setGameState(GameState.HIVELEVEL);
             } else if (menuItemSelected == 1) {
                 screenCoordinator.setGameState(GameState.OPTIONS);
             } else if (menuItemSelected == 2) {

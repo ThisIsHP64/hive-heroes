@@ -1,10 +1,10 @@
 package Maps;
 
 import Engine.GraphicsHandler;
+import Flowers.RareSunflowerwithFlowers;
 import Level.Map;
 import Level.NPC;
 import NPCs.BigHive;
-import NPCs.RareSunflowerwithFlowers;
 import Enemies.Spider;
 import PowerUps.PowerUp;
 import Scripts.SimpleTextScript;

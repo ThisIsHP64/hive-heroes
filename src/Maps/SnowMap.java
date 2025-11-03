@@ -1,13 +1,14 @@
 package Maps;
 
-import java.util.ArrayList;
-
 import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
 import Portals.GrassPortal;
 import Tilesets.SnowTileset;
+import java.util.ArrayList;
+
+import Flowers.SnowFlower;
 
 public class SnowMap extends Map {
     public SnowMap() {
@@ -33,6 +34,9 @@ public class SnowMap extends Map {
 
         GrassPortal grassPortal = new GrassPortal(1, getMapTile(47, 13).getLocation().addX(10).addY(15));
         npcs.add(grassPortal);
+
+        SnowFlower snowFlower = new SnowFlower(4, getMapTile(15, 15).getLocation());
+        npcs.add(snowFlower);
 
 
         return npcs;

@@ -1,6 +1,7 @@
 package Players;
 
 import Builders.FrameBuilder;
+import Effects.FloatingText;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import Engine.Key;
@@ -13,7 +14,6 @@ import SpriteImage.ResourceHUD;
 import StaticClasses.BeeStats;
 import StaticClasses.HiveManager;
 import Utils.Direction;
-import Effects.FloatingText;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,6 +65,9 @@ public class Bee extends Player {
     private boolean hasShield = false;
     private int shieldHealth = 0;
     private static final int MAX_SHIELD_HEALTH = 100;
+
+    // tunic variable\
+    private boolean useRedSprites = false;
 
     // floating damage numbers when bee takes damage
     private ArrayList<FloatingText> floatingTexts = new ArrayList<>();
@@ -137,6 +140,14 @@ public class Bee extends Player {
             System.out.println("Bee: ERROR loading attack FX sprite: " + e.getMessage());
             attackFxSheet = null;
         }
+
+        if (BeeStats.hasTunic()) {
+            powerupHUD.show("RedTunic_hud.png", Integer.MAX_VALUE);
+            if (BeeStats.isTunicActive()) {
+                useRedSprites = true;
+                swapToRedBeeSprites();
+            }
+        }
     }
 
     public void applyDamage(int amount) {
@@ -201,10 +212,25 @@ public class Bee extends Player {
         System.out.println("Bee collected power-up! (Press 1 to activate)");
     }
 
+    public void obtainTunic() {
+        if (BeeStats.hasTunic()) return; // it will prevent icon duplication
+
+        BeeStats.setHasTunic(true);
+        if (powerupHUD != null) {
+            powerupHUD.show("RedTunic_hud.png", Integer.MAX_VALUE);
+        }
+
+        if (BeeStats.isTunicActive()) {
+            useRedSprites = true;
+            swapToRedBeeSprites();
+        }
+        System.out.println("You received the Red Tunic");
+    }
+
     @Override
     public void update() {
         super.update();
-
+        BeeStats.checkLevelUp();
         // update floating damage numbers
         floatingTexts.removeIf(text -> {
             text.update();
@@ -212,14 +238,15 @@ public class Bee extends Player {
         });
 
         handleAttackInput();
+        handleTunicInput();
 
         resourceBars.update();
         int tileX = (int) (getX() / TILE);
         int tileY = (int) (getY() / TILE);
 
         System.out.println(String.format(
-                "Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d  X: %d  Y: %d",
-                BeeStats.getHealth(), BeeStats.getStamina(), BeeStats.getNectar(), BeeStats.getExperience(),
+                "Level: %d  Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d  X: %d  Y: %d",
+                BeeStats.getCurrentLevel(), BeeStats.getHealth(), BeeStats.getStamina(), BeeStats.getNectar(), BeeStats.getExperience(),
                 BeeStats.getWalkSpeed(), HiveManager.getNectar(), tileX, tileY));
 
         if (attacking && System.currentTimeMillis() - attackStart > ATTACK_ACTIVE_MS) {
@@ -387,9 +414,12 @@ public class Bee extends Player {
 
     @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet walkSheet) {
-        SpriteSheet idleSheet = new SpriteSheet(ImageLoader.load("Bee_Idle.png"), TILE, TILE, 0);
-        SpriteSheet attackSheet = new SpriteSheet(ImageLoader.load("Bee_Attack.png"), TILE, TILE, 0);
-        SpriteSheet deathSheet = new SpriteSheet(ImageLoader.load("Bee_Death.png"), TILE, TILE, 0);
+        boolean isRed = useRedSprites || BeeStats.isTunicActive();
+
+        SpriteSheet idleSheet = new SpriteSheet(ImageLoader.load(isRed ? "Bee_Idle_Red.png" : "Bee_Idle.png"), TILE, TILE, 0);
+        SpriteSheet attackSheet = new SpriteSheet(ImageLoader.load(isRed ? "Bee_Attack_Red.png" : "Bee_Attack.png"), TILE, TILE, 0);
+        SpriteSheet deathSheet = new SpriteSheet(ImageLoader.load(isRed ? "Bee_Death_Red.png" : "Bee_Death.png"), TILE, TILE, 0);
+
 
         int hbX = Math.round(10 * SCALE), hbY = Math.round(8 * SCALE);
         int hbW = Math.round(5 * SCALE), hbH = Math.round(5 * SCALE);
@@ -497,5 +527,39 @@ public class Bee extends Player {
 
     public int getMaxShieldHealth() {
         return MAX_SHIELD_HEALTH;
+    }
+
+    // handle tunic activation (press 3)
+    private void handleTunicInput() {
+        if (BeeStats.hasTunic() && Keyboard.isKeyDown(Key.THREE)) {
+            BeeStats.setTunicActive(!BeeStats.isTunicActive());
+
+            if (BeeStats.isTunicActive()) {
+                System.out.println("Red Tunic activated! You are now fireproof!");
+                swapToRedBeeSprites();
+            } else {
+                System.out.println("Red Tunic deactivated!");
+                revertToNormalBeeSprites();
+            }
+
+            // Small delay to prevent rapid toggle flickering
+            try { Thread.sleep(200); } catch (InterruptedException ignored) {}
+        }
+    }
+
+
+    // Change sprite sets
+    private void swapToRedBeeSprites() {
+        useRedSprites = true;
+        SpriteSheet redWalk = new SpriteSheet(ImageLoader.load("Bee_Walk_Red.png"), 64, 64, 0);
+        this.animations = loadAnimations(redWalk);
+        this.currentAnimationName = "STAND_DOWN"; // reset to a safe state
+    }
+
+    private void revertToNormalBeeSprites() {
+        useRedSprites = false;
+        SpriteSheet yellowWalk = new SpriteSheet(ImageLoader.load("Bee_Walk.png"), 64, 64, 0);
+        this.animations = loadAnimations(yellowWalk);
+        this.currentAnimationName = "STAND_DOWN";
     }
 }

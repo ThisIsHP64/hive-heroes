@@ -2,6 +2,7 @@ package Game;
  
 import Engine.GameWindow;
 import Engine.ScreenManager;
+import Sound.MusicManager;
 
 /* 
  * The game starts here
@@ -15,6 +16,7 @@ public class Game {
     }
 
     public Game() {
+        MusicManager.init();
         GameWindow gameWindow = new GameWindow();
         ScreenManager screenManager = gameWindow.getScreenManager();
         screenManager.setCurrentScreen(new ScreenCoordinator());

@@ -33,8 +33,8 @@ public class Spider extends NPC {
             location.y,
             // magenta color-key via load(...) (same as Walrus)
             new SpriteSheet(ImageLoader.load("spider05.png"), TILE, TILE),
-            "IDLE"
-        );
+            "IDLE");
+            
         System.out.println("[Spider05] spawned at (" + location.x + "," + location.y + ")");
     }
 

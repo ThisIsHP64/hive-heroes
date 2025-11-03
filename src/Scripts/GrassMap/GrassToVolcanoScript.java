@@ -21,9 +21,11 @@ public class GrassToVolcanoScript extends Script{
 
         scriptActions.add(new LockPlayerScriptAction());
 
+        scriptActions.add(new ProcessLevelUpScriptAction());
+
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("isLevel3", false));
+                addRequirement(new FlagRequirement("isLevel2", false));
                 addScriptAction(new TextboxScriptAction() {{
                     addText("The heat emanating from the entrance is unbearable.");
                     addText("Maybe I can ask the Queen Bee for some sort \nof heat protection?");
@@ -31,7 +33,7 @@ public class GrassToVolcanoScript extends Script{
             }});
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("isLevel3", true));
+                addRequirement(new FlagRequirement("isLevel2", true));
                 scriptActions.add(new TextboxScriptAction() {{
                     addText("Would you like to enter the Volcanic Map?", new String[] { "Yes", "No" });
                 }});
