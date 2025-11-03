@@ -15,6 +15,7 @@ import Portals.GrassPortal;
 import Portals.Portal;
 import Enemies.Spider;
 import Enemies.Bat;
+import Enemies.Skull;
 import Effects.FloatingText;
 
 import java.awt.Color;
@@ -124,6 +125,15 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                 }
                             }
 
+                            if (npc instanceof Skull) {
+                                Skull skull = (Skull) npc;
+
+                                if (!skull.isDead() && sting.intersects(skull.getHitbox())) {
+                                    skull.takeDamage(BeeStats.getAttackDamage());
+                                    System.out.println("Bee stung skull!");
+                                }
+                            }
+
                             if (npc instanceof RareSunflowerwithFlowers) {
                                 RareSunflowerwithFlowers rareSunflower = (RareSunflowerwithFlowers) npc;
                                 
@@ -165,6 +175,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                 
                 map.getNPCs().removeIf(npc -> npc instanceof Spider && ((Spider) npc).canBeRemoved());
                 map.getNPCs().removeIf(npc -> npc instanceof Bat && ((Bat) npc).shouldRemove());
+                map.getNPCs().removeIf(npc -> npc instanceof Skull && ((Skull) npc).shouldRemove());
 
                 break;
 

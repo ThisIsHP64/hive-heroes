@@ -25,15 +25,34 @@ public class Skull extends NPC {
     private static final int TILE_H = 64;
     private static final int SCALE = 2;     
 
-    private static final float MOVE_SPEED = 0.8f;
-    private static final float MOVE_RANGE = 80f;
+    // Movement speeds
+    private static final float PATROL_SPEED = 0.8f;
+    private static final float CHASE_SPEED = 1.5f;
+    
+    // Detection distances
+    private static final float CHASE_RANGE = 150f;
+    private static final float GIVE_UP_RANGE = 250f;
+    private static final float ATTACK_RANGE = 40f;
+    
+    // Combat settings
     private static final int DAMAGE = 10;
     private static final long ATTACK_COOLDOWN_MS = 1000;
     private static final long DEATH_LINGER_MS = 1000;
+    
+    // Spawn timing
+    private final long spawnTime = System.currentTimeMillis();
+    private static final long STARTUP_FREEZE_MS = 1000;
+    private static final long CHASE_ENABLE_MS = 1500;
+    private boolean hasMovedAwayFromSpawn = false;
 
+    // Patrol zone boundaries
+    private float patrolLeftX;
+    private float patrolRightX;
+    
+    // Patrol direction tracker
+    private int direction = 1;
+    
     private Direction facing = Direction.RIGHT;
-    private float startX;
-    private boolean movingRight = true;
 
     private int health = 40;
     private boolean isDead = false;
@@ -41,20 +60,38 @@ public class Skull extends NPC {
     private long lastAttackTime = 0;
 
     private ArrayList<FloatingText> floatingTexts = new ArrayList<>();
+    
+    // State machine for skull behavior
+    private enum State {
+        PATROL, CHASE, ATTACK, DEAD
+    }
+    
+    private State currentState = State.PATROL;
 
     public Skull(Point location) {
         super(0, location.x, location.y,
                 new SpriteSheet(ImageLoader.load("Bones_SingleSkull_Fly.png"), TILE_W, TILE_H, 0),
                 "FLY_RIGHT");
 
-        this.startX = location.x;
+        float patrolRange = 96f;
+        this.patrolLeftX = location.x - patrolRange;
+        this.patrolRightX = location.x + patrolRange;
+        
+        System.out.println("Skull spawned at: " + location.x + ", " + location.y);
+        System.out.println("Patrol range: " + patrolLeftX + " to " + patrolRightX);
     }
 
     // damage
     public void takeDamage(int amount) {
         if (isDead) return;
         health -= amount;
-        floatingTexts.add(new FloatingText(getX() + 16, getY(), "-" + amount, Color.RED));
+        
+        float textX = getX() + (TILE_W * SCALE) / 2f;
+        float textY = getY();
+        floatingTexts.add(new FloatingText(textX, textY, "-" + amount, Color.RED));
+        
+        System.out.println("Skull took " + amount + " damage! HP: " + health);
+        
         if (health <= 0) die();
     }
 
@@ -62,7 +99,12 @@ public class Skull extends NPC {
         if (isDead) return;
         isDead = true;
         deathTime = System.currentTimeMillis();
-        System.out.println("💀 Skull destroyed");
+        currentState = State.DEAD;
+        System.out.println("Skull destroyed!");
+    }
+    
+    public boolean isDead() {
+        return isDead;
     }
 
     public boolean shouldRemove() {
@@ -71,47 +113,172 @@ public class Skull extends NPC {
 
     @Override
     public void update(Player player) {
-        floatingTexts.removeIf(t -> { t.update(); return t.isDead(); });
+        // Update floating damage numbers
+        floatingTexts.removeIf(text -> {
+            text.update();
+            return text.isDead();
+        });
 
         if (isDead) {
             super.update(player);
             return;
         }
-
-        movePattern();
-        tryAttack(player);
+        
+        // Startup freeze period
+        long timeSinceSpawn = System.currentTimeMillis() - spawnTime;
+        if (timeSinceSpawn < STARTUP_FREEZE_MS) {
+            currentAnimationName = "FLY_RIGHT";
+            if (animations.get(currentAnimationName) != null) {
+                currentFrame = animations.get(currentAnimationName)[0];
+            }
+            return;
+        }
 
         super.update(player);
     }
-
-    // movement 
-    private void movePattern() {
-        if (movingRight) {
-            moveXHandleCollision(MOVE_SPEED);
-            if (getX() > startX + MOVE_RANGE) movingRight = false;
-        } else {
-            moveXHandleCollision(-MOVE_SPEED);
-            if (getX() < startX - MOVE_RANGE) movingRight = true;
+    
+    @Override
+    public void performAction(Player player) {
+        if (isDead) return;
+        
+        long timeSinceSpawn = System.currentTimeMillis() - spawnTime;
+        if (timeSinceSpawn < STARTUP_FREEZE_MS) {
+            return;
         }
-
-        facing = movingRight ? Direction.RIGHT : Direction.LEFT;
+        
+        long currentTime = System.currentTimeMillis();
+        float distanceToBee = getDistanceToBee(player);
+        
+        float beeX = player.getX();
+        float territoryRange = 200f;
+        boolean beeInTerritory = (beeX >= patrolLeftX - territoryRange) &&
+                                 (beeX <= patrolRightX + territoryRange);
+        
+        switch (currentState) {
+            case PATROL:
+                patrol();
+                
+                if (!hasMovedAwayFromSpawn && timeSinceSpawn > STARTUP_FREEZE_MS + 500) {
+                    hasMovedAwayFromSpawn = true;
+                }
+                
+                if (timeSinceSpawn >= CHASE_ENABLE_MS &&
+                    hasMovedAwayFromSpawn &&
+                    distanceToBee < CHASE_RANGE &&
+                    beeInTerritory) {
+                    currentState = State.CHASE;
+                    System.out.println("Skull spotted bee! Starting chase...");
+                }
+                break;
+                
+            case CHASE:
+                chase(player);
+                
+                // Check if close enough to attack
+                if (distanceToBee < ATTACK_RANGE) {
+                    tryAttack(player, currentTime);
+                }
+                
+                // Give up if bee gets too far or leaves territory
+                if (distanceToBee > GIVE_UP_RANGE || !beeInTerritory) {
+                    currentState = State.PATROL;
+                    System.out.println("Bee escaped! Returning to patrol...");
+                }
+                break;
+                
+            case ATTACK:
+                // Continue chasing while attacking
+                chase(player);
+                tryAttack(player, currentTime);
+                
+                // Return to chase if out of attack range
+                if (distanceToBee > ATTACK_RANGE) {
+                    currentState = State.CHASE;
+                }
+                
+                // Give up if bee gets too far
+                if (distanceToBee > GIVE_UP_RANGE || !beeInTerritory) {
+                    currentState = State.PATROL;
+                    System.out.println("Bee escaped! Returning to patrol...");
+                }
+                break;
+                
+            case DEAD:
+                break;
+        }
+    }
+    
+    // Calculate straight line distance to player
+    private float getDistanceToBee(Player player) {
+        float dx = player.getX() - getX();
+        float dy = player.getY() - getY();
+        return (float) Math.sqrt(dx * dx + dy * dy);
+    }
+    
+    // Move back and forth in patrol zone
+    private void patrol() {
+        float moveAmount = direction * PATROL_SPEED;
+        float actualMove = moveXHandleCollision(moveAmount);
+        
+        facing = (direction > 0) ? Direction.RIGHT : Direction.LEFT;
+        currentAnimationName = (facing == Direction.RIGHT) ? "FLY_RIGHT" : "FLY_LEFT";
+        
+        float currentX = getX();
+        boolean hitLeftBoundary = currentX <= patrolLeftX;
+        boolean hitRightBoundary = currentX >= patrolRightX;
+        boolean gotBlocked = Math.abs(actualMove) < 0.1f;
+        
+        if ((hitLeftBoundary && direction < 0) ||
+            (hitRightBoundary && direction > 0) ||
+            gotBlocked) {
+            direction *= -1;
+            facing = (direction > 0) ? Direction.RIGHT : Direction.LEFT;
+        }
+    }
+    
+    // Move toward player
+    private void chase(Player player) {
+        float beeX = player.getX();
+        float beeY = player.getY();
+        float skullX = getX();
+        float skullY = getY();
+        
+        float dx = beeX - skullX;
+        float dy = beeY - skullY;
+        float distance = (float) Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance > 0.1f) {
+            float moveX = (dx / distance) * CHASE_SPEED;
+            float moveY = (dy / distance) * CHASE_SPEED;
+            
+            moveXHandleCollision(moveX);
+            moveYHandleCollision(moveY);
+            
+            if (Math.abs(dx) > 10) {
+                Direction newFacing = (dx > 0) ? Direction.RIGHT : Direction.LEFT;
+                if (newFacing != facing) {
+                    facing = newFacing;
+                }
+            }
+        }
+        
         currentAnimationName = (facing == Direction.RIGHT) ? "FLY_RIGHT" : "FLY_LEFT";
     }
 
     // attack
-    private void tryAttack(Player player) {
-        long now = System.currentTimeMillis();
-        if (now - lastAttackTime < ATTACK_COOLDOWN_MS) return;
+    private void tryAttack(Player player, long currentTime) {
+        if (currentTime - lastAttackTime < ATTACK_COOLDOWN_MS) return;
 
         if (player instanceof Bee bee) {
             float dx = bee.getX() - getX();
             float dy = bee.getY() - getY();
             float dist = (float)Math.sqrt(dx * dx + dy * dy);
 
-            if (dist < 40f) {
+            if (dist < ATTACK_RANGE) {
                 bee.applyDamage(DAMAGE);
-                lastAttackTime = now;
-                System.out.println("☠️ Skull hit Bee for " + DAMAGE);
+                lastAttackTime = currentTime;
+                currentState = State.ATTACK;
+                System.out.println("Skull hit Bee for " + DAMAGE + " damage!");
             }
         }
     }
@@ -167,5 +334,17 @@ public class Skull extends NPC {
             for (FloatingText t : floatingTexts)
                 t.draw(graphicsHandler, camX, camY);
         }
+    }
+    
+    // Collision box for bee attacks
+    public java.awt.Rectangle getHitbox() {
+        int w = 40 * SCALE;
+        int h = 40 * SCALE;
+        int offsetX = 12 * SCALE;
+        int offsetY = 12 * SCALE;
+        return new java.awt.Rectangle(
+                (int) getX() + offsetX,
+                (int) getY() + offsetY,
+                w, h);
     }
 }
