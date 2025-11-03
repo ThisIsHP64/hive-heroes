@@ -2,7 +2,9 @@ package Screens;
 
 import Engine.GraphicsHandler;
 import Engine.Screen;
-import Flowers.RareSunflowerwithFlowers;
+import Engine.Keyboard;
+import Engine.Key;
+import Engine.KeyLocker;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.*;
@@ -13,10 +15,8 @@ import StaticClasses.TeleportManager;
 import Utils.Direction;
 import Portals.GrassPortal;
 import Portals.Portal;
-import Enemies.Spider;
-
-import Engine.ImageLoader;
-import GameObject.SpriteSheet;
+import NPCs.OneRing;
+import NPCs.FireTunic;
 
 public class MazeLevelScreen extends Screen implements GameListener {
     protected ScreenCoordinator screenCoordinator;
@@ -26,9 +26,19 @@ public class MazeLevelScreen extends Screen implements GameListener {
     protected WinScreen winScreen;
     protected FlagManager flagManager;
     protected boolean hasInitialized = false;
-
-    // sting FX resource - single static image shown when spider is hit
-    private SpriteSheet stingFxSheet;
+    
+    // key locker for item collection
+    private KeyLocker keyLocker = new KeyLocker();
+    
+    // track if items have been collected
+    private boolean oneRingCollected = false;
+    private boolean fireTunicCollected = false;
+    
+    // track textbox state for teleporting after dismissal
+    private boolean wasTextboxActive = false;
+    private boolean pendingTeleportToGrass = false;
+    private int teleportTimer = 0;
+    private static final int TELEPORT_DELAY = 120; // 2 seconds at 60fps
 
     public MazeLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -41,7 +51,7 @@ public class MazeLevelScreen extends Screen implements GameListener {
         map = new MazeMap();
         map.setFlagManager(flagManager);
 
-        // player (Bee) spawn
+        // player (Bee) spawn at X:1, Y:1
         player = new Bee(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         player.setMap(map);
         playLevelScreenState = PlayLevelScreenState.RUNNING;
@@ -53,11 +63,13 @@ public class MazeLevelScreen extends Screen implements GameListener {
 
         // let the map finish its own loading (avoids our NPC being overwritten)
         map.preloadScripts();
-
-        // spiders are now spawned in SprintOneMap.loadNPCs() instead of here
-
-        // load the sting FX - just one static sprite
-        stingFxSheet = new SpriteSheet(ImageLoader.load("bee_attack1.png"), 32, 32);
+        
+        // reset collection flags
+        oneRingCollected = false;
+        fireTunicCollected = false;
+        wasTextboxActive = false;
+        pendingTeleportToGrass = false;
+        teleportTimer = 0;
     }
 
     public void update() {
@@ -76,29 +88,68 @@ public class MazeLevelScreen extends Screen implements GameListener {
                         return;
                     }
 
+                    // Check for item collection with SPACE (before textbox locks it)
+                    if (Keyboard.isKeyDown(Key.SPACE) && !keyLocker.isKeyLocked(Key.SPACE)) {
+                        for (NPC npc : map.getNPCs()) {
+                            // Check for OneRing collection
+                            if (npc instanceof NPCs.OneRing) {
+                                NPCs.OneRing ring = (NPCs.OneRing) npc;
+                                
+                                float distance = (float) Math.sqrt(
+                                    Math.pow(bee.getX() - ring.getX(), 2) + 
+                                    Math.pow(bee.getY() - ring.getY(), 2)
+                                );
+                                
+                                System.out.println("Ring distance: " + distance + ", collected: " + ring.isCollected());
+                                
+                                if (!ring.isCollected() && distance < 80) {
+                                    ring.collect();
+                                    oneRingCollected = true;
+                                    // Add ring to inventory
+                                    BeeStats.setHasRing(true);
+                                    // Show ring icon in HUD
+                                    bee.showRingIcon();
+                                    map.getTextbox().addText("Random Ring.");
+                                    map.getTextbox().addText("Looks shiny, I'll grab it.");
+                                    map.getTextbox().setIsActive(true);
+                                    keyLocker.lockKey(Key.SPACE);
+                                }
+                            }
+                            
+                            // Check for FireTunic collection
+                            if (npc instanceof NPCs.FireTunic) {
+                                NPCs.FireTunic tunic = (NPCs.FireTunic) npc;
+                                
+                                float distance = (float) Math.sqrt(
+                                    Math.pow(bee.getX() - tunic.getX(), 2) + 
+                                    Math.pow(bee.getY() - tunic.getY(), 2)
+                                );
+                                
+                                System.out.println("Tunic distance: " + distance + ", collected: " + tunic.isCollected());
+                                
+                                if (!tunic.isCollected() && distance < 120) {
+                                    tunic.collect();
+                                    fireTunicCollected = true;
+                                    map.getTextbox().addText("Volcanic Tunic Acquired");
+                                    map.getTextbox().addText("Returning to Grass Level...");
+                                    map.getTextbox().setIsActive(true);
+                                    pendingTeleportToGrass = true;
+                                    teleportTimer = 0;
+                                    keyLocker.lockKey(Key.SPACE);
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (Keyboard.isKeyUp(Key.SPACE)) {
+                        keyLocker.unlockKey(Key.SPACE);
+                    }
+
                     if (bee.isAttacking()) {
+                        System.out.println("Bee is attacking!");
                         java.awt.Rectangle sting = bee.getAttackHitbox();
 
                         for (NPC npc : map.getNPCs()) {
-                            if (npc instanceof Spider) {
-                                Spider sp = (Spider) npc;
-
-                                // only deal damage if spider isn't already dead
-                                if (!sp.isDead() && sting.intersects(sp.getHitbox())) {
-                                    sp.takeDamage(1);
-                                    System.out.println("Bee stung spider!");
-                                }
-                            }
-
-                            if (npc instanceof RareSunflowerwithFlowers) {
-                                RareSunflowerwithFlowers rareSunflower = (RareSunflowerwithFlowers) npc;
-                                
-                                if (sting.intersects(rareSunflower.getHitbox())) {
-                                    System.out.println("Sunflower hit!");
-                                    BeeStats.setNectar(BeeStats.getNectar() + 1);
-                                }
-                            }
-
                             if (npc instanceof Portal) {
                                 Portal portal = (Portal) npc;
 
@@ -118,8 +169,36 @@ public class MazeLevelScreen extends Screen implements GameListener {
                     }
                 }
                 
-                // remove dead spiders after death animation lingers
-                map.getNPCs().removeIf(npc -> npc instanceof Spider && ((Spider) npc).canBeRemoved());
+                // Remove fully faded OneRing and dismiss textbox
+                map.getNPCs().removeIf(npc -> {
+                    if (npc instanceof NPCs.OneRing) {
+                        NPCs.OneRing ring = (NPCs.OneRing) npc;
+                        if (ring.isCollected() && ring.hasFadedOut()) {
+                            // Close textbox when ring fade completes
+                            if (map.getTextbox().isActive()) {
+                                map.getTextbox().setIsActive(false);
+                                keyLocker.unlockKey(Key.SPACE);
+                                System.out.println("Ring faded - textbox closed and SPACE unlocked");
+                            }
+                            return true;
+                        }
+                    }
+                    return false;
+                });
+                
+                // Handle pending teleport with timer
+                if (pendingTeleportToGrass) {
+                    teleportTimer++;
+                    if (teleportTimer >= TELEPORT_DELAY) {
+                        // Remove FireTunic before teleporting
+                        map.getNPCs().removeIf(npc -> npc instanceof NPCs.FireTunic && ((NPCs.FireTunic) npc).isCollected());
+                        
+                        System.out.println("Teleporting to GRASSLEVEL...");
+                        TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
+                        pendingTeleportToGrass = false;
+                        teleportTimer = 0;
+                    }
+                }
 
                 break;
 
@@ -142,35 +221,6 @@ public class MazeLevelScreen extends Screen implements GameListener {
         switch (playLevelScreenState) {
             case RUNNING:
                 map.draw(player, graphicsHandler);
-                
-                // draw attack FX on spiders that were just hit
-                if (stingFxSheet != null) {
-                    float cameraX = map.getCamera().getX();
-                    float cameraY = map.getCamera().getY();
-
-                    for (NPC npc : map.getNPCs()) {
-                        if (npc instanceof Spider) {
-                            Spider sp = (Spider) npc;
-                            if (sp.isShowingAttackFx()) {
-                                // position FX directly on spider sprite
-                                int fxSize = 64;
-                                
-                                // start at spider's sprite position
-                                int fxX = Math.round(sp.getX() - cameraX);
-                                int fxY = Math.round(sp.getY() - cameraY);
-                                
-                                // shift down and left to center on spider body
-                                fxX -= 10;
-                                fxY += 15;
-
-                                graphicsHandler.drawImage(
-                                    stingFxSheet.getSprite(0, 0),
-                                    fxX, fxY, fxSize, fxSize
-                                );
-                            }
-                        }
-                    }
-                }
                 break;
             case LEVEL_COMPLETED:
                 winScreen.draw(graphicsHandler);
