@@ -235,7 +235,6 @@ public class Bee extends Player {
         System.out.println("You received the Red Tunic");
     }
 
-<<<<<<< HEAD
     public void showRingIcon() {
         if (BeeStats.hasRing() && powerupHUD != null) {
             powerupHUD.show("onering.png", Integer.MAX_VALUE);
@@ -243,7 +242,6 @@ public class Bee extends Player {
         }
     }
 
-=======
     public void obtainBlueTunic() {
     if (BeeStats.hasBlueTunic()) return; // prevent duplicate the icons
 
@@ -257,7 +255,6 @@ public class Bee extends Player {
     }
 
 
->>>>>>> fac7f9f (structures - in progress)
     @Override
     public void update() {
         super.update();
