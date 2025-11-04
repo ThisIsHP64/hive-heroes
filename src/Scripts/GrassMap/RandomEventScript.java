@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Level.Script;
 import ScriptActions.ScriptAction;
+import ScriptActions.UnlockPlayerScriptAction;
 
 public class RandomEventScript extends Script {
 
@@ -14,7 +15,9 @@ public class RandomEventScript extends Script {
     public ArrayList<ScriptAction> loadScriptActions() {
         ArrayList<ScriptAction> scriptActions = new ArrayList<>();
 
+        scriptActions.add(new RandomEventScriptAction());
 
+        scriptActions.add(new UnlockPlayerScriptAction());
 
         return scriptActions;
     }

@@ -21,12 +21,15 @@ import java.util.HashMap;
 public class GameObject extends AnimatedSprite {
 
 	// stores game object's start position
-	// important to keep track of this as it's what allows the special draw logic to work
+	// important to keep track of this as it's what allows the special draw logic to
+	// work
 	protected float startPositionX, startPositionY;
 
 	// how much game object's position has changed from start position over time
 	// also important to keep track of for the special draw logic
-	protected float amountMovedX, amountMovedY;
+	private float amountMovedX;
+
+	protected float amountMovedY;
 
 	// previous location the game object was in from the last frame
 	protected float previousX, previousY;
@@ -80,7 +83,6 @@ public class GameObject extends AnimatedSprite {
 		return affectedByTriggers;
 	}
 
-
 	@Override
 	public void update() {
 		// update previous position to be the current position
@@ -92,7 +94,8 @@ public class GameObject extends AnimatedSprite {
 	}
 
 	// move game object along the x axis
-	// will stop object from moving based on map collision logic (such as if it hits a solid tile)
+	// will stop object from moving based on map collision logic (such as if it hits
+	// a solid tile)
 	public float moveXHandleCollision(float dx) {
 		if (map != null) {
 			return handleCollisionX(dx);
@@ -103,7 +106,8 @@ public class GameObject extends AnimatedSprite {
 	}
 
 	// move game object along the y axis
-	// will stop object from moving based on map collision logic (such as if it hits a solid tile)
+	// will stop object from moving based on map collision logic (such as if it hits
+	// a solid tile)
 	public float moveYHandleCollision(float dy) {
 		if (map != null) {
 			return handleCollisionY(dy);
@@ -113,26 +117,31 @@ public class GameObject extends AnimatedSprite {
 		}
 	}
 
-	// performs collision check logic for moving along the x axis against the map's tiles
+	// performs collision check logic for moving along the x axis against the map's
+	// tiles
 	public float handleCollisionX(float moveAmountX) {
 		// determines amount to move (whole number)
-		int amountToMove = (int)Math.abs(moveAmountX);
+		int amountToMove = (int) Math.abs(moveAmountX);
 
 		// gets decimal remainder from amount to move
 		float moveAmountXRemainder = MathUtils.getRemainder(moveAmountX);
 
-		// determines direction that will be moved in based on if moveAmountX is positive or negative
+		// determines direction that will be moved in based on if moveAmountX is
+		// positive or negative
 		Direction direction = moveAmountX < 0 ? Direction.LEFT : Direction.RIGHT;
 
 		// moves game object one pixel at a time until total move amount is reached
-		// if at any point a map tile collision is determined to have occurred from the move,
-		// move player back to right in front of the "solid" map tile's position, and stop attempting to move further
+		// if at any point a map tile collision is determined to have occurred from the
+		// move,
+		// move player back to right in front of the "solid" map tile's position, and
+		// stop attempting to move further
 		float amountMoved = 0;
 		boolean hasCollided = false;
 		GameObject entityCollidedWith = null;
 		for (int i = 0; i < amountToMove; i++) {
 			moveX(direction.getVelocity());
-			MapCollisionCheckResult collisionCheckResult = MapCollisionHandler.getAdjustedPositionAfterCollisionCheckX(this, map, direction);
+			MapCollisionCheckResult collisionCheckResult = MapCollisionHandler
+					.getAdjustedPositionAfterCollisionCheckX(this, map, direction);
 			if (collisionCheckResult.getAdjustedLocation() != null) {
 				hasCollided = true;
 				entityCollidedWith = collisionCheckResult.getEntityCollidedWith();
@@ -144,14 +153,20 @@ public class GameObject extends AnimatedSprite {
 			amountMoved = i + 1;
 		}
 
-		// if no collision occurred in the above steps, this deals with the decimal remainder from the original move amount (stored in moveAmountXRemainder)
+		// if no collision occurred in the above steps, this deals with the decimal
+		// remainder from the original move amount (stored in moveAmountXRemainder)
 		// it starts by moving the game object by that decimal amount
-		// it then does one more check for a collision in the case that this added decimal amount was enough to change the rounding and move the game object to the next pixel over
-		// if a collision occurs from this move, the player is moved back to right in front of the "solid" map tile's position
-		// if a collision occurs with a trigger and entity is affected by triggers, the trigger is activated
+		// it then does one more check for a collision in the case that this added
+		// decimal amount was enough to change the rounding and move the game object to
+		// the next pixel over
+		// if a collision occurs from this move, the player is moved back to right in
+		// front of the "solid" map tile's position
+		// if a collision occurs with a trigger and entity is affected by triggers, the
+		// trigger is activated
 		if (!hasCollided) {
 			moveX(moveAmountXRemainder * direction.getVelocity());
-			MapCollisionCheckResult collisionCheckResult = MapCollisionHandler.getAdjustedPositionAfterCollisionCheckX(this, map, direction);
+			MapCollisionCheckResult collisionCheckResult = MapCollisionHandler
+					.getAdjustedPositionAfterCollisionCheckX(this, map, direction);
 			if (collisionCheckResult.getAdjustedLocation() != null) {
 				hasCollided = true;
 				entityCollidedWith = collisionCheckResult.getEntityCollidedWith();
@@ -160,20 +175,19 @@ public class GameObject extends AnimatedSprite {
 					setX(collisionCheckResult.getAdjustedLocation().x);
 					amountMoved += Math.abs(xLocationBeforeAdjustment - getX());
 				}
-			}
-			else {
+			} else {
 				amountMoved += moveAmountXRemainder;
 			}
 		}
 
 		if (isAffectedByTriggers() && entityCollidedWith instanceof Trigger && map.getActiveScript() == null) {
-			Trigger trigger = (Trigger)entityCollidedWith;
+			Trigger trigger = (Trigger) entityCollidedWith;
 			if (trigger.getTriggerScript() != null) {
 				map.setActiveScript(trigger.getTriggerScript());
 			}
-		}
-		else {
-			// call this method which a game object subclass can override to listen for collision events and react accordingly
+		} else {
+			// call this method which a game object subclass can override to listen for
+			// collision events and react accordingly
 			onEndCollisionCheckX(hasCollided, direction, entityCollidedWith);
 		}
 
@@ -181,26 +195,31 @@ public class GameObject extends AnimatedSprite {
 		return amountMoved * direction.getVelocity();
 	}
 
-	// performs collision check logic for moving along the y axis against the map's tiles
+	// performs collision check logic for moving along the y axis against the map's
+	// tiles
 	public float handleCollisionY(float moveAmountY) {
 		// determines amount to move (whole number)
-		int amountToMove = (int)Math.abs(moveAmountY);
+		int amountToMove = (int) Math.abs(moveAmountY);
 
 		// gets decimal remainder from amount to move
 		float moveAmountYRemainder = MathUtils.getRemainder(moveAmountY);
 
-		// determines direction that will be moved in based on if moveAmountY is positive or negative
+		// determines direction that will be moved in based on if moveAmountY is
+		// positive or negative
 		Direction direction = moveAmountY < 0 ? Direction.UP : Direction.DOWN;
 
 		// moves game object one pixel at a time until total move amount is reached
-		// if at any point a map tile collision is determined to have occurred from the move,
-		// move player back to right in front of the "solid" map tile's position, and stop attempting to move further
+		// if at any point a map tile collision is determined to have occurred from the
+		// move,
+		// move player back to right in front of the "solid" map tile's position, and
+		// stop attempting to move further
 		float amountMoved = 0;
 		boolean hasCollided = false;
 		GameObject entityCollidedWith = null;
 		for (int i = 0; i < amountToMove; i++) {
 			moveY(direction.getVelocity());
-			MapCollisionCheckResult collisionCheckResult = MapCollisionHandler.getAdjustedPositionAfterCollisionCheckY(this, map, direction);
+			MapCollisionCheckResult collisionCheckResult = MapCollisionHandler
+					.getAdjustedPositionAfterCollisionCheckY(this, map, direction);
 			if (collisionCheckResult.getAdjustedLocation() != null) {
 				hasCollided = true;
 				entityCollidedWith = collisionCheckResult.getEntityCollidedWith();
@@ -212,14 +231,20 @@ public class GameObject extends AnimatedSprite {
 			amountMoved = i + 1;
 		}
 
-		// if no collision occurred in the above steps, this deals with the decimal remainder from the original move amount (stored in moveAmountYRemainder)
+		// if no collision occurred in the above steps, this deals with the decimal
+		// remainder from the original move amount (stored in moveAmountYRemainder)
 		// it starts by moving the game object by that decimal amount
-		// it then does one more check for a collision in the case that this added decimal amount was enough to change the rounding and move the game object to the next pixel over
-		// if a collision occurs from this move, the player is moved back to right in front of the "solid" map tile's position
-		// if a collision occurs with a trigger and entity is affected by triggers, the trigger is activated
+		// it then does one more check for a collision in the case that this added
+		// decimal amount was enough to change the rounding and move the game object to
+		// the next pixel over
+		// if a collision occurs from this move, the player is moved back to right in
+		// front of the "solid" map tile's position
+		// if a collision occurs with a trigger and entity is affected by triggers, the
+		// trigger is activated
 		if (!hasCollided) {
 			moveY(moveAmountYRemainder * direction.getVelocity());
-			MapCollisionCheckResult collisionCheckResult = MapCollisionHandler.getAdjustedPositionAfterCollisionCheckY(this, map, direction);
+			MapCollisionCheckResult collisionCheckResult = MapCollisionHandler
+					.getAdjustedPositionAfterCollisionCheckY(this, map, direction);
 			if (collisionCheckResult.getAdjustedLocation() != null) {
 				hasCollided = true;
 				entityCollidedWith = collisionCheckResult.getEntityCollidedWith();
@@ -228,20 +253,19 @@ public class GameObject extends AnimatedSprite {
 					setY(collisionCheckResult.getAdjustedLocation().y);
 					amountMoved += Math.abs(yLocationBeforeAdjustment - getY());
 				}
-			}
-			else {
+			} else {
 				amountMoved += moveAmountYRemainder;
 			}
 		}
 
 		if (isAffectedByTriggers() && entityCollidedWith instanceof Trigger && map.getActiveScript() == null) {
-			Trigger trigger = (Trigger)entityCollidedWith;
+			Trigger trigger = (Trigger) entityCollidedWith;
 			if (trigger.getTriggerScript() != null) {
 				map.setActiveScript(trigger.getTriggerScript());
 			}
-		}
-		else {
-			// call this method which a game object subclass can override to listen for collision events and react accordingly
+		} else {
+			// call this method which a game object subclass can override to listen for
+			// collision events and react accordingly
 			onEndCollisionCheckY(hasCollided, direction, entityCollidedWith);
 		}
 
@@ -249,11 +273,15 @@ public class GameObject extends AnimatedSprite {
 		return amountMoved * direction.getVelocity();
 	}
 
-	// game object subclass can override this method to listen for x axis collision events and react accordingly after calling "moveXHandleCollision"
-	public void onEndCollisionCheckX(boolean hasCollided, Direction direction, GameObject entityCollidedWith) { }
+	// game object subclass can override this method to listen for x axis collision
+	// events and react accordingly after calling "moveXHandleCollision"
+	public void onEndCollisionCheckX(boolean hasCollided, Direction direction, GameObject entityCollidedWith) {
+	}
 
-	// game object subclass can override this method to listen for y axis collision events and react accordingly after calling "moveYHandleCollision"
-	public void onEndCollisionCheckY(boolean hasCollided, Direction direction, GameObject entityCollidedWith) { }
+	// game object subclass can override this method to listen for y axis collision
+	// events and react accordingly after calling "moveYHandleCollision"
+	public void onEndCollisionCheckY(boolean hasCollided, Direction direction, GameObject entityCollidedWith) {
+	}
 
 	// gets x location taking into account map camera position
 	public float getCalibratedXLocation() {
@@ -281,14 +309,14 @@ public class GameObject extends AnimatedSprite {
 					Math.round(bounds.getX1()) - Math.round(map.getCamera().getX()),
 					Math.round(bounds.getY1()) - Math.round(map.getCamera().getY()),
 					Math.round(bounds.getWidth()),
-					Math.round(bounds.getHeight())
-			);
+					Math.round(bounds.getHeight()));
 		} else {
 			return getBounds();
 		}
 	}
 
-	// set this game object's map to make it a "part of" the map, allowing calibrated positions and collision handling logic to work
+	// set this game object's map to make it a "part of" the map, allowing
+	// calibrated positions and collision handling logic to work
 	public void setMap(Map map) {
 		this.map = map;
 	}
@@ -297,30 +325,29 @@ public class GameObject extends AnimatedSprite {
 	public void draw(GraphicsHandler graphicsHandler) {
 		if (map != null) {
 			graphicsHandler.drawImage(
-				currentFrame.getImage(),
-				Math.round(getCalibratedXLocation()),
-				Math.round(getCalibratedYLocation()),
-				currentFrame.getWidth(),
-				currentFrame.getHeight(),
-				currentFrame.getImageEffect()
-			);
+					currentFrame.getImage(),
+					Math.round(getCalibratedXLocation()),
+					Math.round(getCalibratedYLocation()),
+					currentFrame.getWidth(),
+					currentFrame.getHeight(),
+					currentFrame.getImageEffect());
 
-        // UNCOMMENT TO DRAW ALL HITBOXES
-           Rectangle bounds = getBounds();
-           float camX = map.getCamera().getX();
-           float camY = map.getCamera().getY();
+			// UNCOMMENT TO DRAW ALL HITBOXES
+			// Rectangle bounds = getBounds();
+			// float camX = map.getCamera().getX();
+			// float camY = map.getCamera().getY();
 
-           int screenX = (int)(bounds.getX() - camX);
-           int screenY = (int)(bounds.getY() - camY);
+			// int screenX = (int)(bounds.getX() - camX);
+			// int screenY = (int)(bounds.getY() - camY);
 
-           graphicsHandler.drawRectangle(
-                   screenX,
-                   screenY,
-                   bounds.getWidth(),
-                   bounds.getHeight(),
-                   java.awt.Color.RED,
-                   2
-           );
+			// graphicsHandler.drawRectangle(
+			// screenX,
+			// screenY,
+			// bounds.getWidth(),
+			// bounds.getHeight(),
+			// java.awt.Color.RED,
+			// 2
+			// );
 
 		} else {
 			super.draw(graphicsHandler);
