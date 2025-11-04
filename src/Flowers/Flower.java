@@ -1,10 +1,16 @@
 package Flowers;
 
+import Engine.GraphicsHandler;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
+import Level.MapEntityStatus;
 import Level.NPC;
+import Level.Player;
+import Players.Bee;
 
 public class Flower extends NPC {
+
+    protected int nectarAmount = 15;
 
     public Flower(int id, float x, float y, SpriteSheet spriteSheet, String startingAnimation) {
         super(id, x, y, spriteSheet, startingAnimation);
@@ -21,6 +27,31 @@ public class Flower extends NPC {
         int y = (int) getY();
         
         return new java.awt.Rectangle(x, y, w, h);
+    }
+
+    @Override
+    public void update(Player player) {
+        super.update(player);
+
+        if (player instanceof Bee bee) {
+            java.awt.Rectangle sting = bee.getAttackHitbox();
+            
+            if (sting.intersects(this.getHitbox())) {
+                nectarAmount -= 1;
+
+                if (nectarAmount <= 0) {
+                    setMapEntityStatus(MapEntityStatus.REMOVED);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void draw(GraphicsHandler graphicsHandler) {
+        // draw only if not removed
+        if (getMapEntityStatus() != MapEntityStatus.REMOVED) {
+            super.draw(graphicsHandler);
+        }
     }
 
 }
