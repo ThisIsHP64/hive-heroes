@@ -2,6 +2,7 @@ package Engine;
 
 import Effects.RainParticleSystemGrassLevel;
 import Effects.RedRainParticleSystemVolcanoLevel;
+import Effects.SnowParticleSystemSnowLevel;
 import Effects.WindSystemGrassLevel;
 import Game.GameState;
 import GameObject.Rectangle;
@@ -42,11 +43,14 @@ public class GamePanel extends JPanel implements ActionListener {
 	private RainParticleSystemGrassLevel rainSystemgrassLevel;
     private WindSystemGrassLevel windSystemgrassLevel;
 	private RedRainParticleSystemVolcanoLevel redRainSystemvolcanoLevel;
+	private SnowParticleSystemSnowLevel snowParticleSystemsnowLevel;
 	private int grassLeveltimer = 0;
 	private int volcanoLeveltimer = 0;
+	private int snowLeveltimer = 0;
 	private static boolean isRedRaining = false;
 	private static boolean isRaining = false;
     private static boolean isWindActive = false;
+	private static boolean isSnowing = false;
 
 
 
@@ -85,6 +89,8 @@ public class GamePanel extends JPanel implements ActionListener {
 		windSystemgrassLevel = new WindSystemGrassLevel(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 		redRainSystemvolcanoLevel = new RedRainParticleSystemVolcanoLevel(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+		snowParticleSystemsnowLevel = new SnowParticleSystemSnowLevel(SCREEN_WIDTH, SCREEN_HEIGHT);
 	}
 
 	// this is called later after instantiation, and will initialize screenManager
@@ -126,10 +132,16 @@ public class GamePanel extends JPanel implements ActionListener {
 			int volcanoLevelseconds = volcanoLeveltimer / 60;
 			int volcanoLevelcycleTime = volcanoLevelseconds % 750; // Full cycle length
 
+			snowLeveltimer++;
+			int snowLevelseconds = snowLeveltimer / 60;
+			int snowLevelcycleTime = snowLevelseconds % 750; // Full cycle length
+
         // Check what level the player is on
         boolean onGrassLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
 
 		boolean onVolcanoLevel = TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL;
+
+		boolean onSnowLevel = TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL;
 
         // --- RAIN CYCLE ---
         if (grassLevelcycleTime >= 30 && grassLevelcycleTime < 90) {
@@ -170,6 +182,19 @@ public class GamePanel extends JPanel implements ActionListener {
         } else if (isRedRaining) {
             isRedRaining = false;
             redRainSystemvolcanoLevel.clear();
+        }
+
+		if (snowLevelcycleTime >= 30 && snowLevelcycleTime < 90) {
+            if (onSnowLevel) {
+                if (!isSnowing) {
+                    isSnowing = true;
+                    snowParticleSystemsnowLevel.clear();
+                }
+                snowParticleSystemsnowLevel.update();
+            }
+        } else if (onSnowLevel) {
+            isSnowing = false;
+            snowParticleSystemsnowLevel.clear();
         }
     }
 }
@@ -228,6 +253,11 @@ public class GamePanel extends JPanel implements ActionListener {
 			redRainSystemvolcanoLevel.update();
 		}
 		repaint();
+
+		if (isSnowing) {
+			snowParticleSystemsnowLevel.update();
+		}
+		repaint();
 	}
 
 	@Override
@@ -254,6 +284,12 @@ public class GamePanel extends JPanel implements ActionListener {
 		if (onVolcanoLevel && isRedRaining) {
             redRainSystemvolcanoLevel.draw(g2d);
         }
+
+		boolean onSnowLevel = TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL;
+
+		if (onSnowLevel && isSnowing) {
+            snowParticleSystemsnowLevel.draw(g2d);
+        }
 		}
 	}
 
@@ -267,6 +303,10 @@ public class GamePanel extends JPanel implements ActionListener {
 
 	public static Boolean getisWindActive() {
         return isWindActive;
+    }
+
+	public static Boolean getisSnowing() {
+        return isSnowing;
     }
 }
  
