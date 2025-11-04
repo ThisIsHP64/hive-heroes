@@ -23,8 +23,6 @@ public class DestroyedBeehive extends NPC {
             new SpriteSheet(ImageLoader.load("DesBeehive.png"), TILE_W, TILE_H, 0),
             "HIVE"
         );
-        this.isUncollidable = true; // Optional: can walk over it
-        System.out.println("Destroyed beehive placed at " + location.x + ", " + location.y);
     }
 
     @Override

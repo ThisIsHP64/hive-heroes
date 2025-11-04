@@ -5,7 +5,6 @@ import Level.Map;
 import Level.NPC;
 import Level.Trigger;
 import NPCs.BeeGuard;
-import NPCs.DestroyedBeehive;
 import NPCs.QueenBee;
 import NPCs.QueenBeeChair;
 import Portals.GrassPortal;
@@ -50,9 +49,7 @@ public class HiveMap extends Map {
 
         GrassPortal grassPortal = new GrassPortal(1, getMapTile(1, 20).getLocation().addY(60));
         grassPortal.setInteractScript(new GrassPortalScript());
-        npcs.add(grassPortal);
-
-        npcs.add(new DestroyedBeehive(5001, getMapTile(12, 5).getLocation()));
+        npcs.add(grassPortal); 
 
         return npcs;
     }

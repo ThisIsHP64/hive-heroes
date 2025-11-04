@@ -10,9 +10,14 @@ import NPCs.BigHive;
 import NPCs.Butterfly;
 import NPCs.Cat;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import NPCs.Dragonfly;
 =======
+=======
+import NPCs.DeadDeer;
+>>>>>>> 4be3a51 (In progress.)
 import NPCs.DestroyedBeehive;
+import NPCs.Ghost;
 import NPCs.Grave;
 >>>>>>> fac7f9f (structures - in progress)
 import NPCs.Hut;
@@ -147,7 +152,12 @@ public class GrassMap extends Map {
 
         npcs.add(new DestroyedBeehive(5001, getMapTile(75, 18).getLocation()));
 
-        npcs.add(new Grave(5002, getMapTile(78, 16).getLocation().addY(20)));
+        npcs.add(new Grave(5002, getMapTile(36, 17).getLocation().addY(20)));
+
+        npcs.add(new Ghost(6000, getMapTile(38, 18).getLocation()));
+
+        npcs.add(new DeadDeer(7000, getMapTile(22, 55).getLocation()));
+
 
 
 
