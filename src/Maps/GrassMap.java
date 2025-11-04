@@ -9,7 +9,12 @@ import Level.Trigger;
 import NPCs.BigHive;
 import NPCs.Butterfly;
 import NPCs.Cat;
+<<<<<<< HEAD
 import NPCs.Dragonfly;
+=======
+import NPCs.DestroyedBeehive;
+import NPCs.Grave;
+>>>>>>> fac7f9f (structures - in progress)
 import NPCs.Hut;
 import NPCs.LadyBug;
 import Portals.LavaPortal;
@@ -139,6 +144,14 @@ public class GrassMap extends Map {
         npcs.add(new Hut(4000, getMapTile(84, 70).getLocation()));
 
         npcs.add(new Cat(5000, getMapTile(83, 71).getLocation()));
+
+        npcs.add(new DestroyedBeehive(5001, getMapTile(75, 18).getLocation()));
+
+        npcs.add(new Grave(5002, getMapTile(78, 16).getLocation().addY(20)));
+
+
+
+
         
         return npcs;
     }

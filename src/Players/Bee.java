@@ -58,7 +58,7 @@ public class Bee extends Player {
     private long boostStartTime = 0L;
     private float originalSpeed = 0f;
     private String powerupIconPath;
-    private static final int BOOST_DURATION_MS = 10_000;
+    private static final int BOOST_DURATION_MS = 20_000;
     private static final float BOOST_MULTIPLIER = 2.0f;
 
     // Shield variables
@@ -66,8 +66,12 @@ public class Bee extends Player {
     private int shieldHealth = 0;
     private static final int MAX_SHIELD_HEALTH = 100;
 
-    // tunic variable\
+    // tunic variable
     private boolean useRedSprites = false;
+
+    // tunic blue variable
+    private boolean useBlueSprites = false;
+
 
     // floating damage numbers when bee takes damage
     private ArrayList<FloatingText> floatingTexts = new ArrayList<>();
@@ -231,6 +235,7 @@ public class Bee extends Player {
         System.out.println("You received the Red Tunic");
     }
 
+<<<<<<< HEAD
     public void showRingIcon() {
         if (BeeStats.hasRing() && powerupHUD != null) {
             powerupHUD.show("onering.png", Integer.MAX_VALUE);
@@ -238,6 +243,21 @@ public class Bee extends Player {
         }
     }
 
+=======
+    public void obtainBlueTunic() {
+    if (BeeStats.hasBlueTunic()) return; // prevent duplicate the icons
+
+    BeeStats.setHasBlueTunic(true);
+
+    if (powerupHUD != null) {
+        powerupHUD.show("BlueTunic_Hud.png", Integer.MAX_VALUE);
+    }
+
+    System.out.println("You received the Blue Tunic! You can now transform into your frost form.");
+    }
+
+
+>>>>>>> fac7f9f (structures - in progress)
     @Override
     public void update() {
         super.update();
@@ -426,11 +446,26 @@ public class Bee extends Player {
     @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet walkSheet) {
         boolean isRed = useRedSprites || BeeStats.isTunicActive();
+        boolean isBlue = useBlueSprites || BeeStats.isBlueTunicActive();
 
-        SpriteSheet idleSheet = new SpriteSheet(ImageLoader.load(isRed ? "Bee_Idle_Red.png" : "Bee_Idle.png"), TILE, TILE, 0);
-        SpriteSheet attackSheet = new SpriteSheet(ImageLoader.load(isRed ? "Bee_Attack_Red.png" : "Bee_Attack.png"), TILE, TILE, 0);
-        SpriteSheet deathSheet = new SpriteSheet(ImageLoader.load(isRed ? "Bee_Death_Red.png" : "Bee_Death.png"), TILE, TILE, 0);
 
+        SpriteSheet idleSheet = new SpriteSheet(ImageLoader.load(
+        isRed ? "Bee_Idle_Red.png" :
+        isBlue ? "Bee_Idle_Blue.png" :
+        "Bee_Idle.png"
+        ), TILE, TILE, 0);
+
+        SpriteSheet attackSheet = new SpriteSheet(ImageLoader.load(
+        isRed ? "Bee_Attack_Red.png" :
+        isBlue ? "Bee_Attack_Blue.png" :
+        "Bee_Attack.png"
+        ), TILE, TILE, 0);
+
+        SpriteSheet deathSheet = new SpriteSheet(ImageLoader.load(
+        isRed ? "Bee_Death_Red.png" :
+        isBlue ? "Bee_Death_Blue.png" :
+        "Bee_Death.png"
+        ), TILE, TILE, 0);
 
         int hbX = Math.round(10 * SCALE), hbY = Math.round(8 * SCALE);
         int hbW = Math.round(5 * SCALE), hbH = Math.round(5 * SCALE);
@@ -540,9 +575,11 @@ public class Bee extends Player {
         return MAX_SHIELD_HEALTH;
     }
 
-    // handle tunic activation (press 3)
+    // handle tunic activation (press 3 for Red, 4 for Blue)
     private void handleTunicInput() {
         if (BeeStats.hasTunic() && Keyboard.isKeyDown(Key.THREE)) {
+            BeeStats.setBlueTunicActive(false);
+            useBlueSprites = false;
             BeeStats.setTunicActive(!BeeStats.isTunicActive());
 
             if (BeeStats.isTunicActive()) {
@@ -553,22 +590,47 @@ public class Bee extends Player {
                 revertToNormalBeeSprites();
             }
 
-            // Small delay to prevent rapid toggle flickering
+            try { Thread.sleep(200); } catch (InterruptedException ignored) {}
+        }
+
+        // Blue Tunic toggle (press 4)
+        if (BeeStats.hasBlueTunic() && Keyboard.isKeyDown(Key.FOUR)) {
+            BeeStats.setTunicActive(false);
+            useRedSprites = false;
+            BeeStats.setBlueTunicActive(!BeeStats.isBlueTunicActive());
+
+            if (BeeStats.isBlueTunicActive()) {
+                System.out.println("Blue Tunic activated! Frost can no longer harm you!");
+                swapToBlueBeeSprites();
+            } else {
+                System.out.println("Blue Tunic deactivated!");
+                revertToNormalBeeSprites();
+            }
+
             try { Thread.sleep(200); } catch (InterruptedException ignored) {}
         }
     }
 
-
     // Change sprite sets
     private void swapToRedBeeSprites() {
         useRedSprites = true;
+        useBlueSprites = false;
         SpriteSheet redWalk = new SpriteSheet(ImageLoader.load("Bee_Walk_Red.png"), 64, 64, 0);
         this.animations = loadAnimations(redWalk);
         this.currentAnimationName = "STAND_DOWN"; // reset to a safe state
     }
 
+    private void swapToBlueBeeSprites() {
+        useBlueSprites = true;
+        useRedSprites = false;
+        SpriteSheet blueWalk = new SpriteSheet(ImageLoader.load("Bee_Walk_Blue.png"), 64, 64, 0);
+        this.animations = loadAnimations(blueWalk);
+        this.currentAnimationName = "STAND_DOWN";
+    }
+
     private void revertToNormalBeeSprites() {
         useRedSprites = false;
+        useBlueSprites = false;
         SpriteSheet yellowWalk = new SpriteSheet(ImageLoader.load("Bee_Walk.png"), 64, 64, 0);
         this.animations = loadAnimations(yellowWalk);
         this.currentAnimationName = "STAND_DOWN";

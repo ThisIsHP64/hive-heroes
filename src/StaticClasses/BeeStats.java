@@ -37,9 +37,15 @@ public class BeeStats {
     private static boolean hasTunic = false;
     private static boolean tunicActive = false;
 
+<<<<<<< HEAD
     // ring variable (OneRing)
     private static boolean hasRing = false;
 
+=======
+    // tunic variable (blue)
+    private static boolean hasBlueTunic = false;
+    private static boolean blueTunicActive = false;
+>>>>>>> fac7f9f (structures - in progress)
 
     public static void manageStamina() {
         if (stamina > 0) {
@@ -208,6 +214,7 @@ public class BeeStats {
 
     public static void setTunicActive(boolean value) {
         tunicActive = value;
+<<<<<<< HEAD
     }
 
     // ring getters and setters
@@ -219,3 +226,23 @@ public class BeeStats {
         hasRing = value;
     }
 }
+=======
+    }  
+    
+    public static boolean hasBlueTunic() {
+    return hasBlueTunic;
+    }
+
+    public static void setHasBlueTunic(boolean value) {
+        hasBlueTunic = value;
+    }
+
+    public static boolean isBlueTunicActive() {
+        return blueTunicActive;
+    }
+
+    public static void setBlueTunicActive(boolean value) {
+        blueTunicActive = value;
+    }
+}
+>>>>>>> fac7f9f (structures - in progress)
