@@ -23,16 +23,16 @@ public class QueenBeeScript extends Script {
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Rise, brave one of the hive.");
                     addText("You are the spark that will light the sky once more.");
-                    addText("Beyond the plains lie uncharted lands, filled with dangers and resources.");
-                    addText("Claim its nectar, and our song will echo through the fields again!");
+                    addText("Beyond the plains lie uncharted lands, filled with\ndangers and resources.");
+                    addText("Claim its nectar, and our song will echo through the\nfields again!");
                 }});
 
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Use WASD to move and outsmart your enemies!");
-                    addText("Press SPACE to attack, E to collect powerups, and 1 to activate them.");
+                    addText("Press SPACE to attack, E to collect powerups, and\n1 to activate them.");
                     addText("Press SPACE near flowers or NPCs to interact.");
                     addText("Press SPACE near my head to deposit nectar.");
-                    addText("Now go, my soldier — follow the path of the flower to new regions and prevail!");
+                    addText("Now go, my soldier — follow the path of the flower to\nnew regions and prevail!");
                 }});
 
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToQueen", true));

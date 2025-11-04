@@ -173,6 +173,7 @@ public class GrassLevelScreen extends Screen implements GameListener {
 
                                 if (sting.intersects(bigHive.getHitbox())) {
                                     TeleportManager.setCurrentScreen(GameState.HIVELEVEL);
+                                    BeeStats.restoreAllStats();
                                 }
                             }
 

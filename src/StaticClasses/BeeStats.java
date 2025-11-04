@@ -7,8 +7,8 @@ public class BeeStats {
     private static int maxHealth = 100;
 
     // stamina variables
-    private static int stamina = 1000;
-    private static int maxStamina = 25;
+    private static int stamina = 100;
+    private static int maxStamina = 100;
 
     // nectar variables
     private static int nectar = 0;
@@ -41,6 +41,13 @@ public class BeeStats {
     private static boolean hasRing = false;
 
 
+    public static void manageStamina() {
+        if (stamina > 0) {
+            stamina--;
+        } else {
+            stamina = 0;
+        }
+    }
 
     public static int getAttackDamage() {
         return attackDamage;
@@ -54,6 +61,15 @@ public class BeeStats {
     public static void respawn() {
         health = maxHealth;
         nectar = 0;
+    }
+
+    public static void takeDamage(int damage) {
+        
+        if (!isDead) {
+            health -= damage;
+        } else {
+            isDead = true;
+        }
     }
 
     public static boolean isDead() {
@@ -140,7 +156,7 @@ public class BeeStats {
 
     public static void processLevelUp() {
         setMaxHealth(maxHealth + 25);
-        setMaxStamina(maxStamina + 15);
+        setMaxStamina(maxStamina + 25);
         setWalkSpeed(walkSpeed + 1.5f);
         setMaxNectar(maxNectar + 10);
         setAttackDamage(attackDamage + 1);

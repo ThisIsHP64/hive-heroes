@@ -7,6 +7,7 @@ import Effects.WindSystemGrassLevel;
 import Game.GameState;
 import GameObject.Rectangle;
 import SpriteFont.SpriteFont;
+import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
 import Utils.Colors;
 import java.awt.*;
@@ -25,17 +26,22 @@ public class GamePanel extends JPanel implements ActionListener {
 	// used to draw graphics to the panel
 	private GraphicsHandler graphicsHandler;
 
+	private KeyLocker keyLocker = new KeyLocker();
+	private Thread gameLoopProcess;
+	private boolean doPaint;
+
 	private boolean isGamePaused = false;
 	private SpriteFont pauseLabel;
-	private KeyLocker keyLocker = new KeyLocker();
 	private final Key pauseKey = Key.P;
-	private Thread gameLoopProcess;
 
 	private Key showFPSKey = Key.T;
 	private SpriteFont fpsDisplayLabel;
 	private boolean showFPS = false;
 	private int currentFPS;
-	private boolean doPaint;
+
+	private boolean isSprinting = false;
+	private final Key sprintKey = Key.SHIFT;
+
 
 	private final int SCREEN_WIDTH = 800;
 	private final int SCREEN_HEIGHT = 600;
@@ -120,7 +126,6 @@ public class GamePanel extends JPanel implements ActionListener {
 		updatePauseState();
 		updateShowFPSState();
 
-
 		if (!isGamePaused) {
             screenManager.update();
 
@@ -136,69 +141,68 @@ public class GamePanel extends JPanel implements ActionListener {
 			int snowLevelseconds = snowLeveltimer / 60;
 			int snowLevelcycleTime = snowLevelseconds % 750; // Full cycle length
 
-        // Check what level the player is on
-        boolean onGrassLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
+			// Check what level the player is on
+			boolean onGrassLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
 
-		boolean onVolcanoLevel = TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL;
+			boolean onVolcanoLevel = TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL;
 
-		boolean onSnowLevel = TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL;
+			boolean onSnowLevel = TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL;
 
-        // --- RAIN CYCLE ---
-        if (grassLevelcycleTime >= 30 && grassLevelcycleTime < 90) {
-            if (onGrassLevel) {
-                if (!isRaining) {
-                    isRaining = true;
-                    rainSystemgrassLevel.clear();
-                }
-                rainSystemgrassLevel.update();
-            }
-        } else if (isRaining) {
-            isRaining = false;
-            rainSystemgrassLevel.clear();
-        }
+			// --- RAIN CYCLE ---
+			if (grassLevelcycleTime >= 30 && grassLevelcycleTime < 90) {
+				if (onGrassLevel) {
+					if (!isRaining) {
+						isRaining = true;
+						rainSystemgrassLevel.clear();
+					}
+					rainSystemgrassLevel.update();
+				}
+			} else if (isRaining) {
+				isRaining = false;
+				rainSystemgrassLevel.clear();
+			}
 
-        // --- WIND CYCLE ---
-        if (grassLevelcycleTime >= 150 && grassLevelcycleTime < 210) {
-            if (onGrassLevel) {
-                if (!isWindActive) {
-                    isWindActive = true;
-                    windSystemgrassLevel.clear();
-                }
-                windSystemgrassLevel.update();
-            }
-        } else if (isWindActive) {
-            isWindActive = false;
-            windSystemgrassLevel.clear();
-        }
+			// --- WIND CYCLE ---
+			if (grassLevelcycleTime >= 150 && grassLevelcycleTime < 210) {
+				if (onGrassLevel) {
+					if (!isWindActive) {
+						isWindActive = true;
+						windSystemgrassLevel.clear();
+					}
+					windSystemgrassLevel.update();
+				}
+			} else if (isWindActive) {
+				isWindActive = false;
+				windSystemgrassLevel.clear();
+			}
 
-		if (volcanoLevelcycleTime >= 30 && volcanoLevelcycleTime < 90) {
-            if (onVolcanoLevel) {
-                if (!isRedRaining) {
-                    isRedRaining = true;
-                    redRainSystemvolcanoLevel.clear();
-                }
-                redRainSystemvolcanoLevel.update();
-            }
-        } else if (isRedRaining) {
-            isRedRaining = false;
-            redRainSystemvolcanoLevel.clear();
-        }
+			if (volcanoLevelcycleTime >= 30 && volcanoLevelcycleTime < 90) {
+				if (onVolcanoLevel) {
+					if (!isRedRaining) {
+						isRedRaining = true;
+						redRainSystemvolcanoLevel.clear();
+					}
+					redRainSystemvolcanoLevel.update();
+				}
+			} else if (isRedRaining) {
+				isRedRaining = false;
+				redRainSystemvolcanoLevel.clear();
+			}
 
-		if (snowLevelcycleTime >= 30 && snowLevelcycleTime < 90) {
-            if (onSnowLevel) {
-                if (!isSnowing) {
-                    isSnowing = true;
-                    snowParticleSystemsnowLevel.clear();
-                }
-                snowParticleSystemsnowLevel.update();
-            }
-        } else if (onSnowLevel) {
-            isSnowing = false;
-            snowParticleSystemsnowLevel.clear();
-        }
-    }
-}
-
+			if (snowLevelcycleTime >= 30 && snowLevelcycleTime < 90) {
+				if (onSnowLevel) {
+					if (!isSnowing) {
+						isSnowing = true;
+						snowParticleSystemsnowLevel.clear();
+					}
+					snowParticleSystemsnowLevel.update();
+				}
+			} else if (onSnowLevel) {
+				isSnowing = false;
+				snowParticleSystemsnowLevel.clear();
+			}
+		}
+	}
 	
 	private void updatePauseState() {
 		if (Keyboard.isKeyDown(pauseKey) && !keyLocker.isKeyLocked(pauseKey)) {
