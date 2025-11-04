@@ -16,7 +16,7 @@ public class QueenBeeScript extends Script {
 
         scriptActions.add(new ConditionalScriptAction() {{
 
-            // 🐝 First conversation
+            // First conversation
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToQueen", false));
 
@@ -38,7 +38,7 @@ public class QueenBeeScript extends Script {
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToQueen", true));
             }});
 
-            // 🐝 Second time — Inferno dialogue
+            // Second time — Travel offer (Inferno + Frost)
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToQueen", true));
 
@@ -48,7 +48,7 @@ public class QueenBeeScript extends Script {
 
                 addScriptAction(new ConditionalScriptAction() {{
 
-                    // “Yes” → repeat duties
+                    // “Yes” : repeat duties
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                         addRequirement(new CustomRequirement() {
                             @Override
@@ -60,7 +60,6 @@ public class QueenBeeScript extends Script {
                         addScriptAction(new ChangeFlagScriptAction("hasTalkedToQueen", false));
                     }});
 
-                    // no - offer Land of Inferno
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                         addRequirement(new CustomRequirement() {
                             @Override
@@ -71,11 +70,11 @@ public class QueenBeeScript extends Script {
                         });
 
                         addScriptAction(new TextboxScriptAction() {{
-                            addText("Do you wish to travel to the Land of Inferno?", new String[]{"Yes", "No"});
+                            addText("Do you wish to travel to the furthest lands?", new String[]{"Yes", "No"});
                         }});
 
                         addScriptAction(new ConditionalScriptAction() {{
-                            // yes - gets tunic
+                            // Yes : receive both Red and Blue Tunics
                             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                                 addRequirement(new CustomRequirement() {
                                     @Override
@@ -85,24 +84,25 @@ public class QueenBeeScript extends Script {
                                     }
                                 });
 
-                                addScriptAction(new TextboxScriptAction("Then take this Red Tunic. It will protect you from the flames!"));
+                                addScriptAction(new TextboxScriptAction("Then take these tunics, brave one."));
+                                addScriptAction(new TextboxScriptAction("The Red Tunic will shield you from flame..."));
+                                addScriptAction(new TextboxScriptAction("The Blue Tunic will guard you from frost."));
+                                addScriptAction(new TextboxScriptAction("Press 3 for the Red Tunic, and 4 for the Blue Tunic."));
 
-                                // Scriptaction override
                                 addScriptAction(new ScriptAction() {
                                     @Override
                                     public ScriptState execute() {
                                         Player player = map.getPlayer();
                                         if (player instanceof Bee bee) {
-                                            bee.obtainTunic();
+                                            bee.obtainTunic();      
+                                            bee.obtainBlueTunic();  
                                         }
                                         return ScriptState.COMPLETED;
                                     }
                                 });
-
-                                addScriptAction(new TextboxScriptAction("Press 3 to activate it when in the Inferno Region."));
                             }});
 
-                            // Even if the player selects no, still gets tunic
+                            // No : still gives them (kind Queen)
                             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                                 addRequirement(new CustomRequirement() {
                                     @Override
@@ -112,24 +112,24 @@ public class QueenBeeScript extends Script {
                                     }
                                 });
 
-                                addScriptAction(new TextboxScriptAction("Take it anyways — you might need it."));
+                                addScriptAction(new TextboxScriptAction("Take them anyway — you will need their strength soon."));
+                                addScriptAction(new TextboxScriptAction("Press 3 for the Red Tunic, and 4 for the Blue Tunic."));
 
                                 addScriptAction(new ScriptAction() {
                                     @Override
                                     public ScriptState execute() {
                                         Player player = map.getPlayer();
                                         if (player instanceof Bee bee) {
-                                            bee.obtainTunic();
+                                            bee.obtainTunic();     
+                                            bee.obtainBlueTunic();   
                                         }
                                         return ScriptState.COMPLETED;
                                     }
                                 });
-
-                                addScriptAction(new TextboxScriptAction("Press 3 to activate it when in the Inferno Region."));
                             }});
                         }});
 
-                        addScriptAction(new TextboxScriptAction("Good luck out there."));
+                        addScriptAction(new TextboxScriptAction("Go forth, and let your wings remember the warmth and the frost."));
                     }});
                 }});
             }});

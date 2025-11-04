@@ -40,6 +40,10 @@ public class BeeStats {
     // ring variable (OneRing)
     private static boolean hasRing = false;
 
+    // tunic variable (blue)
+    private static boolean hasBlueTunic = false;
+
+    private static boolean blueTunicActive = false;
 
     public static void manageStamina() {
         if (stamina > 0) {
@@ -210,12 +214,27 @@ public class BeeStats {
         tunicActive = value;
     }
 
-    // ring getters and setters
     public static boolean hasRing() {
         return hasRing;
     }
 
     public static void setHasRing(boolean value) {
         hasRing = value;
+    }    
+    
+    public static boolean hasBlueTunic() {
+        return hasBlueTunic;
+    }
+
+    public static void setHasBlueTunic(boolean value) {
+        hasBlueTunic = value;
+    }
+
+    public static boolean isBlueTunicActive() {
+        return blueTunicActive;
+    }
+
+    public static void setBlueTunicActive(boolean value) {
+        blueTunicActive = value;
     }
 }

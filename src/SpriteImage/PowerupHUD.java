@@ -49,7 +49,6 @@ public class PowerupHUD {
         activeIcons.add(new IconEntry(img, "direct", durationMs));
     }
 
-    // ✅ NEW — remove icon by file name
     public void removeIcon(String path) {
     if (path == null) return;
 

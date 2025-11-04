@@ -14,7 +14,6 @@ public class Hut extends NPC {
     private static final int TILE_W = 512;
     private static final int TILE_H = 512;
 
-    //Scale down to quarter size: 512 * 0.25 = 128 px (≈ 2 tiles)
     private static final float SCALE = 1f;
 
     public Hut(int id, Point location) {
@@ -33,14 +32,14 @@ public class Hut extends NPC {
         HashMap<String, Frame[]> map = new HashMap<>();
         map.put("HUT", new Frame[]{
                 new FrameBuilder(spriteSheet.getSprite(0, 0), 9999)
-                        .withScale(SCALE)
-                        .build()
+                    .withBounds(60, 180, 380, 300)
+                    .withScale(SCALE)
+                    .build()
         });
         return map;
     }
 
     @Override
     public void update(Player player) {
-        // purely decorative (no interaction)
     }
 }

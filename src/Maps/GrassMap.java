@@ -9,7 +9,9 @@ import Level.Trigger;
 import NPCs.BigHive;
 import NPCs.Butterfly;
 import NPCs.Cat;
+import NPCs.DestroyedBeehive;
 import NPCs.Dragonfly;
+import NPCs.Grave;
 import NPCs.Hut;
 import NPCs.LadyBug;
 import Portals.LavaPortal;
@@ -18,14 +20,7 @@ import Portals.ReversePortal;
 import Portals.SnowPortal;
 import PowerUps.PowerUp;
 import PowerUps.ShieldPowerUp;
-import Scripts.GrassMap.ButterflyScript;
-import Scripts.GrassMap.DragonflyScript;
-import Scripts.GrassMap.GrassToDungeonScript;
-import Scripts.GrassMap.GrassToMazeScript;
-import Scripts.GrassMap.GrassToSnowScript;
-import Scripts.GrassMap.GrassToVolcanoScript;
-import Scripts.GrassMap.LadyBugScript;
-import Scripts.GrassMap.RandomEventScript;
+import Scripts.GrassMap.*;
 import Scripts.SimpleTextScript;
 import Tilesets.CommonTileset;
 import java.util.ArrayList;
@@ -139,6 +134,11 @@ public class GrassMap extends Map {
         npcs.add(new Hut(4000, getMapTile(84, 70).getLocation()));
 
         npcs.add(new Cat(5000, getMapTile(83, 71).getLocation()));
+
+        npcs.add(new DestroyedBeehive(5001, getMapTile(75, 18).getLocation()));
+
+        npcs.add(new Grave(5002, getMapTile(78, 16).getLocation().addY(20)));
+
         
         return npcs;
     }

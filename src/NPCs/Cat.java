@@ -24,10 +24,8 @@ public class Cat extends NPC {
             "IDLE"
         );
 
-        // which animation to play
         currentAnimationName = "IDLE";
 
-        // OPTIONAL: nudge so it sits nicely on the tile; tweak or remove if not needed
         setX(getX() - (SPRITE_WIDTH * SCALE / 2f));
         setY(getY() - (SPRITE_HEIGHT * SCALE));
 
@@ -44,16 +42,15 @@ public class Cat extends NPC {
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet sheet) {
         HashMap<String, Frame[]> map = new HashMap<>();
 
-        // Idle tail/blink loop — adjust the (row,col) indices to match your sheet
         Frame[] idle = new Frame[] {
-            new FrameBuilder(sheet.getSprite(0, 0), 14).withScale(SCALE).build(),
-            new FrameBuilder(sheet.getSprite(0, 1), 14).withScale(SCALE).build(),
-            new FrameBuilder(sheet.getSprite(0, 2), 14).withScale(SCALE).build(),
-            new FrameBuilder(sheet.getSprite(1, 0), 14).withScale(SCALE).build(),
-            new FrameBuilder(sheet.getSprite(1, 1), 14).withScale(SCALE).build(),
-            new FrameBuilder(sheet.getSprite(1, 2), 14).withScale(SCALE).build(),
-            new FrameBuilder(sheet.getSprite(2, 0), 14).withScale(SCALE).build(),
-            new FrameBuilder(sheet.getSprite(2, 1), 14).withScale(SCALE).build(),
+            new FrameBuilder(sheet.getSprite(0, 0), 14).withScale(SCALE).withBounds(7,13,11,7).build(),
+            new FrameBuilder(sheet.getSprite(0, 1), 14).withScale(SCALE).withBounds(7,13,11,7).build(),
+            new FrameBuilder(sheet.getSprite(0, 2), 14).withScale(SCALE).withBounds(7,13,11,7).build(),
+            new FrameBuilder(sheet.getSprite(1, 0), 14).withScale(SCALE).withBounds(7,13,11,7).build(),
+            new FrameBuilder(sheet.getSprite(1, 1), 14).withScale(SCALE).withBounds(7,13,11,7).build(),
+            new FrameBuilder(sheet.getSprite(1, 2), 14).withScale(SCALE).withBounds(7,13,11,7).build(),
+            new FrameBuilder(sheet.getSprite(2, 0), 14).withScale(SCALE).withBounds(7,13,11,7).build(),
+            new FrameBuilder(sheet.getSprite(2, 1), 14).withScale(SCALE).withBounds(7,13,11,7).build(),
 
         };
 
