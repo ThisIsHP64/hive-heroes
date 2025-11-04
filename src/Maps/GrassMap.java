@@ -7,18 +7,24 @@ import Level.Map;
 import Level.NPC;
 import Level.Trigger;
 import NPCs.BigHive;
+import NPCs.Butterfly;
 import NPCs.Cat;
+import NPCs.Dragonfly;
 import NPCs.Hut;
+import NPCs.LadyBug;
 import Portals.LavaPortal;
 import Portals.Portal;
 import Portals.ReversePortal;
 import Portals.SnowPortal;
 import PowerUps.PowerUp;
 import PowerUps.ShieldPowerUp;
+import Scripts.GrassMap.ButterflyScript;
+import Scripts.GrassMap.DragonflyScript;
 import Scripts.GrassMap.GrassToDungeonScript;
 import Scripts.GrassMap.GrassToMazeScript;
 import Scripts.GrassMap.GrassToSnowScript;
 import Scripts.GrassMap.GrassToVolcanoScript;
+import Scripts.GrassMap.LadyBugScript;
 import Scripts.SimpleTextScript;
 import Tilesets.CommonTileset;
 import java.util.ArrayList;
@@ -73,6 +79,18 @@ public class GrassMap extends Map {
 
         Daisy daisy = new Daisy(4, getMapTile(35, 35).getLocation());
         npcs.add(daisy);
+
+        LadyBug ladyBug = new LadyBug(4, getMapTile(5, 122).getLocation());
+        ladyBug.setInteractScript(new LadyBugScript());
+        npcs.add(ladyBug);
+
+        Butterfly butterfly = new Butterfly(4, getMapTile(55, 120).getLocation());
+        butterfly.setInteractScript(new ButterflyScript());
+        npcs.add(butterfly);
+
+        Dragonfly dragonfly = new Dragonfly(4, getMapTile(60, 68).getLocation());
+        dragonfly.setInteractScript(new DragonflyScript());
+        npcs.add(dragonfly);
         
         BigHive bigHive = new BigHive(4, getMapTile(67, 51).getLocation());
         npcs.add(bigHive);
