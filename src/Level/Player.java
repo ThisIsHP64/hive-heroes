@@ -8,7 +8,6 @@ import Game.GameState;
 import GameObject.GameObject;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
-import Players.Bee;
 import SpriteImage.ResourceHUD;
 import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
@@ -192,6 +191,11 @@ public abstract class Player extends GameObject {
                 currentWalkingXDirection = Direction.RIGHT;
                 lastWalkingXDirection = Direction.RIGHT;
             } 
+            else if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL && GamePanel.getisSnowing()==true) {
+                moveAmountX += BeeStats.getWalkSpeed()*0.5f;
+                currentWalkingYDirection = Direction.RIGHT;
+                lastWalkingYDirection = Direction.RIGHT; 
+            }
             else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true){
                 if (BeeStats.hasTunic() == true){
                     moveAmountX += BeeStats.getWalkSpeed();
