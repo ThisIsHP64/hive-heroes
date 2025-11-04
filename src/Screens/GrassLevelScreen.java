@@ -126,26 +126,6 @@ public class GrassLevelScreen extends Screen implements GameListener {
                                 }
                             }
 
-                            // if (npc instanceof RareSunflowerwithFlowers) {
-                            //     RareSunflowerwithFlowers rareSunflower = (RareSunflowerwithFlowers) npc;
-
-                            //     if (sting.intersects(rareSunflower.getHitbox())) {
-                            //         System.out.println("Sunflower hit!");
-
-                            //         int added = bee.tryAddNectar(1);
-                            //         if (added > 0) {
-                            //             System.out.println(
-                            //                     "Nectar collected: " + bee.getNectar() + "/" + bee.getNectarCap());
-                                        
-                            //             // spawn yellow +1 floating text at sunflower
-                            //             float textX = rareSunflower.getX() + 24;
-                            //             float textY = rareSunflower.getY();
-                            //             floatingTexts.add(new FloatingText(textX, textY, "+1", new Color(255, 215, 0)));
-                            //         } else {
-                            //             System.out.println("Pouch full! Deposit at the hive.");
-                            //         }
-                            //     }
-                            // }
 
                             if (npc instanceof Flower) {
                                 Flower flower = (Flower) npc;
@@ -176,38 +156,6 @@ public class GrassLevelScreen extends Screen implements GameListener {
                                     BeeStats.restoreAllStats();
                                 }
                             }
-
-                            // if (npc instanceof LavaPortal) {
-                            //     LavaPortal lavaPortal = (LavaPortal) npc;
-
-                            //     if (sting.intersects(lavaPortal.getHitbox())) {
-                            //         TeleportManager.setCurrentScreen(GameState.VOLCANOLEVEL);
-                            //     }
-                            // }
-
-                            // if (npc instanceof SnowPortal) {
-                            //     SnowPortal snowPortal = (SnowPortal) npc;
-
-                            //     if (sting.intersects(snowPortal.getHitbox())) {
-                            //         TeleportManager.setCurrentScreen(GameState.SNOWLEVEL);
-                            //     }
-                            // }
-
-                            // if (npc instanceof Portal) {
-                            //     Portal portal = (Portal) npc;
-
-                            //     if (sting.intersects(portal.getHitbox())) {
-                            //         TeleportManager.setCurrentScreen(GameState.DUNGEONLEVEL);
-                            //     }
-                            // }
-
-                            // if (npc instanceof ReversePortal) {
-                            //     ReversePortal reversePortal = (ReversePortal) npc;
-
-                            //     if (sting.intersects(reversePortal.getHitbox())) {
-                            //         TeleportManager.setCurrentScreen(GameState.MAZELEVEL);
-                            //     }
-                            // }
                         }
                     }
                 }
