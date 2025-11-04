@@ -25,6 +25,7 @@ import Scripts.GrassMap.GrassToMazeScript;
 import Scripts.GrassMap.GrassToSnowScript;
 import Scripts.GrassMap.GrassToVolcanoScript;
 import Scripts.GrassMap.LadyBugScript;
+import Scripts.GrassMap.RandomEventScript;
 import Scripts.SimpleTextScript;
 import Tilesets.CommonTileset;
 import java.util.ArrayList;
@@ -161,18 +162,8 @@ public class GrassMap extends Map {
     public ArrayList<Trigger> loadTriggers() {
         ArrayList<Trigger> triggers = new ArrayList<>();
         
-        // vertical triggers
-        // triggers.add(new Trigger(0, 0, 6000, 6000, 
-        //     new LevelUpgradeScript(), "isLevel1"));
+        // triggers.add(new Trigger(0, 0, 6000, 6000, new RandomEventScript()));
 
-        // triggers.add(new Trigger(0, 0, 6000, 6000, 
-        //     new LevelUpgradeScript(), "isLevel2"));
-        
-        // triggers.add(new Trigger(0, 0, 6000, 6000, 
-        //     new LevelUpgradeScript(), "isLevel3"));
-        
-        // triggers.add(new Trigger(0, 0, 6000, 6000, 
-        //     new LevelUpgradeScript(), "isLevel4"));
         return triggers;
     }
 }

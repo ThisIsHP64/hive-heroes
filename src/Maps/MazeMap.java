@@ -6,7 +6,6 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
-import Portals.GrassPortal;
 import Tilesets.MazeTileset;
 import NPCs.OneRing;
 import NPCs.FireTunic;
