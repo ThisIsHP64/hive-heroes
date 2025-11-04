@@ -133,14 +133,14 @@ public abstract class Player extends GameObject {
 
         // if walk left key is pressed, move player to the left
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
-            if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL && (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true)) {
+            if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL || TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL) && (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true || GamePanel.getisSnowing()==true)) {
                 moveAmountX -= BeeStats.getWalkSpeed() *0.5f;
                 facingDirection = Direction.LEFT;
                 currentWalkingXDirection = Direction.LEFT;
                 lastWalkingXDirection = Direction.LEFT;
             } 
             else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true) {
-                health -= 1;
+                health -= 10;
                 moveAmountX -= BeeStats.getWalkSpeed();
                 facingDirection = Direction.LEFT;
                 currentWalkingXDirection = Direction.LEFT;
@@ -163,14 +163,14 @@ public abstract class Player extends GameObject {
 
         // if walk right key is pressed, move player to the right
         else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
-            if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL && (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true)) {
+            if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL || TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL) && (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true || GamePanel.getisSnowing()==true)) {
                 moveAmountX += BeeStats.getWalkSpeed()*0.5f;
                 facingDirection = Direction.RIGHT;
                 currentWalkingXDirection = Direction.RIGHT;
                 lastWalkingXDirection = Direction.RIGHT;
             } 
             else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true){
-                health -= 1;
+                health -= 10;
                 moveAmountX += BeeStats.getWalkSpeed();
                 facingDirection = Direction.RIGHT;
                 currentWalkingXDirection = Direction.RIGHT;
@@ -195,13 +195,13 @@ public abstract class Player extends GameObject {
         }
 
         if (Keyboard.isKeyDown(MOVE_UP_KEY)) {
-            if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL && (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true)){
+            if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL || TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL) && (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true || GamePanel.getisSnowing()==true)){
                 moveAmountY -= BeeStats.getWalkSpeed()*0.5f;
                 currentWalkingYDirection = Direction.UP;
                 lastWalkingYDirection = Direction.UP;
             } 
             else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true){
-                health -= 1;
+                health -= 10;
                 moveAmountY -= BeeStats.getWalkSpeed();
                 facingDirection = Direction.UP;
                 currentWalkingXDirection = Direction.UP;
@@ -220,13 +220,13 @@ public abstract class Player extends GameObject {
             }
         
         } else if (Keyboard.isKeyDown(MOVE_DOWN_KEY)) {
-            if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL && (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true)) {
+            if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL || TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL) && (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true || GamePanel.getisSnowing()==true)) {
                 moveAmountY += BeeStats.getWalkSpeed()*0.5f;
                 currentWalkingYDirection = Direction.DOWN;
                 lastWalkingYDirection = Direction.DOWN;
             } 
             else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true){
-                health -= 1;
+                health -= 10;
                 moveAmountY += BeeStats.getWalkSpeed();
                 facingDirection = Direction.DOWN;
                 currentWalkingXDirection = Direction.DOWN;
