@@ -3,12 +3,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
 
-public class RainParticle {
+public class RedRainParticleVolcanoLevel {
     private int x, y;
     private int speed;
     private static final Random random = new Random();
 
-    public RainParticle(int screenWidth) {
+    public RedRainParticleVolcanoLevel(int screenWidth) {
         // Starts the raindrop at a random x-position above the screen
         this.x = random.nextInt(screenWidth);
         this.y = -random.nextInt(300); // Start off-screen
@@ -20,8 +20,8 @@ public class RainParticle {
     }
 
     public void draw(Graphics2D g) {
-        g.setColor(new Color(150, 200, 255, 180)); // Semi-transparent blue
-        g.drawLine(x, y, x, y + 10); // Draw a line for the raindrop
+        g.setColor(new Color(148, 1, 1, 180)); // Dark red
+        g.drawLine(x, y, x + 10, y); // Draw a line for the raindrop
     }
 
     public boolean isOffScreen(int screenHeight) {

@@ -3,12 +3,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
 
-public class Wind {
+public class WindGrassLevel {
     private static final Random rand = new Random();
     private float x, y, speedX, speedY;
     private int length;
 
-    public Wind(int screenWidth, int screenHeight) {
+    public WindGrassLevel(int screenWidth, int screenHeight) {
         x = rand.nextInt(screenWidth);
         y = rand.nextInt(screenHeight);
         // wind blows mostly horizontally

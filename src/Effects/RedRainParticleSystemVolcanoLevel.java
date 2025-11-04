@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class RainParticleSystem {
-    private List<RainParticle> particles;
+public class RedRainParticleSystemVolcanoLevel {
+    private List<RedRainParticleVolcanoLevel> particles;
     private final int screenWidth, screenHeight;
     private final int maxParticles;
 
-    public RainParticleSystem(int screenWidth, int screenHeight) {
+    public RedRainParticleSystemVolcanoLevel(int screenWidth, int screenHeight) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.maxParticles = 500;
@@ -19,13 +19,13 @@ public class RainParticleSystem {
     public void update() {
         // adds new particles if needed
         if (particles.size() < maxParticles) {
-            particles.add(new RainParticle(screenWidth));
+            particles.add(new RedRainParticleVolcanoLevel(screenWidth));
         }
 
         // Updates all the particles and removes the ones that are off-screen
-        Iterator<RainParticle> iterator = particles.iterator();
+        Iterator<RedRainParticleVolcanoLevel> iterator = particles.iterator();
         while (iterator.hasNext()) {
-            RainParticle p = iterator.next();
+            RedRainParticleVolcanoLevel p = iterator.next();
             p.update();
             if (p.isOffScreen(screenHeight)) {
                 iterator.remove();
@@ -34,7 +34,7 @@ public class RainParticleSystem {
     }
 
     public void draw(Graphics2D g) {
-        for (RainParticle p : particles) {
+        for (RedRainParticleVolcanoLevel p : particles) {
             p.draw(g);
         }
     }
