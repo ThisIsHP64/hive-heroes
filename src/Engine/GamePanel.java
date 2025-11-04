@@ -1,7 +1,8 @@
 package Engine;
 
-import Effects.RainParticleSystem;
-import Effects.WindSystem;
+import Effects.RainParticleSystemGrassLevel;
+import Effects.RedRainParticleSystemVolcanoLevel;
+import Effects.WindSystemGrassLevel;
 import Game.GameState;
 import GameObject.Rectangle;
 import SpriteFont.SpriteFont;
@@ -38,9 +39,12 @@ public class GamePanel extends JPanel implements ActionListener {
 	private final int SCREEN_WIDTH = 800;
 	private final int SCREEN_HEIGHT = 600;
 
-	private RainParticleSystem rainSystem;
-    private WindSystem windSystem;
-	private int timer = 0;
+	private RainParticleSystemGrassLevel rainSystemgrassLevel;
+    private WindSystemGrassLevel windSystemgrassLevel;
+	private RedRainParticleSystemVolcanoLevel redRainSystemvolcanoLevel;
+	private int grassLeveltimer = 0;
+	private int volcanoLeveltimer = 0;
+	private static boolean isRedRaining = false;
 	private static boolean isRaining = false;
     private static boolean isWindActive = false;
 
@@ -76,9 +80,11 @@ public class GamePanel extends JPanel implements ActionListener {
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 
 		//initializing the rain system
-		rainSystem = new RainParticleSystem(SCREEN_WIDTH, SCREEN_HEIGHT); 
+		rainSystemgrassLevel = new RainParticleSystemGrassLevel(SCREEN_WIDTH, SCREEN_HEIGHT); 
 
-		windSystem = new WindSystem(SCREEN_WIDTH, SCREEN_HEIGHT);
+		windSystemgrassLevel = new WindSystemGrassLevel(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+		redRainSystemvolcanoLevel = new RedRainParticleSystemVolcanoLevel(SCREEN_WIDTH, SCREEN_HEIGHT);
 	}
 
 	// this is called later after instantiation, and will initialize screenManager
@@ -112,46 +118,61 @@ public class GamePanel extends JPanel implements ActionListener {
 		if (!isGamePaused) {
             screenManager.update();
 
-            if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) {
-                timer++;
-                int seconds = timer / 60; 
-                int cycleTime = seconds % 750;  
+            grassLeveltimer++;
+			int grassLevelseconds = grassLeveltimer / 60;
+			int grassLevelcycleTime = grassLevelseconds % 750; // Full cycle length
 
-                if (cycleTime >= 30 && cycleTime < 90) {
-                    if (!isRaining) {
-                        isRaining = true;
-                        rainSystem.clear();
-                    }
-                    rainSystem.update();
-                } else if (isRaining) {
-                    isRaining = false;
-                    rainSystem.clear();
-                }
+			volcanoLeveltimer++;
+			int volcanoLevelseconds = volcanoLeveltimer / 60;
+			int volcanoLevelcycleTime = volcanoLevelseconds % 750; // Full cycle length
 
-                if (cycleTime >= 150 && cycleTime < 210) {
-                    if (!isWindActive) {
-                        isWindActive = true;
-                        windSystem.clear();
-                    }
-                    windSystem.update();
-                } else if (isWindActive) {
-                    isWindActive = false;
-                    windSystem.clear();
-                }
+        // Check what level the player is on
+        boolean onGrassLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
 
-            } else {
-                if (isRaining) {
-                    isRaining = false;
-                    rainSystem.clear();
+		boolean onVolcanoLevel = TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL;
+
+        // --- RAIN CYCLE ---
+        if (grassLevelcycleTime >= 30 && grassLevelcycleTime < 90) {
+            if (onGrassLevel) {
+                if (!isRaining) {
+                    isRaining = true;
+                    rainSystemgrassLevel.clear();
                 }
-                if (isWindActive) {
-                    isWindActive = false;
-                    windSystem.clear();
-                }
-                timer = 0;
+                rainSystemgrassLevel.update();
             }
+        } else if (isRaining) {
+            isRaining = false;
+            rainSystemgrassLevel.clear();
+        }
+
+        // --- WIND CYCLE ---
+        if (grassLevelcycleTime >= 150 && grassLevelcycleTime < 210) {
+            if (onGrassLevel) {
+                if (!isWindActive) {
+                    isWindActive = true;
+                    windSystemgrassLevel.clear();
+                }
+                windSystemgrassLevel.update();
+            }
+        } else if (isWindActive) {
+            isWindActive = false;
+            windSystemgrassLevel.clear();
+        }
+
+		if (volcanoLevelcycleTime >= 30 && volcanoLevelcycleTime < 90) {
+            if (onVolcanoLevel) {
+                if (!isRedRaining) {
+                    isRedRaining = true;
+                    redRainSystemvolcanoLevel.clear();
+                }
+                redRainSystemvolcanoLevel.update();
+            }
+        } else if (isRedRaining) {
+            isRedRaining = false;
+            redRainSystemvolcanoLevel.clear();
         }
     }
+}
 
 	
 	private void updatePauseState() {
@@ -194,12 +215,17 @@ public class GamePanel extends JPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent e){
 		if (isRaining) {
-			rainSystem.update();
+			rainSystemgrassLevel.update();
 		}
 		repaint();
 
 		if (isWindActive) {
-			windSystem.update();
+			windSystemgrassLevel.update();
+		}
+		repaint();
+
+		if (isRedRaining) {
+			redRainSystemvolcanoLevel.update();
 		}
 		repaint();
 	}
@@ -211,20 +237,32 @@ public class GamePanel extends JPanel implements ActionListener {
 			// every repaint call will schedule this method to be called
 			// when called, it will setup the graphics handler and then call this class's draw method
 			graphicsHandler.setGraphics((Graphics2D) g);
-			draw();
-			Graphics2D g2d = (Graphics2D) g;
-			
-            if (isRaining){
-				rainSystem.draw(g2d);
-			}
-            if (isWindActive){
-				 windSystem.draw(g2d);
-			}
+        draw();
+        Graphics2D g2d = (Graphics2D) g;
+
+        boolean onGrassLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
+
+        if (onGrassLevel && isRaining) {
+            rainSystemgrassLevel.draw(g2d);
+        }
+        if (onGrassLevel && isWindActive) {
+            windSystemgrassLevel.draw(g2d);
+        }
+
+		boolean onVolcanoLevel = TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL;
+
+		if (onVolcanoLevel && isRedRaining) {
+            redRainSystemvolcanoLevel.draw(g2d);
+        }
 		}
 	}
 
 	public static Boolean getisRaining(){
 		return isRaining;
+	}
+
+	public static Boolean getisRedRaining(){
+		return isRedRaining;
 	}
 
 	public static Boolean getisWindActive() {
