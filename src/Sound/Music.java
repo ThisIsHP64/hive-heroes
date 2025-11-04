@@ -53,6 +53,13 @@ public class Music {
 
     // play the audio and loop at a certain bar
     public void loop() {
+        // loop from beginning
+        if(loopBar <= 0) {
+            clip.setFramePosition(0);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            return;
+        }
+
         // calculate loop point (in seconds)
         double secondsPerBar = (double) 4 / (bpm / 60.0);
         double startSeconds = (loopBar - 1) * secondsPerBar;
