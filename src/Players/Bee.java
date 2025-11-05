@@ -12,6 +12,7 @@ import Level.Player;
 import SpriteImage.PowerupHUD;
 import SpriteImage.ResourceHUD;
 import StaticClasses.BeeStats;
+import StaticClasses.FlowerManager;
 import StaticClasses.HiveManager;
 import Utils.Direction;
 import java.awt.Color;
@@ -265,6 +266,10 @@ public class Bee extends Player {
             return text.isDead();
         });
 
+        // System.out.println(FlowerManager.countFlowers(this.map));
+        FlowerManager.update(this);
+        System.out.println(totalDistanceTraveled());
+
         handleAttackInput();
         handleTunicInput();
 
@@ -272,10 +277,10 @@ public class Bee extends Player {
         int tileX = (int) (getX() / TILE);
         int tileY = (int) (getY() / TILE);
 
-        System.out.println(String.format(
-                "Level: %d  Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d  X: %d  Y: %d",
-                BeeStats.getCurrentLevel(), BeeStats.getHealth(), BeeStats.getStamina(), BeeStats.getNectar(), BeeStats.getExperience(),
-                BeeStats.getWalkSpeed(), HiveManager.getNectar(), tileX, tileY));
+        // System.out.println(String.format(
+        //         "Level: %d  Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d  X: %d  Y: %d",
+        //         BeeStats.getCurrentLevel(), BeeStats.getHealth(), BeeStats.getStamina(), BeeStats.getNectar(), BeeStats.getExperience(),
+        //         BeeStats.getWalkSpeed(), HiveManager.getNectar(), tileX, tileY));
 
         if (attacking && System.currentTimeMillis() - attackStart > ATTACK_ACTIVE_MS) {
             attacking = false;
