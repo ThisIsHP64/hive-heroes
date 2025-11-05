@@ -237,7 +237,7 @@ public class GrassLevelScreen extends Screen implements GameListener {
                 }
                 
                 // draw floating texts for nectar collection
-                for (FloatingText text : floatingTexts) {
+                for (FloatingText text : new ArrayList<>(floatingTexts)) {
                     text.draw(graphicsHandler, map.getCamera().getX(), map.getCamera().getY());
                 }
                 

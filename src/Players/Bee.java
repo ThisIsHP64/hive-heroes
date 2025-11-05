@@ -408,7 +408,7 @@ public class Bee extends Player {
         if (map != null && map.getCamera() != null) {
             float cameraX = map.getCamera().getX();
             float cameraY = map.getCamera().getY();
-            for (FloatingText text : floatingTexts) {
+            for (FloatingText text : new ArrayList<>(floatingTexts)) {
                 text.draw(graphicsHandler, cameraX, cameraY);
             }
         }

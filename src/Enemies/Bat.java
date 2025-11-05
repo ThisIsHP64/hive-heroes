@@ -1,13 +1,7 @@
 package Enemies;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import Builders.FrameBuilder;
+import Effects.FloatingText;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import GameObject.Frame;
@@ -17,7 +11,12 @@ import Level.NPC;
 import Level.Player;
 import Utils.Direction;
 import Utils.Point;
-import Effects.FloatingText;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Bat extends NPC {
 
@@ -430,7 +429,7 @@ public class Bat extends NPC {
 
     // draw floating damage numbers
     public void drawFloatingTexts(GraphicsHandler graphicsHandler, float cameraX, float cameraY) {
-        for (FloatingText text : floatingTexts) {
+        for (FloatingText text : new ArrayList<>(floatingTexts)) {
             text.draw(graphicsHandler, cameraX, cameraY);
         }
     }
