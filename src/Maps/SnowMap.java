@@ -1,5 +1,8 @@
 package Maps;
 
+//import Enemies.Crab;
+//import Enemies.Goblin;
+import Flowers.SnowFlower;
 import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
@@ -7,8 +10,6 @@ import Level.Trigger;
 import Portals.GrassPortal;
 import Tilesets.SnowTileset;
 import java.util.ArrayList;
-
-import Flowers.SnowFlower;
 
 public class SnowMap extends Map {
     public SnowMap() {
@@ -37,8 +38,19 @@ public class SnowMap extends Map {
 
         SnowFlower snowFlower = new SnowFlower(4, getMapTile(15, 15).getLocation());
         npcs.add(snowFlower);
+        /* 
+        npcs.add(new Goblin(getMapTile(16, 3).getLocation()));
+        npcs.add(new Goblin(getMapTile(13, 10).getLocation()));
+        npcs.add(new Goblin(getMapTile(20, 15).getLocation()));
+        npcs.add(new Goblin(getMapTile(28, 1).getLocation()));
+        npcs.add(new Goblin(getMapTile(40, 6).getLocation()));
 
-
+        npcs.add(new Crab(getMapTile(1, 14).getLocation()));
+        npcs.add(new Crab(getMapTile(3, 9).getLocation()));
+        npcs.add(new Crab(getMapTile(43, 15).getLocation()));
+        npcs.add(new Crab(getMapTile(20, 8).getLocation()));
+        npcs.add(new Crab(getMapTile(48, 8).getLocation()));
+        */
         return npcs;
     }
 
