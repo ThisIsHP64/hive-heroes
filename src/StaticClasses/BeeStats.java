@@ -19,7 +19,7 @@ public class BeeStats {
     private static int[] experienceThresholds = {100, 250, 450, 700};
 
     // walk speed variables
-    private static float walkSpeed = 6f;
+    private static float walkSpeed = 8f;
     private static float maxWalkSpeed = 10f;
 
     // is Bee dead?
@@ -31,7 +31,7 @@ public class BeeStats {
     // the max level the bee can get to
     private static final int maxLevel = 4;
 
-    private static int attackDamage = 1;
+    private static int attackDamage = 5;
 
     // tunic variable (red)
     private static boolean hasTunic = false;
