@@ -1,7 +1,7 @@
 package Maps;
 
-//import Enemies.Crab;
-//import Enemies.Goblin;
+import Enemies.Crab;
+import Enemies.Goblin;
 import Flowers.SnowFlower;
 import Level.EnhancedMapTile;
 import Level.Map;
@@ -38,7 +38,7 @@ public class SnowMap extends Map {
 
         SnowFlower snowFlower = new SnowFlower(4, getMapTile(15, 15).getLocation());
         npcs.add(snowFlower);
-        /* 
+        
         npcs.add(new Goblin(getMapTile(16, 3).getLocation()));
         npcs.add(new Goblin(getMapTile(13, 10).getLocation()));
         npcs.add(new Goblin(getMapTile(20, 15).getLocation()));
@@ -50,7 +50,7 @@ public class SnowMap extends Map {
         npcs.add(new Crab(getMapTile(43, 15).getLocation()));
         npcs.add(new Crab(getMapTile(20, 8).getLocation()));
         npcs.add(new Crab(getMapTile(48, 8).getLocation()));
-        */
+        
         return npcs;
     }
 

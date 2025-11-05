@@ -1,4 +1,3 @@
-/* 
 package Enemies;
 
 import Builders.FrameBuilder;
@@ -26,7 +25,7 @@ public class Crab extends NPC {
     private static final int TILE_H = 64;
     private static final int SCALE = 2;
 
-    // how fast bat moves
+    // how fast crab moves
     private static final float PATROL_SPEED = 1.0f;
     private static final float CHASE_SPEED = 2.0f;
 
@@ -118,7 +117,7 @@ public class Crab extends NPC {
 
         triggerHitFx();
 
-        // spawn red damage number above bat
+        // spawn red damage number above crab
         float textX = getX() + (TILE_W * SCALE) / 2f;
         float textY = getY();
         floatingTexts.add(new FloatingText(textX, textY, "-" + amount, Color.RED));
@@ -199,7 +198,7 @@ public class Crab extends NPC {
                 if (!hordeMode && distanceToBee > GIVE_UP_RANGE) {
                     currentState = State.PATROL;
                     setRandomPatrolTarget();
-                    System.out.println("Crab escaped! Returning to patrol...");
+                    System.out.println("Crab gave up! Returning to patrol...");
                 }
                 break;
 
@@ -218,26 +217,30 @@ public class Crab extends NPC {
         attackStartTime = currentTime;
         hasDealtDamageThisAttack = false;
 
+        // figure out which way to attack
         float beeX = player.getX();
-        float batX = getX();
-        facing = (beeX > batX) ? Direction.RIGHT : Direction.LEFT;
+        float crabX = getX();
+        facing = (beeX > crabX) ? Direction.RIGHT : Direction.LEFT;
         attackFacingDirection = facing;
 
         currentAnimationName = (facing == Direction.RIGHT) ? "ATTACK_RIGHT" : "ATTACK_LEFT";
 
-        System.out.println("Crab attacking toward " + facing + " at Crab pos: " + batX + ", player pos: " + beeX);
+        System.out.println("Crab attacking toward " + facing + " at Crab pos: " + crabX + ", player pos: " + beeX);
     }
 
     private void updateAttack(Player player, long currentTime) {
         long attackElapsed = currentTime - attackStartTime;
         
+        // keep facing the direction we started attacking
         facing = attackFacingDirection;
         currentAnimationName = (facing == Direction.RIGHT) ? "ATTACK_RIGHT" : "ATTACK_LEFT";
 
+        // deal damage halfway through the attack animation
         if (!hasDealtDamageThisAttack && attackElapsed >= ATTACK_DURATION_MS / 2) {
             checkAttackDamage(player);
         }
 
+        // attack animation finished, go back to chasing
         if (attackElapsed >= ATTACK_DURATION_MS) {
             isAttacking = false;
             lastAttackTime = currentTime;
@@ -248,16 +251,17 @@ public class Crab extends NPC {
     }
 
     private void checkAttackDamage(Player player) {
-        float goblinCenterX = getX() + (TILE_W * SCALE) / 2f;
-        float goblinCenterY = getY() + (TILE_H * SCALE) / 2f;
+        float crabCenterX = getX() + (TILE_W * SCALE) / 2f;
+        float crabCenterY = getY() + (TILE_H * SCALE) / 2f;
 
         float beeCenterX = player.getX() + 32f;
         float beeCenterY = player.getY() + 32f;
 
-        float dx = beeCenterX - goblinCenterX;
-        float dy = beeCenterY - goblinCenterY;
+        float dx = beeCenterX - crabCenterX;
+        float dy = beeCenterY - crabCenterY;
         float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
+        // make sure bee is in the direction we're attacking
         boolean beeIsInFacingDirection = false;
         if (facing == Direction.RIGHT && dx > 0) {
             beeIsInFacingDirection = true;
@@ -265,6 +269,7 @@ public class Crab extends NPC {
             beeIsInFacingDirection = true;
         }
 
+        // if close enough and in the right direction, hit em!
         if (distance < HIT_DISTANCE && beeIsInFacingDirection) {
             if (player instanceof Players.Bee) {
                 Players.Bee bee = (Players.Bee) player;
@@ -284,11 +289,11 @@ public class Crab extends NPC {
     private void chase(Player player) {
         float beeX = player.getX();
         float beeY = player.getY();
-        float batX = getX();
-        float batY = getY();
+        float crabX = getX();
+        float crabY = getY();
 
-        float dx = beeX - batX;
-        float dy = beeY - batY;
+        float dx = beeX - crabX;
+        float dy = beeY - crabY;
         float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
         if (distance > 0.1f) {
@@ -311,6 +316,7 @@ public class Crab extends NPC {
         float dy = patrolTargetY - getY();
         float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
+        // reached target, pick a new random spot
         if (distance < 20f) {
             setRandomPatrolTarget();
         }
@@ -340,56 +346,117 @@ public class Crab extends NPC {
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         HashMap<String, Frame[]> animations = new HashMap<>();
 
+        // hitbox positioning for the crab body (tight around body like bee)
+        int hitboxX = 21;
+        int hitboxY = 30;
+        int hitboxW = 22;
+        int hitboxH = 18;
+
+        // IDLE animation - 4 frames arranged in a 2x2 grid
+        // your sprite sheet is 128x128 with 64x64 tiles, so 2 columns and 2 rows
+        // order: top-left, top-right, bottom-left, bottom-right
         SpriteSheet runSheet = new SpriteSheet(ImageLoader.load("crabidle2.png"), TILE_W, TILE_H, 0);
         Frame[] idleFrames = new Frame[4];
-        for (int i = 0; i < 4; i++) {
-            idleFrames[i] = new FrameBuilder(runSheet.getSprite(0, i), 6)
-                    .withScale(SCALE)
-                    .withBounds(16, 16, 32, 32)
-                    .build();
-        }
+        idleFrames[0] = new FrameBuilder(runSheet.getSprite(0, 0), 6)  // top-left
+                .withScale(SCALE)
+                .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
+                .build();
+        idleFrames[1] = new FrameBuilder(runSheet.getSprite(0, 1), 6)  // top-right
+                .withScale(SCALE)
+                .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
+                .build();
+        idleFrames[2] = new FrameBuilder(runSheet.getSprite(1, 0), 6)  // bottom-left
+                .withScale(SCALE)
+                .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
+                .build();
+        idleFrames[3] = new FrameBuilder(runSheet.getSprite(1, 1), 6)  // bottom-right
+                .withScale(SCALE)
+                .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
+                .build();
 
+        // same thing but flipped for left-facing
         Frame[] idleFramesFlipped = new Frame[4];
-        for (int i = 0; i < 4; i++) {
-            idleFramesFlipped[i] = new FrameBuilder(runSheet.getSprite(0, i), 6)
-                    .withScale(SCALE)
-                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                    .withBounds(16, 16, 32, 32)
-                    .build();
-        }
+        idleFramesFlipped[0] = new FrameBuilder(runSheet.getSprite(0, 0), 6)
+                .withScale(SCALE)
+                .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
+                .build();
+        idleFramesFlipped[1] = new FrameBuilder(runSheet.getSprite(0, 1), 6)
+                .withScale(SCALE)
+                .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
+                .build();
+        idleFramesFlipped[2] = new FrameBuilder(runSheet.getSprite(1, 0), 6)
+                .withScale(SCALE)
+                .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
+                .build();
+        idleFramesFlipped[3] = new FrameBuilder(runSheet.getSprite(1, 1), 6)
+                .withScale(SCALE)
+                .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
+                .build();
 
         animations.put("IDLE_RIGHT", idleFrames);
         animations.put("IDLE_LEFT", idleFramesFlipped);
 
+        // ATTACK animation - 3 frames in 2x2 grid
+        // layout: top-left, top-right, bottom-left (only 3 frames used)
         SpriteSheet attackSheet = new SpriteSheet(ImageLoader.load("crabhit2.png"), TILE_W, TILE_H, 0);
         Frame[] attackFrames = new Frame[3];
-        for (int i = 0; i < 3; i++) {
-            attackFrames[i] = new FrameBuilder(attackSheet.getSprite(0, i), 4)
-                    .withScale(SCALE)
-                    .withBounds(16, 16, 32, 32)
-                    .build();
-        }
+        attackFrames[0] = new FrameBuilder(attackSheet.getSprite(0, 0), 4)  // top-left
+                .withScale(SCALE)
+                .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
+                .build();
+        attackFrames[1] = new FrameBuilder(attackSheet.getSprite(0, 1), 4)  // top-right
+                .withScale(SCALE)
+                .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
+                .build();
+        attackFrames[2] = new FrameBuilder(attackSheet.getSprite(1, 0), 4)  // bottom-left
+                .withScale(SCALE)
+                .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
+                .build();
 
         Frame[] attackFramesFlipped = new Frame[3];
-        for (int i = 0; i < 3; i++) {
-            attackFramesFlipped[i] = new FrameBuilder(attackSheet.getSprite(0, i), 4)
-                    .withScale(SCALE)
-                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                    .withBounds(16, 16, 32, 32)
-                    .build();
-        }
+        attackFramesFlipped[0] = new FrameBuilder(attackSheet.getSprite(0, 0), 4)
+                .withScale(SCALE)
+                .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
+                .build();
+        attackFramesFlipped[1] = new FrameBuilder(attackSheet.getSprite(0, 1), 4)
+                .withScale(SCALE)
+                .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
+                .build();
+        attackFramesFlipped[2] = new FrameBuilder(attackSheet.getSprite(1, 0), 4)
+                .withScale(SCALE)
+                .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
+                .build();
 
         animations.put("ATTACK_RIGHT", attackFramesFlipped);
         animations.put("ATTACK_LEFT", attackFrames);
 
+        // DEATH animation - 4 frames in 2x2 grid
         SpriteSheet dieSheet = new SpriteSheet(ImageLoader.load("crabdeath2.png"), TILE_W, TILE_H, 0);
         Frame[] dieFrames = new Frame[4];
-        for (int i = 0; i < 4; i++) {
-            dieFrames[i] = new FrameBuilder(dieSheet.getSprite(0, i), 8)
-                    .withScale(SCALE)
-                    .withBounds(16, 16, 32, 32)
-                    .build();
-        }
+        dieFrames[0] = new FrameBuilder(dieSheet.getSprite(0, 0), 8)  // top-left
+                .withScale(SCALE)
+                .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
+                .build();
+        dieFrames[1] = new FrameBuilder(dieSheet.getSprite(0, 1), 8)  // top-right
+                .withScale(SCALE)
+                .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
+                .build();
+        dieFrames[2] = new FrameBuilder(dieSheet.getSprite(1, 0), 8)  // bottom-left
+                .withScale(SCALE)
+                .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
+                .build();
+        dieFrames[3] = new FrameBuilder(dieSheet.getSprite(1, 1), 8)  // bottom-right
+                .withScale(SCALE)
+                .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
+                .build();
+        
         animations.put("DIE", dieFrames);
 
         return animations;
@@ -398,6 +465,7 @@ public class Crab extends NPC {
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
         if (isDead) {
+            // fade out gradually after death
             long timeSinceDeath = System.currentTimeMillis() - deathTime;
             float fadeProgress = (float) timeSinceDeath / DEATH_LINGER_MS;
 
@@ -426,10 +494,12 @@ public class Crab extends NPC {
     }
 
     public java.awt.Rectangle getHitbox() {
-        int w = 32;
-        int h = 16;
-        int offsetX = 16;
-        int offsetY = 16;
+        // crab sprite is 64x64, scaled 2x = 128x128 on screen
+        // tight hitbox centered on body like bee
+        int w = 22 * SCALE;      // width: 22 * 2 = 44
+        int h = 18 * SCALE;      // height: 18 * 2 = 36
+        int offsetX = 21 * SCALE;  // offset X: 21 * 2 = 42
+        int offsetY = 30 * SCALE;  // offset Y: 30 * 2 = 60
         return new java.awt.Rectangle(
                 (int) getX() + offsetX,
                 (int) getY() + offsetY,
@@ -446,5 +516,9 @@ public class Crab extends NPC {
                 && showAttackFx
                 && (System.currentTimeMillis() - attackFxStartTime) < ATTACK_FX_DURATION;
     }
+
+    // getter for facing direction (needed for attack FX reflection)
+    public Direction getFacing() {
+        return facing;
+    }
 }
-    */

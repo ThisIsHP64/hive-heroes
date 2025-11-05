@@ -1,4 +1,3 @@
-/* 
 package Enemies;
 
 import Builders.FrameBuilder;
@@ -340,12 +339,13 @@ public class Goblin extends NPC {
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         HashMap<String, Frame[]> animations = new HashMap<>();
 
+        // --- IDLE ---
         SpriteSheet runSheet = new SpriteSheet(ImageLoader.load("goblinsmasher_idle2.png"), TILE_W, TILE_H, 0);
         Frame[] idleFrames = new Frame[4];
         for (int i = 0; i < 4; i++) {
             idleFrames[i] = new FrameBuilder(runSheet.getSprite(0, i), 6)
                     .withScale(SCALE)
-                    .withBounds(16, 16, 32, 32)
+                    .withBounds(9, 0, 18, 16)  // RIGHT-facing bounds (center +2px)
                     .build();
         }
 
@@ -354,19 +354,20 @@ public class Goblin extends NPC {
             idleFramesFlipped[i] = new FrameBuilder(runSheet.getSprite(0, i), 6)
                     .withScale(SCALE)
                     .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                    .withBounds(16, 16, 32, 32)
+                    .withBounds(5, 0, 18, 16)  // LEFT-facing bounds (center -2px)
                     .build();
         }
 
         animations.put("IDLE_RIGHT", idleFrames);
         animations.put("IDLE_LEFT", idleFramesFlipped);
 
+        // --- ATTACK ---
         SpriteSheet attackSheet = new SpriteSheet(ImageLoader.load("goblinsmasher_attack2.png"), TILE_W, TILE_H, 0);
         Frame[] attackFrames = new Frame[8];
         for (int i = 0; i < 8; i++) {
             attackFrames[i] = new FrameBuilder(attackSheet.getSprite(0, i), 4)
                     .withScale(SCALE)
-                    .withBounds(16, 16, 32, 32)
+                    .withBounds(9, 0, 18, 16)  // RIGHT
                     .build();
         }
 
@@ -375,29 +376,32 @@ public class Goblin extends NPC {
             attackFramesFlipped[i] = new FrameBuilder(attackSheet.getSprite(0, i), 4)
                     .withScale(SCALE)
                     .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                    .withBounds(16, 16, 32, 32)
+                    .withBounds(5, 0, 18, 16)  // LEFT
                     .build();
         }
 
+        // NOTE: your map of names flips left/right; keeping your original mapping
         animations.put("ATTACK_RIGHT", attackFramesFlipped);
         animations.put("ATTACK_LEFT", attackFrames);
 
+        // --- HURT ---
         SpriteSheet hurtSheet = new SpriteSheet(ImageLoader.load("goblinsmasher_hurt2.png"), TILE_W, TILE_H, 0);
         Frame[] hurtFrames = new Frame[1];
         for (int i = 0; i < 1; i++) {
             hurtFrames[i] = new FrameBuilder(hurtSheet.getSprite(0, i), 5)
                     .withScale(SCALE)
-                    .withBounds(16, 16, 32, 32)
+                    .withBounds(9, 0, 18, 16)  // RIGHT default
                     .build();
         }
         animations.put("HURT", hurtFrames);
 
+        // --- DIE ---
         SpriteSheet dieSheet = new SpriteSheet(ImageLoader.load("goblinsmasher_death2.png"), TILE_W, TILE_H, 0);
         Frame[] dieFrames = new Frame[6];
         for (int i = 0; i < 6; i++) {
             dieFrames[i] = new FrameBuilder(dieSheet.getSprite(0, i), 8)
                     .withScale(SCALE)
-                    .withBounds(16, 16, 32, 32)
+                    .withBounds(9, 0, 18, 16)  // RIGHT default
                     .build();
         }
         animations.put("DIE", dieFrames);
@@ -436,10 +440,23 @@ public class Goblin extends NPC {
     }
 
     public java.awt.Rectangle getHitbox() {
-        int w = 32;
-        int h = 16;
-        int offsetX = 16;
-        int offsetY = 16;
+        // Drawn sprite size
+        int drawW = TILE_W * SCALE; // 64
+        int drawH = TILE_H * SCALE; // 32
+
+        // Hitbox size matches bounds
+        int w = 18 * SCALE; // 36
+        int h = 16 * SCALE; // 32
+
+        // Base centered offset (7 px in source units)
+        int baseOffsetX = 7 * SCALE;
+
+        // Art compensation: +2 px for RIGHT, -2 px for LEFT (source units)
+        int artOffsetX = (facing == Direction.RIGHT ? 2 : -2) * SCALE;
+
+        int offsetX = baseOffsetX + artOffsetX;
+        int offsetY = (drawH - h) / 2; // remains 0 here
+
         return new java.awt.Rectangle(
                 (int) getX() + offsetX,
                 (int) getY() + offsetY,
@@ -456,5 +473,9 @@ public class Goblin extends NPC {
                 && showAttackFx
                 && (System.currentTimeMillis() - attackFxStartTime) < ATTACK_FX_DURATION;
     }
+
+    // getter for facing direction (needed for attack FX reflection)
+    public Direction getFacing() {
+        return facing;
+    }
 }
-    */

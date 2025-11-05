@@ -15,6 +15,8 @@ import Utils.Direction;
 import Portals.GrassPortal;
 import Portals.Portal;
 import Enemies.Spider;
+import Enemies.Crab;
+import Enemies.Goblin;
 
 import Engine.ImageLoader;
 import GameObject.SpriteSheet;
@@ -92,6 +94,28 @@ public class SnowLevelScreen extends Screen implements GameListener {
                                 }
                             }
 
+                            // handle crab attacks
+                            if (npc instanceof Crab) {
+                                Crab crab = (Crab) npc;
+
+                                // only deal damage if crab isn't already dead
+                                if (!crab.isDead() && sting.intersects(crab.getHitbox())) {
+                                    crab.takeDamage(BeeStats.getAttackDamage());
+                                    System.out.println("Bee stung crab!");
+                                }
+                            }
+
+                            // handle goblin attacks
+                            if (npc instanceof Goblin) {
+                                Goblin goblin = (Goblin) npc;
+
+                                // only deal damage if goblin isn't already dead
+                                if (!goblin.isDead() && sting.intersects(goblin.getHitbox())) {
+                                    goblin.takeDamage(BeeStats.getAttackDamage());
+                                    System.out.println("Bee stung goblin!");
+                                }
+                            }
+
                             if (npc instanceof RareSunflowerwithFlowers) {
                                 RareSunflowerwithFlowers rareSunflower = (RareSunflowerwithFlowers) npc;
                                 
@@ -121,7 +145,13 @@ public class SnowLevelScreen extends Screen implements GameListener {
                 }
                 
                 // remove dead spiders after death animation lingers
-                map.getNPCs().removeIf(npc -> npc instanceof Spider && ((Spider) npc).canBeRemoved());
+                // remove dead enemies after death animation lingers
+                map.getNPCs().removeIf(npc -> {
+                    if (npc instanceof Spider && ((Spider) npc).canBeRemoved()) return true;
+                    if (npc instanceof Crab && ((Crab) npc).shouldRemove()) return true;
+                    if (npc instanceof Goblin && ((Goblin) npc).shouldRemove()) return true;
+                    return false;
+                });
 
                 break;
 
@@ -165,6 +195,64 @@ public class SnowLevelScreen extends Screen implements GameListener {
                                 fxX -= 10;
                                 fxY += 15;
 
+                                graphicsHandler.drawImage(
+                                    stingFxSheet.getSprite(0, 0),
+                                    fxX, fxY, fxSize, fxSize
+                                );
+                            }
+                        }
+                    }
+                }
+
+                // draw floating damage text for all enemies
+                if (stingFxSheet != null) {
+                    float cameraX = map.getCamera().getX();
+                    float cameraY = map.getCamera().getY();
+
+                    for (NPC npc : map.getNPCs()) {
+                        // draw floating text for spiders
+                        if (npc instanceof Spider) {
+                            Spider sp = (Spider) npc;
+                            sp.drawFloatingTexts(graphicsHandler, cameraX, cameraY);
+                        }
+                        
+                        // draw floating text for crabs
+                        if (npc instanceof Crab) {
+                            Crab crab = (Crab) npc;
+                            crab.drawFloatingTexts(graphicsHandler, cameraX, cameraY);
+                            
+                            // also draw attack FX on crabs that were just hit
+                            if (crab.isShowingAttackFx()) {
+                                int fxSize = 64;
+                                int fxX = Math.round(crab.getX() - cameraX);
+                                int fxY = Math.round(crab.getY() - cameraY);
+                                
+                                // center on crab body (crab is 128x128)
+                                fxX += 32;  // center horizontally
+                                fxY += 32;  // center vertically
+                                
+                                graphicsHandler.drawImage(
+                                    stingFxSheet.getSprite(0, 0),
+                                    fxX, fxY, fxSize, fxSize
+                                );
+                            }
+                        }
+                        
+                        // draw floating text for goblins
+                        if (npc instanceof Goblin) {
+                            Goblin goblin = (Goblin) npc;
+                            goblin.drawFloatingTexts(graphicsHandler, cameraX, cameraY);
+                            
+                            // also draw attack FX on goblins that were just hit
+                            if (goblin.isShowingAttackFx()) {
+                                int fxSize = 64;
+                                int fxX = Math.round(goblin.getX() - cameraX);
+                                int fxY = Math.round(goblin.getY() - cameraY);
+                                
+                                // center on goblin body (goblin is 64x32)
+                                fxX += 0;   // already same width
+                                fxY -= 16;  // shift up to center on shorter sprite
+                                
                                 graphicsHandler.drawImage(
                                     stingFxSheet.getSprite(0, 0),
                                     fxX, fxY, fxSize, fxSize
