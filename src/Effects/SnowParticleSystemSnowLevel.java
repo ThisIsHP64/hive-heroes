@@ -34,7 +34,7 @@ public class SnowParticleSystemSnowLevel {
     }
 
     public void draw(Graphics2D g) {
-        for (SnowParticleSnowLevel p : particles) {
+        for (SnowParticleSnowLevel p : new ArrayList<>(particles)) {
             p.draw(g);
         }
     }

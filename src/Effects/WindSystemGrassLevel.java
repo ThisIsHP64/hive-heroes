@@ -34,7 +34,7 @@ public class WindSystemGrassLevel {
     }
 
     public void draw(Graphics2D g) {
-        for (WindGrassLevel p : particles) {
+        for (WindGrassLevel p : new ArrayList<>(particles)) {
             p.draw(g);
         }
     }

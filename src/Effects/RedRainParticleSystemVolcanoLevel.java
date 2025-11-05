@@ -34,7 +34,7 @@ public class RedRainParticleSystemVolcanoLevel {
     }
 
     public void draw(Graphics2D g) {
-        for (RedRainParticleVolcanoLevel p : particles) {
+        for (RedRainParticleVolcanoLevel p : new ArrayList<>(particles)) {
             p.draw(g);
         }
     }
