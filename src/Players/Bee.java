@@ -266,10 +266,13 @@ public class Bee extends Player {
             return text.isDead();
         });
 
-        // System.out.println(FlowerManager.countFlowers(this.map));
-        FlowerManager.update(this);
-        System.out.println(totalDistanceTraveled());
+        System.out.println(this.map.getHeight());
 
+        System.out.println("Current number of flowers on the map: " + FlowerManager.countFlowers(this.map));
+        FlowerManager.update(this, this.map, FlowerManager.randomFlower());
+        // System.out.println(totalDistanceTraveled());
+
+        // System.out.println("Flowers in ArrayList: " + FlowerManager.flowersInArrayList());
         handleAttackInput();
         handleTunicInput();
 
