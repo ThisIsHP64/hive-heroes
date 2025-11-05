@@ -1,32 +1,23 @@
 package Screens;
 
+import Effects.FloatingText;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import Engine.Screen;
-
 import Game.GameState;
 import Game.ScreenCoordinator;
-
 import GameObject.SpriteSheet;
-
 import Level.FlagManager;
 import Level.GameListener;
 import Level.Map;
 import Level.NPC;
 import Level.Player;
-
 import Maps.HiveMap;
-
 import NPCs.QueenBee;
-
 import Players.Bee;
-
 import StaticClasses.BeeStats;
 import StaticClasses.HiveManager;
-
 import Utils.Direction;
-import Effects.FloatingText;
-
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -134,7 +125,7 @@ public class HiveLevelScreen extends Screen implements GameListener {
                 map.draw(player, graphicsHandler);
                 
                 // draw floating texts for nectar deposits
-                for (FloatingText text : floatingTexts) {
+                for (FloatingText text : new ArrayList<>(floatingTexts)) {
                     text.draw(graphicsHandler, map.getCamera().getX(), map.getCamera().getY());
                 }
                 

@@ -644,7 +644,7 @@ public class Spider extends NPC {
 
     // draw floating damage numbers
     public void drawFloatingTexts(GraphicsHandler graphicsHandler, float cameraX, float cameraY) {
-        for (FloatingText text : floatingTexts) {
+        for (FloatingText text : new ArrayList<>(floatingTexts)) {
             text.draw(graphicsHandler, cameraX, cameraY);
         }
     }

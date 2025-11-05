@@ -1,28 +1,26 @@
 package Screens;
 
+import Effects.FloatingText;
+import Enemies.Bat;
+import Enemies.Skull;
+import Enemies.Spider;
 import Engine.GraphicsHandler;
+import Engine.ImageLoader;
 import Engine.Screen;
 import Flowers.RareSunflowerwithFlowers;
 import Game.GameState;
 import Game.ScreenCoordinator;
+import GameObject.SpriteSheet;
 import Level.*;
 import Maps.VolcanoMap;
 import Players.Bee;
+import Portals.GrassPortal;
+import Portals.Portal;
 import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
-import Portals.GrassPortal;
-import Portals.Portal;
-import Enemies.Spider;
-import Enemies.Bat;
-import Enemies.Skull;
-import Effects.FloatingText;
-
 import java.awt.Color;
 import java.util.ArrayList;
-
-import Engine.ImageLoader;
-import GameObject.SpriteSheet;
 
 public class VolcanoLevelScreen extends Screen implements GameListener {
     protected ScreenCoordinator screenCoordinator;
@@ -253,7 +251,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                 }
                 
                 // draw floating texts for nectar collection
-                for (FloatingText text : floatingTexts) {
+                for (FloatingText text : new ArrayList<>(floatingTexts)) {
                     text.draw(graphicsHandler, map.getCamera().getX(), map.getCamera().getY());
                 }
                 
