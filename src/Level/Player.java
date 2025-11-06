@@ -253,9 +253,8 @@ public abstract class Player extends GameObject {
                 } else {
                     BeeStats.takeDamage(1);
                     moveAmountY -= BeeStats.getWalkSpeed();
-                    facingDirection = Direction.UP;
-                    currentWalkingXDirection = Direction.UP;
-                    lastWalkingXDirection = Direction.UP;
+                    currentWalkingYDirection = Direction.UP;
+                    lastWalkingYDirection = Direction.UP;
                 }
             } else {
                 moveAmountY -= BeeStats.getWalkSpeed();
@@ -288,14 +287,14 @@ public abstract class Player extends GameObject {
                 if (BeeStats.hasTunic() == true){
                     moveAmountY += BeeStats.getWalkSpeed();
                     facingDirection = Direction.DOWN;
-                    currentWalkingXDirection = Direction.DOWN;
-                    lastWalkingXDirection = Direction.DOWN;
+                    currentWalkingYDirection = Direction.DOWN;
+                    lastWalkingYDirection = Direction.DOWN;
                 } else {
                     BeeStats.takeDamage(1);
                     moveAmountY += BeeStats.getWalkSpeed();
                     facingDirection = Direction.DOWN;
-                    currentWalkingXDirection = Direction.DOWN;
-                    lastWalkingXDirection = Direction.DOWN;
+                    currentWalkingYDirection = Direction.DOWN;
+                    lastWalkingYDirection = Direction.DOWN;
                 }
              
             } else {
