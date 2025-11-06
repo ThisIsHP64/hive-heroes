@@ -263,7 +263,7 @@ public class Bee extends Player {
         BeeStats.setHasBlueTunic(true);
 
         if (powerupHUD != null) {
-            powerupHUD.show("BlueTunic_Hud.png", Integer.MAX_VALUE);
+            powerupHUD.show("BlueTunic_Hud.PNG", Integer.MAX_VALUE);
         }
 
         System.out.println("You received the Blue Tunic! You can now transform into your frost form.");

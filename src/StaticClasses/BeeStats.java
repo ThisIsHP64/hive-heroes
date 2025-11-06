@@ -16,7 +16,7 @@ public class BeeStats {
 
     // experience variables
     private static int experience = 0;
-    private static int[] experienceThresholds = {100, 250, 450, 700};
+    private static int[] experienceThresholds = {30, 50, 100, 175};
 
     // walk speed variables
     private static float walkSpeed = 8f;
