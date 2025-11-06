@@ -75,7 +75,7 @@ public class ResourceHUD extends ImageLoader {
         graphicsHandler.drawFilledRectangleWithBorder(nectarBar.getX() + 35, nectarBar.getY() + 3, BeeStats.getNectar(), 24, Color.YELLOW, Color.BLACK, 2);
 
         graphicsHandler.drawImage(experienceBar.getSpriteImage(), experienceBar.getX(), experienceBar.getY());
-        graphicsHandler.drawFilledRectangleWithBorder(experienceBar.getX() + 35, experienceBar.getY() + 3, BeeStats.getExperience() / 4, 24, Color.YELLOW, Color.BLACK, 2);
+        graphicsHandler.drawFilledRectangleWithBorder(experienceBar.getX() + 35, experienceBar.getY() + 3, BeeStats.getExperience() / 2, 24, Color.YELLOW, Color.BLACK, 2);
 
         // for (SpriteImage s : resourceBars) {
         //     graphicsHandler.drawImage(s.getSpriteImage(), s.getX(), s.getY());
