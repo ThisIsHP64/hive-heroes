@@ -19,4 +19,8 @@ public class TeleportManager {
     public static GameState getCurrentGameState() {
         return teleportManager.getGameState();
     }
+
+    public static void setCurrentGameState(GameState newGameState) {
+        teleportManager.setCurrentGameState(newGameState);
+    }
 }

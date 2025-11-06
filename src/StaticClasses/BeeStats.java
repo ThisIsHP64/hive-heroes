@@ -12,7 +12,7 @@ public class BeeStats {
 
     // nectar variables
     private static int nectar = 0;
-    private static int maxNectar = 150;
+    private static int maxNectar = 60;
 
     // experience variables
     private static int experience = 0;

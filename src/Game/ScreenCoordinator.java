@@ -47,6 +47,10 @@ public class ScreenCoordinator extends Screen {
         this.gameState = gameState;
     }
 
+    public void setCurrentGameState(GameState newGameState) {
+        gameState = newGameState;
+    }
+
     @Override
     public void initialize() {
         
