@@ -11,9 +11,9 @@ import java.util.HashMap;
 
 public class DeadDeer extends NPC {
 
-    private static final int SPRITE_WIDTH = 128;  // each frame width
-    private static final int SPRITE_HEIGHT = 128; // each frame height
-    private static final float SCALE = 1.5f;      // adjust as needed
+    private static final int SPRITE_WIDTH = 128; 
+    private static final int SPRITE_HEIGHT = 128; 
+    private static final float SCALE = 1.5f;      
 
     public DeadDeer(int id, Point location) {
         super(
@@ -26,16 +26,14 @@ public class DeadDeer extends NPC {
 
         currentAnimationName = "DEAD";
 
-        // Adjust spawn offset so it sits on the ground properly
         setX(getX() - (SPRITE_WIDTH * SCALE / 2f));
         setY(getY() - (SPRITE_HEIGHT * SCALE / 2f));
 
-        System.out.println("🦌 Dead Deer spawned at " + getX() + ", " + getY());
+        System.out.println("Dead Deer spawned at " + getX() + ", " + getY());
     }
 
     @Override
     public void update(Player player) {
-        // keeps animation cycling
         super.update(player);
     }
 

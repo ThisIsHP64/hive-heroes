@@ -5,9 +5,21 @@ import Engine.GraphicsHandler;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
-import NPCs.*;
-import Portals.*;
-import PowerUps.*;
+import NPCs.BigHive;
+import NPCs.Butterfly;
+import NPCs.Cat;
+import NPCs.DeadDeer;
+import NPCs.DestroyedBeehive;
+import NPCs.Dragonfly;
+import NPCs.Grave;
+import NPCs.Hut;
+import NPCs.LadyBug;
+import Portals.LavaPortal;
+import Portals.Portal;
+import Portals.ReversePortal;
+import Portals.SnowPortal;
+import PowerUps.PowerUp;
+import PowerUps.ShieldPowerUp;
 import Scripts.GrassMap.*;
 import Scripts.SimpleTextScript;
 import Tilesets.CommonTileset;
@@ -126,13 +138,16 @@ public class GrassMap extends Map {
 
         npcs.add(new Hut(4000, getMapTile(84, 70).getLocation()));
 
-        npcs.add(new Cat(5000, getMapTile(83, 71).getLocation()));
+        Cat cat = new Cat(5000, getMapTile(83, 71).getLocation());
+        cat.setInteractScript(new CatScript());
+        npcs.add(cat);
 
         npcs.add(new DestroyedBeehive(5001, getMapTile(75, 18).getLocation()));
 
         npcs.add(new Grave(5002, getMapTile(78, 16).getLocation().addY(20)));
 
-        
+        npcs.add(new DeadDeer(5003, getMapTile(15, 55).getLocation()));
+
         return npcs;
     }
 
