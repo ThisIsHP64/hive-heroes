@@ -56,6 +56,8 @@ public class Cat extends NPC {
         };
 
         map.put("IDLE", idle);
+        map.put("STAND_LEFT", idle);
+        map.put("STAND_RIGHT", idle);
         return map;
     }
 }
