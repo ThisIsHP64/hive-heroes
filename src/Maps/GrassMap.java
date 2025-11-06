@@ -142,11 +142,16 @@ public class GrassMap extends Map {
         cat.setInteractScript(new CatScript());
         npcs.add(cat);
 
-        npcs.add(new DestroyedBeehive(5001, getMapTile(75, 18).getLocation()));
+        DestroyedBeehive hive = new DestroyedBeehive(5001, getMapTile(75, 18).getLocation());
+        hive.setInteractScript(new DestroyedBeehiveScript());
+        npcs.add(hive);
 
         npcs.add(new Grave(5002, getMapTile(78, 16).getLocation().addY(20)));
 
-        npcs.add(new DeadDeer(5003, getMapTile(15, 55).getLocation()));
+        DeadDeer deer = new DeadDeer(5003, getMapTile(15, 55).getLocation());
+        deer.setInteractScript(new DeadDeerScript());
+        npcs.add(deer);
+
 
         return npcs;
     }

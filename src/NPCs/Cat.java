@@ -26,11 +26,10 @@ public class Cat extends NPC {
 
         currentAnimationName = "IDLE";
 
-        // center the sprite visually
         setX(getX() - (SPRITE_WIDTH * SCALE / 2f));
         setY(getY() - (SPRITE_HEIGHT * SCALE));
 
-        System.out.println("🐾 Cat spawned at " + getX() + ", " + getY());
+        System.out.println(" spawned at " + getX() + ", " + getY());
     }
 
     @Override

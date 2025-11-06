@@ -4,33 +4,36 @@ import Level.Script;
 import ScriptActions.*;
 import java.util.ArrayList;
 
-public class CatScript extends Script {
+
+public class DeadDeerScript extends Script {
 
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
         ArrayList<ScriptAction> scriptActions = new ArrayList<>();
 
+    
         scriptActions.add(new LockPlayerScriptAction());
 
-        
         scriptActions.add(new NPCFacePlayerScriptAction());
 
+        // dialogue sequence
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
+
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Meow... I am sorry for what happened to your \nhive.");
+                    addText("...");
                 }});
+
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Very big teeth, sharp claws...");
+                    addText("*The deer lies motionless on the soft grass*");
                 }});
+
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Did not even spare my dear friend deer!");
+                    addText("*Its fur is cold...*");
                 }});
+
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Luckily the beast did not notice me..");
-                }});
-                addScriptAction(new TextboxScriptAction() {{
-                    addText("Good luck on your journey!");
+                    addText("*What could have done this!?*");
                 }});
             }});
         }});
