@@ -27,8 +27,6 @@ public class HiveMap extends Map {
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
 
-        
-
         return enhancedMapTiles;
     }
 

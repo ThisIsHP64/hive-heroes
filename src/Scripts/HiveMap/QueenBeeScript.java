@@ -129,7 +129,7 @@ public class QueenBeeScript extends Script {
                             }});
                         }});
 
-                        addScriptAction(new TextboxScriptAction("Go forth, and let your wings remember the warmth and the frost."));
+                        addScriptAction(new TextboxScriptAction("Go forth, and let your wings remember the warmth \nand the frost."));
                     }});
                 }});
             }});

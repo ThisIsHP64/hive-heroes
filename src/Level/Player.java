@@ -56,6 +56,8 @@ public abstract class Player extends GameObject {
 
     protected boolean isLocked = false;
 
+    protected int totalDistanceTraveled = 0;
+
 
     public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
         super(spriteSheet, x, y, startingAnimationName);
@@ -119,6 +121,10 @@ public abstract class Player extends GameObject {
         }
     }
 
+    public int totalDistanceTraveled() {
+        return totalDistanceTraveled;
+    }
+
     // player WALKING state logic
     protected void playerWalking() {
         if (!keyLocker.isKeyLocked(INTERACT_KEY) && Keyboard.isKeyDown(INTERACT_KEY)) {
@@ -126,7 +132,9 @@ public abstract class Player extends GameObject {
             map.entityInteract(this);
             if (currentWalkingXDirection != Direction.NONE && currentWalkingYDirection != Direction.NONE) {
                 moveAmountX *= 0.7071f;
+                totalDistanceTraveled += Math.abs(moveAmountX);
                 moveAmountY *= 0.7071f;
+                totalDistanceTraveled += Math.abs(moveAmountY);
             }
         }
         
@@ -137,6 +145,7 @@ public abstract class Player extends GameObject {
             if (Keyboard.isKeyDown(SPRINT_KEY)) {
                 if (BeeStats.getStamina() > 0) {
                     moveAmountX -= BeeStats.getWalkSpeed() * 1f;
+                    totalDistanceTraveled += Math.abs(moveAmountX);
                 }
 
                 BeeStats.manageStamina();
@@ -144,12 +153,18 @@ public abstract class Player extends GameObject {
 
             if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) && (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true)) {
                 moveAmountX -= BeeStats.getWalkSpeed() *0.5f;
+
+                totalDistanceTraveled += Math.abs(moveAmountX);
+
                 facingDirection = Direction.LEFT;
                 currentWalkingXDirection = Direction.LEFT;
                 lastWalkingXDirection = Direction.LEFT;
             } 
             else if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL && GamePanel.getisSnowing()==true){
                 moveAmountX -= BeeStats.getWalkSpeed() *0.5f;
+
+                totalDistanceTraveled += Math.abs(moveAmountX);
+
                 facingDirection = Direction.LEFT;
                 currentWalkingXDirection = Direction.LEFT;
                 lastWalkingXDirection = Direction.LEFT;
@@ -157,18 +172,27 @@ public abstract class Player extends GameObject {
             else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true) {
                 if (BeeStats.hasTunic() == true){
                     moveAmountX -= BeeStats.getWalkSpeed();
+                    
+                    totalDistanceTraveled += Math.abs(moveAmountX);
+
                     facingDirection = Direction.LEFT;
                     currentWalkingXDirection = Direction.LEFT;
                     lastWalkingXDirection = Direction.LEFT;
                 } else {
                     BeeStats.takeDamage(1);
                     moveAmountX -= BeeStats.getWalkSpeed();
+                    
+                    totalDistanceTraveled += Math.abs(moveAmountX);
+
                     facingDirection = Direction.LEFT;
                     currentWalkingXDirection = Direction.LEFT;
                     lastWalkingXDirection = Direction.LEFT;
                 }
             } else {
                 moveAmountX -= BeeStats.getWalkSpeed();
+                
+                totalDistanceTraveled += Math.abs(moveAmountX);
+
                 facingDirection = Direction.LEFT;
                 currentWalkingXDirection = Direction.LEFT;
                 lastWalkingXDirection = Direction.LEFT;
@@ -182,6 +206,8 @@ public abstract class Player extends GameObject {
 
                 if (BeeStats.getStamina() > 0) {
                     moveAmountX += BeeStats.getWalkSpeed() * 1f;
+
+                    totalDistanceTraveled += Math.abs(moveAmountX);
                 }
 
                 BeeStats.manageStamina();
@@ -189,12 +215,18 @@ public abstract class Player extends GameObject {
 
             if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) && (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true)) {
                 moveAmountX += BeeStats.getWalkSpeed()*0.5f;
+                
+                totalDistanceTraveled += Math.abs(moveAmountX);
+
                 facingDirection = Direction.RIGHT;
                 currentWalkingXDirection = Direction.RIGHT;
                 lastWalkingXDirection = Direction.RIGHT;
             } 
             else if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL && GamePanel.getisSnowing()==true) {
                 moveAmountX += BeeStats.getWalkSpeed()*0.5f;
+                
+                totalDistanceTraveled += Math.abs(moveAmountX);
+
                 facingDirection = Direction.RIGHT;
                 currentWalkingXDirection = Direction.RIGHT;
                 lastWalkingXDirection = Direction.RIGHT; 
@@ -202,12 +234,18 @@ public abstract class Player extends GameObject {
             else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true){
                 if (BeeStats.hasTunic() == true){
                     moveAmountX += BeeStats.getWalkSpeed();
+
+                    totalDistanceTraveled += Math.abs(moveAmountX);
+
                     facingDirection = Direction.RIGHT;
                     currentWalkingXDirection = Direction.RIGHT;
                     lastWalkingXDirection = Direction.RIGHT;
                 } else {
                     BeeStats.takeDamage(1);
                     moveAmountX += BeeStats.getWalkSpeed();
+
+                    totalDistanceTraveled += Math.abs(moveAmountX);
+
                     facingDirection = Direction.RIGHT;
                     currentWalkingXDirection = Direction.RIGHT;
                     lastWalkingXDirection = Direction.RIGHT;
@@ -215,6 +253,9 @@ public abstract class Player extends GameObject {
             
             } else {
                 moveAmountX += BeeStats.getWalkSpeed();
+
+                totalDistanceTraveled += Math.abs(moveAmountX);
+
                 facingDirection = Direction.RIGHT;
                 currentWalkingXDirection = Direction.RIGHT;
                 lastWalkingXDirection = Direction.RIGHT;
@@ -229,6 +270,7 @@ public abstract class Player extends GameObject {
             if (Keyboard.isKeyDown(SPRINT_KEY)) {
                 if (BeeStats.getStamina() > 0) {
                     moveAmountY -= BeeStats.getWalkSpeed() * 1f;
+                    totalDistanceTraveled += Math.abs(moveAmountY);
                 }
 
                 BeeStats.manageStamina();
@@ -236,18 +278,27 @@ public abstract class Player extends GameObject {
             
             if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL && (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true)){ 
                 moveAmountY -= BeeStats.getWalkSpeed()*0.5f;
+
+                totalDistanceTraveled += Math.abs(moveAmountY);
+
                 currentWalkingYDirection = Direction.UP;
                 lastWalkingYDirection = Direction.UP;
                 
             } 
             else if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL && GamePanel.getisSnowing()==true){
                 moveAmountY -= BeeStats.getWalkSpeed()*0.5f;
+
+                totalDistanceTraveled += Math.abs(moveAmountY);
+
                 currentWalkingYDirection = Direction.UP;
                 lastWalkingYDirection = Direction.UP;
             }
             else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true){
                 if (BeeStats.hasTunic() == true){
                     moveAmountY -= BeeStats.getWalkSpeed();
+
+                    totalDistanceTraveled += Math.abs(moveAmountY);
+
                     currentWalkingYDirection = Direction.UP;
                     lastWalkingYDirection = Direction.UP;
                 } else {
@@ -255,9 +306,18 @@ public abstract class Player extends GameObject {
                     moveAmountY -= BeeStats.getWalkSpeed();
                     currentWalkingYDirection = Direction.UP;
                     lastWalkingYDirection = Direction.UP;
+
+                    totalDistanceTraveled += Math.abs(moveAmountY);
+
+                    facingDirection = Direction.UP;
+                    // currentWalkingXDirection = Direction.UP;
+                    // lastWalkingXDirection = Direction.UP;
                 }
             } else {
                 moveAmountY -= BeeStats.getWalkSpeed();
+
+                totalDistanceTraveled += Math.abs(moveAmountY);
+
                 currentWalkingYDirection = Direction.UP;
                 lastWalkingYDirection = Direction.UP;
             }
@@ -267,31 +327,45 @@ public abstract class Player extends GameObject {
             if (Keyboard.isKeyDown(SPRINT_KEY)) {
                 if (BeeStats.getStamina() > 0) {
                     moveAmountY += BeeStats.getWalkSpeed() * 1f;
+
+                    totalDistanceTraveled += Math.abs(moveAmountY);
                 }
                 BeeStats.manageStamina();
             }
 
             if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) && (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true)) {
                 moveAmountY += BeeStats.getWalkSpeed()*0.5f;
+
+                totalDistanceTraveled += Math.abs(moveAmountY);
+
                 currentWalkingYDirection = Direction.DOWN;
                 lastWalkingYDirection = Direction.DOWN;
                 
             } 
             else if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL && GamePanel.getisSnowing()==true){
                 moveAmountY += BeeStats.getWalkSpeed()*0.5f;
+
+                totalDistanceTraveled += Math.abs(moveAmountY);
+
                 currentWalkingYDirection = Direction.DOWN;
                 lastWalkingYDirection = Direction.DOWN;
             }
             else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true){
                 
-                if (BeeStats.hasTunic() == true){
+                if (BeeStats.hasTunic() == true) {
                     moveAmountY += BeeStats.getWalkSpeed();
+
+                    totalDistanceTraveled += Math.abs(moveAmountY);
+
                     facingDirection = Direction.DOWN;
                     currentWalkingYDirection = Direction.DOWN;
                     lastWalkingYDirection = Direction.DOWN;
                 } else {
                     BeeStats.takeDamage(1);
                     moveAmountY += BeeStats.getWalkSpeed();
+
+                    totalDistanceTraveled += Math.abs(moveAmountY);
+
                     facingDirection = Direction.DOWN;
                     currentWalkingYDirection = Direction.DOWN;
                     lastWalkingYDirection = Direction.DOWN;
@@ -299,6 +373,9 @@ public abstract class Player extends GameObject {
              
             } else {
                 moveAmountY += BeeStats.getWalkSpeed();
+
+                totalDistanceTraveled += Math.abs(moveAmountY);
+
                 currentWalkingYDirection = Direction.DOWN;
                 lastWalkingYDirection = Direction.DOWN;
             }

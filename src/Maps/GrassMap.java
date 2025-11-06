@@ -2,35 +2,28 @@ package Maps;
 
 import Enemies.Spider;
 import Engine.GraphicsHandler;
-import Flowers.*;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
-import NPCs.BigHive;
-import NPCs.Butterfly;
-import NPCs.Cat;
-import NPCs.DestroyedBeehive;
-import NPCs.Dragonfly;
-import NPCs.Grave;
-import NPCs.Hut;
-import NPCs.LadyBug;
-import Portals.LavaPortal;
-import Portals.Portal;
-import Portals.ReversePortal;
-import Portals.SnowPortal;
-import PowerUps.PowerUp;
-import PowerUps.ShieldPowerUp;
+import NPCs.*;
+import Portals.*;
+import PowerUps.*;
 import Scripts.GrassMap.*;
 import Scripts.SimpleTextScript;
 import Tilesets.CommonTileset;
 import java.util.ArrayList;
 
+
 public class GrassMap extends Map {
+
     public GrassMap() {
         super("sprint_one_map.txt", new CommonTileset());
+
         // Bee starts here
         this.playerStartPosition = getMapTile(70, 50).getLocation();
     }
+
+    
 
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
@@ -49,32 +42,32 @@ public class GrassMap extends Map {
         ShieldPowerUp shield = new ShieldPowerUp(2001, getMapTile(76, 59).getLocation());
         npcs.add(shield);
         
-        RareSunflowerwithFlowers rareSunflower = new RareSunflowerwithFlowers(4, getMapTile(67, 48).getLocation());
-        npcs.add(rareSunflower);
+        // RareSunflowerwithFlowers rareSunflower = new RareSunflowerwithFlowers(4, getMapTile(67, 48).getLocation());
+        // npcs.add(rareSunflower);
 
-        BlueBorah blueBorah = new BlueBorah(4, getMapTile(50, 55).getLocation());
-        npcs.add(blueBorah);
+        // BlueBorah blueBorah = new BlueBorah(4, getMapTile(50, 55).getLocation());
+        // npcs.add(blueBorah);
 
-        Cosmo cosmo = new Cosmo(4, getMapTile(52, 55).getLocation());
-        npcs.add(cosmo);
+        // Cosmo cosmo = new Cosmo(4, getMapTile(52, 55).getLocation());
+        // npcs.add(cosmo);
 
-        Daffodil daffodil = new Daffodil(4, getMapTile(45, 57).getLocation());
-        npcs.add(daffodil);
+        // Daffodil daffodil = new Daffodil(4, getMapTile(45, 57).getLocation());
+        // npcs.add(daffodil);
 
-        Daisy2 daisy2 = new Daisy2(4, getMapTile(46,57).getLocation());
-        npcs.add(daisy2);
+        // Daisy2 daisy2 = new Daisy2(4, getMapTile(46,57).getLocation());
+        // npcs.add(daisy2);
 
-        Rose rose = new Rose(4, getMapTile(43, 54).getLocation());
-        npcs.add(rose);
+        // Rose rose = new Rose(4, getMapTile(43, 54).getLocation());
+        // npcs.add(rose);
 
-        Yarrow yarrow = new Yarrow(4, getMapTile(90, 50).getLocation());
-        npcs.add(yarrow);
+        // Yarrow yarrow = new Yarrow(4, getMapTile(90, 50).getLocation());
+        // npcs.add(yarrow);
 
-        Poppy poppy = new Poppy(4, getMapTile(45, 40).getLocation());
-        npcs.add(poppy);
+        // Poppy poppy = new Poppy(4, getMapTile(45, 40).getLocation());
+        // npcs.add(poppy);
 
-        Daisy daisy = new Daisy(4, getMapTile(35, 35).getLocation());
-        npcs.add(daisy);
+        // Daisy daisy = new Daisy(4, getMapTile(35, 35).getLocation());
+        // npcs.add(daisy);
 
         LadyBug ladyBug = new LadyBug(4, getMapTile(5, 122).getLocation());
         ladyBug.setInteractScript(new LadyBugScript());

@@ -42,7 +42,7 @@ public class BlueBorah extends Flower {
                                 .withScale(3)
                                 .withBounds(0, 0, 20, 20)
                                 .build(),
-                        new FrameBuilder(spriteSheet.getSprite(0, 0), 30) 
+                        new FrameBuilder(spriteSheet.getSprite(0, 0), -1) 
                                 .withScale(3)
                                 .withBounds(0, 0, 20, 20)
                                 .build()

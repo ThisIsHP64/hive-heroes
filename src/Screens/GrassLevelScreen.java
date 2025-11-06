@@ -47,7 +47,6 @@ public class GrassLevelScreen extends Screen implements GameListener {
         flagManager.addFlag("isLevel3", true);
         flagManager.addFlag("isLevel4", true);
 
-
         map = new GrassMap();
         map.setFlagManager(flagManager);
 

@@ -7,7 +7,6 @@ import Effects.WindSystemGrassLevel;
 import Game.GameState;
 import GameObject.Rectangle;
 import SpriteFont.SpriteFont;
-import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
 import Utils.Colors;
 import java.awt.*;
@@ -38,9 +37,6 @@ public class GamePanel extends JPanel implements ActionListener {
 	private SpriteFont fpsDisplayLabel;
 	private boolean showFPS = false;
 	private int currentFPS;
-
-	private boolean isSprinting = false;
-	private final Key sprintKey = Key.SHIFT;
 
 
 	private final int SCREEN_WIDTH = 800;

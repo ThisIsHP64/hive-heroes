@@ -69,13 +69,13 @@ public class ResourceHUD extends ImageLoader {
         graphicsHandler.drawFilledRectangleWithBorder(healthBar.getX() + 35, healthBar.getY() + 3, BeeStats.getHealth(), 24, Color.RED, Color.BLACK, 2);
 
         graphicsHandler.drawImage(staminaBar.getSpriteImage(), staminaBar.getX(), staminaBar.getY());
-        graphicsHandler.drawFilledRectangleWithBorder(staminaBar.getX() + 35, staminaBar.getY() + 3, BeeStats.getStamina(), 24, Color.GREEN, Color.BLACK, 2);
+        graphicsHandler.drawFilledRectangleWithBorder(staminaBar.getX() + 35, staminaBar.getY() + 3, BeeStats.getStamina() / 1000, 24, Color.GREEN, Color.BLACK, 2);
 
         graphicsHandler.drawImage(nectarBar.getSpriteImage(), nectarBar.getX(), nectarBar.getY());
         graphicsHandler.drawFilledRectangleWithBorder(nectarBar.getX() + 35, nectarBar.getY() + 3, BeeStats.getNectar(), 24, Color.YELLOW, Color.BLACK, 2);
 
         graphicsHandler.drawImage(experienceBar.getSpriteImage(), experienceBar.getX(), experienceBar.getY());
-        graphicsHandler.drawFilledRectangleWithBorder(experienceBar.getX() + 35, experienceBar.getY() + 3, BeeStats.getExperience() / 5, 24, Color.YELLOW, Color.BLACK, 2);
+        graphicsHandler.drawFilledRectangleWithBorder(experienceBar.getX() + 35, experienceBar.getY() + 3, BeeStats.getExperience() / 4, 24, Color.YELLOW, Color.BLACK, 2);
 
         // for (SpriteImage s : resourceBars) {
         //     graphicsHandler.drawImage(s.getSpriteImage(), s.getX(), s.getY());

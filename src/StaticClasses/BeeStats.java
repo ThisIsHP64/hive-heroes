@@ -7,12 +7,12 @@ public class BeeStats {
     private static int maxHealth = 100;
 
     // stamina variables
-    private static int stamina = 100;
-    private static int maxStamina = 100;
+    private static int stamina = 100000;
+    private static int maxStamina = 100000;
 
     // nectar variables
     private static int nectar = 0;
-    private static int maxNectar = 150;
+    private static int maxNectar = 60;
 
     // experience variables
     private static int experience = 0;
@@ -27,9 +27,6 @@ public class BeeStats {
 
     // bee starts at level 1
     private static int currentLevel = 1;
-
-    // the max level the bee can get to
-    private static final int maxLevel = 4;
 
     private static int attackDamage = 5;
 
@@ -203,7 +200,7 @@ public class BeeStats {
     }
 
     public static void setHasTunic(boolean value) {
-    hasTunic = value;
+        hasTunic = value;
     }
 
     public static boolean isTunicActive() {

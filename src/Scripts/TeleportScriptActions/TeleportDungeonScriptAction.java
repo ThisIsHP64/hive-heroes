@@ -9,7 +9,8 @@ public class TeleportDungeonScriptAction extends ScriptAction {
     
     @Override
     public ScriptState execute() {
-        TeleportManager.setCurrentScreen(GameState.DUNGEONLEVEL);
+        TeleportManager.setCurrentGameState(GameState.DUNGEONLEVEL);
+        // TeleportManager.setCurrentScreen(GameState.DUNGEONLEVEL);
         return ScriptState.COMPLETED;
     }
 }
