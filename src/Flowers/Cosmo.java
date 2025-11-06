@@ -3,14 +3,11 @@ package Flowers;
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
-import Engine.Key;
-import Engine.Keyboard;
+
 import GameObject.Frame;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
-import Level.MapEntityStatus;
-import Level.Player;
-import Players.Bee;
+
 import Utils.Point;
 import java.util.HashMap;
 

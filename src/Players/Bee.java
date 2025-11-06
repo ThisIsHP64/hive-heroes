@@ -88,7 +88,6 @@ public class Bee extends Player {
     // floating damage numbers when bee takes damage
     private ArrayList<FloatingText> floatingTexts = new ArrayList<>();
 
-    private static ArrayList<Flower> flowers = new ArrayList<>();
 
     int lastMilestone = 0;
 
@@ -366,13 +365,17 @@ public class Bee extends Player {
         handleTunicInput();
 
 
-        if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true) {
+        if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true
+            && BeeStats.hasTunic() == false) {
             applyDamage(1);
+        } else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true
+            && BeeStats.hasTunic() == true) {
+            return;
         }
 
         resourceBars.update();
-        int tileX = (int) (getX() / TILE);
-        int tileY = (int) (getY() / TILE);
+        // int tileX = (int) (getX() / TILE);
+        // int tileY = (int) (getY() / TILE);
 
         // System.out.println(String.format(
         //         "Level: %d  Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d  X: %d  Y: %d",
@@ -385,7 +388,6 @@ public class Bee extends Player {
         }
 
         handlePowerupInput();
-        handlePlayerAnimation();
     }
 
     public void showPowerupIcon(String spritePath, int durationMs) {

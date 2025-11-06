@@ -200,7 +200,7 @@ public class BeeStats {
     }
 
     public static void setHasTunic(boolean value) {
-    hasTunic = value;
+        hasTunic = value;
     }
 
     public static boolean isTunicActive() {
