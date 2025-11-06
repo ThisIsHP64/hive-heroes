@@ -7,8 +7,8 @@ public class BeeStats {
     private static int maxHealth = 100;
 
     // stamina variables
-    private static int stamina = 1000000;
-    private static int maxStamina = 1000000;
+    private static int stamina = 100000;
+    private static int maxStamina = 100000;
 
     // nectar variables
     private static int nectar = 0;
@@ -27,9 +27,6 @@ public class BeeStats {
 
     // bee starts at level 1
     private static int currentLevel = 1;
-
-    // the max level the bee can get to
-    private static final int maxLevel = 4;
 
     private static int attackDamage = 5;
 

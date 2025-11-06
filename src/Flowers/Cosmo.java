@@ -48,35 +48,9 @@ public class Cosmo extends Flower {
         return new java.awt.Rectangle(x, y, w, h);
     }
 
-
-    // @Override
-    // public void update(Player player) {
-    //     super.update(player);
-
-    //     if (player instanceof Bee bee) {
-    //         java.awt.Rectangle sting = bee.getAttackHitbox();
-            
-    //         if (sting.intersects(this.getHitbox())) {
-    //             nectarAmount -= 1;
-
-    //             if (nectarAmount <= 0) {
-    //                 setMapEntityStatus(MapEntityStatus.REMOVED);
-    //             }
-    //         }
-    //     }
-    // }
-
-    // @Override
-    // public void draw(GraphicsHandler graphicsHandler) {
-    //     // draw only if not removed
-    //     if (getMapEntityStatus() != MapEntityStatus.REMOVED) {
-    //         super.draw(graphicsHandler);
-    //     }
-    // }
-
-    // @Override
-    // public void draw(GraphicsHandler graphicsHandler) {
-    //     super.draw(graphicsHandler);
-    // }
+    @Override
+    public void draw(GraphicsHandler graphicsHandler) {
+        super.draw(graphicsHandler);
+    }
     
 }

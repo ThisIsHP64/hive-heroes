@@ -42,11 +42,10 @@ public class GrassLevelScreen extends Screen implements GameListener {
     public void initialize() {
         hasInitialized = true;
         flagManager = new FlagManager();
-        flagManager.addFlag("isLevel1", false);
-        flagManager.addFlag("isLevel2", false);
-        flagManager.addFlag("isLevel3", false);
-        flagManager.addFlag("isLevel4", false);
-        flagManager.addFlag("shouldAddFlower", false);
+        flagManager.addFlag("isLevel1", true);
+        flagManager.addFlag("isLevel2", true);
+        flagManager.addFlag("isLevel3", true);
+        flagManager.addFlag("isLevel4", true);
 
         map = new GrassMap();
         map.setFlagManager(flagManager);

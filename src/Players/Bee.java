@@ -2,6 +2,8 @@ package Players;
 
 import Builders.FrameBuilder;
 import Effects.FloatingText;
+import Enemies.Bat;
+import Enemies.Spider;
 import Engine.GamePanel;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
@@ -17,7 +19,6 @@ import Level.TileType;
 import SpriteImage.PowerupHUD;
 import SpriteImage.ResourceHUD;
 import StaticClasses.BeeStats;
-import StaticClasses.FlowerManager;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
 import java.awt.Color;
@@ -199,8 +200,9 @@ public class Bee extends Player {
 
         int currentHealth = BeeStats.getHealth();
         currentHealth -= amount;
-        if (currentHealth < 0)
+        if (currentHealth < 0) {
             currentHealth = 0;
+        }
         BeeStats.setHealth(currentHealth);
 
         System.out.println("Bee took " + amount + " damage! HP now: " + currentHealth);
@@ -280,7 +282,10 @@ public class Bee extends Player {
         int flowerNumber = ThreadLocalRandom.current().nextInt(1, 5);
 
         int distance = totalDistanceTraveled();
+        
 
+        if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) {
+        
         switch (flowerNumber) {
             case 1:
                 RareSunflowerwithFlowers rareSunflower = new RareSunflowerwithFlowers(4, this.map.getMapTile(randomX, randomY).getLocation());
@@ -323,9 +328,20 @@ public class Bee extends Player {
                     lastMilestone += 100;
                 }
                 break;
+            }
         }
     }
 
+
+    public int countFlowers() {
+        int c = 0;
+        for (var npc : this.map.getNPCs()) {
+            if (npc instanceof Flower) {
+                c++;
+            }
+        }
+        return c;
+    }
 
     @Override
     public void update() {
@@ -343,14 +359,7 @@ public class Bee extends Player {
             spawnFlower();
         }
 
-        System.out.println(this.map.getHeight());
-
-        System.out.println("Current number of flowers on the map: " + FlowerManager.countFlowers(this.map));
-        // FlowerManager.update(this, this.map, FlowerManager.randomFlower());
-        // System.out.println(totalDistanceTraveled());
-
-        
-        spawnFlower();
+        System.out.println("Current number of flowers on the map: " + countFlowers());
 
         // System.out.println("Flowers in ArrayList: " + FlowerManager.flowersInArrayList());
         handleAttackInput();
@@ -358,7 +367,7 @@ public class Bee extends Player {
 
 
         if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true) {
-            BeeStats.takeDamage(1);
+            applyDamage(1);
         }
 
         resourceBars.update();
@@ -376,6 +385,7 @@ public class Bee extends Player {
         }
 
         handlePowerupInput();
+        handlePlayerAnimation();
     }
 
     public void showPowerupIcon(String spritePath, int durationMs) {
