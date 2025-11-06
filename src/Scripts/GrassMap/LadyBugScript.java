@@ -19,7 +19,7 @@ public class LadyBugScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Hi!");
-                    addText("Fun fact! In the snow region, it will snow! In the volcano \nregion, it will be red rain! Have fun!");
+                    addText("Fun fact! In the snow region, it will snow! In the volcano \nregion, lava will rain down! Have fun!");
 
                 }});
             }});

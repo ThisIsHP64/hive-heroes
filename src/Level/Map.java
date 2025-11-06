@@ -3,6 +3,7 @@ package Level;
 import Engine.Config;
 import Engine.GraphicsHandler;
 import Engine.ScreenManager;
+import Flowers.Flower;
 import GameObject.Rectangle;
 import Utils.Direction;
 import Utils.Point;

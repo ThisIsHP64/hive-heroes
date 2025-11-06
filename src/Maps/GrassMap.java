@@ -34,7 +34,7 @@ public class GrassMap extends Map {
         super("sprint_one_map.txt", new CommonTileset());
         // Bee starts here
         this.playerStartPosition = getMapTile(70, 50).getLocation();
-        initialize();
+        // initialize();
     }
 
     public void initialize() {

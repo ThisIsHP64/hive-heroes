@@ -1,11 +1,15 @@
 package StaticClasses;
 
 
+import Utils.Point;
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 import Flowers.*;
 import Level.Map;
+import Level.MapTile;
 import Level.Player;
+import Level.Tileset;
 import Sound.Music;
 
 public class FlowerManager {
@@ -14,17 +18,20 @@ public class FlowerManager {
 
     private static ArrayList<Flower> flowers = new ArrayList<>();
 
-    public static void initialize() {
-        // if(flowers.isEmpty()) {
-        //     flowers.add();
-        // }
-    }
 
     public static void initializeFlowers() {
+        Point point = new Point(200, 40);
+
+        RareSunflowerwithFlowers rareSunflower = new RareSunflowerwithFlowers(4, point);
+
+        flowers.add(rareSunflower);
     }
 
     public static Flower randomFlower() {
-        return flowers.get(1);
+        if (!flowers.isEmpty()) {
+            return flowers.get(0);
+        }
+        return flowers.getFirst();
     }
 
     public static void update(Player player, Map map, Flower flower) {
@@ -58,5 +65,21 @@ public class FlowerManager {
             }
         }
         return c;
+    }
+
+    public MapTile getMapTile(int x, int y) {
+        if (isInBounds(x, y)) {
+            return mapTiles[getConvertedIndex(x, y)];
+        } else {
+            return null;
+        }
+    }
+
+    private boolean isInBounds(int x, int y) {
+        return x >= 0 && y >= 0 && x < width && y < height;
+    }
+
+    private int getConvertedIndex(int x, int y) {
+        return x + width * y;
     }
 }

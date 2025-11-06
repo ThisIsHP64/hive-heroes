@@ -3,6 +3,7 @@ package Game;
 import Engine.GameWindow;
 import Engine.ScreenManager;
 import Sound.MusicManager;
+import StaticClasses.FlowerManager;
 
 /* 
  * The game starts here
@@ -17,6 +18,7 @@ public class Game {
 
     public Game() {
         MusicManager.init();
+        FlowerManager.initializeFlowers();
         GameWindow gameWindow = new GameWindow();
         ScreenManager screenManager = gameWindow.getScreenManager();
         screenManager.setCurrentScreen(new ScreenCoordinator());

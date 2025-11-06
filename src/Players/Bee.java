@@ -2,22 +2,29 @@ package Players;
 
 import Builders.FrameBuilder;
 import Effects.FloatingText;
+import Engine.GamePanel;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import Engine.Key;
 import Engine.Keyboard;
+import Flowers.*;
+import Game.GameState;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
+import Level.MapTile;
 import Level.Player;
+import Level.TileType;
 import SpriteImage.PowerupHUD;
 import SpriteImage.ResourceHUD;
 import StaticClasses.BeeStats;
 import StaticClasses.FlowerManager;
-import StaticClasses.HiveManager;
+import StaticClasses.TeleportManager;
 import Utils.Direction;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ThreadLocalRandom;
+
 
 public class Bee extends Player {
 
@@ -73,47 +80,16 @@ public class Bee extends Player {
     // tunic blue variable
     private boolean useBlueSprites = false;
 
+    private PowerupHUD powerupHUD;
+    
+    protected MapTile[] mapTiles;
 
     // floating damage numbers when bee takes damage
     private ArrayList<FloatingText> floatingTexts = new ArrayList<>();
 
-    public int getNectar() {
-        return BeeStats.getNectar();
-    }
+    private static ArrayList<Flower> flowers = new ArrayList<>();
 
-    public int getNectarCap() {
-        return BeeStats.getMaxNectar();
-    }
-
-    public boolean isNectarFull() {
-        return BeeStats.getNectar() >= BeeStats.getMaxNectar();
-    }
-
-    public int tryAddNectar(int amount) {
-        if (amount <= 0)
-            return 0;
-        int before = BeeStats.getNectar();
-        int cap = BeeStats.getMaxNectar();
-        int after = Math.min(cap, before + amount);
-        int added = after - before;
-        if (added > 0) {
-            BeeStats.setNectar(after);
-
-            if (after >= cap) {
-                StaticClasses.UnleashMayhem.fire(this.map, this);
-            }
-        }
-        return added;
-    }
-
-    public int drainAllNectar() {
-        int carried = BeeStats.getNectar();
-        if (carried > 0)
-            BeeStats.setNectar(0);
-        return carried;
-    }
-
-    private PowerupHUD powerupHUD;
+    int lastMilestone = 0;
 
     public Bee(float x, float y) {
         super(new SpriteSheet(ImageLoader.load("Bee_Walk.png"), TILE, TILE, 0),
@@ -157,6 +133,43 @@ public class Bee extends Player {
         if (BeeStats.hasRing()) {
             powerupHUD.show("onering.png", Integer.MAX_VALUE);
         }
+    }
+
+
+    public int getNectar() {
+        return BeeStats.getNectar();
+    }
+
+    public int getNectarCap() {
+        return BeeStats.getMaxNectar();
+    }
+
+    public boolean isNectarFull() {
+        return BeeStats.getNectar() >= BeeStats.getMaxNectar();
+    }
+
+    public int tryAddNectar(int amount) {
+        if (amount <= 0)
+            return 0;
+        int before = BeeStats.getNectar();
+        int cap = BeeStats.getMaxNectar();
+        int after = Math.min(cap, before + amount);
+        int added = after - before;
+        if (added > 0) {
+            BeeStats.setNectar(after);
+
+            if (after >= cap) {
+                StaticClasses.UnleashMayhem.fire(this.map, this);
+            }
+        }
+        return added;
+    }
+
+    public int drainAllNectar() {
+        int carried = BeeStats.getNectar();
+        if (carried > 0)
+            BeeStats.setNectar(0);
+        return carried;
     }
 
     public void applyDamage(int amount) {
@@ -244,37 +257,109 @@ public class Bee extends Player {
     }
 
     public void obtainBlueTunic() {
-    if (BeeStats.hasBlueTunic()) return; // prevent duplicate the icons
+        if (BeeStats.hasBlueTunic()) return; // prevent duplicate the icons
 
-    BeeStats.setHasBlueTunic(true);
+        BeeStats.setHasBlueTunic(true);
 
-    if (powerupHUD != null) {
-        powerupHUD.show("BlueTunic_Hud.png", Integer.MAX_VALUE);
+        if (powerupHUD != null) {
+            powerupHUD.show("BlueTunic_Hud.png", Integer.MAX_VALUE);
+        }
+
+        System.out.println("You received the Blue Tunic! You can now transform into your frost form.");
     }
 
-    System.out.println("You received the Blue Tunic! You can now transform into your frost form.");
+
+    public void spawnFlower() {
+
+        int mapWidth = map.getWidth();
+        int mapHeight = map.getHeight();
+
+        int randomX = ThreadLocalRandom.current().nextInt(1, mapWidth - 1);
+        int randomY = ThreadLocalRandom.current().nextInt(1, mapHeight - 1);
+
+        int flowerNumber = ThreadLocalRandom.current().nextInt(1, 5);
+
+        int distance = totalDistanceTraveled();
+
+        switch (flowerNumber) {
+            case 1:
+                RareSunflowerwithFlowers rareSunflower = new RareSunflowerwithFlowers(4, this.map.getMapTile(randomX, randomY).getLocation());
+
+                if (distance - lastMilestone >= 100 && this.map.getMapTile(randomX, randomY).getTileType() == TileType.PASSABLE) {
+                    this.map.addNPC(rareSunflower);
+                    lastMilestone += 100;
+                }
+
+                break;
+
+            case 2:
+                BlueBorah blueBorah = new BlueBorah(4, this.map.getMapTile(randomX, randomY).getLocation());
+                if (distance - lastMilestone >= 100 && this.map.getMapTile(randomX, randomY).getTileType() == TileType.PASSABLE) {
+                    this.map.addNPC(blueBorah);
+                    lastMilestone += 100;
+                }
+                break;
+
+            case 3:
+                Cosmo cosmo = new Cosmo(4, this.map.getMapTile(randomX, randomY).getLocation());
+                if (distance - lastMilestone >= 100 && this.map.getMapTile(randomX, randomY).getTileType() == TileType.PASSABLE) {
+                    this.map.addNPC(cosmo);
+                    lastMilestone += 100;
+                }
+                break;
+
+            case 4:
+                Daffodil daffodil = new Daffodil(4, this.map.getMapTile(randomX, randomY).getLocation());
+                if (distance - lastMilestone >= 100 && this.map.getMapTile(randomX, randomY).getTileType() == TileType.PASSABLE) {
+                    this.map.addNPC(daffodil);
+                    lastMilestone += 100;
+                }
+                break;
+
+            case 5:
+                Daisy daisy = new Daisy(4, this.map.getMapTile(randomX, randomY).getLocation());
+                if (distance - lastMilestone >= 100 && this.map.getMapTile(randomX, randomY).getTileType() == TileType.PASSABLE) {
+                    this.map.addNPC(daisy);
+                    lastMilestone += 100;
+                }
+                break;
+        }
     }
 
 
     @Override
     public void update() {
         super.update();
+
         BeeStats.checkLevelUp();
+
         // update floating damage numbers
         floatingTexts.removeIf(text -> {
             text.update();
             return text.isDead();
         });
 
+        if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) {
+            spawnFlower();
+        }
+
         System.out.println(this.map.getHeight());
 
         System.out.println("Current number of flowers on the map: " + FlowerManager.countFlowers(this.map));
-        FlowerManager.update(this, this.map, FlowerManager.randomFlower());
+        // FlowerManager.update(this, this.map, FlowerManager.randomFlower());
         // System.out.println(totalDistanceTraveled());
+
+        
+        spawnFlower();
 
         // System.out.println("Flowers in ArrayList: " + FlowerManager.flowersInArrayList());
         handleAttackInput();
         handleTunicInput();
+
+
+        if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true) {
+            BeeStats.takeDamage(1);
+        }
 
         resourceBars.update();
         int tileX = (int) (getX() / TILE);
@@ -284,7 +369,7 @@ public class Bee extends Player {
         //         "Level: %d  Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d  X: %d  Y: %d",
         //         BeeStats.getCurrentLevel(), BeeStats.getHealth(), BeeStats.getStamina(), BeeStats.getNectar(), BeeStats.getExperience(),
         //         BeeStats.getWalkSpeed(), HiveManager.getNectar(), tileX, tileY));
-
+        
         if (attacking && System.currentTimeMillis() - attackStart > ATTACK_ACTIVE_MS) {
             attacking = false;
             lastAttackEnd = System.currentTimeMillis();

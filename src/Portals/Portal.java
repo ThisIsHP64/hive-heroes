@@ -26,19 +26,19 @@ public class Portal extends NPC {
             put("STAND_LEFT", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
                         .withScale(2)
-                        .withBounds(7, 13, 50, 35)
+                        .withBounds(0, 0, 70, 70)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 1), 8)
                         .withScale(2)
-                        .withBounds(7, 13, 50, 35)
+                        .withBounds(0, 0, 70, 70)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 2), 8)
                         .withScale(2)
-                        .withBounds(7, 13, 50, 35)
+                        .withBounds(0, 0, 70, 70)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 3), 8)
                         .withScale(2)
-                        .withBounds(7, 13, 50, 35)
+                        .withBounds(0, 0, 70, 70)
                         .build(),
             });
         }};

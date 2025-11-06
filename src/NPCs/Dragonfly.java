@@ -67,36 +67,36 @@ public class Dragonfly extends NPC {
             put("STAND_LEFT", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(0, 0))
                     .withScale(2)
-                    .withBounds(3, 5, 18, 7)
+                    .withBounds(0,0, 24, 24)
                     .build()
             });
             put("STAND_RIGHT", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(0, 0))
                     .withScale(2)
-                    .withBounds(3, 5, 18, 7)
+                    .withBounds(0,0, 24, 24)
                     .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                     .build()
            });
             put("WALK_LEFT", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
                         .withScale(2)
-                        .withBounds(3, 5, 18, 7)
+                    .withBounds(0,0, 24, 24)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
                         .withScale(2)
-                        .withBounds(3, 5, 18, 7)
+                    .withBounds(0,0, 24, 24)
                         .build()
             });
             put("WALK_RIGHT", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
                         .withScale(2)
                         .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                        .withBounds(3, 5, 18, 7)
+                    .withBounds(0,0, 24, 24)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
                         .withScale(2)
                         .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                        .withBounds(3, 5, 18, 7)
+                    .withBounds(0,0, 24, 24)
                         .build()
             });
         }};

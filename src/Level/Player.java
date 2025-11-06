@@ -352,7 +352,7 @@ public abstract class Player extends GameObject {
             }
             else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true){
                 
-                if (BeeStats.hasTunic() == true){
+                if (BeeStats.hasTunic() == true) {
                     moveAmountY += BeeStats.getWalkSpeed();
 
                     totalDistanceTraveled += Math.abs(moveAmountY);
