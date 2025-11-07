@@ -1,56 +1,37 @@
 package Maps;
 
-import java.util.ArrayList;
-
-import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
-import Level.Trigger;
-import Portals.GrassPortal;
+import PowerUps.StingerPowerUp;
 import Tilesets.DungeonTileset;
+import java.util.ArrayList;
 
 public class DungeonMap extends Map {
 
     public DungeonMap() {
         super("dungeon_map.txt", new DungeonTileset());
-        this.playerStartPosition = getMapTile(91, 50).getLocation();
-    }
-    
-    @Override
-    public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
-        ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
-
         
-
-        return enhancedMapTiles;
+        // Bee starts here
+        this.playerStartPosition = getMapTile(98, 50).getLocation();
     }
 
     @Override
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
-
-        // Portal portal = new Portal(1, getMapTile(95, 49).getLocation());
-        // npcs.add(portal);
-
-        GrassPortal grassPortal = new GrassPortal(1, getMapTile(95, 49).getLocation());
-        npcs.add(grassPortal);
-
+        
+        // === Add your existing dungeon NPCs here (spiders, portals, etc.) ===
+        // Example:
+        // npcs.add(new Spider(1, getMapTile(10, 10).getLocation()));
+        
+        // === Projectile powerup ===
+        StingerPowerUp stingerPowerup = new StingerPowerUp(2002, getMapTile(18, 50).getLocation());
+        npcs.add(stingerPowerup);
+        
         return npcs;
     }
 
     @Override
-    public ArrayList<Trigger> loadTriggers() {
-        ArrayList<Trigger> triggers = new ArrayList<>();
-        
-
-
-        return triggers;
-    }
-
-    @Override
     public void loadScripts() {
-        
-
-        
+        // Add any scripts if needed
     }
 }

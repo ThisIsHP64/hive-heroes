@@ -17,6 +17,7 @@ import Level.MapTile;
 import Level.Player;
 import Level.TileType;
 import SpriteImage.PowerupHUD;
+import SpriteImage.ProjectileHUD;
 import SpriteImage.ResourceHUD;
 import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
@@ -74,6 +75,9 @@ public class Bee extends Player {
     private boolean hasShield = false;
     private int shieldHealth = 0;
     private static final int MAX_SHIELD_HEALTH = 100;
+    
+    // Projectile powerup variable
+    private boolean hasProjectile = false;
 
     // tunic variable
     private boolean useRedSprites = false;
@@ -82,6 +86,7 @@ public class Bee extends Player {
     private boolean useBlueSprites = false;
 
     private PowerupHUD powerupHUD;
+    private ProjectileHUD projectileHUD;
     
     protected MapTile[] mapTiles;
 
@@ -105,6 +110,7 @@ public class Bee extends Player {
         resourceBars = new ResourceHUD(this);
 
         powerupHUD = new PowerupHUD();
+        projectileHUD = new ProjectileHUD();
 
         try {
             slashSheet = new SpriteSheet(ImageLoader.load("spider_slash.png"), 32, 32);
@@ -508,6 +514,9 @@ public class Bee extends Player {
 
         if (powerupHUD != null)
             powerupHUD.draw(graphicsHandler);
+        
+        if (projectileHUD != null)
+            projectileHUD.draw(graphicsHandler);
 
         // draw floating damage numbers on bee
         if (map != null && map.getCamera() != null) {
@@ -675,6 +684,17 @@ public class Bee extends Player {
 
     public int getMaxShieldHealth() {
         return MAX_SHIELD_HEALTH;
+    }
+    
+    // Projectile powerup methods
+    public void collectProjectilePowerup(String iconPath) {
+        hasProjectile = true;
+        projectileHUD.showProjectile(iconPath); // Show in bottom-right corner
+        System.out.println("Projectile power-up collected! Press SPACE to shoot!");
+    }
+    
+    public boolean hasProjectile() {
+        return hasProjectile;
     }
 
     // handle tunic activation (press 3 for Red, 4 for Blue)
