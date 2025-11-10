@@ -81,9 +81,9 @@ public class VolcanoMap extends Map {
         npcs.add(new Skull(getMapTile(72, 42).getLocation()));  // was (88, 48) - MOVED IN
 
         // Easter egg: Sauron's Eye near the volcano
-        npcs.add(new SauronEye(9001, getMapTile(48, 42).getLocation()));
+        npcs.add(new SauronEye(9001, getMapTile(48, 47).getLocation()));
         // Volcano NPC - SAFE at center of map
-        npcs.add(new Volcano(3001, getMapTile(41, 41).getLocation()));
+        npcs.add(new Volcano(3001, getMapTile(41, 39).getLocation()));
 
         System.out.println("[VolcanoMap] Spawned 10 spiders, 5 bats, 6 skulls on 80x80 map");
 

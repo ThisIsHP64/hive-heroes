@@ -13,17 +13,24 @@ import Level.Player;
 import Utils.Point;
 
 /**
- * SauronEye – static eye that looks toward the player.
+ * SauronEye – static eye that tracks the player's position.
  *
- * SPRITE SHEET: 67x128 px → tile size = 33x64
- * [0,0] = look LEFT
- * [1,0] = look RIGHT
- * [0,1] = look CENTER
- * [1,1] = empty
+ * SPRITE SHEET: 67x128 px → tile size = 33x64 (2x2 grid; bottom-right empty)
+ * Mapping:
+ *   CENTER -> (0,0)  // top-left
+ *   RIGHT  -> (0,1)  // top-right
+ *   LEFT   -> (1,0)  // bottom-left
  */
 public class SauronEye extends NPC {
 
-    private static final int HYSTERESIS = 8;
+    // Make CENTER easier to hit when you are "in front"
+    private static final int HYSTERESIS = 8;         // pixels of dead zone
+    private static final int CHECK_INTERVAL_MS = 80; // ~12.5x/sec
+
+    // If your world X feels reversed, keep this true
+    private static final boolean MIRROR_X = true;
+
+    private long lastCheckTime = 0;
 
     private enum Dir { LEFT, RIGHT, CENTER }
     private Dir lastDir = Dir.CENTER;
@@ -42,13 +49,15 @@ public class SauronEye extends NPC {
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         HashMap<String, Frame[]> animations = new HashMap<>();
 
-        animations.put("LEFT", new Frame[] {
+        // CENTER = (row 0, col 0)
+        animations.put("CENTER", new Frame[] {
             new FrameBuilder(spriteSheet.getSprite(0, 0))
                 .withScale(3)
                 .withImageEffect(ImageEffect.NONE)
                 .build()
         });
 
+        // RIGHT = (row 0, col 1)
         animations.put("RIGHT", new Frame[] {
             new FrameBuilder(spriteSheet.getSprite(1, 0))
                 .withScale(3)
@@ -56,7 +65,8 @@ public class SauronEye extends NPC {
                 .build()
         });
 
-        animations.put("CENTER", new Frame[] {
+        // LEFT = (row 1, col 0)
+        animations.put("LEFT", new Frame[] {
             new FrameBuilder(spriteSheet.getSprite(0, 1))
                 .withScale(3)
                 .withImageEffect(ImageEffect.NONE)
@@ -68,24 +78,31 @@ public class SauronEye extends NPC {
 
     @Override
     public void update(Player player) {
-        float eyeCenterX = getX() + getWidth() / 2f;
-        float playerCenterX = player.getX() + player.getWidth() / 2f;
-        float dx = playerCenterX - eyeCenterX;
+        long now = System.currentTimeMillis();
+        if (now - lastCheckTime >= CHECK_INTERVAL_MS) {
+            lastCheckTime = now;
 
-        Dir dir;
-        if (dx < -HYSTERESIS)      dir = Dir.LEFT;
-        else if (dx > HYSTERESIS)  dir = Dir.RIGHT;
-        else                       dir = Dir.CENTER;
+            float eyeCenterX = getX() + getWidth() / 2f;
+            float playerCenterX = player.getX() + player.getWidth() / 2f;
 
-        if (dir != lastDir) {
-            switch (dir) {
-                case LEFT:   setCurrentAnimationName("LEFT");   break;
-                case RIGHT:  setCurrentAnimationName("RIGHT");  break;
-                default:     setCurrentAnimationName("CENTER"); break;
+            // Flip axis if needed so "player on the right" truly means RIGHT frame
+            float dx = MIRROR_X ? (eyeCenterX - playerCenterX)
+                                : (playerCenterX - eyeCenterX);
+
+            Dir dir;
+            if (dx >= HYSTERESIS)        dir = Dir.RIGHT;   // player is to the right
+            else if (dx <= -HYSTERESIS)  dir = Dir.LEFT;    // player is to the left
+            else                         dir = Dir.CENTER;  // near aligned
+
+            if (dir != lastDir) {
+                switch (dir) {
+                    case LEFT:   setCurrentAnimationName("LEFT");   break;
+                    case RIGHT:  setCurrentAnimationName("RIGHT");  break;
+                    default:     setCurrentAnimationName("CENTER"); break;
+                }
+                lastDir = dir;
             }
-            lastDir = dir;
         }
-
         super.update(player);
     }
 
