@@ -49,6 +49,29 @@ public class BeeStats {
             stamina = 0;
         }
     }
+    
+    // Stamina regeneration - call this every frame
+    public static void regenerateStamina(int amount) {
+        if (stamina < maxStamina) {
+            stamina += amount;
+            if (stamina > maxStamina) {
+                stamina = maxStamina;
+            }
+        }
+    }
+    
+    // Check if bee has enough stamina to shoot
+    public static boolean canShootProjectile() {
+        return stamina >= 150;
+    }
+    
+    // Deduct stamina when shooting projectile
+    public static void useProjectileStamina() {
+        if (stamina >= 150) {
+            stamina -= 150;
+            System.out.println("[BeeStats] Used 150 stamina for projectile. Remaining: " + stamina);
+        }
+    }
 
     public static int getAttackDamage() {
         return attackDamage;
