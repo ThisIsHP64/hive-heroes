@@ -21,7 +21,7 @@ public class Volcano extends NPC {
        
         // Scale it bigger so we can definitely see it
         Frame idle = new FrameBuilder(spriteSheet.getSprite(0, 0))
-                .withScale(11)  // Made it even bigger
+                .withScale(4)  // Made it even bigger
                 .build();
        
         animations.put("IDLE", new Frame[] { idle });
