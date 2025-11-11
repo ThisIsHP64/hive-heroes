@@ -17,6 +17,8 @@ import Level.MapTile;
 import Level.Player;
 import Level.TileType;
 import SpriteImage.PowerupHUD;
+import SpriteImage.ProjectileHUD;
+import Projectiles.BeeProjectile;
 import SpriteImage.ResourceHUD;
 import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
@@ -74,6 +76,9 @@ public class Bee extends Player {
     private boolean hasShield = false;
     private int shieldHealth = 0;
     private static final int MAX_SHIELD_HEALTH = 100;
+    
+    // Projectile powerup variable
+    private boolean hasProjectile = false;
 
     // tunic variable
     private boolean useRedSprites = false;
@@ -82,6 +87,11 @@ public class Bee extends Player {
     private boolean useBlueSprites = false;
 
     private PowerupHUD powerupHUD;
+    private ProjectileHUD projectileHUD;
+    
+    // Projectile list
+    private ArrayList<BeeProjectile> activeProjectiles = new ArrayList<>();
+    private long lastShotTime = 0;
     
     protected MapTile[] mapTiles;
 
@@ -105,6 +115,7 @@ public class Bee extends Player {
         resourceBars = new ResourceHUD(this);
 
         powerupHUD = new PowerupHUD();
+        projectileHUD = new ProjectileHUD();
 
         try {
             slashSheet = new SpriteSheet(ImageLoader.load("spider_slash.png"), 32, 32);
@@ -388,6 +399,15 @@ public class Bee extends Player {
         }
 
         handlePowerupInput();
+        
+        // Update projectiles
+        updateProjectiles();
+        
+        // Regenerate stamina (only if haven't shot recently)
+        long timeSinceLastShot = System.currentTimeMillis() - lastShotTime;
+        if (timeSinceLastShot > 1000) {  // 1 second delay after shooting
+            BeeStats.regenerateStamina(10);
+        }
     }
 
     public void showPowerupIcon(String spritePath, int durationMs) {
@@ -406,6 +426,11 @@ public class Bee extends Player {
             attacking = true;
             attackStart = System.currentTimeMillis();
             currentAnimationName = "ATTACK_" + facingDirection.name();
+            
+            // Shoot projectile if powerup is collected
+            if (hasProjectile) {
+                shootProjectile();
+            }
         }
 
         prevSpaceDown = spaceDown;
@@ -508,6 +533,12 @@ public class Bee extends Player {
 
         if (powerupHUD != null)
             powerupHUD.draw(graphicsHandler);
+        
+        if (projectileHUD != null)
+            projectileHUD.draw(graphicsHandler);
+        
+        // Draw projectiles
+        drawProjectiles(graphicsHandler);
 
         // draw floating damage numbers on bee
         if (map != null && map.getCamera() != null) {
@@ -676,6 +707,82 @@ public class Bee extends Player {
     public int getMaxShieldHealth() {
         return MAX_SHIELD_HEALTH;
     }
+    
+    // Projectile powerup methods
+    public void collectProjectilePowerup(String iconPath) {
+        hasProjectile = true;
+        projectileHUD.showProjectile(iconPath); // Show in bottom-right corner
+        System.out.println("Projectile power-up collected! Press SPACE to shoot!");
+    }
+    
+    public boolean hasProjectile() {
+        return hasProjectile;
+    }
+    
+    private void shootProjectile() {
+        // Check if bee has enough stamina
+        if (!BeeStats.canShootProjectile()) {
+            System.out.println("[Bee] Not enough stamina to shoot! Need 150, have: " + BeeStats.getStamina());
+            return;
+        }
+        
+        // Spawn projectile at bee's position in the direction bee is facing
+        float projectileX = this.x + 32; // center of bee
+        float projectileY = this.y + 32;
+        
+        System.out.println("[Bee] Shooting projectile!");
+        System.out.println("[Bee] Facing direction: " + facingDirection);
+        
+        BeeProjectile projectile = new BeeProjectile(projectileX, projectileY, facingDirection);
+        activeProjectiles.add(projectile);
+        
+        // Use stamina and record shot time
+        BeeStats.useProjectileStamina();
+        lastShotTime = System.currentTimeMillis();
+        
+        System.out.println("[Bee] Projectile created. Total projectiles: " + activeProjectiles.size());
+    }
+    
+    public void updateProjectiles() {
+        // Update all projectiles
+        for (BeeProjectile projectile : new ArrayList<>(activeProjectiles)) {
+            projectile.update();
+        }
+        
+        // Remove inactive projectiles
+        activeProjectiles.removeIf(p -> !p.isActive());
+    }
+    
+    public void drawProjectiles(GraphicsHandler graphicsHandler) {
+        // Draw all projectiles (they need to be drawn relative to camera)
+        if (map != null && map.getCamera() != null) {
+            float cameraX = map.getCamera().getX();
+            float cameraY = map.getCamera().getY();
+            
+            for (BeeProjectile projectile : activeProjectiles) {
+                // Adjust projectile position relative to camera
+                float drawX = projectile.getX() - cameraX;
+                float drawY = projectile.getY() - cameraY;
+                
+                // Temporarily move projectile for drawing
+                float originalX = projectile.getX();
+                float originalY = projectile.getY();
+                projectile.setX(drawX);
+                projectile.setY(drawY);
+                
+                projectile.draw(graphicsHandler);
+                
+                // Restore original position
+                projectile.setX(originalX);
+                projectile.setY(originalY);
+            }
+        }
+    }
+    
+    public ArrayList<BeeProjectile> getActiveProjectiles() {
+        return activeProjectiles;
+    }
+
 
     // handle tunic activation (press 3 for Red, 4 for Blue)
     private void handleTunicInput() {

@@ -7,8 +7,8 @@ public class BeeStats {
     private static int maxHealth = 100;
 
     // stamina variables
-    private static int stamina = 100000;
-    private static int maxStamina = 100000;
+    private static int stamina = 10000;
+    private static int maxStamina = 10000;
 
     // nectar variables
     private static int nectar = 0;
@@ -47,6 +47,29 @@ public class BeeStats {
             stamina--;
         } else {
             stamina = 0;
+        }
+    }
+    
+    // Stamina regeneration - call this every frame
+    public static void regenerateStamina(int amount) {
+        if (stamina < maxStamina) {
+            stamina += amount;
+            if (stamina > maxStamina) {
+                stamina = maxStamina;
+            }
+        }
+    }
+    
+    // Check if bee has enough stamina to shoot
+    public static boolean canShootProjectile() {
+        return stamina >= 150;
+    }
+    
+    // Deduct stamina when shooting projectile
+    public static void useProjectileStamina() {
+        if (stamina >= 150) {
+            stamina -= 150;
+            System.out.println("[BeeStats] Used 150 stamina for projectile. Remaining: " + stamina);
         }
     }
 
