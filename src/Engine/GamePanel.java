@@ -4,6 +4,7 @@ import Effects.RainParticleSystemGrassLevel;
 import Effects.RedRainParticleSystemVolcanoLevel;
 import Effects.SnowParticleSystemSnowLevel;
 import Effects.WindSystemGrassLevel;
+import Effects.ScreenFX; // <<< NEW
 import Game.GameState;
 import GameObject.Rectangle;
 import SpriteFont.SpriteFont;
@@ -38,7 +39,6 @@ public class GamePanel extends JPanel implements ActionListener {
 	private boolean showFPS = false;
 	private int currentFPS;
 
-
 	private final int SCREEN_WIDTH = 800;
 	private final int SCREEN_HEIGHT = 600;
 
@@ -54,8 +54,6 @@ public class GamePanel extends JPanel implements ActionListener {
     private static boolean isWindActive = false;
 	private static boolean isSnowing = false;
 
-
-
 	// The JPanel and various important class instances are setup here
 	public GamePanel() {
 		super();
@@ -65,7 +63,6 @@ public class GamePanel extends JPanel implements ActionListener {
 		this.addKeyListener(Keyboard.getKeyListener());
 
 		graphicsHandler = new GraphicsHandler();
-
 		screenManager = new ScreenManager();
 
 		pauseLabel = new SpriteFont("PAUSE", 365, 280, "Arial", 24, Color.white);
@@ -74,24 +71,18 @@ public class GamePanel extends JPanel implements ActionListener {
 
 		fpsDisplayLabel = new SpriteFont("FPS", 725, 20, "Arial", 12, Color.black);
 
-		// resourceBars = new ResourceHUD();
-
 		currentFPS = Config.TARGET_FPS;
 
-		// this game loop code will run in a separate thread from the rest of the program
-		// will continually update the game's logic and repaint the game's graphics
+		// game loop thread
 		GameLoop gameLoop = new GameLoop(this);
 		gameLoopProcess = new Thread(gameLoop.getGameLoopProcess());
 
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 
-		//initializing the rain system
+		// initializing particle systems
 		rainSystemgrassLevel = new RainParticleSystemGrassLevel(SCREEN_WIDTH, SCREEN_HEIGHT); 
-
 		windSystemgrassLevel = new WindSystemGrassLevel(SCREEN_WIDTH, SCREEN_HEIGHT);
-
 		redRainSystemvolcanoLevel = new RedRainParticleSystemVolcanoLevel(SCREEN_WIDTH, SCREEN_HEIGHT);
-
 		snowParticleSystemsnowLevel = new SnowParticleSystemSnowLevel(SCREEN_WIDTH, SCREEN_HEIGHT);
 	}
 
@@ -127,21 +118,18 @@ public class GamePanel extends JPanel implements ActionListener {
 
             grassLeveltimer++;
 			int grassLevelseconds = grassLeveltimer / 60;
-			int grassLevelcycleTime = grassLevelseconds % 750; // Full cycle length
+			int grassLevelcycleTime = grassLevelseconds % 750;
 
 			volcanoLeveltimer++;
 			int volcanoLevelseconds = volcanoLeveltimer / 60;
-			int volcanoLevelcycleTime = volcanoLevelseconds % 750; // Full cycle length
+			int volcanoLevelcycleTime = volcanoLevelseconds % 750;
 
 			snowLeveltimer++;
 			int snowLevelseconds = snowLeveltimer / 60;
-			int snowLevelcycleTime = snowLevelseconds % 750; // Full cycle length
+			int snowLevelcycleTime = snowLevelseconds % 750;
 
-			// Check what level the player is on
 			boolean onGrassLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
-
 			boolean onVolcanoLevel = TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL;
-
 			boolean onSnowLevel = TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL;
 
 			// --- RAIN CYCLE ---
@@ -172,6 +160,7 @@ public class GamePanel extends JPanel implements ActionListener {
 				windSystemgrassLevel.clear();
 			}
 
+			// --- VOLCANO RED RAIN ---
 			if (volcanoLevelcycleTime >= 30 && volcanoLevelcycleTime < 90) {
 				if (onVolcanoLevel) {
 					if (!isRedRaining) {
@@ -185,6 +174,7 @@ public class GamePanel extends JPanel implements ActionListener {
 				redRainSystemvolcanoLevel.clear();
 			}
 
+			// --- SNOW ---
 			if (snowLevelcycleTime >= 30 && snowLevelcycleTime < 90) {
 				if (onSnowLevel) {
 					if (!isSnowing) {
@@ -264,32 +254,32 @@ public class GamePanel extends JPanel implements ActionListener {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (doPaint) {
-			// every repaint call will schedule this method to be called
-			// when called, it will setup the graphics handler and then call this class's draw method
+			// setup GH and draw frame
 			graphicsHandler.setGraphics((Graphics2D) g);
-        draw();
-        Graphics2D g2d = (Graphics2D) g;
+			draw();
 
-        boolean onGrassLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
+			Graphics2D g2d = (Graphics2D) g;
 
-        if (onGrassLevel && isRaining) {
-            rainSystemgrassLevel.draw(g2d);
-        }
-        if (onGrassLevel && isWindActive) {
-            windSystemgrassLevel.draw(g2d);
-        }
+			boolean onGrassLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
+			if (onGrassLevel && isRaining) {
+				rainSystemgrassLevel.draw(g2d);
+			}
+			if (onGrassLevel && isWindActive) {
+				windSystemgrassLevel.draw(g2d);
+			}
 
-		boolean onVolcanoLevel = TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL;
+			boolean onVolcanoLevel = TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL;
+			if (onVolcanoLevel && isRedRaining) {
+				redRainSystemvolcanoLevel.draw(g2d);
+			}
 
-		if (onVolcanoLevel && isRedRaining) {
-            redRainSystemvolcanoLevel.draw(g2d);
-        }
+			boolean onSnowLevel = TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL;
+			if (onSnowLevel && isSnowing) {
+				snowParticleSystemsnowLevel.draw(g2d);
+			}
 
-		boolean onSnowLevel = TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL;
-
-		if (onSnowLevel && isSnowing) {
-            snowParticleSystemsnowLevel.draw(g2d);
-        }
+			// <<< NEW: apply full-screen epic effect over the final frame >>>
+			ScreenFX.apply((Graphics2D) g, getWidth(), getHeight());
 		}
 	}
 
@@ -309,4 +299,3 @@ public class GamePanel extends JPanel implements ActionListener {
         return isSnowing;
     }
 }
- 
