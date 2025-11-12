@@ -10,6 +10,8 @@ import NPCs.Hank;
 import NPCs.Walter;
 import NPCs.Gene;
 import NPCs.Ruth;
+import NPCs.FrostTunic;
+import Portals.GrassPortal;
 import PowerUps.StingerPowerUp;
 import Scripts.DungeonMap.CarlScript;
 import Scripts.DungeonMap.FrankScript;
@@ -19,6 +21,7 @@ import Scripts.DungeonMap.HankScript;
 import Scripts.DungeonMap.WalterScript;
 import Scripts.DungeonMap.GeneScript;
 import Scripts.DungeonMap.RuthScript;
+import Scripts.DungeonMap.DungeonGrassPortalScript;
 import Tilesets.DungeonTileset;
 import java.util.ArrayList;
 
@@ -44,7 +47,7 @@ public class DungeonMap extends Map {
         npcs.add(carl);
         
         // === Frank - The Bat ===
-        Frank frank = new Frank(2003, getMapTile(91, 53).getLocation());
+        Frank frank = new Frank(2003, getMapTile(91, 52).getLocation());
         frank.setInteractScript(new FrankScript());
         npcs.add(frank);
         
@@ -78,8 +81,18 @@ public class DungeonMap extends Map {
         ruth.setInteractScript(new RuthScript());
         npcs.add(ruth);
         
+        // === Grass Portal - Teleport to Grasslands ===
+        GrassPortal grassPortal = new GrassPortal(2010, getMapTile(35, 87).getLocation());
+        grassPortal.setInteractScript(new DungeonGrassPortalScript());
+        grassPortal.setIsUncollidable(true); // Allow player to walk through it
+        npcs.add(grassPortal);
+        
+        // === Frost Tunic - Blue Tunic Powerup ===
+        FrostTunic frostTunic = new FrostTunic(2011, getMapTile(40, 87).getLocation());
+        npcs.add(frostTunic);
+        
         // === Projectile powerup ===
-        StingerPowerUp stingerPowerup = new StingerPowerUp(2002, getMapTile(18, 50).getLocation());
+        StingerPowerUp stingerPowerup = new StingerPowerUp(2002, getMapTile(79, 87).getLocation());
         npcs.add(stingerPowerup);
         
         return npcs;
@@ -87,6 +100,7 @@ public class DungeonMap extends Map {
 
     @Override
     public void loadScripts() {
-        // Scripts are now set directly on NPCs
+        // Set portal script on map tile as well (in case NPC script doesn't trigger)
+        getMapTile(35, 87).setInteractScript(new DungeonGrassPortalScript());
     }
 }
