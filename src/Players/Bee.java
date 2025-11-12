@@ -806,6 +806,10 @@ public class Bee extends Player {
         return activeProjectiles;
     }
 
+    // ADDED: Getter method for powerupHUD so VolcanoLevelScreen can remove ring icon
+    public PowerupHUD getPowerupHUD() {
+        return powerupHUD;
+    }
 
     // handle tunic activation (press 3 for Red, 4 for Blue)
     private void handleTunicInput() {

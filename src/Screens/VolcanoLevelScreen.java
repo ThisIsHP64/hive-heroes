@@ -1,6 +1,7 @@
 package Screens;
 
 import Effects.FloatingText;
+import Effects.ScreenFX; // ADDED: For screen darkness effects
 import Enemies.Bat;
 import Enemies.Skull;
 import Enemies.Spider;
@@ -144,6 +145,9 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                         ringHordeTriggered = true;
                         map.getCamera().hordeShake();
                         
+                        // MODIFIED: Start screen darkness effect - stays dark until ring is destroyed
+                        ScreenFX.start(ScreenFX.Effect.DARKEN, Integer.MAX_VALUE, 0.5f);
+                        
                         // Show ominous textbox message (will auto-close after 3 seconds)
                         map.getTextbox().addText("This ring...");
                         map.getTextbox().addText("it calls to me...");
@@ -189,7 +193,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                     }
                 }
                 
-                // Volcano destruction sequence
+                // MODIFIED: Volcano destruction sequence with visual effects
                 if (destroyingRing) {
                     volcanoShakeTimer++;
                     
@@ -200,8 +204,21 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                     
                     // After shake duration, complete the destruction
                     if (volcanoShakeTimer >= VOLCANO_SHAKE_DURATION) {
+                        System.out.println("[VolcanoLevel] Ring destruction complete! Restoring peace...");
+                        
                         // Destroy the ring
                         BeeStats.setHasRing(false);
+                        
+                        // ADDED: Remove ring icon from HUD
+                        if (player instanceof Bee) {
+                            Bee bee = (Bee) player;
+                            if (bee.getPowerupHUD() != null) {
+                                bee.getPowerupHUD().removeIcon("onering.png");
+                            }
+                        }
+                        
+                        // ADDED: Clear screen darkness effect
+                        ScreenFX.start(ScreenFX.Effect.NONE, 0, 0f);
                         
                         // Stop the horde
                         if (ringHordeTriggered || StaticClasses.UnleashMayhem.isActive()) {
@@ -209,12 +226,22 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                             System.out.println("[VolcanoLevel] The ring is destroyed! Peace returns...");
                         }
                         
+                        // ADDED: Remove all horde enemies from the map
+                        map.getNPCs().removeIf(npc -> 
+                            npc instanceof Spider || 
+                            npc instanceof Bat || 
+                            npc instanceof Skull
+                        );
+                        
                         // Reset all ring state
                         ringTimerStarted = false;
                         ringHordeTriggered = false;
                         destroyingRing = false;
                         volcanoShakeTimer = 0;
                         ringShakeTimer = 0;
+                        
+                        // TODO: Award XP here when ready
+                        // BeeStats.addXP(5000); // or whatever amount
                     }
                 }
 
@@ -226,7 +253,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                         return;
                     }
 
-                    // Check for Volcano interaction (destroy the ring) - Use 'E' key to avoid conflict with melee
+                    // MODIFIED: Check for Volcano interaction (destroy the ring) with visual effects
                     if (BeeStats.hasRing() && !destroyingRing) {
                         // Check for E key press with key locker
                         if (Keyboard.isKeyDown(Key.E) && !eKeyLocker.isKeyLocked(Key.E)) {
@@ -257,6 +284,9 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                     if (distance < 350) {
                                         // Player is close enough to the volcano - start destruction!
                                         System.out.println("[VolcanoLevel] ✓✓✓ SUCCESS! Throwing the One Ring into Mount Doom!");
+                                        
+                                        // ADDED: Trigger epic volcano visual effects (shake, flash, darken)
+                                        volcano.triggerRingDestroyFX();
                                         
                                         destroyingRing = true;
                                         volcanoShakeTimer = 0;
