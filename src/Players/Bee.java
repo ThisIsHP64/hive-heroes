@@ -87,8 +87,12 @@ public class Bee extends Player {
     private int shieldHealth = 0;
     private static final int MAX_SHIELD_HEALTH = 100;
     
-    // Projectile powerup variable
+    // Projectile powerup variable (session flag; persistent lives in BeeStats)
     private boolean hasProjectile = false;
+
+    // --- NEW: projectile tuning / HUD ---
+    private static final int PROJECTILE_DAMAGE = 25; // tweak to taste
+    private static final String PROJECTILE_HUD_ICON = "Bee_Projectile_HUD.png"; // your HUD icon
 
     // tunic variable
     private boolean useRedSprites = false;
@@ -157,6 +161,14 @@ public class Bee extends Player {
 
         if (BeeStats.hasRing()) {
             powerupHUD.show("onering.png", Integer.MAX_VALUE);
+        }
+
+        // --- NEW: if projectile was previously unlocked, keep it active & show HUD on new maps ---
+        if (BeeStats.hasProjectilePower()) {
+            hasProjectile = true;
+            if (projectileHUD != null) {
+                projectileHUD.showProjectile(PROJECTILE_HUD_ICON);
+            }
         }
     }
 
@@ -423,7 +435,7 @@ public class Bee extends Player {
 
         handlePowerupInput();
         
-        // Update projectiles
+        // Update projectiles (now includes collision + damage)
         updateProjectiles();
         
         // Regenerate stamina (only if haven't shot recently)
@@ -841,7 +853,12 @@ public class Bee extends Player {
     // Projectile powerup methods
     public void collectProjectilePowerup(String iconPath) {
         hasProjectile = true;
-        projectileHUD.showProjectile(iconPath); // Show in bottom-right corner
+        BeeStats.setHasProjectilePower(true); // persist across screens/sessions
+
+        String hudIcon = (iconPath != null && !iconPath.isEmpty()) ? iconPath : PROJECTILE_HUD_ICON;
+        if (projectileHUD != null) {
+            projectileHUD.showProjectile(hudIcon); // Show in bottom-right corner
+        }
         System.out.println("Projectile power-up collected! Press SPACE to shoot!");
     }
     
@@ -857,7 +874,7 @@ public class Bee extends Player {
         }
         
         // Spawn projectile at bee's position in the direction bee is facing
-        float projectileX = this.x + 32; // center of bee
+        float projectileX = this.x + 32; // center-ish of bee
         float projectileY = this.y + 32;
         
         System.out.println("[Bee] Shooting projectile!");
@@ -874,37 +891,82 @@ public class Bee extends Player {
     }
     
     public void updateProjectiles() {
-        // Update all projectiles
+        // Update & collide
         for (BeeProjectile projectile : new ArrayList<>(activeProjectiles)) {
             projectile.update();
+            if (!projectile.isActive()) continue;
+
+            java.awt.Rectangle pBox = projectile.getHitbox();
+
+            // iterate a copy to avoid concurrent modification
+            for (var npc : new ArrayList<>(map.getNPCs())) {
+                // Spider
+                if (npc instanceof Spider) {
+                    Spider s = (Spider) npc;
+                    if (s.getHitbox().intersects(pBox)) {
+                        s.takeDamage(PROJECTILE_DAMAGE);
+                        projectile.deactivate();
+                        break;
+                    }
+                }
+                // Goblin
+                else if (npc instanceof Goblin) {
+                    Goblin g = (Goblin) npc;
+                    try {
+                        if (g.getHitbox().intersects(pBox)) {
+                            g.takeDamage(PROJECTILE_DAMAGE);
+                            projectile.deactivate();
+                            break;
+                        }
+                    } catch (Throwable ignored) {}
+                }
+                // Bat
+                else if (npc instanceof Bat) {
+                    Bat b = (Bat) npc;
+                    try {
+                        if (b.getHitbox().intersects(pBox)) {
+                            b.takeDamage(PROJECTILE_DAMAGE);
+                            projectile.deactivate();
+                            break;
+                        }
+                    } catch (Throwable ignored) {}
+                }
+                // Crab
+                else if (npc instanceof Crab) {
+                    Crab c = (Crab) npc;
+                    try {
+                        if (c.getHitbox().intersects(pBox)) {
+                            c.takeDamage(PROJECTILE_DAMAGE);
+                            projectile.deactivate();
+                            break;
+                        }
+                    } catch (Throwable ignored) {}
+                }
+                // FrostDragon
+                else if (npc instanceof FrostDragon) {
+                    FrostDragon d = (FrostDragon) npc;
+                    try {
+                        if (d.getHitbox().intersects(pBox)) {
+                            d.takeDamage(PROJECTILE_DAMAGE);
+                            projectile.deactivate();
+                            break;
+                        }
+                    } catch (Throwable ignored) {}
+                }
+            }
         }
-        
-        // Remove inactive projectiles
+
+        // Cull inactive
         activeProjectiles.removeIf(p -> !p.isActive());
     }
     
     public void drawProjectiles(GraphicsHandler graphicsHandler) {
-        // Draw all projectiles (they need to be drawn relative to camera)
+        // Camera-aware draw; no temp position hack
         if (map != null && map.getCamera() != null) {
-            float cameraX = map.getCamera().getX();
-            float cameraY = map.getCamera().getY();
-            
+            float camX = map.getCamera().getX();
+            float camY = map.getCamera().getY();
             for (BeeProjectile projectile : activeProjectiles) {
-                // Adjust projectile position relative to camera
-                float drawX = projectile.getX() - cameraX;
-                float drawY = projectile.getY() - cameraY;
-                
-                // Temporarily move projectile for drawing
-                float originalX = projectile.getX();
-                float originalY = projectile.getY();
-                projectile.setX(drawX);
-                projectile.setY(drawY);
-                
-                projectile.draw(graphicsHandler);
-                
-                // Restore original position
-                projectile.setX(originalX);
-                projectile.setY(originalY);
+                projectile.draw(graphicsHandler, camX, camY);
             }
         }
     }
