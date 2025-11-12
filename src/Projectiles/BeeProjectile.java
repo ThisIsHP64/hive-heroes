@@ -9,15 +9,19 @@ import java.awt.image.BufferedImage;
 
 public class BeeProjectile {
 
-    private static final int TILE = 62;      // make sure your Bee_Projectile.png uses 20px cells
+    private static final int TILE = 62;      // sprite cell size in Bee_Projectile.png
     private static final float SCALE = 2f;
     private static final int ANIM_TICKS = 6;
 
-    private float x, y;          // world coords
+    // Tight, centered collision box (tweak to taste)
+    private static final int HIT_W = 18;
+    private static final int HIT_H = 18;
+
+    private float x, y;          // world coords (top-left of sprite)
     private float dx, dy;        // velocity
     private float speed = 8f;
 
-    private Direction direction; // initial intent (we'll still store it)
+    private Direction direction; // initial facing intent
     private boolean isActive = true;
 
     private int animIndex = 0;
@@ -50,10 +54,12 @@ public class BeeProjectile {
         x += dx;
         y += dy;
 
+        // simple bounds cull
         if (x < -64 || y < -64 || x > 10000 || y > 10000) {
             isActive = false;
         }
 
+        // animate
         if (++animCounter >= ANIM_TICKS) {
             animCounter = 0;
             animIndex ^= 1;
@@ -66,7 +72,7 @@ public class BeeProjectile {
     public void draw(GraphicsHandler g, float camX, float camY) {
         if (!isActive) return;
 
-        // CHANGED: derive the render-facing from velocity, not from the constructor direction
+        // derive render direction from velocity so flip looks right
         Direction renderDir = deriveDirectionFromVelocity();
 
         BufferedImage sprite = getFrame(renderDir, animIndex);
@@ -80,11 +86,9 @@ public class BeeProjectile {
     }
 
     private Direction deriveDirectionFromVelocity() {
-        // If horizontal movement dominates or dy==0, choose LEFT/RIGHT
         if (Math.abs(dx) >= Math.abs(dy)) {
             return (dx < 0) ? Direction.LEFT : Direction.RIGHT;
         }
-        // Otherwise UP/DOWN
         return (dy < 0) ? Direction.UP : Direction.DOWN;
     }
 
@@ -93,13 +97,18 @@ public class BeeProjectile {
 
     public float getX() { return x; }
     public float getY() { return y; }
-    public void setX(float x) { this.x = x; } // kept if other code still calls these
+    public void setX(float x) { this.x = x; }
     public void setY(float y) { this.y = y; }
 
+    // TIGHT, CENTERED HITBOX for accurate contact
     public Rectangle getHitbox() {
-        int w = Math.round(TILE * SCALE);
-        int h = Math.round(TILE * SCALE);
-        return new Rectangle(Math.round(x), Math.round(y), w, h);
+        int drawW = Math.round(TILE * SCALE);
+        int drawH = Math.round(TILE * SCALE);
+
+        int cx = Math.round(x) + drawW / 2; // sprite center X
+        int cy = Math.round(y) + drawH / 2; // sprite center Y
+
+        return new Rectangle(cx - HIT_W / 2, cy - HIT_H / 2, HIT_W, HIT_H);
     }
 
     private static void ensureSheet() {

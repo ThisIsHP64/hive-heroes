@@ -39,8 +39,12 @@ public class BeeStats {
 
     // tunic variable (blue)
     private static boolean hasBlueTunic = false;
-
     private static boolean blueTunicActive = false;
+
+    // --- NEW: projectile power unlock (persists across screens) ---
+    private static boolean hasProjectilePower = false;
+    public static boolean hasProjectilePower() { return hasProjectilePower; }
+    public static void setHasProjectilePower(boolean value) { hasProjectilePower = value; }
 
     public static void manageStamina() {
         if (stamina > 0) {
@@ -49,7 +53,7 @@ public class BeeStats {
             stamina = 0;
         }
     }
-    
+
     // Stamina regeneration - call this every frame
     public static void regenerateStamina(int amount) {
         if (stamina < maxStamina) {
@@ -59,12 +63,12 @@ public class BeeStats {
             }
         }
     }
-    
+
     // Check if bee has enough stamina to shoot
     public static boolean canShootProjectile() {
         return stamina >= 150;
     }
-    
+
     // Deduct stamina when shooting projectile
     public static void useProjectileStamina() {
         if (stamina >= 150) {
@@ -85,10 +89,10 @@ public class BeeStats {
     public static void respawn() {
         health = maxHealth;
         nectar = 0;
+        // NOTE: we do NOT clear hasProjectilePower here so the unlock persists across deaths/maps.
     }
 
     public static void takeDamage(int damage) {
-        
         if (!isDead) {
             health -= damage;
         } else {
@@ -168,7 +172,7 @@ public class BeeStats {
         experience = newExperience;
     }
 
-    // if the player's current experience is greater than or equal to the current 
+    // if the player's current experience is greater than or equal to the current
     // threshold, subtract the experience and level them up.
     public static void checkLevelUp() {
         if (experience >= experienceThresholds[currentLevel - 1]) {
@@ -184,7 +188,6 @@ public class BeeStats {
         setWalkSpeed(walkSpeed + 1.5f);
         setMaxNectar(maxNectar + 10);
         setAttackDamage(attackDamage + 1);
-
         restoreAllStats();
     }
 
@@ -240,8 +243,8 @@ public class BeeStats {
 
     public static void setHasRing(boolean value) {
         hasRing = value;
-    }    
-    
+    }
+
     public static boolean hasBlueTunic() {
         return hasBlueTunic;
     }
