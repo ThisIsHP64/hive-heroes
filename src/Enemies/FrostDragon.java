@@ -20,18 +20,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /*
- * FrostDragon — patrols, chases, quick wind-up, then a big NOSE-DIVE.
- * - Stronger dive animation & motion (lead + gravity ramp)
- * - Has a torso hitbox for Bee melee/projectile collisions
+ * FrostDragon — patrols, chases, tiny wind-up, then a big NOSE-DIVE (wings tucked).
+ * - Dive animation uses wings-tucked frames only (no flap)
+ * - Strong dive motion with downward bias + speed ramp
+ * - Torso hitbox for Bee melee/projectile collisions
  * - Spawns floating damage numbers and draws them automatically
- * - Triggers the universal hit FX window so "bee_attack1" overlays like other enemies
+ * - Shows the "bee_attack1" hit spark ON the enemy when damaged (like Goblin), scaled up
  *
- * Sprite sheet: 360x360 total, 5x5 cells, each 72x72, gutter 0 (frost_dragon.png)
+ * Sprite sheet: frost_dragon.png (5x5 cells @ 72x72, gutter 0)
  * Rows:
  *   0: FLY
  *   1: ATTACK_WINDUP
- *   2: ATTACK_DIVE (nose-first)
- *   3: DEATH (dark -> explode)
+ *   2: ATTACK_DIVE (we lock to the most tucked columns)
+ *   3: DEATH
  *   4: SMOKE (first 4 cells)
  */
 public class FrostDragon extends NPC {
@@ -51,13 +52,13 @@ public class FrostDragon extends NPC {
     private static final int   ATTACK_DAMAGE      = 12;
     private static final long  ATTACK_COOLDOWN_MS = 1200;
 
-    // make the dive very obvious
-    private static final long  ATTACK_DURATION_MS = 720;  // longer so you SEE it
-    private static final long  WINDUP_MS          = 60;   // barely any telegraph before committing
+    // very obvious dive
+    private static final long  ATTACK_DURATION_MS = 720;  // long enough to see it
+    private static final long  WINDUP_MS          = 60;   // snap into dive quickly
 
-    // dive feel (harder + faster)
+    // dive feel
     private static final float DIVE_EXTRA_DOWN = 1.35f;   // strong downward bias
-    private static final float DIVE_SPEED_MULT = 1.85f;   // faster during dive
+    private static final float DIVE_SPEED_MULT = 1.85f;   // faster while diving
 
     private enum State { PATROL, CHASE, ATTACK, DEAD }
     private State state = State.PATROL;
@@ -70,7 +71,7 @@ public class FrostDragon extends NPC {
     // facing + attack
     private Direction facing = Direction.RIGHT;
     private boolean isAttacking = false;
-    private boolean inDivePhase = false;   // lock the DIVE frames on
+    private boolean inDivePhase = false;   // when true we keep DIVE anim asserted
     private long attackStart = 0;
     private long lastAttack  = -5000;
     private boolean dealtThisSwing = false;
@@ -85,10 +86,17 @@ public class FrostDragon extends NPC {
     // floating text
     private final ArrayList<FloatingText> floatingTexts = new ArrayList<>();
 
-    // hit FX window (so shared overlay can draw "bee_attack1" on us)
+    // --- Hit FX window (so we can draw "bee_attack1" on impact) ---
     private boolean showAttackFx = false;
     private long attackFxStartTime = 0;
     private static final long ATTACK_FX_DURATION_MS = 450;
+
+    // bee_attack1 sprite (32x32 frames, single row)
+    private SpriteSheet hitFxSheet = null;
+    private static final int HIT_FX_W = 32;
+    private static final int HIT_FX_H = 32;
+    private static final int HIT_FX_FRAME_DELAY = 3; // ticks per FX frame
+    private static final float HIT_FX_SCALE = 1.35f; // SCALE UP the spark (~35% bigger)
 
     public FrostDragon(Point spawn) {
         super(
@@ -101,12 +109,19 @@ public class FrostDragon extends NPC {
         this.patrolCx = spawn.x;
         this.patrolCy = spawn.y;
         setRandomPatrolTarget();
+
+        // Try to load bee_attack1 spark; fail-safe if missing
+        try {
+            hitFxSheet = new SpriteSheet(ImageLoader.load("bee_attack1.png"), HIT_FX_W, HIT_FX_H, 0);
+        } catch (Exception ignored) {
+            hitFxSheet = null;
+        }
     }
 
     // ---------- core loop ----------
     @Override
     public void update(Player player) {
-        // floating damage numbers
+        // update floating numbers
         floatingTexts.removeIf(t -> { t.update(); return t.isDead(); });
 
         // timeout hit FX
@@ -167,10 +182,10 @@ public class FrostDragon extends NPC {
         facing = (player.getX() > getX()) ? Direction.RIGHT : Direction.LEFT;
         attackFacing = facing;
 
-        // brief telegraph
+        // micro telegraph
         setCurrentAnimationName(facing == Direction.RIGHT ? "ATTACK_WINDUP_RIGHT" : "ATTACK_WINDUP_LEFT");
 
-        // tiny forward nudge so the dive feels like it “snaps” in
+        // tiny forward nudge for a snappy commit
         float nudge = 1.2f;
         moveXHandleCollision((facing == Direction.RIGHT ? nudge : -nudge));
     }
@@ -178,7 +193,7 @@ public class FrostDragon extends NPC {
     private void updateAttack(Player player, long now) {
         long elapsed = now - attackStart;
 
-        // lock into dive ASAP and RE-ASSERT every frame so nothing overwrites it
+        // lock into dive ASAP and re-assert the DIVE anim each frame (prevents wing cycles)
         if (!inDivePhase && elapsed >= WINDUP_MS) {
             inDivePhase = true;
         }
@@ -186,16 +201,15 @@ public class FrostDragon extends NPC {
             setCurrentAnimationName(attackFacing == Direction.RIGHT ? "ATTACK_DIVE_RIGHT" : "ATTACK_DIVE_LEFT");
         }
 
-        // --- BIGGER, CLEARER MOTION: lead the target + add “gravity” ramp ---
-        float lead = 32f; // lead ahead of the bee horizontally
+        // BIG, CLEAR MOTION: lead + gravity ramp
+        float lead = 32f; // lead horizontally
         float targetX = player.getX() + (attackFacing == Direction.RIGHT ? lead : -lead);
-        float targetY = player.getY() + 20f; // bias below player so we clearly swoop down
+        float targetY = player.getY() + 20f; // bias below player for a true nose-dive
 
         float dx = targetX - getX();
         float dy = targetY - getY();
         float dist = (float) Math.sqrt(dx * dx + dy * dy);
 
-        // ramping "gravity" feel (starts strong, eases slightly)
         float t = Math.min(1f, elapsed / (float) ATTACK_DURATION_MS);
         float gravityBoost = DIVE_EXTRA_DOWN * (0.8f + 0.4f * t);
 
@@ -208,18 +222,17 @@ public class FrostDragon extends NPC {
             dirX /= norm;
             dirY /= norm;
 
-            // speed ramps up early, then sustains
             float speed = CHASE_SPEED * (DIVE_SPEED_MULT * (0.85f + 0.35f * t));
             moveXHandleCollision(dirX * speed);
             moveYHandleCollision(dirY * speed);
         }
 
-        // DAMAGE once mid-swing
+        // damage once mid-swing
         if (!dealtThisSwing && elapsed >= ATTACK_DURATION_MS * 0.45f) {
             tryDealDamage(player);
         }
 
-        // optional micro-shake right as dive commits (helps sell impact)
+        // optional micro-shake at the moment dive commits
         if (inDivePhase && elapsed == WINDUP_MS && map != null && map.getCamera() != null) {
             map.getCamera().shake();
         }
@@ -313,7 +326,7 @@ public class FrostDragon extends NPC {
         float textY = getY();
         floatingTexts.add(new FloatingText(textX, textY, "-" + amount, Color.RED));
 
-        // universal hit FX window (lets "bee_attack1" overlay show)
+        // open the hit FX window (lets the hit spark animate)
         showAttackFx = true;
         attackFxStartTime = System.currentTimeMillis();
 
@@ -337,6 +350,7 @@ public class FrostDragon extends NPC {
 
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
+        // draw the dragon (with fade if dead)
         if (!dead) {
             super.draw(graphicsHandler);
         } else {
@@ -350,7 +364,41 @@ public class FrostDragon extends NPC {
             g2d.setComposite(old);
         }
 
-        // Auto-draw floating damage numbers relative to camera
+        // draw bee_attack1 hit FX on top while the window is open (scaled up)
+        if (showAttackFx && hitFxSheet != null && map != null && map.getCamera() != null) {
+            long elapsed = System.currentTimeMillis() - attackFxStartTime;
+
+            // derive frame count defensively
+            int fxCols = Math.max(1, hitFxSheet.getSheetWidth() / HIT_FX_W);
+            int frame = (int) Math.min(fxCols - 1, (elapsed / (HIT_FX_FRAME_DELAY * 16)) % fxCols);
+
+            // FX position: center around the dragon's torso (hitbox center)
+            java.awt.Rectangle hb = getHitbox();
+            float fxCenterX = (float) hb.getCenterX();
+            float fxCenterY = (float) hb.getCenterY();
+
+            // camera offset
+            float camX = map.getCamera().getX();
+            float camY = map.getCamera().getY();
+
+            // scaled draw size
+            int drawW = Math.round(HIT_FX_W * HIT_FX_SCALE);
+            int drawH = Math.round(HIT_FX_H * HIT_FX_SCALE);
+
+            // center the scaled sprite
+            int drawX = Math.round(fxCenterX - camX - drawW / 2f);
+            int drawY = Math.round(fxCenterY - camY - drawH / 2f);
+
+            // choose frame and mirror if facing LEFT
+            java.awt.image.BufferedImage fxImg = hitFxSheet.getSprite(0, frame);
+            if (facing == Direction.LEFT) {
+                graphicsHandler.drawImage(fxImg, drawX + drawW, drawY, -drawW, drawH);
+            } else {
+                graphicsHandler.drawImage(fxImg, drawX, drawY, drawW, drawH);
+            }
+        }
+
+        // draw floating numbers relative to camera
         if (map != null && map.getCamera() != null) {
             float camX = map.getCamera().getX();
             float camY = map.getCamera().getY();
@@ -374,7 +422,7 @@ public class FrostDragon extends NPC {
         );
     }
 
-    // ---------- attack FX hooks (match Goblin so your overlay code can use them) ----------
+    // ---------- attack FX hooks (mirrors Goblin so shared systems can poll if needed) ----------
     public boolean isShowingAttackFx() {
         return !dead && showAttackFx && (System.currentTimeMillis() - attackFxStartTime) < ATTACK_FX_DURATION_MS;
     }
@@ -425,16 +473,18 @@ public class FrostDragon extends NPC {
         map.put("ATTACK_WINDUP_RIGHT", windR);
         map.put("ATTACK_WINDUP_LEFT",  windL);
 
-        // Row 2 — DIVE (nose-first silhouettes)
+        // Row 2 — DIVE (wings tucked, head-first) — repeat one frame to eliminate any flap
+        final int DIVE_ROW = 2;
+        final int DIVE_COL_A = 4; // most tucked pose on your sheet
+        final int DIVE_COL_B = 4; // repeat same frame (no animation)
+
         Frame[] diveR = new Frame[] {
-            f(sheet,2,2,5,bx,by,bw,bh,SCALE,false),
-            f(sheet,2,3,5,bx,by,bw,bh,SCALE,false),
-            f(sheet,2,4,5,bx,by,bw,bh,SCALE,false),
+            f(sheet, DIVE_ROW, DIVE_COL_A, 6, bx,by,bw,bh,SCALE,false),
+            f(sheet, DIVE_ROW, DIVE_COL_B, 6, bx,by,bw,bh,SCALE,false),
         };
         Frame[] diveL = new Frame[] {
-            f(sheet,2,2,5,bx,by,bw,bh,SCALE,true),
-            f(sheet,2,3,5,bx,by,bw,bh,SCALE,true),
-            f(sheet,2,4,5,bx,by,bw,bh,SCALE,true),
+            f(sheet, DIVE_ROW, DIVE_COL_A, 6, bx,by,bw,bh,SCALE,true),
+            f(sheet, DIVE_ROW, DIVE_COL_B, 6, bx,by,bw,bh,SCALE,true),
         };
         map.put("ATTACK_DIVE_RIGHT", diveR);
         map.put("ATTACK_DIVE_LEFT",  diveL);
