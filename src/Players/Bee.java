@@ -86,6 +86,10 @@ public class Bee extends Player {
     // tunic blue variable
     private boolean useBlueSprites = false;
 
+    // --- Fix for stuck attack animation ---
+    private boolean waitingForSpaceRelease = false; // prevents attack looping when holding SPACE
+    private static final long ATTACK_DURATION_MS = 250; // attack lasts ~¼ second before reset
+
     private PowerupHUD powerupHUD;
     private ProjectileHUD projectileHUD;
     
@@ -416,25 +420,44 @@ public class Bee extends Player {
         }
     }
 
-    private void handleAttackInput() {
-        boolean canAttack = !attacking && (System.currentTimeMillis() - lastAttackEnd > ATTACK_COOLDOWN_MS);
+   private void handleAttackInput() {
+    long now = System.currentTimeMillis();
 
-        boolean spaceDown = Keyboard.isKeyDown(Key.SPACE);
-        boolean justPressed = spaceDown && !prevSpaceDown;
-
-        if (justPressed && canAttack) {
-            attacking = true;
-            attackStart = System.currentTimeMillis();
-            currentAnimationName = "ATTACK_" + facingDirection.name();
-            
-            // Shoot projectile if powerup is collected
-            if (hasProjectile) {
-                shootProjectile();
-            }
-        }
-
-        prevSpaceDown = spaceDown;
+    // 1. End attack automatically after its duration passes
+    if (attacking && (now - attackStart) >= ATTACK_DURATION_MS) {
+        attacking = false;
+        currentAnimationName = "STAND_" + facingDirection.name();
     }
+
+    // 2. Read SPACE key state
+    boolean spaceDown = Keyboard.isKeyDown(Key.SPACE);
+
+    // 3. If waiting for SPACE to release, do nothing until key is up
+    if (waitingForSpaceRelease) {
+        if (!spaceDown) {
+            waitingForSpaceRelease = false; // key released, ready next tap
+        }
+        return;
+    }
+
+    // 4. Edge trigger: only fire once per press
+    boolean justPressed = spaceDown && !prevSpaceDown;
+
+    // 5. Start attack if just pressed and not already attacking
+    if (justPressed && !attacking) {
+        attacking = true;
+        attackStart = now;
+        currentAnimationName = "ATTACK_" + facingDirection.name();
+
+        // keep your existing stamina or projectile lines here if needed
+        // e.g. stamina -= staminaMeleeCost;
+        // if (hasProjectile) shootProjectile();
+
+        waitingForSpaceRelease = true; // latch until key is fully released
+    }
+
+    prevSpaceDown = spaceDown; // update edge detector
+}
 
     public boolean isAttacking() {
         return attacking;

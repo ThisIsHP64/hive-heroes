@@ -7,6 +7,8 @@ import Enemies.Spider;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import Engine.Screen;
+import Engine.Keyboard;
+import Engine.Key;
 import Flowers.RareSunflowerwithFlowers;
 import Game.GameState;
 import Game.ScreenCoordinator;
@@ -19,6 +21,7 @@ import Portals.Portal;
 import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
+import NPCs.Volcano;
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -35,6 +38,29 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
     
     // floating text for nectar collection
     private ArrayList<FloatingText> floatingTexts = new ArrayList<>();
+    
+    // Key locker for volcano interaction
+    private Engine.KeyLocker eKeyLocker = new Engine.KeyLocker();
+
+    // LOTR Easter Egg - Ring timer
+    private boolean ringTimerStarted = false;
+    private long ringTimerStart = 0;
+    private static final long RING_TIMER_DURATION_MS = 10000; // 10 seconds
+    private boolean ringHordeTriggered = false;
+    
+    // Ring textbox auto-dismiss
+    private boolean ringTextboxShown = false;
+    private int ringTextboxTimer = 0;
+    private static final int RING_TEXTBOX_DURATION = 180; // 3 seconds at 60fps
+    
+    // Ring continuous shake
+    private int ringShakeTimer = 0;
+    private static final int RING_SHAKE_INTERVAL = 90; // shake every 1.5 seconds
+    
+    // Volcano destruction sequence
+    private boolean destroyingRing = false;
+    private int volcanoShakeTimer = 0;
+    private static final int VOLCANO_SHAKE_DURATION = 180; // 3 seconds at 60fps
 
     public VolcanoLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -59,6 +85,25 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
         map.preloadScripts();
 
         stingFxSheet = new SpriteSheet(ImageLoader.load("bee_attack1.png"), 32, 32);
+        
+        // DEBUG: Check if volcano exists on map
+        boolean volcanoFound = false;
+        for (NPC npc : map.getNPCs()) {
+            if (npc instanceof Volcano) {
+                volcanoFound = true;
+                System.out.println("[VolcanoLevel] ✓ Volcano found at: (" + npc.getX() + ", " + npc.getY() + ")");
+            }
+        }
+        if (!volcanoFound) {
+            System.out.println("[VolcanoLevel] ✗✗✗ WARNING: NO VOLCANO FOUND ON MAP!");
+        }
+        
+        // LOTR Easter Egg - Check if player has the ring when entering
+        if (BeeStats.hasRing() && !ringTimerStarted) {
+            ringTimerStarted = true;
+            ringTimerStart = System.currentTimeMillis();
+            System.out.println("[VolcanoLevel] Player entered with the One Ring! Timer started...");
+        }
         
         // check if bee has max nectar when entering level - trigger horde if so
         if (player instanceof Bee) {
@@ -91,12 +136,143 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                     StaticClasses.HordeManager.updateParticles();
                 }
 
+                // LOTR Easter Egg - Check ring timer
+                if (ringTimerStarted && !ringHordeTriggered && BeeStats.hasRing()) {
+                    long elapsed = System.currentTimeMillis() - ringTimerStart;
+                    if (elapsed >= RING_TIMER_DURATION_MS) {
+                        // Trigger the ring horde!
+                        ringHordeTriggered = true;
+                        map.getCamera().hordeShake();
+                        
+                        // Show ominous textbox message (will auto-close after 3 seconds)
+                        map.getTextbox().addText("This ring...");
+                        map.getTextbox().addText("it calls to me...");
+                        map.getTextbox().setIsActive(true);
+                        ringTextboxShown = true;
+                        ringTextboxTimer = 0;
+                        
+                        if (player instanceof Bee) {
+                            StaticClasses.UnleashMayhem.fire(map, (Bee) player);
+                        }
+                        
+                        System.out.println("[VolcanoLevel] Ring timer expired! The One Ring has summoned the horde!");
+                    }
+                }
+                
+                // Auto-dismiss ring textbox after 3 seconds
+                if (ringTextboxShown && map.getTextbox().isActive()) {
+                    ringTextboxTimer++;
+                    if (ringTextboxTimer >= RING_TEXTBOX_DURATION) {
+                        map.getTextbox().setIsActive(false);
+                        ringTextboxShown = false;
+                        System.out.println("[VolcanoLevel] Textbox auto-dismissed");
+                    }
+                }
+                
+                // Prevent melee attack spam while textbox is active
+                if (map.getTextbox().isActive()) {
+                    // Player can only advance textbox, not attack
+                    // This prevents the melee animation glitch
+                    if (player instanceof Bee) {
+                        Bee bee = (Bee) player;
+                        // Reset attack state if textbox is active
+                        // (Bee class should handle this, but just in case)
+                    }
+                }
+                
+                // Continuous shake while ring horde is active
+                if (ringHordeTriggered && BeeStats.hasRing() && !destroyingRing) {
+                    ringShakeTimer++;
+                    if (ringShakeTimer >= RING_SHAKE_INTERVAL) {
+                        map.getCamera().shake();
+                        ringShakeTimer = 0;
+                    }
+                }
+                
+                // Volcano destruction sequence
+                if (destroyingRing) {
+                    volcanoShakeTimer++;
+                    
+                    // Shake continuously during destruction
+                    if (volcanoShakeTimer % 20 == 0) {
+                        map.getCamera().shake();
+                    }
+                    
+                    // After shake duration, complete the destruction
+                    if (volcanoShakeTimer >= VOLCANO_SHAKE_DURATION) {
+                        // Destroy the ring
+                        BeeStats.setHasRing(false);
+                        
+                        // Stop the horde
+                        if (ringHordeTriggered || StaticClasses.UnleashMayhem.isActive()) {
+                            StaticClasses.UnleashMayhem.cease(map);
+                            System.out.println("[VolcanoLevel] The ring is destroyed! Peace returns...");
+                        }
+                        
+                        // Reset all ring state
+                        ringTimerStarted = false;
+                        ringHordeTriggered = false;
+                        destroyingRing = false;
+                        volcanoShakeTimer = 0;
+                        ringShakeTimer = 0;
+                    }
+                }
+
                 if (player instanceof Bee) {
                     Bee bee = (Bee) player;
                     
                     if (bee.isDead() && bee.isDeathAnimationComplete()) {
                         screenCoordinator.setGameState(GameState.GAME_OVER);
                         return;
+                    }
+
+                    // Check for Volcano interaction (destroy the ring) - Use 'E' key to avoid conflict with melee
+                    if (BeeStats.hasRing() && !destroyingRing) {
+                        // Check for E key press with key locker
+                        if (Keyboard.isKeyDown(Key.E) && !eKeyLocker.isKeyLocked(Key.E)) {
+                            System.out.println("[VolcanoLevel] E key pressed! Checking volcano...");
+                            eKeyLocker.lockKey(Key.E);
+                            
+                            for (NPC npc : map.getNPCs()) {
+                                if (npc instanceof Volcano) {
+                                    Volcano volcano = (Volcano) npc;
+                                    
+                                    // Calculate distance from bee center to volcano center
+                                    // Volcano is scaled 8x from 32x32, so it's 256x256 pixels
+                                    float volcanoCenterX = volcano.getX() + 128; // half of 256
+                                    float volcanoCenterY = volcano.getY() + 128;
+                                    
+                                    float beeCenterX = bee.getX() + bee.getWidth() / 2f;
+                                    float beeCenterY = bee.getY() + bee.getHeight() / 2f;
+                                    
+                                    float distance = (float) Math.sqrt(
+                                        Math.pow(beeCenterX - volcanoCenterX, 2) + 
+                                        Math.pow(beeCenterY - volcanoCenterY, 2)
+                                    );
+                                    
+                                    System.out.println("[VolcanoLevel] Bee position: (" + beeCenterX + ", " + beeCenterY + ")");
+                                    System.out.println("[VolcanoLevel] Volcano position: (" + volcanoCenterX + ", " + volcanoCenterY + ")");
+                                    System.out.println("[VolcanoLevel] Distance: " + distance + " (need < 350)");
+                                    
+                                    if (distance < 350) {
+                                        // Player is close enough to the volcano - start destruction!
+                                        System.out.println("[VolcanoLevel] ✓✓✓ SUCCESS! Throwing the One Ring into Mount Doom!");
+                                        
+                                        destroyingRing = true;
+                                        volcanoShakeTimer = 0;
+                                        
+                                        break;
+                                    } else {
+                                        System.out.println("[VolcanoLevel] ✗✗✗ TOO FAR! Get closer!");
+                                    }
+                                }
+                            }
+                        }
+                        
+                        // Unlock E key when released
+                        if (Keyboard.isKeyUp(Key.E)) {
+                            eKeyLocker.unlockKey(Key.E);
+                        }
                     }
 
                     if (bee.isAttacking()) {
@@ -268,6 +444,13 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
 
     public void resetLevel() { 
         StaticClasses.UnleashMayhem.reset();
+        ringTimerStarted = false;
+        ringHordeTriggered = false;
+        ringTextboxShown = false;
+        ringTextboxTimer = 0;
+        destroyingRing = false;
+        volcanoShakeTimer = 0;
+        ringShakeTimer = 0;
         initialize(); 
     }
 
