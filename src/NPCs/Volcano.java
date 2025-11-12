@@ -61,20 +61,18 @@ public class Volcano extends NPC {
 
     /**
      * Call this from your ring-destruction logic (e.g., when the player presses E at the altar).
-     * Triggers sprite shake + epic screen FX.
+     * Triggers sprite shake + camera shake (screen will clear after timer in VolcanoLevelScreen).
      */
     public void triggerRingDestroyFX() {
-        // Local sprite rumble
-        shaker.start(5.0f, 1400); // intensity px, duration ms
+        // MODIFIED: Local sprite rumble - BIGGER shake for dramatic effect (was 5.0f, now 12.0f)
+        shaker.start(12.0f, 1400); // intensity px, duration ms
 
-        // Optional global camera shake (requires Effects.CameraShake + a translate hook in your renderer)
+        // Global camera shake
         try {
             CameraShake.start(6.0f, 900); // intensity, duration ms
         } catch (Throwable ignored) {}
-
-        // Full-screen effects (flash to negative, then darken)
-        ScreenFX.start(ScreenFX.Effect.INVERT, 180, 1.0f);   // quick negative flash
-        ScreenFX.start(ScreenFX.Effect.DARKEN, 1200, 0.65f); // dramatic dim
+        
+        // NOTE: Screen invert clears in VolcanoLevelScreen after 3 second timer
     }
 
     @Override

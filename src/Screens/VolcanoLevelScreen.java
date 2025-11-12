@@ -145,8 +145,8 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                         ringHordeTriggered = true;
                         map.getCamera().hordeShake();
                         
-                        // MODIFIED: Start screen darkness effect - stays dark until ring is destroyed
-                        ScreenFX.start(ScreenFX.Effect.DARKEN, Integer.MAX_VALUE, 0.5f);
+                        // MODIFIED: Start INVERTED screen effect - stays inverted until ring is destroyed
+                        ScreenFX.start(ScreenFX.Effect.INVERT, Integer.MAX_VALUE, 1.0f);
                         
                         // Show ominous textbox message (will auto-close after 3 seconds)
                         map.getTextbox().addText("This ring...");
@@ -220,11 +220,9 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                         // ADDED: Clear screen darkness effect
                         ScreenFX.start(ScreenFX.Effect.NONE, 0, 0f);
                         
-                        // Stop the horde
-                        if (ringHordeTriggered || StaticClasses.UnleashMayhem.isActive()) {
-                            StaticClasses.UnleashMayhem.cease(map);
-                            System.out.println("[VolcanoLevel] The ring is destroyed! Peace returns...");
-                        }
+                        // MODIFIED: Horde already ceased when ring was thrown, just ensure it's reset
+                        StaticClasses.UnleashMayhem.reset();
+                        System.out.println("[VolcanoLevel] The ring is destroyed! Peace returns...");
                         
                         // ADDED: Remove all horde enemies from the map
                         map.getNPCs().removeIf(npc -> 
@@ -247,6 +245,11 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
 
                 if (player instanceof Bee) {
                     Bee bee = (Bee) player;
+                    
+                    // ADDED: Clear screen effects if bee just died
+                    if (bee.isDead()) {
+                        ScreenFX.start(ScreenFX.Effect.NONE, 0, 0f);
+                    }
                     
                     if (bee.isDead() && bee.isDeathAnimationComplete()) {
                         screenCoordinator.setGameState(GameState.GAME_OVER);
@@ -287,6 +290,12 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                         
                                         // ADDED: Trigger epic volcano visual effects (shake, flash, darken)
                                         volcano.triggerRingDestroyFX();
+                                        
+                                        // ADDED: Stop horde from attacking immediately
+                                        if (ringHordeTriggered || StaticClasses.UnleashMayhem.isActive()) {
+                                            StaticClasses.UnleashMayhem.cease(map);
+                                            System.out.println("[VolcanoLevel] Horde ceased! Enemies stop attacking.");
+                                        }
                                         
                                         destroyingRing = true;
                                         volcanoShakeTimer = 0;
@@ -473,6 +482,9 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
     }
 
     public void resetLevel() { 
+        // ADDED: Clear any lingering screen effects
+        ScreenFX.start(ScreenFX.Effect.NONE, 0, 0f);
+        
         StaticClasses.UnleashMayhem.reset();
         ringTimerStarted = false;
         ringHordeTriggered = false;

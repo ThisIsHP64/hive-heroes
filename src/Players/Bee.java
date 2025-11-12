@@ -2,6 +2,7 @@ package Players;
 
 import Builders.FrameBuilder;
 import Effects.FloatingText;
+import Effects.ScreenFX; // ADDED: For clearing screen effects on death
 import Enemies.Bat;
 import Enemies.Spider;
 import Engine.GamePanel;
@@ -240,6 +241,13 @@ public class Bee extends Player {
             BeeStats.setDead(true);
             BeeStats.setWalkSpeed(0);
             System.out.println("Bee died! Playing death animation...");
+            
+            // ADDED: Clear any screen effects when bee dies (darkness from ring horde)
+            try {
+                Effects.ScreenFX.start(Effects.ScreenFX.Effect.NONE, 0, 0f);
+            } catch (Exception e) {
+                // Fail silently if ScreenFX not available
+            }
         }
     }
 
