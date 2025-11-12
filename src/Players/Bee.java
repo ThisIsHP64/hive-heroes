@@ -439,6 +439,19 @@ public class Bee extends Player {
         }
     }
 
+    // Check if player is near any NPC (for prioritizing dialogue over shooting)
+    private boolean isNearNPC() {
+        if (map == null) return false;
+        
+        // Check all NPCs to see if any are close enough to interact with
+        for (var npc : map.getNPCs()) {
+            if (this.intersects(npc)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void handleAttackInput() {
         long now = System.currentTimeMillis();
 
@@ -470,8 +483,11 @@ public class Bee extends Player {
             meleeDealtThisSwing = false; // ADDED: reset swing-latch
             currentAnimationName = "ATTACK_" + facingDirection.name();
 
-            // keep your existing stamina or projectile lines here if needed
-            // if (hasProjectile) shootProjectile();
+            // Only shoot projectile if we have it AND we're not near an NPC
+            // (NPCs take priority for SPACE interaction)
+            if (hasProjectile && !isNearNPC()) {
+                shootProjectile();
+            }
 
             waitingForSpaceRelease = true; // latch until key is fully released
         }
