@@ -5,6 +5,12 @@ import Effects.FloatingText;
 import Effects.ScreenFX; // ADDED: For clearing screen effects on death
 import Enemies.Bat;
 import Enemies.Spider;
+
+// ADDED: make melee connect with these guys
+import Enemies.Goblin;
+import Enemies.FrostDragon;
+import Enemies.Crab;
+
 import Engine.GamePanel;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
@@ -29,7 +35,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
-
 public class Bee extends Player {
 
     private static final int TILE = 64;
@@ -44,6 +49,10 @@ public class Bee extends Player {
     // attack timing
     private static final int ATTACK_ACTIVE_MS = 120;
     private static final int ATTACK_COOLDOWN_MS = 10;
+
+    // ADDED: melee damage amount + one-hit latch per swing
+    private static final int MELEE_DAMAGE = 15;
+    private boolean meleeDealtThisSwing = false;
 
     private boolean attacking = false;
     private long attackStart = 0L;
@@ -387,6 +396,15 @@ public class Bee extends Player {
         handleAttackInput();
         handleTunicInput();
 
+        // ADDED: while the swing is active and we haven't hit yet, check for melee hits once
+        if (attacking && !meleeDealtThisSwing) {
+            long now = System.currentTimeMillis();
+            long elapsed = now - attackStart;
+            // sweet spot roughly mid-swing (don’t be too strict)
+            if (elapsed >= 60 && elapsed <= ATTACK_ACTIVE_MS) {
+                tryMeleeDamage();
+            }
+        }
 
         if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true
             && BeeStats.hasTunic() == false) {
@@ -397,13 +415,6 @@ public class Bee extends Player {
         }
 
         resourceBars.update();
-        // int tileX = (int) (getX() / TILE);
-        // int tileY = (int) (getY() / TILE);
-
-        // System.out.println(String.format(
-        //         "Level: %d  Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d  X: %d  Y: %d",
-        //         BeeStats.getCurrentLevel(), BeeStats.getHealth(), BeeStats.getStamina(), BeeStats.getNectar(), BeeStats.getExperience(),
-        //         BeeStats.getWalkSpeed(), HiveManager.getNectar(), tileX, tileY));
         
         if (attacking && System.currentTimeMillis() - attackStart > ATTACK_ACTIVE_MS) {
             attacking = false;
@@ -428,44 +439,117 @@ public class Bee extends Player {
         }
     }
 
-   private void handleAttackInput() {
-    long now = System.currentTimeMillis();
+    private void handleAttackInput() {
+        long now = System.currentTimeMillis();
 
-    // 1. End attack automatically after its duration passes
-    if (attacking && (now - attackStart) >= ATTACK_DURATION_MS) {
-        attacking = false;
-        currentAnimationName = "STAND_" + facingDirection.name();
-    }
-
-    // 2. Read SPACE key state
-    boolean spaceDown = Keyboard.isKeyDown(Key.SPACE);
-
-    // 3. If waiting for SPACE to release, do nothing until key is up
-    if (waitingForSpaceRelease) {
-        if (!spaceDown) {
-            waitingForSpaceRelease = false; // key released, ready next tap
+        // 1. End attack automatically after its duration passes
+        if (attacking && (now - attackStart) >= ATTACK_DURATION_MS) {
+            attacking = false;
+            currentAnimationName = "STAND_" + facingDirection.name();
         }
-        return;
+
+        // 2. Read SPACE key state
+        boolean spaceDown = Keyboard.isKeyDown(Key.SPACE);
+
+        // 3. If waiting for SPACE to release, do nothing until key is up
+        if (waitingForSpaceRelease) {
+            if (!spaceDown) {
+                waitingForSpaceRelease = false; // key released, ready next tap
+            }
+            prevSpaceDown = spaceDown; // keep this in sync
+            return;
+        }
+
+        // 4. Edge trigger: only fire once per press
+        boolean justPressed = spaceDown && !prevSpaceDown;
+
+        // 5. Start attack if just pressed and not already attacking
+        if (justPressed && !attacking) {
+            attacking = true;
+            attackStart = now;
+            meleeDealtThisSwing = false; // ADDED: reset swing-latch
+            currentAnimationName = "ATTACK_" + facingDirection.name();
+
+            // keep your existing stamina or projectile lines here if needed
+            // if (hasProjectile) shootProjectile();
+
+            waitingForSpaceRelease = true; // latch until key is fully released
+        }
+
+        prevSpaceDown = spaceDown; // update edge detector
     }
 
-    // 4. Edge trigger: only fire once per press
-    boolean justPressed = spaceDown && !prevSpaceDown;
+    // ADDED: melee hit check against enemies we actually have types for
+    private void tryMeleeDamage() {
+        if (map == null) return;
 
-    // 5. Start attack if just pressed and not already attacking
-    if (justPressed && !attacking) {
-        attacking = true;
-        attackStart = now;
-        currentAnimationName = "ATTACK_" + facingDirection.name();
+        java.awt.Rectangle atk = getAttackHitbox();
+        if (atk.width <= 0 || atk.height <= 0) return;
 
-        // keep your existing stamina or projectile lines here if needed
-        // e.g. stamina -= staminaMeleeCost;
-        // if (hasProjectile) shootProjectile();
+        boolean hitSomething = false;
 
-        waitingForSpaceRelease = true; // latch until key is fully released
+        for (var npc : new ArrayList<>(map.getNPCs())) {
+            // Goblin
+            if (npc instanceof Goblin) {
+                Goblin g = (Goblin) npc;
+                if (g.getHitbox().intersects(atk)) {
+                    g.takeDamage(MELEE_DAMAGE);
+                    hitSomething = true;
+                }
+            }
+            // Frost Dragon
+            else if (npc instanceof FrostDragon) {
+                FrostDragon d = (FrostDragon) npc;
+                // FrostDragon has getHitbox() in the version I gave you
+                if (d.getHitbox().intersects(atk)) {
+                    d.takeDamage(MELELE_DAMAGE_FIX()); // see helper below to avoid typo
+                    hitSomething = true;
+                }
+            }
+            // Spider
+            else if (npc instanceof Spider) {
+                Spider s = (Spider) npc;
+                try {
+                    if (s.getHitbox().intersects(atk)) {
+                        s.takeDamage(MELEE_DAMAGE);
+                        hitSomething = true;
+                    }
+                } catch (Throwable ignored) {}
+            }
+            // Bat
+            else if (npc instanceof Bat) {
+                Bat b = (Bat) npc;
+                try {
+                    if (b.getHitbox().intersects(atk)) {
+                        b.takeDamage(MELEE_DAMAGE);
+                        hitSomething = true;
+                    }
+                } catch (Throwable ignored) {}
+            }
+            // Crab
+            else if (npc instanceof Enemies.Crab) {
+                Crab c = (Crab) npc;
+                try {
+                    if (c.getHitbox().intersects(atk)) {
+                        c.takeDamage(MELEE_DAMAGE);
+                        hitSomething = true;
+                    }
+                } catch (Throwable ignored) {}
+            }
+        }
+
+        if (hitSomething) {
+            meleeDealtThisSwing = true;
+
+            // little feedback
+            if (map != null && map.getCamera() != null) {
+                map.getCamera().shake();
+            }
+        }
     }
 
-    prevSpaceDown = spaceDown; // update edge detector
-}
+    // tiny shim to keep the code compiling if you paste quickly (spotted a typo hazard)
+    private int MELELE_DAMAGE_FIX() { return MELEE_DAMAGE; }
 
     public boolean isAttacking() {
         return attacking;
@@ -611,7 +695,6 @@ public class Bee extends Player {
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet walkSheet) {
         boolean isRed = useRedSprites || BeeStats.isTunicActive();
         boolean isBlue = useBlueSprites || BeeStats.isBlueTunicActive();
-
 
         SpriteSheet idleSheet = new SpriteSheet(ImageLoader.load(
         isRed ? "Bee_Idle_Red.png" :
