@@ -321,7 +321,7 @@ public class GameObject extends AnimatedSprite {
 		this.map = map;
 	}
 
-	@Override
+	// @Override
 	public void draw(GraphicsHandler graphicsHandler) {
 		if (map != null) {
 			graphicsHandler.drawImage(
@@ -334,20 +334,20 @@ public class GameObject extends AnimatedSprite {
 
 			// UNCOMMENT TO DRAW ALL HITBOXES
 			Rectangle bounds = getBounds();
-			float camX = map.getCamera().getX();
-			float camY = map.getCamera().getY();
+			// float camX = map.getCamera().getX();
+			// float camY = map.getCamera().getY();
 
-			int screenX = (int)(bounds.getX() - camX);
-			int screenY = (int)(bounds.getY() - camY);
+			// int screenX = (int)(bounds.getX() - camX);
+			// int screenY = (int)(bounds.getY() - camY);
 
-			graphicsHandler.drawRectangle(
-			screenX,
-			screenY,
-			bounds.getWidth(),
-			bounds.getHeight(),
-			java.awt.Color.RED,
-			2
-			);
+			// graphicsHandler.drawRectangle(
+			// screenX,
+			// screenY,
+			// bounds.getWidth(),
+			// bounds.getHeight(),
+			// java.awt.Color.RED,
+			// 2
+			// );
 
 		} else {
 			super.draw(graphicsHandler);
