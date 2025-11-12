@@ -4,7 +4,7 @@ import Level.Script;
 import ScriptActions.*;
 import java.util.ArrayList;
 
-public class CarlScript extends Script {
+public class RuthScript extends Script {
 
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
@@ -13,8 +13,9 @@ public class CarlScript extends Script {
         scriptActions.add(new LockPlayerScriptAction());
         
         scriptActions.add(new TextboxScriptAction() {{
-            addText("Name's Carl. Pest Control Division.");
-            addText("I don't know how i got here");
+            addText("Her words still coil.");
+            addText("Survive....");
+            addText("I can't stop hearing them.");
         }});
         
         scriptActions.add(new UnlockPlayerScriptAction());
