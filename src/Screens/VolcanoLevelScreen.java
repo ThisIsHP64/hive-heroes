@@ -145,8 +145,8 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                         ringHordeTriggered = true;
                         map.getCamera().hordeShake();
                         
-                        // MODIFIED: Start INVERTED screen effect - stays inverted until ring is destroyed
-                        ScreenFX.start(ScreenFX.Effect.INVERT, Integer.MAX_VALUE, 1.0f);
+                        // MODIFIED: Start PULSING RED VIGNETTE - evil darkness breathing from edges
+                        ScreenFX.start(ScreenFX.Effect.RED_VIGNETTE_PULSE, Integer.MAX_VALUE, 0.5f);
                         
                         // Show ominous textbox message (will auto-close after 3 seconds)
                         map.getTextbox().addText("This ring...");
