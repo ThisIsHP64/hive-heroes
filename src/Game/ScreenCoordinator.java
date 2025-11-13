@@ -17,7 +17,6 @@ public class ScreenCoordinator extends Screen {
 
     // default screens
     protected MenuScreen menuScreen;
-    protected OptionsScreen optionsScreen;
     protected CreditsScreen creditsScreen;
     protected WinScreen winScreen;
     protected GameOverScreen gameOverScreen;
@@ -57,7 +56,6 @@ public class ScreenCoordinator extends Screen {
         // default screens
         menuScreen = new MenuScreen(this);
         gameOverScreen = new GameOverScreen(this);
-        optionsScreen = new OptionsScreen(this);
         creditsScreen = new CreditsScreen(this);
 
         // demo level screen
@@ -96,10 +94,6 @@ public class ScreenCoordinator extends Screen {
                         MusicManager.stopAll();
                         MusicManager.playLoop(Music.MENU);
                         currentScreen = menuScreen;
-                        break;
-
-                    case OPTIONS:
-                        currentScreen = optionsScreen;
                         break;
 
                     case CREDITS:
