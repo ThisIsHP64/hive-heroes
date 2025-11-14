@@ -171,6 +171,10 @@ public class Textbox {
         graphicsHandler.drawFilledRectangleWithBorder(x, y, width, height, Color.white, Color.black, 2);
 
         if (text != null) {
+            // FIXED: Recalculate text Y position to match current box position
+            int fontY = !map.getCamera().isAtBottomOfMap() ? fontBottomY : fontTopY;
+            text.setY(fontY);
+            
             // draw text in textbox
             text.drawWithParsedNewLines(graphicsHandler, 10);
             
@@ -180,6 +184,12 @@ public class Textbox {
                 // to prevent it from covering the player
                 int optionY = !map.getCamera().isAtBottomOfMap() ? optionBottomY : optionTopY;
                 graphicsHandler.drawFilledRectangleWithBorder(optionX, optionY, optionWidth, optionHeight, Color.white, Color.black, 2);
+
+                // FIXED: Update option text Y positions to match current box position
+                int fontOptionY = !map.getCamera().isAtBottomOfMap() ? fontOptionBottomYStart : fontOptionTopYStart;
+                for (int i = 0; i < options.size(); i++) {
+                    options.get(i).setY(fontOptionY + (i * fontOptionSpacing));
+                }
 
                 // draw each option text
                 for (SpriteFont option : options) {

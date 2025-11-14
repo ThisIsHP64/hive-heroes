@@ -13,9 +13,9 @@ public class EarlScript extends Script {
         scriptActions.add(new LockPlayerScriptAction());
         
         scriptActions.add(new TextboxScriptAction() {{
-            addText("Collect.");
-            addText("Serve.");
-            addText("All hail Queen Bee.");
+            addText("Earl: Collect.");
+            addText("Earl: Serve.");
+            addText("Earl: All hail Queen Bee.");
         }});
         
         scriptActions.add(new UnlockPlayerScriptAction());

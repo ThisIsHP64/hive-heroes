@@ -13,9 +13,9 @@ public class GeneScript extends Script {
         scriptActions.add(new LockPlayerScriptAction());
         
         scriptActions.add(new TextboxScriptAction() {{
-            addText("Flew for the Queen.");
-            addText("Fell for the hive.");
-            addText("Burned by both.");
+            addText("Gene: Flew for the Queen.");
+            addText("Gene: Fell for the hive.");
+            addText("Gene: Burned by both.");
         }});
         
         scriptActions.add(new UnlockPlayerScriptAction());

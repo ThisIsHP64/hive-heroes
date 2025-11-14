@@ -50,6 +50,13 @@ public class FrostTunic extends NPC {
             if (player instanceof Bee bee) {
                 System.out.println("Frost Tunic collected!");
                 bee.obtainBlueTunic();
+                
+                // Show collection message in textbox
+                if (map != null && map.getTextbox() != null) {
+                    map.getTextbox().addText("Frost Tunic acquired");
+                    map.getTextbox().setIsActive(true);
+                }
+                
                 collect();
             }
         }

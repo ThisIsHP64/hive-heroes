@@ -13,8 +13,9 @@ public class CarlScript extends Script {
         scriptActions.add(new LockPlayerScriptAction());
         
         scriptActions.add(new TextboxScriptAction() {{
-            addText("Name's Carl. Pest Control Division.");
-            addText("I don't know how i got here");
+            addText("Name's Carl. Pest control at your service!");
+            addText("You know I use to be a hero like you but then I \ntook a stinger to the knee...");
+            addText("And then I ended up in this place....");
         }});
         
         scriptActions.add(new UnlockPlayerScriptAction());

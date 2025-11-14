@@ -13,8 +13,8 @@ public class HankScript extends Script {
         scriptActions.add(new LockPlayerScriptAction());
         
         scriptActions.add(new TextboxScriptAction() {{
-            addText("Her light chose me.");
-            addText("Her shadow kept me.");
+            addText("Hank: Her light chose me.");
+            addText("Hank: Her shadow kept me.");
         }});
         
         scriptActions.add(new UnlockPlayerScriptAction());

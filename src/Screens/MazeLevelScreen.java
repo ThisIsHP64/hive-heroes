@@ -109,8 +109,8 @@ public class MazeLevelScreen extends Screen implements GameListener {
                                     BeeStats.setHasRing(true);
                                     // Show ring icon in HUD
                                     bee.showRingIcon();
-                                    map.getTextbox().addText("Random Ring.");
-                                    map.getTextbox().addText("Looks shiny, I'll grab it.");
+                                    map.getTextbox().addText("Hmm random shiny ring.");
+                                    map.getTextbox().addText("I'll grab it");
                                     map.getTextbox().setIsActive(true);
                                     keyLocker.lockKey(Key.SPACE);
                                 }
@@ -130,7 +130,8 @@ public class MazeLevelScreen extends Screen implements GameListener {
                                 if (!tunic.isCollected() && distance < 120) {
                                     tunic.collect();
                                     fireTunicCollected = true;
-                                    map.getTextbox().addText("Volcanic Tunic Acquired");
+                                    map.getTextbox().addText("The Volcanic Tunic!");
+                                    map.getTextbox().addText("This will protect me from the flames.");
                                     map.getTextbox().addText("Returning to Grass Level...");
                                     map.getTextbox().setIsActive(true);
                                     pendingTeleportToGrass = true;
@@ -169,18 +170,21 @@ public class MazeLevelScreen extends Screen implements GameListener {
                     }
                 }
                 
-                // Remove fully faded OneRing and dismiss textbox
+                // Remove fully faded OneRing and dismiss textbox (only if queue is empty)
                 map.getNPCs().removeIf(npc -> {
                     if (npc instanceof NPCs.OneRing) {
                         NPCs.OneRing ring = (NPCs.OneRing) npc;
                         if (ring.isCollected() && ring.hasFadedOut()) {
-                            // Close textbox when ring fade completes
-                            if (map.getTextbox().isActive()) {
+                            // Only close textbox if all messages have been read
+                            if (map.getTextbox().isActive() && map.getTextbox().isTextQueueEmpty()) {
                                 map.getTextbox().setIsActive(false);
                                 keyLocker.unlockKey(Key.SPACE);
                                 System.out.println("Ring faded - textbox closed and SPACE unlocked");
                             }
-                            return true;
+                            // Remove ring even if textbox still active (player still reading)
+                            if (map.getTextbox().isTextQueueEmpty()) {
+                                return true;
+                            }
                         }
                     }
                     return false;

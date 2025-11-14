@@ -13,9 +13,9 @@ public class DougScript extends Script {
         scriptActions.add(new LockPlayerScriptAction());
         
         scriptActions.add(new TextboxScriptAction() {{
-            addText("Gold rivers.");
-            addText("Sweet air.");
-            addText("Drowned in her promise.");
+            addText("Doug: Gold rivers.");
+            addText("Doug: Sweet air.");
+            addText("Doug: Drowned in her promise.");
         }});
         
         scriptActions.add(new UnlockPlayerScriptAction());
