@@ -38,7 +38,8 @@ public class MusicManager {
             tracks.put(Music.VOLCANO, new Music("Resources/audio/volcano.wav", 81.8, 9));
             tracks.put(Music.DUNGEON, new Music("Resources/audio/dungeon.wav", 100, 0));
             tracks.put(Music.SNOW, new Music("Resources/audio/snow.wav", 90, 5));
-            tracks.put(Music.MAZE, new Music("Resources/audio/hive.wav", 90, 9));
+            tracks.put(Music.MAZE, new Music("Resources/audio/maze.wav", 90, 9));
+            tracks.put(Music.BOSS, new Music("Resources/audio/boss.wav", 90, 9));
         }
     }
 }
