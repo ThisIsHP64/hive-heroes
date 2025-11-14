@@ -13,9 +13,9 @@ public class WalterScript extends Script {
         scriptActions.add(new LockPlayerScriptAction());
         
         scriptActions.add(new TextboxScriptAction() {{
-            addText("Collect nectar.");
-            addText("Ensure survival.");
-            addText("I should've known.");
+            addText("Walter: Collect nectar.");
+            addText("Walter: Ensure survival.");
+            addText("Walter: I should've known.");
         }});
         
         scriptActions.add(new UnlockPlayerScriptAction());

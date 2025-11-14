@@ -13,9 +13,9 @@ public class RuthScript extends Script {
         scriptActions.add(new LockPlayerScriptAction());
         
         scriptActions.add(new TextboxScriptAction() {{
-            addText("Her words still coil.");
-            addText("Survive....");
-            addText("I can't stop hearing them.");
+            addText("Ruth: Her words still coil.");
+            addText("Ruth: Survive....");
+            addText("Ruth: I can't stop hearing them.");
         }});
         
         scriptActions.add(new UnlockPlayerScriptAction());

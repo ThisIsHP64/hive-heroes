@@ -149,8 +149,9 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                         ScreenFX.start(ScreenFX.Effect.RED_VIGNETTE_PULSE, Integer.MAX_VALUE, 0.5f);
                         
                         // Show ominous textbox message (will auto-close after 3 seconds)
-                        map.getTextbox().addText("This ring...");
-                        map.getTextbox().addText("it calls to me...");
+                        map.getTextbox().addText("The ring...it calls to me...");
+                        map.getTextbox().addText("Dark whispers echo through the flames...");
+                        map.getTextbox().addText("I must find a place to destroy this");
                         map.getTextbox().setIsActive(true);
                         ringTextboxShown = true;
                         ringTextboxTimer = 0;
@@ -163,14 +164,11 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                     }
                 }
                 
-                // Auto-dismiss ring textbox after 3 seconds
-                if (ringTextboxShown && map.getTextbox().isActive()) {
-                    ringTextboxTimer++;
-                    if (ringTextboxTimer >= RING_TEXTBOX_DURATION) {
-                        map.getTextbox().setIsActive(false);
-                        ringTextboxShown = false;
-                        System.out.println("[VolcanoLevel] Textbox auto-dismissed");
-                    }
+                // Close textbox when player has read all messages
+                if (ringTextboxShown && map.getTextbox().isActive() && map.getTextbox().isTextQueueEmpty()) {
+                    map.getTextbox().setIsActive(false);
+                    ringTextboxShown = false;
+                    System.out.println("[VolcanoLevel] Ring textbox closed - all messages read");
                 }
                 
                 // Prevent melee attack spam while textbox is active

@@ -13,9 +13,9 @@ public class FrankScript extends Script {
         scriptActions.add(new LockPlayerScriptAction());
         
         scriptActions.add(new TextboxScriptAction() {{
-            addText("The hum still calls.");
-            addText("Collect nectar.");
-            addText("I should've known.");
+            addText("Frank: The hum still calls.");
+            addText("Frank: Collect nectar.");
+            addText("Frank: I should've known.");
         }});
         
         scriptActions.add(new UnlockPlayerScriptAction());
