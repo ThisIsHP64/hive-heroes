@@ -6,6 +6,9 @@ import java.util.Random;
 
 import Enemies.Spider;
 import Enemies.Bat;
+import Enemies.FrostDragon;
+import Enemies.Crab;
+import Enemies.Goblin;
 import Level.Map;
 import Level.NPC;
 import Players.Bee;
@@ -53,6 +56,12 @@ public final class HordeManager {
                 ((Spider) npc).takeDamage(999);
             } else if (npc instanceof Bat) {
                 ((Bat) npc).takeDamage(999);
+            } else if (npc instanceof FrostDragon) {
+                ((FrostDragon) npc).takeDamage(999);
+            } else if (npc instanceof Crab) {
+                ((Crab) npc).takeDamage(999);
+            } else if (npc instanceof Goblin) {
+                ((Goblin) npc).takeDamage(999);
             }
         }
         
@@ -71,6 +80,24 @@ public final class HordeManager {
                         bat.takeDamage(999);
                     }
                     return bat.shouldRemove();
+                } else if (npc instanceof FrostDragon) {
+                    FrostDragon dragon = (FrostDragon) npc;
+                    if (!dragon.isDead()) {
+                        dragon.takeDamage(999);
+                    }
+                    return dragon.canBeRemoved();
+                } else if (npc instanceof Crab) {
+                    Crab crab = (Crab) npc;
+                    if (!crab.isDead()) {
+                        crab.takeDamage(999);
+                    }
+                    return crab.canBeRemoved();
+                } else if (npc instanceof Goblin) {
+                    Goblin goblin = (Goblin) npc;
+                    if (!goblin.isDead()) {
+                        goblin.takeDamage(999);
+                    }
+                    return goblin.canBeRemoved();
                 }
                 return false;
             });
@@ -110,6 +137,12 @@ public final class HordeManager {
                 shouldRemove = ((Spider) npc).canBeRemoved();
             } else if (npc instanceof Bat) {
                 shouldRemove = ((Bat) npc).shouldRemove();
+            } else if (npc instanceof FrostDragon) {
+                shouldRemove = ((FrostDragon) npc).canBeRemoved();
+            } else if (npc instanceof Crab) {
+                shouldRemove = ((Crab) npc).canBeRemoved();
+            } else if (npc instanceof Goblin) {
+                shouldRemove = ((Goblin) npc).canBeRemoved();
             }
             
             if (shouldRemove) {
@@ -156,7 +189,9 @@ public final class HordeManager {
         System.out.println("[HordeManager] Current NPC count: " + map.getNPCs().size());
         
         // check which map we're on to determine what to spawn
-        boolean isGrassMap = map.getClass().getSimpleName().equals("GrassMap");
+        String mapName = map.getClass().getSimpleName();
+        boolean isGrassMap = mapName.equals("GrassMap");
+        boolean isFrostMap = mapName.equals("FrostMap") || mapName.equals("DungeonMap");
         
         for (int i = 0; i < count; i++) {
             Point spawn = pickSpawnOutsideCamera(map, bee);
@@ -169,6 +204,32 @@ public final class HordeManager {
                 s.setMap(map);
                 enemy = s;
                 System.out.println("[HordeManager] Spawned horde spider #" + i + " at: " + spawn.x + ", " + spawn.y);
+            } else if (isFrostMap) {
+                // frost level: spawn FrostDragon, Crab, Goblin (20% dragon, 40% crab, 40% goblin)
+                int roll = rng.nextInt(100);
+                
+                if (roll < 20) {
+                    // 20% chance: FrostDragon (rare, powerful)
+                    FrostDragon dragon = new FrostDragon(spawn);
+                    dragon.setHordeAggression(SPEED_MULT, running);
+                    dragon.setMap(map);
+                    enemy = dragon;
+                    System.out.println("[HordeManager] Spawned horde FrostDragon #" + i + " at: " + spawn.x + ", " + spawn.y);
+                } else if (roll < 60) {
+                    // 40% chance: Crab
+                    Crab crab = new Crab(spawn);
+                    crab.setHordeAggression(SPEED_MULT, running);
+                    crab.setMap(map);
+                    enemy = crab;
+                    System.out.println("[HordeManager] Spawned horde Crab #" + i + " at: " + spawn.x + ", " + spawn.y);
+                } else {
+                    // 40% chance: Goblin
+                    Goblin goblin = new Goblin(spawn);
+                    goblin.setHordeAggression(SPEED_MULT, running);
+                    goblin.setMap(map);
+                    enemy = goblin;
+                    System.out.println("[HordeManager] Spawned horde Goblin #" + i + " at: " + spawn.x + ", " + spawn.y);
+                }
             } else {
                 // volcanic level: 50/50 mix of spiders and bats
                 if (rng.nextBoolean()) {
@@ -204,6 +265,12 @@ public final class HordeManager {
                 ((Spider) npc).setHordeAggression(SPEED_MULT, on);
             } else if (npc instanceof Bat) {
                 ((Bat) npc).setHordeAggression(SPEED_MULT, on);
+            } else if (npc instanceof FrostDragon) {
+                ((FrostDragon) npc).setHordeAggression(SPEED_MULT, on);
+            } else if (npc instanceof Crab) {
+                ((Crab) npc).setHordeAggression(SPEED_MULT, on);
+            } else if (npc instanceof Goblin) {
+                ((Goblin) npc).setHordeAggression(SPEED_MULT, on);
             }
         }
     }
@@ -215,7 +282,8 @@ public final class HordeManager {
     private static int countMapEnemies(Map map) {
         int c = 0;
         for (var npc : map.getNPCs()) {
-            if (npc instanceof Spider || npc instanceof Bat) {
+            if (npc instanceof Spider || npc instanceof Bat || 
+                npc instanceof FrostDragon || npc instanceof Crab || npc instanceof Goblin) {
                 c++;
             }
         }
@@ -227,7 +295,8 @@ public final class HordeManager {
         int bx = (int) bee.getX(), by = (int) bee.getY();
         int r2 = radiusPx * radiusPx;
         for (var npc : map.getNPCs()) {
-            if (npc instanceof Spider || npc instanceof Bat) {
+            if (npc instanceof Spider || npc instanceof Bat || 
+                npc instanceof FrostDragon || npc instanceof Crab || npc instanceof Goblin) {
                 int dx = (int) npc.getX() - bx;
                 int dy = (int) npc.getY() - by;
                 if (dx * dx + dy * dy <= r2)

@@ -1,11 +1,11 @@
 package Engine;
 
+import Effects.ScreenFX;
 import GameObject.ImageEffect;
 import java.awt.*;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-
 
 public class GraphicsHandler {
     private Graphics2D g;
@@ -104,11 +104,18 @@ public class GraphicsHandler {
     }
 
     // draw a semi-transparent overlay across the entire screen
-public void drawOverlay(Color color, float alpha) {
-    Composite originalComposite = g.getComposite();
-    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-    g.setColor(color);
-    g.fillRect(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight());
-    g.setComposite(originalComposite);
-}
+    public void drawOverlay(Color color, float alpha) {
+        Composite originalComposite = g.getComposite();
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+        g.setColor(color);
+        g.fillRect(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight());
+        g.setComposite(originalComposite);
+    }
+
+    // === NEW: apply active full-screen post effect at end-of-frame (optional helper) ===
+    // If you render with a back-buffer image elsewhere, pass it here so INVERT can work on it.
+    // If you're using the no-backbuffer path, call ScreenFX.apply((Graphics2D)g, w, h) directly.
+    public void applyActiveScreenFX(BufferedImage backBuffer) {
+        ScreenFX.apply(g, backBuffer);
+    }
 }

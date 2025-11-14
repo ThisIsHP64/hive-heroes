@@ -52,13 +52,10 @@ public class MenuScreen extends Screen {
         titleA.setOutlineThickness(5);
         titleB.setOutlineColor(Color.black);
         titleB.setOutlineThickness(5);
-        playGame = new SpriteFont("PLAY GAME", 580, 425, orbitronMed, new Color(255, 255, 0));
+        playGame = new SpriteFont("PLAY GAME", 580, 440, orbitronMed, new Color(255, 255, 0));
         playGame.setOutlineColor(Color.black);
         playGame.setOutlineThickness(3);
-        options = new SpriteFont("OPTIONS", 580, 475, orbitronMed, new Color(255, 255, 0));
-        options.setOutlineColor(Color.black);
-        options.setOutlineThickness(3);
-        credits = new SpriteFont("CREDITS", 580, 525, orbitronMed, new Color(255, 255, 0));
+        credits = new SpriteFont("CREDITS", 580, 510, orbitronMed, new Color(255, 255, 0));
         credits.setOutlineColor(Color.black);
         credits.setOutlineThickness(3);
         try {
@@ -95,17 +92,11 @@ public class MenuScreen extends Screen {
         // sets location for blue square in front of text (pointerLocation) and also sets color of spritefont text based on which menu item is being hovered
         if (currentMenuItemHovered == 0) {
             playGame.setColor(Color.cyan);
-            options.setColor(Color.yellow);
             credits.setColor(Color.yellow);
         } else if (currentMenuItemHovered == 1) {
             playGame.setColor(Color.yellow);
-            options.setColor(Color.cyan);
-            credits.setColor(Color.yellow);
-        } else if (currentMenuItemHovered == 2) {
-            playGame.setColor(Color.yellow);
-            options.setColor(Color.yellow);
             credits.setColor(Color.cyan);
-        }
+        } 
 
         // if space is pressed on menu item, change to appropriate screen based on which menu item was chosen
         if (Keyboard.isKeyUp(Key.SPACE)) {
@@ -114,10 +105,8 @@ public class MenuScreen extends Screen {
         if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
             menuItemSelected = currentMenuItemHovered;
             if (menuItemSelected == 0) {
-                screenCoordinator.setGameState(GameState.HIVELEVEL);
+                screenCoordinator.setGameState(GameState.VOLCANOLEVEL);
             } else if (menuItemSelected == 1) {
-                screenCoordinator.setGameState(GameState.OPTIONS);
-            } else if (menuItemSelected == 2) {
                 screenCoordinator.setGameState(GameState.CREDITS);
             }
         }
@@ -130,7 +119,6 @@ public class MenuScreen extends Screen {
         titleA.draw(graphicsHandler);
         titleB.draw(graphicsHandler);
         playGame.draw(graphicsHandler);
-        options.draw(graphicsHandler);
         credits.draw(graphicsHandler);
     }
 

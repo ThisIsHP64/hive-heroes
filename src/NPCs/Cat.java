@@ -29,12 +29,14 @@ public class Cat extends NPC {
         setX(getX() - (SPRITE_WIDTH * SCALE / 2f));
         setY(getY() - (SPRITE_HEIGHT * SCALE));
 
-        System.out.println("🐾 Cat spawned at " + getX() + ", " + getY());
+        System.out.println(" spawned at " + getX() + ", " + getY());
     }
 
     @Override
     public void update(Player player) {
-        // this advances the animation frames!
+        if (currentAnimationName == null || getCurrentAnimation() == null)
+            return;
+
         super.update(player);
     }
 
@@ -43,18 +45,19 @@ public class Cat extends NPC {
         HashMap<String, Frame[]> map = new HashMap<>();
 
         Frame[] idle = new Frame[] {
-            new FrameBuilder(sheet.getSprite(0, 0), 14).withScale(SCALE).withBounds(7,13,11,7).build(),
-            new FrameBuilder(sheet.getSprite(0, 1), 14).withScale(SCALE).withBounds(7,13,11,7).build(),
-            new FrameBuilder(sheet.getSprite(0, 2), 14).withScale(SCALE).withBounds(7,13,11,7).build(),
-            new FrameBuilder(sheet.getSprite(1, 0), 14).withScale(SCALE).withBounds(7,13,11,7).build(),
-            new FrameBuilder(sheet.getSprite(1, 1), 14).withScale(SCALE).withBounds(7,13,11,7).build(),
-            new FrameBuilder(sheet.getSprite(1, 2), 14).withScale(SCALE).withBounds(7,13,11,7).build(),
-            new FrameBuilder(sheet.getSprite(2, 0), 14).withScale(SCALE).withBounds(7,13,11,7).build(),
-            new FrameBuilder(sheet.getSprite(2, 1), 14).withScale(SCALE).withBounds(7,13,11,7).build(),
-
+            new FrameBuilder(sheet.getSprite(0, 0), 14).withScale(SCALE).withBounds(7, 13, 11, 7).build(),
+            new FrameBuilder(sheet.getSprite(0, 1), 14).withScale(SCALE).withBounds(7, 13, 11, 7).build(),
+            new FrameBuilder(sheet.getSprite(0, 2), 14).withScale(SCALE).withBounds(7, 13, 11, 7).build(),
+            new FrameBuilder(sheet.getSprite(1, 0), 14).withScale(SCALE).withBounds(7, 13, 11, 7).build(),
+            new FrameBuilder(sheet.getSprite(1, 1), 14).withScale(SCALE).withBounds(7, 13, 11, 7).build(),
+            new FrameBuilder(sheet.getSprite(1, 2), 14).withScale(SCALE).withBounds(7, 13, 11, 7).build(),
+            new FrameBuilder(sheet.getSprite(2, 0), 14).withScale(SCALE).withBounds(7, 13, 11, 7).build(),
+            new FrameBuilder(sheet.getSprite(2, 1), 14).withScale(SCALE).withBounds(7, 13, 11, 7).build(),
         };
 
         map.put("IDLE", idle);
+        map.put("STAND_LEFT", idle);
+        map.put("STAND_RIGHT", idle);
         return map;
     }
 }

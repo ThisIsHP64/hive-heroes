@@ -321,7 +321,7 @@ public class GameObject extends AnimatedSprite {
 		this.map = map;
 	}
 
-	@Override
+	// @Override
 	public void draw(GraphicsHandler graphicsHandler) {
 		if (map != null) {
 			graphicsHandler.drawImage(
@@ -333,7 +333,7 @@ public class GameObject extends AnimatedSprite {
 					currentFrame.getImageEffect());
 
 			// UNCOMMENT TO DRAW ALL HITBOXES
-			// Rectangle bounds = getBounds();
+			Rectangle bounds = getBounds();
 			// float camX = map.getCamera().getX();
 			// float camY = map.getCamera().getY();
 

@@ -2,8 +2,15 @@ package Players;
 
 import Builders.FrameBuilder;
 import Effects.FloatingText;
+import Effects.ScreenFX; // ADDED: For clearing screen effects on death
 import Enemies.Bat;
 import Enemies.Spider;
+
+// ADDED: make melee connect with these guys
+import Enemies.Goblin;
+import Enemies.FrostDragon;
+import Enemies.Crab;
+
 import Engine.GamePanel;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
@@ -17,6 +24,8 @@ import Level.MapTile;
 import Level.Player;
 import Level.TileType;
 import SpriteImage.PowerupHUD;
+import SpriteImage.ProjectileHUD;
+import Projectiles.BeeProjectile;
 import SpriteImage.ResourceHUD;
 import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
@@ -25,7 +34,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
-
 
 public class Bee extends Player {
 
@@ -41,6 +49,10 @@ public class Bee extends Player {
     // attack timing
     private static final int ATTACK_ACTIVE_MS = 120;
     private static final int ATTACK_COOLDOWN_MS = 10;
+
+    // ADDED: melee damage amount + one-hit latch per swing
+    private static final int MELEE_DAMAGE = 15;
+    private boolean meleeDealtThisSwing = false;
 
     private boolean attacking = false;
     private long attackStart = 0L;
@@ -74,6 +86,13 @@ public class Bee extends Player {
     private boolean hasShield = false;
     private int shieldHealth = 0;
     private static final int MAX_SHIELD_HEALTH = 100;
+    
+    // Projectile powerup variable (session flag; persistent lives in BeeStats)
+    private boolean hasProjectile = false;
+
+    // --- NEW: projectile tuning / HUD ---
+    private static final int PROJECTILE_DAMAGE = 25; // tweak to taste
+    private static final String PROJECTILE_HUD_ICON = "Bee_Projectile_HUD.png"; // your HUD icon
 
     // tunic variable
     private boolean useRedSprites = false;
@@ -81,7 +100,16 @@ public class Bee extends Player {
     // tunic blue variable
     private boolean useBlueSprites = false;
 
+    // --- Fix for stuck attack animation ---
+    private boolean waitingForSpaceRelease = false; // prevents attack looping when holding SPACE
+    private static final long ATTACK_DURATION_MS = 250; // attack lasts ~¼ second before reset
+
     private PowerupHUD powerupHUD;
+    private ProjectileHUD projectileHUD;
+    
+    // Projectile list
+    private ArrayList<BeeProjectile> activeProjectiles = new ArrayList<>();
+    private long lastShotTime = 0;
     
     protected MapTile[] mapTiles;
 
@@ -105,6 +133,7 @@ public class Bee extends Player {
         resourceBars = new ResourceHUD(this);
 
         powerupHUD = new PowerupHUD();
+        projectileHUD = new ProjectileHUD();
 
         try {
             slashSheet = new SpriteSheet(ImageLoader.load("spider_slash.png"), 32, 32);
@@ -132,6 +161,14 @@ public class Bee extends Player {
 
         if (BeeStats.hasRing()) {
             powerupHUD.show("onering.png", Integer.MAX_VALUE);
+        }
+
+        // --- NEW: if projectile was previously unlocked, keep it active & show HUD on new maps ---
+        if (BeeStats.hasProjectilePower()) {
+            hasProjectile = true;
+            if (projectileHUD != null) {
+                projectileHUD.showProjectile(PROJECTILE_HUD_ICON);
+            }
         }
     }
 
@@ -225,6 +262,13 @@ public class Bee extends Player {
             BeeStats.setDead(true);
             BeeStats.setWalkSpeed(0);
             System.out.println("Bee died! Playing death animation...");
+            
+            // ADDED: Clear any screen effects when bee dies (darkness from ring horde)
+            try {
+                Effects.ScreenFX.start(Effects.ScreenFX.Effect.NONE, 0, 0f);
+            } catch (Exception e) {
+                // Fail silently if ScreenFX not available
+            }
         }
     }
 
@@ -263,7 +307,7 @@ public class Bee extends Player {
         BeeStats.setHasBlueTunic(true);
 
         if (powerupHUD != null) {
-            powerupHUD.show("BlueTunic_Hud.png", Integer.MAX_VALUE);
+            powerupHUD.show("BlueTunic_Hud.PNG", Integer.MAX_VALUE);
         }
 
         System.out.println("You received the Blue Tunic! You can now transform into your frost form.");
@@ -364,6 +408,15 @@ public class Bee extends Player {
         handleAttackInput();
         handleTunicInput();
 
+        // ADDED: while the swing is active and we haven't hit yet, check for melee hits once
+        if (attacking && !meleeDealtThisSwing) {
+            long now = System.currentTimeMillis();
+            long elapsed = now - attackStart;
+            // sweet spot roughly mid-swing (don’t be too strict)
+            if (elapsed >= 60 && elapsed <= ATTACK_ACTIVE_MS) {
+                tryMeleeDamage();
+            }
+        }
 
         if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true
             && BeeStats.hasTunic() == false) {
@@ -374,13 +427,6 @@ public class Bee extends Player {
         }
 
         resourceBars.update();
-        // int tileX = (int) (getX() / TILE);
-        // int tileY = (int) (getY() / TILE);
-
-        // System.out.println(String.format(
-        //         "Level: %d  Health: %d  Stamina: %d  Nectar: %d  Experience: %d  Speed: %f  Hive Nectar: %d  X: %d  Y: %d",
-        //         BeeStats.getCurrentLevel(), BeeStats.getHealth(), BeeStats.getStamina(), BeeStats.getNectar(), BeeStats.getExperience(),
-        //         BeeStats.getWalkSpeed(), HiveManager.getNectar(), tileX, tileY));
         
         if (attacking && System.currentTimeMillis() - attackStart > ATTACK_ACTIVE_MS) {
             attacking = false;
@@ -388,6 +434,15 @@ public class Bee extends Player {
         }
 
         handlePowerupInput();
+        
+        // Update projectiles (now includes collision + damage)
+        updateProjectiles();
+        
+        // Regenerate stamina (only if haven't shot recently)
+        long timeSinceLastShot = System.currentTimeMillis() - lastShotTime;
+        if (timeSinceLastShot > 1000) {  // 1 second delay after shooting
+            BeeStats.regenerateStamina(10);
+        }
     }
 
     public void showPowerupIcon(String spritePath, int durationMs) {
@@ -396,20 +451,133 @@ public class Bee extends Player {
         }
     }
 
+    // Check if player is near any NPC (for prioritizing dialogue over shooting)
+    private boolean isNearNPC() {
+        if (map == null) return false;
+        
+        // Check all NPCs to see if any are close enough to interact with
+        for (var npc : map.getNPCs()) {
+            if (this.intersects(npc)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void handleAttackInput() {
-        boolean canAttack = !attacking && (System.currentTimeMillis() - lastAttackEnd > ATTACK_COOLDOWN_MS);
+        long now = System.currentTimeMillis();
 
-        boolean spaceDown = Keyboard.isKeyDown(Key.SPACE);
-        boolean justPressed = spaceDown && !prevSpaceDown;
-
-        if (justPressed && canAttack) {
-            attacking = true;
-            attackStart = System.currentTimeMillis();
-            currentAnimationName = "ATTACK_" + facingDirection.name();
+        // 1. End attack automatically after its duration passes
+        if (attacking && (now - attackStart) >= ATTACK_DURATION_MS) {
+            attacking = false;
+            currentAnimationName = "STAND_" + facingDirection.name();
         }
 
-        prevSpaceDown = spaceDown;
+        // 2. Read SPACE key state
+        boolean spaceDown = Keyboard.isKeyDown(Key.SPACE);
+
+        // 3. If waiting for SPACE to release, do nothing until key is up
+        if (waitingForSpaceRelease) {
+            if (!spaceDown) {
+                waitingForSpaceRelease = false; // key released, ready next tap
+            }
+            prevSpaceDown = spaceDown; // keep this in sync
+            return;
+        }
+
+        // 4. Edge trigger: only fire once per press
+        boolean justPressed = spaceDown && !prevSpaceDown;
+
+        // 5. Start attack if just pressed and not already attacking
+        if (justPressed && !attacking) {
+            attacking = true;
+            attackStart = now;
+            meleeDealtThisSwing = false; // ADDED: reset swing-latch
+            currentAnimationName = "ATTACK_" + facingDirection.name();
+
+            // Only shoot projectile if we have it AND we're not near an NPC
+            // (NPCs take priority for SPACE interaction)
+            if (hasProjectile && !isNearNPC()) {
+                shootProjectile();
+            }
+
+            waitingForSpaceRelease = true; // latch until key is fully released
+        }
+
+        prevSpaceDown = spaceDown; // update edge detector
     }
+
+    // ADDED: melee hit check against enemies we actually have types for
+    private void tryMeleeDamage() {
+        if (map == null) return;
+
+        java.awt.Rectangle atk = getAttackHitbox();
+        if (atk.width <= 0 || atk.height <= 0) return;
+
+        boolean hitSomething = false;
+
+        for (var npc : new ArrayList<>(map.getNPCs())) {
+            // Goblin
+            if (npc instanceof Goblin) {
+                Goblin g = (Goblin) npc;
+                if (g.getHitbox().intersects(atk)) {
+                    g.takeDamage(MELEE_DAMAGE);
+                    hitSomething = true;
+                }
+            }
+            // Frost Dragon
+            else if (npc instanceof FrostDragon) {
+                FrostDragon d = (FrostDragon) npc;
+                // FrostDragon has getHitbox() in the version I gave you
+                if (d.getHitbox().intersects(atk)) {
+                    d.takeDamage(MELELE_DAMAGE_FIX()); // see helper below to avoid typo
+                    hitSomething = true;
+                }
+            }
+            // Spider
+            else if (npc instanceof Spider) {
+                Spider s = (Spider) npc;
+                try {
+                    if (s.getHitbox().intersects(atk)) {
+                        s.takeDamage(MELEE_DAMAGE);
+                        hitSomething = true;
+                    }
+                } catch (Throwable ignored) {}
+            }
+            // Bat
+            else if (npc instanceof Bat) {
+                Bat b = (Bat) npc;
+                try {
+                    if (b.getHitbox().intersects(atk)) {
+                        b.takeDamage(MELEE_DAMAGE);
+                        hitSomething = true;
+                    }
+                } catch (Throwable ignored) {}
+            }
+            // Crab
+            else if (npc instanceof Enemies.Crab) {
+                Crab c = (Crab) npc;
+                try {
+                    if (c.getHitbox().intersects(atk)) {
+                        c.takeDamage(MELEE_DAMAGE);
+                        hitSomething = true;
+                    }
+                } catch (Throwable ignored) {}
+            }
+        }
+
+        if (hitSomething) {
+            meleeDealtThisSwing = true;
+
+            // little feedback
+            if (map != null && map.getCamera() != null) {
+                map.getCamera().shake();
+            }
+        }
+    }
+
+    // tiny shim to keep the code compiling if you paste quickly (spotted a typo hazard)
+    private int MELELE_DAMAGE_FIX() { return MELEE_DAMAGE; }
 
     public boolean isAttacking() {
         return attacking;
@@ -508,6 +676,12 @@ public class Bee extends Player {
 
         if (powerupHUD != null)
             powerupHUD.draw(graphicsHandler);
+        
+        if (projectileHUD != null)
+            projectileHUD.draw(graphicsHandler);
+        
+        // Draw projectiles
+        drawProjectiles(graphicsHandler);
 
         // draw floating damage numbers on bee
         if (map != null && map.getCamera() != null) {
@@ -549,7 +723,6 @@ public class Bee extends Player {
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet walkSheet) {
         boolean isRed = useRedSprites || BeeStats.isTunicActive();
         boolean isBlue = useBlueSprites || BeeStats.isBlueTunicActive();
-
 
         SpriteSheet idleSheet = new SpriteSheet(ImageLoader.load(
         isRed ? "Bee_Idle_Red.png" :
@@ -675,6 +848,136 @@ public class Bee extends Player {
 
     public int getMaxShieldHealth() {
         return MAX_SHIELD_HEALTH;
+    }
+    
+    // Projectile powerup methods
+    public void collectProjectilePowerup(String iconPath) {
+        hasProjectile = true;
+        BeeStats.setHasProjectilePower(true); // persist across screens/sessions
+
+        String hudIcon = (iconPath != null && !iconPath.isEmpty()) ? iconPath : PROJECTILE_HUD_ICON;
+        if (projectileHUD != null) {
+            projectileHUD.showProjectile(hudIcon); // Show in bottom-right corner
+        }
+        System.out.println("Projectile power-up collected! Press SPACE to shoot!");
+    }
+    
+    public boolean hasProjectile() {
+        return hasProjectile;
+    }
+    
+    private void shootProjectile() {
+        // Check if bee has enough stamina
+        if (!BeeStats.canShootProjectile()) {
+            System.out.println("[Bee] Not enough stamina to shoot! Need 150, have: " + BeeStats.getStamina());
+            return;
+        }
+        
+        // Spawn projectile at bee's position in the direction bee is facing
+        float projectileX = this.x + 32; // center-ish of bee
+        float projectileY = this.y + 32;
+        
+        System.out.println("[Bee] Shooting projectile!");
+        System.out.println("[Bee] Facing direction: " + facingDirection);
+        
+        BeeProjectile projectile = new BeeProjectile(projectileX, projectileY, facingDirection);
+        activeProjectiles.add(projectile);
+        
+        // Use stamina and record shot time
+        BeeStats.useProjectileStamina();
+        lastShotTime = System.currentTimeMillis();
+        
+        System.out.println("[Bee] Projectile created. Total projectiles: " + activeProjectiles.size());
+    }
+    
+    public void updateProjectiles() {
+        // Update & collide
+        for (BeeProjectile projectile : new ArrayList<>(activeProjectiles)) {
+            projectile.update();
+            if (!projectile.isActive()) continue;
+
+            java.awt.Rectangle pBox = projectile.getHitbox();
+
+            // iterate a copy to avoid concurrent modification
+            for (var npc : new ArrayList<>(map.getNPCs())) {
+                // Spider
+                if (npc instanceof Spider) {
+                    Spider s = (Spider) npc;
+                    if (s.getHitbox().intersects(pBox)) {
+                        s.takeDamage(PROJECTILE_DAMAGE);
+                        projectile.deactivate();
+                        break;
+                    }
+                }
+                // Goblin
+                else if (npc instanceof Goblin) {
+                    Goblin g = (Goblin) npc;
+                    try {
+                        if (g.getHitbox().intersects(pBox)) {
+                            g.takeDamage(PROJECTILE_DAMAGE);
+                            projectile.deactivate();
+                            break;
+                        }
+                    } catch (Throwable ignored) {}
+                }
+                // Bat
+                else if (npc instanceof Bat) {
+                    Bat b = (Bat) npc;
+                    try {
+                        if (b.getHitbox().intersects(pBox)) {
+                            b.takeDamage(PROJECTILE_DAMAGE);
+                            projectile.deactivate();
+                            break;
+                        }
+                    } catch (Throwable ignored) {}
+                }
+                // Crab
+                else if (npc instanceof Crab) {
+                    Crab c = (Crab) npc;
+                    try {
+                        if (c.getHitbox().intersects(pBox)) {
+                            c.takeDamage(PROJECTILE_DAMAGE);
+                            projectile.deactivate();
+                            break;
+                        }
+                    } catch (Throwable ignored) {}
+                }
+                // FrostDragon
+                else if (npc instanceof FrostDragon) {
+                    FrostDragon d = (FrostDragon) npc;
+                    try {
+                        if (d.getHitbox().intersects(pBox)) {
+                            d.takeDamage(PROJECTILE_DAMAGE);
+                            projectile.deactivate();
+                            break;
+                        }
+                    } catch (Throwable ignored) {}
+                }
+            }
+        }
+
+        // Cull inactive
+        activeProjectiles.removeIf(p -> !p.isActive());
+    }
+    
+    public void drawProjectiles(GraphicsHandler graphicsHandler) {
+        // Camera-aware draw; no temp position hack
+        if (map != null && map.getCamera() != null) {
+            float camX = map.getCamera().getX();
+            float camY = map.getCamera().getY();
+            for (BeeProjectile projectile : activeProjectiles) {
+                projectile.draw(graphicsHandler, camX, camY);
+            }
+        }
+    }
+    
+    public ArrayList<BeeProjectile> getActiveProjectiles() {
+        return activeProjectiles;
+    }
+
+    // ADDED: Getter method for powerupHUD so VolcanoLevelScreen can remove ring icon
+    public PowerupHUD getPowerupHUD() {
+        return powerupHUD;
     }
 
     // handle tunic activation (press 3 for Red, 4 for Blue)
