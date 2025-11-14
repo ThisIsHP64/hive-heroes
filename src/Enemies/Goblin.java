@@ -148,6 +148,11 @@ public class Goblin extends NPC {
         return (System.currentTimeMillis() - deathTime) >= DEATH_LINGER_MS;
     }
 
+    // used by horde / cleanup code that expects canBeRemoved()
+    public boolean canBeRemoved() {
+        return shouldRemove();
+    }
+
     @Override
     public void update(Player player) {
         // update floating damage numbers
