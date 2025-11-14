@@ -88,8 +88,8 @@ public class MazeLevelScreen extends Screen implements GameListener {
                         return;
                     }
 
-                    // Check for item collection with SPACE (before textbox locks it)
-                    if (Keyboard.isKeyDown(Key.SPACE) && !keyLocker.isKeyLocked(Key.SPACE)) {
+                    // Check for item collection with E key (before textbox locks it)
+                    if (Keyboard.isKeyDown(Key.E) && !keyLocker.isKeyLocked(Key.E)) {
                         for (NPC npc : map.getNPCs()) {
                             // Check for OneRing collection
                             if (npc instanceof NPCs.OneRing) {
@@ -112,7 +112,7 @@ public class MazeLevelScreen extends Screen implements GameListener {
                                     map.getTextbox().addText("Hmm random shiny ring.");
                                     map.getTextbox().addText("I'll grab it");
                                     map.getTextbox().setIsActive(true);
-                                    keyLocker.lockKey(Key.SPACE);
+                                    keyLocker.lockKey(Key.E);
                                 }
                             }
                             
@@ -136,14 +136,14 @@ public class MazeLevelScreen extends Screen implements GameListener {
                                     map.getTextbox().setIsActive(true);
                                     pendingTeleportToGrass = true;
                                     teleportTimer = 0;
-                                    keyLocker.lockKey(Key.SPACE);
+                                    keyLocker.lockKey(Key.E);
                                 }
                             }
                         }
                     }
                     
-                    if (Keyboard.isKeyUp(Key.SPACE)) {
-                        keyLocker.unlockKey(Key.SPACE);
+                    if (Keyboard.isKeyUp(Key.E)) {
+                        keyLocker.unlockKey(Key.E);
                     }
 
                     if (bee.isAttacking()) {
@@ -178,8 +178,8 @@ public class MazeLevelScreen extends Screen implements GameListener {
                             // Only close textbox if all messages have been read
                             if (map.getTextbox().isActive() && map.getTextbox().isTextQueueEmpty()) {
                                 map.getTextbox().setIsActive(false);
-                                keyLocker.unlockKey(Key.SPACE);
-                                System.out.println("Ring faded - textbox closed and SPACE unlocked");
+                                keyLocker.unlockKey(Key.E);
+                                System.out.println("Ring faded - textbox closed and E unlocked");
                             }
                             // Remove ring even if textbox still active (player still reading)
                             if (map.getTextbox().isTextQueueEmpty()) {
