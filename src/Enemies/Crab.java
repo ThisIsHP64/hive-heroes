@@ -148,6 +148,11 @@ public class Crab extends NPC {
         return (System.currentTimeMillis() - deathTime) >= DEATH_LINGER_MS;
     }
 
+    // used by horde / cleanup code that expects canBeRemoved()
+    public boolean canBeRemoved() {
+        return shouldRemove();
+    }
+
     @Override
     public void update(Player player) {
         // update floating damage numbers
@@ -353,8 +358,6 @@ public class Crab extends NPC {
         int hitboxH = 18;
 
         // IDLE animation - 4 frames arranged in a 2x2 grid
-        // your sprite sheet is 128x128 with 64x64 tiles, so 2 columns and 2 rows
-        // order: top-left, top-right, bottom-left, bottom-right
         SpriteSheet runSheet = new SpriteSheet(ImageLoader.load("crabidle2.png"), TILE_W, TILE_H, 0);
         Frame[] idleFrames = new Frame[4];
         idleFrames[0] = new FrameBuilder(runSheet.getSprite(0, 0), 6)  // top-left
@@ -400,19 +403,18 @@ public class Crab extends NPC {
         animations.put("IDLE_RIGHT", idleFrames);
         animations.put("IDLE_LEFT", idleFramesFlipped);
 
-        // ATTACK animation - 3 frames in 2x2 grid
-        // layout: top-left, top-right, bottom-left (only 3 frames used)
+        // ATTACK animation
         SpriteSheet attackSheet = new SpriteSheet(ImageLoader.load("crabhit2.png"), TILE_W, TILE_H, 0);
         Frame[] attackFrames = new Frame[3];
-        attackFrames[0] = new FrameBuilder(attackSheet.getSprite(0, 0), 4)  // top-left
+        attackFrames[0] = new FrameBuilder(attackSheet.getSprite(0, 0), 4)
                 .withScale(SCALE)
                 .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
                 .build();
-        attackFrames[1] = new FrameBuilder(attackSheet.getSprite(0, 1), 4)  // top-right
+        attackFrames[1] = new FrameBuilder(attackSheet.getSprite(0, 1), 4)
                 .withScale(SCALE)
                 .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
                 .build();
-        attackFrames[2] = new FrameBuilder(attackSheet.getSprite(1, 0), 4)  // bottom-left
+        attackFrames[2] = new FrameBuilder(attackSheet.getSprite(1, 0), 4)
                 .withScale(SCALE)
                 .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
                 .build();
@@ -437,22 +439,22 @@ public class Crab extends NPC {
         animations.put("ATTACK_RIGHT", attackFramesFlipped);
         animations.put("ATTACK_LEFT", attackFrames);
 
-        // DEATH animation - 4 frames in 2x2 grid
+        // DEATH animation
         SpriteSheet dieSheet = new SpriteSheet(ImageLoader.load("crabdeath2.png"), TILE_W, TILE_H, 0);
         Frame[] dieFrames = new Frame[4];
-        dieFrames[0] = new FrameBuilder(dieSheet.getSprite(0, 0), 8)  // top-left
+        dieFrames[0] = new FrameBuilder(dieSheet.getSprite(0, 0), 8)
                 .withScale(SCALE)
                 .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
                 .build();
-        dieFrames[1] = new FrameBuilder(dieSheet.getSprite(0, 1), 8)  // top-right
+        dieFrames[1] = new FrameBuilder(dieSheet.getSprite(0, 1), 8)
                 .withScale(SCALE)
                 .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
                 .build();
-        dieFrames[2] = new FrameBuilder(dieSheet.getSprite(1, 0), 8)  // bottom-left
+        dieFrames[2] = new FrameBuilder(dieSheet.getSprite(1, 0), 8)
                 .withScale(SCALE)
                 .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
                 .build();
-        dieFrames[3] = new FrameBuilder(dieSheet.getSprite(1, 1), 8)  // bottom-right
+        dieFrames[3] = new FrameBuilder(dieSheet.getSprite(1, 1), 8)
                 .withScale(SCALE)
                 .withBounds(hitboxX, hitboxY, hitboxW, hitboxH)
                 .build();
@@ -494,12 +496,10 @@ public class Crab extends NPC {
     }
 
     public java.awt.Rectangle getHitbox() {
-        // crab sprite is 64x64, scaled 2x = 128x128 on screen
-        // tight hitbox centered on body like bee
-        int w = 22 * SCALE;      // width: 22 * 2 = 44
-        int h = 18 * SCALE;      // height: 18 * 2 = 36
-        int offsetX = 21 * SCALE;  // offset X: 21 * 2 = 42
-        int offsetY = 30 * SCALE;  // offset Y: 30 * 2 = 60
+        int w = 22 * SCALE;
+        int h = 18 * SCALE;
+        int offsetX = 21 * SCALE;
+        int offsetY = 30 * SCALE;
         return new java.awt.Rectangle(
                 (int) getX() + offsetX,
                 (int) getY() + offsetY,

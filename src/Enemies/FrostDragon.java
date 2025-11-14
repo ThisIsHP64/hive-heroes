@@ -36,6 +36,24 @@ public class FrostDragon extends NPC {
     private static final float PATROL_SPEED = 0.9f;
     private static final float CHASE_SPEED  = 1.6f;
 
+    // --- Horde mode (same idea as crab/goblin) ---
+    private boolean hordeMode = false;
+    private float hordeSpeedMult = 1.0f;
+
+    private float currentChaseSpeed() {
+        return hordeMode ? CHASE_SPEED * hordeSpeedMult : CHASE_SPEED;
+    }
+
+    private float currentPatrolSpeed() {
+        return hordeMode ? PATROL_SPEED * hordeSpeedMult : PATROL_SPEED;
+    }
+
+    // called by horde/volcano logic
+    public void setHordeAggression(float speedMult, boolean on) {
+        this.hordeMode = on;
+        this.hordeSpeedMult = (speedMult <= 0f) ? 1.0f : speedMult;
+    }
+
     private static final float CHASE_RANGE   = 260f;
     private static final float GIVE_UP_RANGE = 420f;
     private static final float ATTACK_RANGE  = 110f;
@@ -148,7 +166,7 @@ public class FrostDragon extends NPC {
                 } else {
                     chase(player);
                 }
-                if (dist > GIVE_UP_RANGE) {
+                if (!hordeMode && dist > GIVE_UP_RANGE) {
                     state = State.PATROL;
                     setRandomPatrolTarget();
                 }
@@ -211,7 +229,7 @@ public class FrostDragon extends NPC {
             dirX /= norm;
             dirY /= norm;
 
-            float speed = CHASE_SPEED * (DIVE_SPEED_MULT * (0.85f + 0.35f * t));
+            float speed = currentChaseSpeed() * (DIVE_SPEED_MULT * (0.85f + 0.35f * t));
             moveXHandleCollision(dirX * speed);
             moveYHandleCollision(dirY * speed);
         }
@@ -219,7 +237,6 @@ public class FrostDragon extends NPC {
         // --- CONTACT DAMAGE: strike box vs bee AWT bounds (constructed directly) ---
         if (!dealtThisSwing && inDivePhase) {
             java.awt.Rectangle strike = getDiveStrikeBox();
-            // Build an AWT rect from player's position/size to avoid type mismatch
             java.awt.Rectangle beeBounds = new java.awt.Rectangle(
                 (int) player.getX(),
                 (int) player.getY(),
@@ -307,8 +324,8 @@ public class FrostDragon extends NPC {
         float dist = (float) Math.sqrt(dx * dx + dy * dy);
 
         if (dist > 0.1f) {
-            float mx = (dx / dist) * CHASE_SPEED;
-            float my = (dy / dist) * CHASE_SPEED;
+            float mx = (dx / dist) * currentChaseSpeed();
+            float my = (dy / dist) * currentChaseSpeed();
             moveXHandleCollision(mx);
             moveYHandleCollision(my);
             if (Math.abs(dx) > 6) facing = (dx > 0) ? Direction.RIGHT : Direction.LEFT;
@@ -324,8 +341,8 @@ public class FrostDragon extends NPC {
 
         if (dist < 24f) setRandomPatrolTarget();
         if (dist > 0.1f) {
-            float mx = (dx / dist) * PATROL_SPEED;
-            float my = (dy / dist) * PATROL_SPEED;
+            float mx = (dx / dist) * currentPatrolSpeed();
+            float my = (dy / dist) * currentPatrolSpeed();
             moveXHandleCollision(mx);
             moveYHandleCollision(my);
             facing = (dx > 0) ? Direction.RIGHT : Direction.LEFT;
@@ -375,6 +392,11 @@ public class FrostDragon extends NPC {
         if (!dead) return false;
         long t = System.currentTimeMillis() - deathTime;
         return t >= DEATH_LINGER_MS;
+    }
+
+    // used by horde / cleanup code that expects canBeRemoved()
+    public boolean canBeRemoved() {
+        return shouldRemove();
     }
 
     @Override
