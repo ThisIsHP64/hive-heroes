@@ -1,0 +1,16 @@
+package Scripts.TeleportScriptActions;
+
+import Game.GameState;
+import Level.ScriptState;
+import ScriptActions.ScriptAction;
+import StaticClasses.TeleportManager;
+
+public class TeleportMazeScriptAction extends ScriptAction {
+    
+
+    @Override
+    public ScriptState execute() {
+        TeleportManager.setCurrentScreen(GameState.MAZELEVEL);
+        return ScriptState.COMPLETED;
+    }
+}
