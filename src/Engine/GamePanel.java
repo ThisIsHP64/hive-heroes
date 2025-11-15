@@ -1,10 +1,11 @@
 package Engine;
 
 import Effects.RainParticleSystemGrassLevel;
+import Effects.RedRainParticleSystemBossFight;
 import Effects.RedRainParticleSystemVolcanoLevel;
+import Effects.ScreenFX;
 import Effects.SnowParticleSystemSnowLevel;
-import Effects.WindSystemGrassLevel;
-import Effects.ScreenFX; // <<< NEW
+import Effects.WindSystemGrassLevel; // <<< NEW
 import Game.GameState;
 import GameObject.Rectangle;
 import SpriteFont.SpriteFont;
@@ -48,9 +49,11 @@ public class GamePanel extends JPanel implements ActionListener {
     private WindSystemGrassLevel windSystemgrassLevel;
 	private RedRainParticleSystemVolcanoLevel redRainSystemvolcanoLevel;
 	private SnowParticleSystemSnowLevel snowParticleSystemsnowLevel;
+	private RedRainParticleSystemBossFight redRainSystembossfight;
 	private int grassLeveltimer = 0;
 	private int volcanoLeveltimer = 0;
 	private int snowLeveltimer = 0;
+	private int redRainbossFighttimer = 0;
 
 	// The JPanel and various important class instances are setup here
 	public GamePanel() {
@@ -82,6 +85,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		windSystemgrassLevel = new WindSystemGrassLevel(SCREEN_WIDTH, SCREEN_HEIGHT);
 		redRainSystemvolcanoLevel = new RedRainParticleSystemVolcanoLevel(SCREEN_WIDTH, SCREEN_HEIGHT);
 		snowParticleSystemsnowLevel = new SnowParticleSystemSnowLevel(SCREEN_WIDTH, SCREEN_HEIGHT);
+		redRainSystembossfight = new RedRainParticleSystemBossFight(SCREEN_WIDTH, SCREEN_HEIGHT);
 	}
 
 	// this is called later after instantiation, and will initialize screenManager
