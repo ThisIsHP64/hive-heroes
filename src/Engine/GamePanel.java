@@ -42,6 +42,8 @@ public class GamePanel extends JPanel implements ActionListener {
 	private final int SCREEN_WIDTH = 800;
 	private final int SCREEN_HEIGHT = 600;
 
+    private WeatherManager weatherManager = WeatherManager.GLOBAL;
+
 	private RainParticleSystemGrassLevel rainSystemgrassLevel;
     private WindSystemGrassLevel windSystemgrassLevel;
 	private RedRainParticleSystemVolcanoLevel redRainSystemvolcanoLevel;
@@ -49,10 +51,6 @@ public class GamePanel extends JPanel implements ActionListener {
 	private int grassLeveltimer = 0;
 	private int volcanoLeveltimer = 0;
 	private int snowLeveltimer = 0;
-	private static boolean isRedRaining = false;
-	private static boolean isRaining = false;
-    private static boolean isWindActive = false;
-	private static boolean isSnowing = false;
 
 	// The JPanel and various important class instances are setup here
 	public GamePanel() {
@@ -113,81 +111,103 @@ public class GamePanel extends JPanel implements ActionListener {
 		updatePauseState();
 		updateShowFPSState();
 
-		if (!isGamePaused) {
+        if (!isGamePaused) {
             screenManager.update();
 
-            grassLeveltimer++;
-			int grassLevelseconds = grassLeveltimer / 60;
-			int grassLevelcycleTime = grassLevelseconds % 750;
+            if(WeatherManager.GLOBAL.isTimedMode()) {
+                grassLeveltimer++;
+                int grassLevelseconds = grassLeveltimer / 60;
+                int grassLevelcycleTime = grassLevelseconds % 750;
 
-			volcanoLeveltimer++;
-			int volcanoLevelseconds = volcanoLeveltimer / 60;
-			int volcanoLevelcycleTime = volcanoLevelseconds % 750;
+                volcanoLeveltimer++;
+                int volcanoLevelseconds = volcanoLeveltimer / 60;
+                int volcanoLevelcycleTime = volcanoLevelseconds % 750;
 
-			snowLeveltimer++;
-			int snowLevelseconds = snowLeveltimer / 60;
-			int snowLevelcycleTime = snowLevelseconds % 750;
+                snowLeveltimer++;
+                int snowLevelseconds = snowLeveltimer / 60;
+                int snowLevelcycleTime = snowLevelseconds % 750;
 
-			boolean onGrassLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
-			boolean onVolcanoLevel = TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL;
-			boolean onSnowLevel = TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL;
+                boolean onGrassLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
+                boolean onVolcanoLevel = TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL;
+                boolean onSnowLevel = TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL;
 
-			// --- RAIN CYCLE ---
-			if (grassLevelcycleTime >= 30 && grassLevelcycleTime < 90) {
-				if (onGrassLevel) {
-					if (!isRaining) {
-						isRaining = true;
-						rainSystemgrassLevel.clear();
-					}
-					rainSystemgrassLevel.update();
-				}
-			} else if (isRaining) {
-				isRaining = false;
-				rainSystemgrassLevel.clear();
-			}
+                // --- RAIN CYCLE ---
+                if (grassLevelcycleTime >= 30 && grassLevelcycleTime < 90) {
+                    if (onGrassLevel) {
+                        if (!weatherManager.isRaining()) {
+                            weatherManager.setRaining(true);
+                            rainSystemgrassLevel.clear();
+                        }
+                    }
+                } else if (weatherManager.isRaining()) {
+                    weatherManager.setRaining(false);
+                    rainSystemgrassLevel.clear();
+                }
 
-			// --- WIND CYCLE ---
-			if (grassLevelcycleTime >= 150 && grassLevelcycleTime < 210) {
-				if (onGrassLevel) {
-					if (!isWindActive) {
-						isWindActive = true;
-						windSystemgrassLevel.clear();
-					}
-					windSystemgrassLevel.update();
-				}
-			} else if (isWindActive) {
-				isWindActive = false;
-				windSystemgrassLevel.clear();
-			}
+                // --- WIND CYCLE ---
+                if (grassLevelcycleTime >= 150 && grassLevelcycleTime < 210) {
+                    if (onGrassLevel) {
+                        if (!weatherManager.isWind()) {
+                            weatherManager.setWind(true);
+                            windSystemgrassLevel.clear();
+                        }
+                    }
+                } else if (weatherManager.isWind()) {
+                    weatherManager.setWind(false);
+                    windSystemgrassLevel.clear();
+                }
 
-			// --- VOLCANO RED RAIN ---
-			if (volcanoLevelcycleTime >= 30 && volcanoLevelcycleTime < 90) {
-				if (onVolcanoLevel) {
-					if (!isRedRaining) {
-						isRedRaining = true;
-						redRainSystemvolcanoLevel.clear();
-					}
-					redRainSystemvolcanoLevel.update();
-				}
-			} else if (isRedRaining) {
-				isRedRaining = false;
-				redRainSystemvolcanoLevel.clear();
-			}
+                // --- VOLCANO RED RAIN ---
+                if (volcanoLevelcycleTime >= 30 && volcanoLevelcycleTime < 90) {
+                    if (onVolcanoLevel) {
+                        if (!weatherManager.isRedRain()) {
+                            weatherManager.setRedRain(true);
+                            redRainSystemvolcanoLevel.clear();
+                        }
+                    }
+                } else if (weatherManager.isRedRain()) {
+                    weatherManager.setRedRain(false);
+                    redRainSystemvolcanoLevel.clear();
+                }
 
-			// --- SNOW ---
-			if (snowLevelcycleTime >= 30 && snowLevelcycleTime < 90) {
-				if (onSnowLevel) {
-					if (!isSnowing) {
-						isSnowing = true;
-						snowParticleSystemsnowLevel.clear();
-					}
-					snowParticleSystemsnowLevel.update();
-				}
-			} else if (onSnowLevel) {
-				isSnowing = false;
-				snowParticleSystemsnowLevel.clear();
-			}
-		}
+                // --- SNOW ---
+                if (snowLevelcycleTime >= 30 && snowLevelcycleTime < 90) {
+                    if (onSnowLevel) {
+                        if (!weatherManager.isSnow()) {
+                            weatherManager.setSnow(true);
+                            snowParticleSystemsnowLevel.clear();
+                        }
+                    }
+                } else if (onSnowLevel) {
+                    weatherManager.setSnow(false);
+                    snowParticleSystemsnowLevel.clear();
+                }
+            }
+
+            if (weatherManager.isRaining()) {
+                rainSystemgrassLevel.update();
+            } else {
+                rainSystemgrassLevel.clear();
+            }
+
+            if (weatherManager.isWind()) {
+                windSystemgrassLevel.update();
+            } else {
+                windSystemgrassLevel.clear();
+            }
+
+            if (weatherManager.isRedRain()) {
+                redRainSystemvolcanoLevel.update();
+            } else {
+                redRainSystemvolcanoLevel.clear();
+            }
+
+            if (weatherManager.isSnow()) {
+                snowParticleSystemsnowLevel.update();
+            } else {
+                snowParticleSystemsnowLevel.clear();
+            }
+        }
 	}
 	
 	private void updatePauseState() {
@@ -229,22 +249,22 @@ public class GamePanel extends JPanel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e){
-		if (isRaining) {
+		if (weatherManager.isRaining()) {
 			rainSystemgrassLevel.update();
 		}
 		repaint();
 
-		if (isWindActive) {
+		if (weatherManager.isWind()) {
 			windSystemgrassLevel.update();
 		}
 		repaint();
 
-		if (isRedRaining) {
+		if (weatherManager.isRedRain()) {
 			redRainSystemvolcanoLevel.update();
 		}
 		repaint();
 
-		if (isSnowing) {
+		if (weatherManager.isSnow()) {
 			snowParticleSystemsnowLevel.update();
 		}
 		repaint();
@@ -261,20 +281,20 @@ public class GamePanel extends JPanel implements ActionListener {
 			Graphics2D g2d = (Graphics2D) g;
 
 			boolean onGrassLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
-			if (onGrassLevel && isRaining) {
+			if (onGrassLevel && weatherManager.isRaining()) {
 				rainSystemgrassLevel.draw(g2d);
 			}
-			if (onGrassLevel && isWindActive) {
+			if (onGrassLevel && weatherManager.isWind()) {
 				windSystemgrassLevel.draw(g2d);
 			}
 
 			boolean onVolcanoLevel = TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL;
-			if (onVolcanoLevel && isRedRaining) {
+			if (onVolcanoLevel && weatherManager.isRedRain()) {
 				redRainSystemvolcanoLevel.draw(g2d);
 			}
 
 			boolean onSnowLevel = TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL;
-			if (onSnowLevel && isSnowing) {
+			if (onSnowLevel && weatherManager.isSnow()) {
 				snowParticleSystemsnowLevel.draw(g2d);
 			}
 
@@ -282,20 +302,4 @@ public class GamePanel extends JPanel implements ActionListener {
 			ScreenFX.apply((Graphics2D) g, getWidth(), getHeight());
 		}
 	}
-
-	public static Boolean getisRaining(){
-		return isRaining;
-	}
-
-	public static Boolean getisRedRaining(){
-		return isRedRaining;
-	}
-
-	public static Boolean getisWindActive() {
-        return isWindActive;
-    }
-
-	public static Boolean getisSnowing() {
-        return isSnowing;
-    }
 }
