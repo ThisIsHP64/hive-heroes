@@ -1,9 +1,11 @@
 package Engine;
 
+import Effects.RainParticleSystemBossFight;
 import Effects.RainParticleSystemGrassLevel;
 import Effects.RedRainParticleSystemBossFight;
 import Effects.RedRainParticleSystemVolcanoLevel;
 import Effects.ScreenFX;
+import Effects.SnowParticleSystemBossFight;
 import Effects.SnowParticleSystemSnowLevel;
 import Effects.WindSystemGrassLevel; // <<< NEW
 import Game.GameState;
@@ -50,10 +52,14 @@ public class GamePanel extends JPanel implements ActionListener {
 	private RedRainParticleSystemVolcanoLevel redRainSystemvolcanoLevel;
 	private SnowParticleSystemSnowLevel snowParticleSystemsnowLevel;
 	private RedRainParticleSystemBossFight redRainSystembossfight;
+	private RainParticleSystemBossFight rainSystembossfight;
+	private SnowParticleSystemBossFight snowSystembossfight;
 	private int grassLeveltimer = 0;
 	private int volcanoLeveltimer = 0;
 	private int snowLeveltimer = 0;
 	private int redRainbossFighttimer = 0;
+	private int rainBossFighttimer = 0;
+	private int snowBossFighttimer = 0;
 
 	// The JPanel and various important class instances are setup here
 	public GamePanel() {
@@ -86,6 +92,8 @@ public class GamePanel extends JPanel implements ActionListener {
 		redRainSystemvolcanoLevel = new RedRainParticleSystemVolcanoLevel(SCREEN_WIDTH, SCREEN_HEIGHT);
 		snowParticleSystemsnowLevel = new SnowParticleSystemSnowLevel(SCREEN_WIDTH, SCREEN_HEIGHT);
 		redRainSystembossfight = new RedRainParticleSystemBossFight(SCREEN_WIDTH, SCREEN_HEIGHT);
+		rainSystembossfight = new RainParticleSystemBossFight(SCREEN_WIDTH, SCREEN_HEIGHT);
+		snowSystembossfight = new SnowParticleSystemBossFight(SCREEN_WIDTH, SCREEN_HEIGHT);
 	}
 
 	// this is called later after instantiation, and will initialize screenManager
@@ -131,15 +139,24 @@ public class GamePanel extends JPanel implements ActionListener {
                 int snowLevelseconds = snowLeveltimer / 60;
                 int snowLevelcycleTime = snowLevelseconds % 750;
 
-			redRainbossFighttimer++;
-			int redRainbossFightseconds = redRainbossFighttimer/60;
-			int redRainbossFightcycleTime = redRainbossFightseconds % 750;
+				redRainbossFighttimer++;
+				int redRainbossFightseconds = redRainbossFighttimer/60;
+				int redRainbossFightcycleTime = redRainbossFightseconds % 750;
+
+				rainBossFighttimer++;
+				int rainBossFightseconds = rainBossFighttimer/60;
+				int rainBossFightcycleTime = rainBossFightseconds % 750;
+
+				snowBossFighttimer++;
+				int snowBossFightseconds = snowBossFighttimer/60;
+				int snowBossFightcycleTime = snowBossFightseconds % 750;
 
                 boolean onGrassLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
                 boolean onVolcanoLevel = TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL;
                 boolean onSnowLevel = TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL;
-
-				redRainbossFighttimer++;
+				//boolean onRedRainBossLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
+				//boolean onrainBossLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
+				//boolean onsnowBossLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
 
                 // --- RAIN CYCLE ---
                 if (grassLevelcycleTime >= 30 && grassLevelcycleTime < 90) {
@@ -192,6 +209,42 @@ public class GamePanel extends JPanel implements ActionListener {
                     weatherManager.setSnow(false);
                     snowParticleSystemsnowLevel.clear();
                 }
+				/* 
+				// --- BOSS FIGHT ---
+				if (redRainbossFightcycleTime >= 30 && redRainbossFightcycleTime < 45) {
+					if (onGrassLevel){
+						if (!weatherManager.isRedRain()) {
+							weatherManager.setRedRain(true);
+							redRainSystembossfight.clear();
+						}
+					}
+				} else if (weatherManager.isRedRain()) {
+				 	weatherManager.setRedRain(false);
+					redRainSystembossfight.clear();
+				}
+                if (redRainbossFightcycleTime >= 80 && redRainbossFightcycleTime < 95) {
+                    if (onGrassLevel) {
+                        if (!weatherManager.isRaining()) {
+                            weatherManager.setRaining(true);
+                            rainSystembossfight.clear();
+                        }
+                    }
+                } else if (weatherManager.isRaining()) {
+                    weatherManager.setRaining(false);
+                    rainSystembossfight.clear();
+                }
+				if (redRainbossFightcycleTime >= 130 && redRainbossFightcycleTime < 145) {
+                    if (onGrassLevel) {
+                        if (!weatherManager.isSnow()) {
+                            weatherManager.setSnow(true);
+                            snowSystembossfight.clear();
+                        }
+                    }
+                } else if (onSnowLevel) {
+                    weatherManager.setSnow(false);
+                    snowSystembossfight.clear();
+                }
+				*/
             }
 
             if (weatherManager.isRaining()) {
@@ -217,6 +270,24 @@ public class GamePanel extends JPanel implements ActionListener {
             } else {
                 snowParticleSystemsnowLevel.clear();
             }
+			/*
+			if (weatherManager.isRedRain()) {
+                redRainSystembossfight.update();
+            } else {
+                redRainSystembossfight.clear();
+            }
+			if (weatherManager.isRaining()) {
+                rainSystembossfight.update();
+            } else {
+                rainSystembossfight.clear();
+            }
+			if (weatherManager.isSnowing()) {
+                snowSystembossfight.update();
+            } else {
+                snowSystembossfight.clear();
+            }
+
+			 */
         }
 	}
 	
