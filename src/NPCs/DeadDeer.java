@@ -45,15 +45,17 @@ public HashMap<String, Frame[]> loadAnimations(SpriteSheet sheet) {
     HashMap<String, Frame[]> map = new HashMap<>();
 
     Frame[] idle = new Frame[]{
-        new FrameBuilder(sheet.getSprite(0, 0), 15).withScale(SCALE).withBounds(20, 90, 90, 25).build(),
-        new FrameBuilder(sheet.getSprite(1, 0), 15).withScale(SCALE).withBounds(20, 90, 90, 25).build(),
-        new FrameBuilder(sheet.getSprite(2, 0), 15).withScale(SCALE).withBounds(20, 90, 90, 25).build(),
-        new FrameBuilder(sheet.getSprite(0, 1), 15).withScale(SCALE).withBounds(20, 90, 90, 25).build(),
-        new FrameBuilder(sheet.getSprite(1, 1), 15).withScale(SCALE).withBounds(20, 90, 90, 25).build(),
-        new FrameBuilder(sheet.getSprite(2, 1), 15).withScale(SCALE).withBounds(20, 90, 90, 25).build()
+        new FrameBuilder(sheet.getSprite(0, 0), 15).withScale(SCALE).withBounds(7, 13, 100, 100).build(),
+        new FrameBuilder(sheet.getSprite(1, 0), 15).withScale(SCALE).withBounds(7, 13, 100, 100).build(),
+        new FrameBuilder(sheet.getSprite(2, 0), 15).withScale(SCALE).withBounds(7, 13, 100, 100).build(),
+        new FrameBuilder(sheet.getSprite(0, 1), 15).withScale(SCALE).withBounds(7, 13, 100, 100).build(),
+        new FrameBuilder(sheet.getSprite(1, 1), 15).withScale(SCALE).withBounds(7, 13, 100, 100).build(),
+        new FrameBuilder(sheet.getSprite(2, 1), 15).withScale(SCALE).withBounds(7, 13, 100, 100).build()
     };
 
     map.put("IDLE", idle);
+    map.put("STAND_LEFT", idle);
+    map.put("STAND_RIGHT", idle);
     return map;
 }
 

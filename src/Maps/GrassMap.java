@@ -6,14 +6,20 @@ import Level.Map;
 import Level.NPC;
 import Level.Trigger;
 import NPCs.BigHive;
+import NPCs.BrokenTree;
 import NPCs.Butterfly;
 import NPCs.Cat;
+import NPCs.Cat3;
 import NPCs.DeadDeer;
 import NPCs.DestroyedBeehive;
 import NPCs.Dragonfly;
+import NPCs.Ghost;
+import NPCs.GoodGoblin;
 import NPCs.Grave;
 import NPCs.Hut;
+import NPCs.Hut2;
 import NPCs.LadyBug;
+import NPCs.SkelBee;
 import Portals.LavaPortal;
 import Portals.Portal;
 import Portals.ReversePortal;
@@ -138,19 +144,36 @@ public class GrassMap extends Map {
 
         npcs.add(new Hut(4000, getMapTile(84, 70).getLocation()));
 
+        npcs.add(new Hut2(4001, getMapTile(100, 100).getLocation()));
+
         Cat cat = new Cat(5000, getMapTile(83, 71).getLocation());
         cat.setInteractScript(new CatScript());
         npcs.add(cat);
 
-        DestroyedBeehive hive = new DestroyedBeehive(5001, getMapTile(75, 18).getLocation());
+        DestroyedBeehive hive = new DestroyedBeehive(5001, getMapTile(108, 16).getLocation());
         hive.setInteractScript(new DestroyedBeehiveScript());
         npcs.add(hive);
 
-        npcs.add(new Grave(5002, getMapTile(78, 16).getLocation().addY(20)));
+        npcs.add(new Grave(5002, getMapTile(11, 10).getLocation()));
+        npcs.add(new Ghost(5007, getMapTile(10, 11).getLocation()));
 
         DeadDeer deer = new DeadDeer(5003, getMapTile(15, 55).getLocation());
         deer.setInteractScript(new DeadDeerScript());
         npcs.add(deer);
+
+        npcs.add(new GoodGoblin(5030, getMapTile(105, 114).getLocation()));
+
+        npcs.add(new SkelBee(5030, getMapTile(9, 98).getLocation()));
+        npcs.add(new SkelBee(5030, getMapTile(8, 96).getLocation()));
+        npcs.add(new SkelBee(5030, getMapTile(16, 98).getLocation()));
+        npcs.add(new SkelBee(5030, getMapTile(20, 98).getLocation()));
+        npcs.add(new SkelBee(5030, getMapTile(30, 96).getLocation()));
+        npcs.add(new SkelBee(5030, getMapTile(40, 90).getLocation()));
+        npcs.add(new SkelBee(5030, getMapTile(43, 87).getLocation()));
+
+        npcs.add(new BrokenTree(5069, getMapTile(100, 10).getLocation()));
+
+         npcs.add(new Cat3(5079, getMapTile(110, 84).getLocation()));
 
 
         return npcs;

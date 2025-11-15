@@ -1,9 +1,6 @@
 package Level;
 
-import Engine.GamePanel;
-import Engine.Key;
-import Engine.KeyLocker;
-import Engine.Keyboard;
+import Engine.*;
 import Game.GameState;
 import GameObject.GameObject;
 import GameObject.Rectangle;
@@ -151,7 +148,7 @@ public abstract class Player extends GameObject {
                 BeeStats.manageStamina();
             } 
 
-            if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) && (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true)) {
+            if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) && (WeatherManager.GLOBAL.isRaining() ==true || WeatherManager.GLOBAL.isWind()==true)) {
                 moveAmountX -= BeeStats.getWalkSpeed() *0.5f;
 
                 totalDistanceTraveled += Math.abs(moveAmountX);
@@ -160,7 +157,7 @@ public abstract class Player extends GameObject {
                 currentWalkingXDirection = Direction.LEFT;
                 lastWalkingXDirection = Direction.LEFT;
             } 
-            else if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL && GamePanel.getisSnowing()==true){
+            else if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL && WeatherManager.GLOBAL.isSnow()==true){
                 moveAmountX -= BeeStats.getWalkSpeed() *0.5f;
 
                 totalDistanceTraveled += Math.abs(moveAmountX);
@@ -169,7 +166,7 @@ public abstract class Player extends GameObject {
                 currentWalkingXDirection = Direction.LEFT;
                 lastWalkingXDirection = Direction.LEFT;
             }
-            else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true) {
+            else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && WeatherManager.GLOBAL.isRedRain()==true) {
                 if (BeeStats.hasTunic() == true){
                     moveAmountX -= BeeStats.getWalkSpeed();
                     
@@ -213,7 +210,7 @@ public abstract class Player extends GameObject {
                 BeeStats.manageStamina();
             }
 
-            if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) && (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true)) {
+            if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) && (WeatherManager.GLOBAL.isRaining()==true || WeatherManager.GLOBAL.isWind()==true)) {
                 moveAmountX += BeeStats.getWalkSpeed()*0.5f;
                 
                 totalDistanceTraveled += Math.abs(moveAmountX);
@@ -222,7 +219,7 @@ public abstract class Player extends GameObject {
                 currentWalkingXDirection = Direction.RIGHT;
                 lastWalkingXDirection = Direction.RIGHT;
             } 
-            else if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL && GamePanel.getisSnowing()==true) {
+            else if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL && WeatherManager.GLOBAL.isSnow()==true) {
                 moveAmountX += BeeStats.getWalkSpeed()*0.5f;
                 
                 totalDistanceTraveled += Math.abs(moveAmountX);
@@ -231,7 +228,7 @@ public abstract class Player extends GameObject {
                 currentWalkingXDirection = Direction.RIGHT;
                 lastWalkingXDirection = Direction.RIGHT; 
             }
-            else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true){
+            else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && WeatherManager.GLOBAL.isRedRain()==true){
                 if (BeeStats.hasTunic() == true){
                     moveAmountX += BeeStats.getWalkSpeed();
 
@@ -276,7 +273,7 @@ public abstract class Player extends GameObject {
                 BeeStats.manageStamina();
             } 
             
-            if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL && (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true)){ 
+            if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL && (WeatherManager.GLOBAL.isRaining()) || WeatherManager.GLOBAL.isWind()){
                 moveAmountY -= BeeStats.getWalkSpeed()*0.5f;
 
                 totalDistanceTraveled += Math.abs(moveAmountY);
@@ -285,7 +282,7 @@ public abstract class Player extends GameObject {
                 lastWalkingYDirection = Direction.UP;
                 
             } 
-            else if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL && GamePanel.getisSnowing()==true){
+            else if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL && WeatherManager.GLOBAL.isSnow()==true){
                 moveAmountY -= BeeStats.getWalkSpeed()*0.5f;
 
                 totalDistanceTraveled += Math.abs(moveAmountY);
@@ -293,7 +290,7 @@ public abstract class Player extends GameObject {
                 currentWalkingYDirection = Direction.UP;
                 lastWalkingYDirection = Direction.UP;
             }
-            else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true){
+            else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && WeatherManager.GLOBAL.isRedRain()==true){
                 if (BeeStats.hasTunic() == true){
                     moveAmountY -= BeeStats.getWalkSpeed();
 
@@ -333,7 +330,7 @@ public abstract class Player extends GameObject {
                 BeeStats.manageStamina();
             }
 
-            if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) && (GamePanel.getisRaining()==true || GamePanel.getisWindActive()==true)) {
+            if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) && (WeatherManager.GLOBAL.isRaining() || WeatherManager.GLOBAL.isWind())) {
                 moveAmountY += BeeStats.getWalkSpeed()*0.5f;
 
                 totalDistanceTraveled += Math.abs(moveAmountY);
@@ -342,7 +339,7 @@ public abstract class Player extends GameObject {
                 lastWalkingYDirection = Direction.DOWN;
                 
             } 
-            else if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL && GamePanel.getisSnowing()==true){
+            else if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL && WeatherManager.GLOBAL.isSnow()==true){
                 moveAmountY += BeeStats.getWalkSpeed()*0.5f;
 
                 totalDistanceTraveled += Math.abs(moveAmountY);
@@ -350,7 +347,7 @@ public abstract class Player extends GameObject {
                 currentWalkingYDirection = Direction.DOWN;
                 lastWalkingYDirection = Direction.DOWN;
             }
-            else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true){
+            else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && WeatherManager.GLOBAL.isRedRain()==true){
                 
                 if (BeeStats.hasTunic() == true) {
                     moveAmountY += BeeStats.getWalkSpeed();
