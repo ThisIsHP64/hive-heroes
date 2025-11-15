@@ -111,10 +111,10 @@ public class GamePanel extends JPanel implements ActionListener {
 		updatePauseState();
 		updateShowFPSState();
 
-        if(!weatherManager.isOverrideMode()) {
-            if (!isGamePaused) {
-                screenManager.update();
+        if (!isGamePaused) {
+            screenManager.update();
 
+            if(WeatherManager.GLOBAL.isTimedMode()) {
                 grassLeveltimer++;
                 int grassLevelseconds = grassLeveltimer / 60;
                 int grassLevelcycleTime = grassLevelseconds % 750;
@@ -138,7 +138,6 @@ public class GamePanel extends JPanel implements ActionListener {
                             weatherManager.setRaining(true);
                             rainSystemgrassLevel.clear();
                         }
-                        rainSystemgrassLevel.update();
                     }
                 } else if (weatherManager.isRaining()) {
                     weatherManager.setRaining(false);
@@ -152,7 +151,6 @@ public class GamePanel extends JPanel implements ActionListener {
                             weatherManager.setWind(true);
                             windSystemgrassLevel.clear();
                         }
-                        windSystemgrassLevel.update();
                     }
                 } else if (weatherManager.isWind()) {
                     weatherManager.setWind(false);
@@ -166,7 +164,6 @@ public class GamePanel extends JPanel implements ActionListener {
                             weatherManager.setRedRain(true);
                             redRainSystemvolcanoLevel.clear();
                         }
-                        redRainSystemvolcanoLevel.update();
                     }
                 } else if (weatherManager.isRedRain()) {
                     weatherManager.setRedRain(false);
@@ -180,12 +177,35 @@ public class GamePanel extends JPanel implements ActionListener {
                             weatherManager.setSnow(true);
                             snowParticleSystemsnowLevel.clear();
                         }
-                        snowParticleSystemsnowLevel.update();
                     }
                 } else if (onSnowLevel) {
                     weatherManager.setSnow(false);
                     snowParticleSystemsnowLevel.clear();
                 }
+            }
+
+            if (weatherManager.isRaining()) {
+                rainSystemgrassLevel.update();
+            } else {
+                rainSystemgrassLevel.clear();
+            }
+
+            if (weatherManager.isWind()) {
+                windSystemgrassLevel.update();
+            } else {
+                windSystemgrassLevel.clear();
+            }
+
+            if (weatherManager.isRedRain()) {
+                redRainSystemvolcanoLevel.update();
+            } else {
+                redRainSystemvolcanoLevel.clear();
+            }
+
+            if (weatherManager.isSnow()) {
+                snowParticleSystemsnowLevel.update();
+            } else {
+                snowParticleSystemsnowLevel.clear();
             }
         }
 	}
