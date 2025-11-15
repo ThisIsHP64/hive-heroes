@@ -11,11 +11,7 @@ import Enemies.Goblin;
 import Enemies.FrostDragon;
 import Enemies.Crab;
 
-import Engine.GamePanel;
-import Engine.GraphicsHandler;
-import Engine.ImageLoader;
-import Engine.Key;
-import Engine.Keyboard;
+import Engine.*;
 import Flowers.*;
 import Game.GameState;
 import GameObject.Frame;
@@ -418,10 +414,10 @@ public class Bee extends Player {
             }
         }
 
-        if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true
+        if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && WeatherManager.GLOBAL.isRedRain()==true
             && BeeStats.hasTunic() == false) {
             applyDamage(1);
-        } else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && GamePanel.getisRedRaining()==true
+        } else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && WeatherManager.GLOBAL.isRedRain()==true
             && BeeStats.hasTunic() == true) {
             return;
         }
