@@ -14,7 +14,6 @@ import NPCs.DeadDeer;
 import NPCs.DestroyedBeehive;
 import NPCs.Dragonfly;
 import NPCs.Ghost;
-import NPCs.GoodGoblin;
 import NPCs.Grave;
 import NPCs.Hut;
 import NPCs.Hut2;
@@ -160,8 +159,6 @@ public class GrassMap extends Map {
         DeadDeer deer = new DeadDeer(5003, getMapTile(15, 55).getLocation());
         deer.setInteractScript(new DeadDeerScript());
         npcs.add(deer);
-
-        npcs.add(new GoodGoblin(5030, getMapTile(105, 114).getLocation()));
 
         npcs.add(new SkelBee(5030, getMapTile(9, 98).getLocation()));
         npcs.add(new SkelBee(5030, getMapTile(8, 96).getLocation()));
