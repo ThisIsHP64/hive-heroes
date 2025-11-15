@@ -131,9 +131,15 @@ public class GamePanel extends JPanel implements ActionListener {
                 int snowLevelseconds = snowLeveltimer / 60;
                 int snowLevelcycleTime = snowLevelseconds % 750;
 
+			redRainbossFighttimer++;
+			int redRainbossFightseconds = redRainbossFighttimer/60;
+			int redRainbossFightcycleTime = redRainbossFightseconds % 750;
+
                 boolean onGrassLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
                 boolean onVolcanoLevel = TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL;
                 boolean onSnowLevel = TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL;
+
+				redRainbossFighttimer++;
 
                 // --- RAIN CYCLE ---
                 if (grassLevelcycleTime >= 30 && grassLevelcycleTime < 90) {
