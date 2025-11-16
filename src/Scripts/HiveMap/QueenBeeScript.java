@@ -1,9 +1,6 @@
 package Scripts.HiveMap;
 
-import Level.Player;
 import Level.Script;
-import Level.ScriptState;
-import Players.Bee;
 import ScriptActions.*;
 import java.util.ArrayList;
 
