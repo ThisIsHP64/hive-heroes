@@ -39,36 +39,35 @@ public class FrostTunic extends NPC {
     public void update(Player player) {
         super.update(player);
         
-//        // Debug: Check if player is near
-//        if (!collected && this.intersects(player)) {
-//            System.out.println("FrostTunic: Player nearby! Press E to collect");
-//        }
-//
-//        // Collect frost tunic with E key (like other powerups)
-//        if (!collected && this.intersects(player) && Keyboard.isKeyDown(Key.E)) {
-//            if (player instanceof Bee bee) {
-//                System.out.println("Frost Tunic collected!");
-//                bee.obtainBlueTunic();
-//
-//                // Show collection message in textbox
-//                if (map != null && map.getTextbox() != null) {
-//                    map.getTextbox().addText("Frost Tunic acquired");
-//                    map.getTextbox().setIsActive(true);
-//                }
-//
-//                collect();
-//                // map.getTextbox().setIsActive(false);
-//            }
-//        }
-//
-//        // Handle fade-out animation when collected
-        if (fadeTimer < FADE_DURATION) {
-            fadeTimer++;
-            fadeAlpha = 1.0f - ((float) fadeTimer / FADE_DURATION);
+       // Debug: Check if player is near
+    //    if (!collected && this.intersects(player)) {
+    //        System.out.println("FrostTunic: Player nearby! Press E to collect");
+    //    }
+
+    //    // Collect frost tunic with E key (like other powerups)
+    //    if (!collected && this.intersects(player) && Keyboard.isKeyDown(Key.E)) {
+    //        if (player instanceof Bee bee) {
+    //            System.out.println("Frost Tunic collected!");
+    //            bee.obtainBlueTunic();
+
+    //            // Show collection message in textbox
+    //            if (map != null && map.getTextbox() != null) {
+    //                map.getTextbox().addText("Frost Tunic acquired");
+    //                map.getTextbox().setIsActive(true);
+    //            }
+
+    //            collect();
+    //        }
+    //    }
+
+       // Handle fade-out animation when collected
+        // if (fadeTimer < FADE_DURATION) {
+        //     fadeTimer++;
+        //     fadeAlpha = 1.0f - ((float) fadeTimer / FADE_DURATION);
             
-            // Add a slight upward float effect
-            this.y -= 0.5f;
-        }
+        //     // Add a slight upward float effect
+        //     this.y -= 0.5f;
+        // }
 
     }
     
