@@ -30,7 +30,7 @@ public class DungeonMap extends Map {
         super("dungeon_map.txt", new DungeonTileset());
         
         // Bee starts here
-        this.playerStartPosition = getMapTile(98, 50).getLocation();
+        this.playerStartPosition = getMapTile(90, 50).getLocation();
     }
 
     @Override
@@ -83,8 +83,6 @@ public class DungeonMap extends Map {
         
         // === Grass Portal - Teleport to Grasslands ===
         GrassPortal grassPortal = new GrassPortal(2010, getMapTile(35, 87).getLocation());
-        grassPortal.setInteractScript(new DungeonGrassPortalScript());
-        grassPortal.setIsUncollidable(true); // Allow player to walk through it
         npcs.add(grassPortal);
         
         // === Frost Tunic - Blue Tunic Powerup ===
@@ -100,7 +98,6 @@ public class DungeonMap extends Map {
 
     @Override
     public void loadScripts() {
-        // Set portal script on map tile as well (in case NPC script doesn't trigger)
-        getMapTile(35, 87).setInteractScript(new DungeonGrassPortalScript());
+        
     }
 }

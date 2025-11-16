@@ -36,7 +36,6 @@ public class GameOverScreen extends Screen {
             BeeStats.setDead(false);
             BeeStats.respawn();
             BeeStats.setWalkSpeed(6f);
-            screenCoordinator.resetAll(); // reset all levels to default state
             screenCoordinator.setGameState(GameState.HIVELEVEL);
         }
        
@@ -44,8 +43,9 @@ public class GameOverScreen extends Screen {
         if (Keyboard.isKeyDown(Key.E)) {
             UnleashMayhem.reset(); // stop horde and reset music
             BeeStats.setDead(false);
-            BeeStats.respawn();
+            BeeStats.resetToDefault();
             BeeStats.setWalkSpeed(BeeStats.getMaxWalkSpeed());
+            screenCoordinator.resetAll(); // reset all levels to default state
             screenCoordinator.setGameState(GameState.MENU);
         }
     }

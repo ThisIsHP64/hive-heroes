@@ -58,6 +58,7 @@ public class FrostTunic extends NPC {
                 }
                 
                 collect();
+                // map.getTextbox().setIsActive(false);
             }
         }
         
@@ -69,6 +70,7 @@ public class FrostTunic extends NPC {
             // Add a slight upward float effect
             this.y -= 0.5f;
         }
+
     }
     
     @Override
