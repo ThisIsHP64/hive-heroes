@@ -68,7 +68,7 @@ public class BeeStats {
     // ------------------------
     public static void consumeStamina(int amount) {
         if (stamina > 0) {
-            stamina -= 1;
+            stamina -= amount;
         } else {
             stamina = 0;
         }
