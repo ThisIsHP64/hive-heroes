@@ -8,7 +8,9 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
+import NPCs.Emerald;
 import Portals.GrassPortal;
+import Scripts.SnowMap.EmeraldScript;
 import Tilesets.SnowTileset;
 import java.util.ArrayList;
 
@@ -42,7 +44,11 @@ public class SnowMap extends Map {
         // ===== CRABS REMOVED - EnemySpawner handles them dynamically now! =====
         
         // ===== FROST DRAGONS REMOVED - EnemySpawner handles them dynamically now! =====
-        
+
+        Emerald emerald = new Emerald(1, getMapTile(40, 13).getLocation());
+        emerald.setInteractScript(new EmeraldScript());
+        npcs.add(emerald);
+
         return npcs;
     }
 

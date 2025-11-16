@@ -7,7 +7,6 @@ import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.*;
 import Maps.SnowMap;
-
 import Players.Bee;
 import StaticClasses.BeeStats;
 import StaticClasses.EnemySpawner;
@@ -19,7 +18,6 @@ import Enemies.Spider;
 import Enemies.Crab;
 import Enemies.Goblin;
 import Enemies.FrostDragon;
-
 import Engine.ImageLoader;
 import GameObject.SpriteSheet;
 
@@ -43,6 +41,7 @@ public class SnowLevelScreen extends Screen implements GameListener {
         hasInitialized = true;
 
         flagManager = new FlagManager();
+        flagManager.addFlag("collectedEmerald", false);
 
         map = new SnowMap();
         map.setFlagManager(flagManager);
