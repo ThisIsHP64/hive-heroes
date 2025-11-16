@@ -121,8 +121,6 @@ public class GrassMap extends Map {
 
         npcs.add(new Hut(4000, getMapTile(84, 70).getLocation()));
 
-        npcs.add(new Hut2(4001, getMapTile(100, 100).getLocation()));
-
         Cat cat = new Cat(5000, getMapTile(83, 71).getLocation());
         cat.setInteractScript(new CatScript());
         npcs.add(cat);
@@ -131,8 +129,19 @@ public class GrassMap extends Map {
         hive.setInteractScript(new DestroyedBeehiveScript());
         npcs.add(hive);
 
+        Cat3 cat3 = new Cat3(5079, getMapTile(110, 84).getLocation());
+        cat3.setInteractScript(new Cat3Script());
+        npcs.add(cat3);
+
+        Hut2 hut2 = new Hut2(4001, getMapTile(100, 100).getLocation());
+        hut2.setInteractScript(new Hut2Script());
+        npcs.add(hut2);
+
         npcs.add(new Grave(5002, getMapTile(11, 10).getLocation()));
-        npcs.add(new Ghost(5007, getMapTile(10, 11).getLocation()));
+        
+        Ghost ghost = new Ghost(5007, getMapTile(10, 11).getLocation());
+        ghost.setInteractScript(new GhostScript());
+        npcs.add(ghost);
 
         DeadDeer deer = new DeadDeer(5003, getMapTile(15, 55).getLocation());
         deer.setInteractScript(new DeadDeerScript());

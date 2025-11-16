@@ -21,21 +21,23 @@ public class Ghost extends NPC {
             location.x,
             location.y,
             new SpriteSheet(ImageLoader.load("ghostSheet.png"), SPRITE_WIDTH, SPRITE_HEIGHT, 0),
-            "FLOAT"
+            "IDLE"
         );
 
-        currentAnimationName = "FLOAT";
+        currentAnimationName = "IDLE";
 
         // Adjust position so it’s centered nicely on the tile
         setX(getX() - (SPRITE_WIDTH * SCALE / 2f));
         setY(getY() - (SPRITE_HEIGHT * SCALE));
 
-        System.out.println("👻 Ghost spawned at " + getX() + ", " + getY());
+        System.out.println("Ghost spawned at " + getX() + ", " + getY());
     }
 
     @Override
     public void update(Player player) {
-        // Update animation frames
+        if (currentAnimationName == null || getCurrentAnimation() == null)
+            return;
+
         super.update(player);
     }
 
@@ -43,15 +45,16 @@ public class Ghost extends NPC {
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet sheet) {
         HashMap<String, Frame[]> map = new HashMap<>();
 
-        // Simple floating idle animation
-        Frame[] floatAnim = new Frame[] {
+        Frame[] idle = new Frame[] {
             new FrameBuilder(sheet.getSprite(0, 0), 15).withScale(SCALE).withBounds(8, 18, 16, 10).build(),
             new FrameBuilder(sheet.getSprite(1, 0), 15).withScale(SCALE).withBounds(8, 18, 16, 10).build(),
             new FrameBuilder(sheet.getSprite(0, 1), 15).withScale(SCALE).withBounds(8, 18, 16, 10).build(),
             new FrameBuilder(sheet.getSprite(1, 1), 15).withScale(SCALE).withBounds(8, 18, 16, 10).build()
         };
 
-        map.put("FLOAT", floatAnim);
+        map.put("IDLE", idle);
+        map.put("STAND_LEFT", idle);
+        map.put("STAND_RIGHT", idle);
         return map;
     }
 }
