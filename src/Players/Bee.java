@@ -2,15 +2,11 @@ package Players;
 
 import Builders.FrameBuilder;
 import Effects.FloatingText;
-import Effects.ScreenFX; // ADDED: For clearing screen effects on death
-import Enemies.Bat;
-import Enemies.Spider;
-
-// ADDED: make melee connect with these guys
-import Enemies.Goblin;
-import Enemies.FrostDragon;
+import Enemies.Bat; // ADDED: For clearing screen effects on death
 import Enemies.Crab;
-
+import Enemies.FrostDragon;
+import Enemies.Goblin;
+import Enemies.Spider;
 import Engine.*;
 import Flowers.*;
 import Game.GameState;
@@ -19,11 +15,11 @@ import GameObject.SpriteSheet;
 import Level.MapTile;
 import Level.Player;
 import Level.TileType;
+import Projectiles.BeeProjectile;
 import Sound.SFX;
 import Sound.SFXManager;
 import SpriteImage.PowerupHUD;
 import SpriteImage.ProjectileHUD;
-import Projectiles.BeeProjectile;
 import SpriteImage.ResourceHUD;
 import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
@@ -156,6 +152,16 @@ public class Bee extends Player {
                 swapToRedBeeSprites();
             }
         }
+
+        if (BeeStats.hasBlueTunic()) {
+            powerupHUD.show("BlueTunic_Hud.PNG", Integer.MAX_VALUE);
+
+            if (BeeStats.isBlueTunicActive()) {
+                useBlueSprites = true;
+                swapToBlueBeeSprites();
+            }
+        }
+
 
         if (BeeStats.hasRing()) {
             powerupHUD.show("onering.png", Integer.MAX_VALUE);
@@ -419,13 +425,14 @@ public class Bee extends Player {
             }
         }
 
-        if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && WeatherManager.GLOBAL.isRedRain()==true
-            && BeeStats.hasTunic() == false) {
+        // Volcano fire damage logic
+        if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL
+                && WeatherManager.GLOBAL.isRedRain()
+                && !BeeStats.isTunicActive()) {
+
             applyDamage(1);
-        } else if (TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL && WeatherManager.GLOBAL.isRedRain()==true
-            && BeeStats.hasTunic() == true) {
-            return;
         }
+
 
         resourceBars.update();
         
