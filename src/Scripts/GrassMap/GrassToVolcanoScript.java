@@ -34,6 +34,7 @@ public class GrassToVolcanoScript extends Script{
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("isLevel2", true));
+                addRequirement(new FlagRequirement("hasCollected50Nectar", true));
                 scriptActions.add(new TextboxScriptAction() {{
                     addText("Would you like to enter the Volcanic Map?", new String[] { "Yes", "No" });
                 }});
