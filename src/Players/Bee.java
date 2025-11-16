@@ -439,11 +439,12 @@ public class Bee extends Player {
         // Update projectiles (now includes collision + damage)
         updateProjectiles();
         
-        // Regenerate stamina (only if haven't shot recently)
-        long timeSinceLastShot = System.currentTimeMillis() - lastShotTime;
-        if (timeSinceLastShot > 1000) {  // 1 second delay after shooting
-            BeeStats.regenerateStamina(1);
-        }
+        // // Regenerate stamina (only if haven't shot recently)
+        // long timeSinceLastShot = System.currentTimeMillis() - lastShotTime;
+        // if (timeSinceLastShot > 1000) {  // 1 second delay after shooting
+        //     BeeStats.regenerateStamina(1);
+        // }
+
     }
 
     public void showPowerupIcon(String spritePath, int durationMs) {

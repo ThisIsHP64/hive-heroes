@@ -69,67 +69,68 @@ public class QueenBeeScript extends Script {
                             }
                         });
 
-                        addScriptAction(new TextboxScriptAction() {{
-                            addText("Do you wish to travel to the furthest lands?", new String[]{"Yes", "No"});
-                        }});
+                        // addScriptAction(new TextboxScriptAction() {{
+                        //     addText("Do you wish to travel to the furthest lands?", new String[]{"Yes", "No"});
+                        // }});
 
-                        addScriptAction(new ConditionalScriptAction() {{
-                            // Yes : receive both Red and Blue Tunics
-                            addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                                addRequirement(new CustomRequirement() {
-                                    @Override
-                                    public boolean isRequirementMet() {
-                                        int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
-                                        return answer == 0;
-                                    }
-                                });
+                        // addScriptAction(new ConditionalScriptAction() {{
+                        //     // Yes : receive both Red and Blue Tunics
+                        //     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
+                        //         addRequirement(new CustomRequirement() {
+                        //             @Override
+                        //             public boolean isRequirementMet() {
+                        //                 int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
+                        //                 return answer == 0;
+                        //             }
+                        //         });
 
-                                addScriptAction(new TextboxScriptAction("Then take these tunics, brave one."));
-                                addScriptAction(new TextboxScriptAction("The Red Tunic will shield you from flame..."));
-                                addScriptAction(new TextboxScriptAction("The Blue Tunic will guard you from frost."));
-                                addScriptAction(new TextboxScriptAction("Press 3 for the Red Tunic, and 4 for the Blue Tunic."));
+                        //         addScriptAction(new TextboxScriptAction("Then take these tunics, brave one."));
+                        //         addScriptAction(new TextboxScriptAction("The Red Tunic will shield you from flame..."));
+                        //         addScriptAction(new TextboxScriptAction("The Blue Tunic will guard you from frost."));
+                        //         addScriptAction(new TextboxScriptAction("Press 3 for the Red Tunic, and 4 for the Blue Tunic."));
 
-                                addScriptAction(new ScriptAction() {
-                                    @Override
-                                    public ScriptState execute() {
-                                        Player player = map.getPlayer();
-                                        if (player instanceof Bee bee) {
-                                            bee.obtainTunic();      
-                                            bee.obtainBlueTunic();  
-                                        }
-                                        return ScriptState.COMPLETED;
-                                    }
-                                });
-                            }});
+                        //         addScriptAction(new ScriptAction() {
+                        //             @Override
+                        //             public ScriptState execute() {
+                        //                 Player player = map.getPlayer();
+                        //                 if (player instanceof Bee bee) {
+                        //                     bee.obtainTunic();      
+                        //                     bee.obtainBlueTunic();  
+                        //                 }
+                        //                 return ScriptState.COMPLETED;
+                        //             }
+                        //         });
+                        //     }});
 
-                            // No : still gives them (kind Queen)
-                            addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                                addRequirement(new CustomRequirement() {
-                                    @Override
-                                    public boolean isRequirementMet() {
-                                        int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
-                                        return answer == 1;
-                                    }
-                                });
+                        //     // No : still gives them (kind Queen)
+                        //     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
+                        //         addRequirement(new CustomRequirement() {
+                        //             @Override
+                        //             public boolean isRequirementMet() {
+                        //                 int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
+                        //                 return answer == 1;
+                        //             }
+                        //         });
 
-                                addScriptAction(new TextboxScriptAction("Take them anyway — you will need their strength soon."));
-                                addScriptAction(new TextboxScriptAction("Press 3 for the Red Tunic, and 4 for the Blue Tunic."));
+                        //         addScriptAction(new TextboxScriptAction("Take them anyway — you will need their strength soon."));
+                        //         addScriptAction(new TextboxScriptAction("Press 3 for the Red Tunic, and 4 for the Blue Tunic."));
 
-                                addScriptAction(new ScriptAction() {
-                                    @Override
-                                    public ScriptState execute() {
-                                        Player player = map.getPlayer();
-                                        if (player instanceof Bee bee) {
-                                            bee.obtainTunic();     
-                                            bee.obtainBlueTunic();   
-                                        }
-                                        return ScriptState.COMPLETED;
-                                    }
-                                });
-                            }});
-                        }});
+                        //         addScriptAction(new ScriptAction() {
+                        //             @Override
+                        //             public ScriptState execute() {
+                        //                 Player player = map.getPlayer();
+                        //                 if (player instanceof Bee bee) {
+                        //                     bee.obtainTunic();     
+                        //                     bee.obtainBlueTunic();   
+                        //                 }
+                        //                 return ScriptState.COMPLETED;
+                        //             }
+                        //         });
+                        //     }});
+                        // }});
 
-                        addScriptAction(new TextboxScriptAction("Go forth, and let your wings remember the warmth \nand the frost."));
+                        // addScriptAction(new TextboxScriptAction("Go forth, and let your wings remember the warmth \nand the frost."));
+                        addScriptAction(new TextboxScriptAction("Go forth, and fulfill your destiny!"));
                     }});
                 }});
             }});

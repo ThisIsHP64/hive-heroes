@@ -145,7 +145,7 @@ public abstract class Player extends GameObject {
                     totalDistanceTraveled += Math.abs(moveAmountX);
                 }
 
-                BeeStats.manageStamina();
+                BeeStats.consumeStamina(1);
             } 
 
             if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) && (WeatherManager.GLOBAL.isRaining() ==true || WeatherManager.GLOBAL.isWind()==true)) {
@@ -207,7 +207,7 @@ public abstract class Player extends GameObject {
                     totalDistanceTraveled += Math.abs(moveAmountX);
                 }
 
-                BeeStats.manageStamina();
+                BeeStats.consumeStamina(1);
             }
 
             if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) && (WeatherManager.GLOBAL.isRaining()==true || WeatherManager.GLOBAL.isWind()==true)) {
@@ -270,7 +270,7 @@ public abstract class Player extends GameObject {
                     totalDistanceTraveled += Math.abs(moveAmountY);
                 }
 
-                BeeStats.manageStamina();
+                BeeStats.consumeStamina(1);
             } 
             
             if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL && (WeatherManager.GLOBAL.isRaining()) || WeatherManager.GLOBAL.isWind()){
@@ -327,7 +327,7 @@ public abstract class Player extends GameObject {
 
                     totalDistanceTraveled += Math.abs(moveAmountY);
                 }
-                BeeStats.manageStamina();
+                BeeStats.consumeStamina(1);
             }
 
             if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) && (WeatherManager.GLOBAL.isRaining() || WeatherManager.GLOBAL.isWind())) {
