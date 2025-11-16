@@ -58,7 +58,8 @@ public class FrostDragon extends NPC {
     private static final float GIVE_UP_RANGE = 420f;
     private static final float ATTACK_RANGE  = 110f;
 
-    private static final int   ATTACK_DAMAGE      = 12;
+    // BALANCED ATTACK DAMAGE
+    private static final int   ATTACK_DAMAGE      = 18;
     private static final long  ATTACK_COOLDOWN_MS = 1200;
 
     // very obvious dive
@@ -92,8 +93,8 @@ public class FrostDragon extends NPC {
     private boolean dealtThisSwing = false;
     private Direction attackFacing = null;
 
-    // health + death
-    private int  hp = 80;
+    // health + death (BALANCED HP)
+    private int  hp = 140;
     private boolean dead = false;
     private long deathTime = 0;
     private static final long DEATH_LINGER_MS = 1400;
@@ -106,18 +107,18 @@ public class FrostDragon extends NPC {
     private long attackFxStartTime = 0;
     private static final long ATTACK_FX_DURATION_MS = 450;
 
-    private GameObject.SpriteSheet hitFxSheet = null;
+    private SpriteSheet hitFxSheet = null;
     private static final int HIT_FX_W = 32;
     private static final int HIT_FX_H = 32;
     private static final int HIT_FX_FRAME_DELAY = 3;
     private static final float HIT_FX_SCALE = 1.35f;
 
-    public FrostDragon(Utils.Point spawn) {
+    public FrostDragon(Point spawn) {
         super(
             0,
             spawn.x,
             spawn.y,
-            new GameObject.SpriteSheet(ImageLoader.load("frost_dragon.png"), TILE_W, TILE_H, 0),
+            new SpriteSheet(ImageLoader.load("frost_dragon.png"), TILE_W, TILE_H, 0),
             "FLY_RIGHT"
         );
         this.patrolCx = spawn.x;
@@ -125,7 +126,7 @@ public class FrostDragon extends NPC {
         setRandomPatrolTarget();
 
         try {
-            hitFxSheet = new GameObject.SpriteSheet(ImageLoader.load("bee_attack1.png"), HIT_FX_W, HIT_FX_H, 0);
+            hitFxSheet = new SpriteSheet(ImageLoader.load("bee_attack1.png"), HIT_FX_W, HIT_FX_H, 0);
         } catch (Exception ignored) {
             hitFxSheet = null;
         }
@@ -133,7 +134,7 @@ public class FrostDragon extends NPC {
 
     // ---------- core loop ----------
     @Override
-    public void update(Level.Player player) {
+    public void update(Player player) {
         floatingTexts.removeIf(t -> { t.update(); return t.isDead(); });
 
         if (showAttackFx && (System.currentTimeMillis() - attackFxStartTime) >= ATTACK_FX_DURATION_MS) {
@@ -148,7 +149,7 @@ public class FrostDragon extends NPC {
     }
 
     @Override
-    public void performAction(Level.Player player) {
+    public void performAction(Player player) {
         if (dead) return;
 
         float dist = distanceTo(player);
@@ -182,7 +183,7 @@ public class FrostDragon extends NPC {
     }
 
     // ---------- attack flow ----------
-    private void beginAttack(Level.Player player, long now) {
+    private void beginAttack(Player player, long now) {
         state = State.ATTACK;
         isAttacking = true;
         inDivePhase = false;
@@ -198,7 +199,7 @@ public class FrostDragon extends NPC {
         moveXHandleCollision((facing == Direction.RIGHT ? nudge : -nudge));
     }
 
-    private void updateAttack(Level.Player player, long now) {
+    private void updateAttack(Player player, long now) {
         long elapsed = now - attackStart;
 
         if (!inDivePhase && elapsed >= WINDUP_MS) {
@@ -253,7 +254,7 @@ public class FrostDragon extends NPC {
             }
         }
 
-        // keep the time-based fallback too (just in case)
+        // fallback distance check (kept from earlier logic)
         if (!dealtThisSwing && elapsed >= ATTACK_DURATION_MS * 0.45f) {
             tryDealDamageDistanceFallback(player);
         }
@@ -293,8 +294,8 @@ public class FrostDragon extends NPC {
         return new java.awt.Rectangle(x, y, w, h);
     }
 
-    // fallback distance check (kept from earlier logic)
-    private void tryDealDamageDistanceFallback(Level.Player player) {
+    // fallback distance check
+    private void tryDealDamageDistanceFallback(Player player) {
         float cx = getX() + (TILE_W * SCALE) / 2f;
         float cy = getY() + (TILE_H * SCALE) / 2f;
 
@@ -318,7 +319,7 @@ public class FrostDragon extends NPC {
     }
 
     // ---------- movement ----------
-    private void chase(Level.Player player) {
+    private void chase(Player player) {
         float dx = player.getX() - getX();
         float dy = player.getY() - getY();
         float dist = (float) Math.sqrt(dx * dx + dy * dy);
@@ -358,7 +359,7 @@ public class FrostDragon extends NPC {
         patrolTy = patrolCy + (float) (Math.sin(ang) * r);
     }
 
-    private float distanceTo(Level.Player p) {
+    private float distanceTo(Player p) {
         float dx = p.getX() - getX();
         float dy = p.getY() - getY();
         return (float) Math.sqrt(dx * dx + dy * dy);
@@ -400,7 +401,7 @@ public class FrostDragon extends NPC {
     }
 
     @Override
-    public void draw(Engine.GraphicsHandler graphicsHandler) {
+    public void draw(GraphicsHandler graphicsHandler) {
         // dragon (fade if dead)
         if (!dead) {
             super.draw(graphicsHandler);
@@ -408,9 +409,9 @@ public class FrostDragon extends NPC {
             long t = System.currentTimeMillis() - deathTime;
             float fade = 1f - Math.min(1f, t / (float) DEATH_LINGER_MS);
 
-            java.awt.Graphics2D g2d = graphicsHandler.getGraphics();
-            java.awt.Composite old = g2d.getComposite();
-            g2d.setComposite(java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.SRC_OVER, Math.max(0f, fade)));
+            Graphics2D g2d = graphicsHandler.getGraphics();
+            Composite old = g2d.getComposite();
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Math.max(0f, fade)));
             super.draw(graphicsHandler);
             g2d.setComposite(old);
         }
@@ -480,12 +481,12 @@ public class FrostDragon extends NPC {
         return !dead && showAttackFx && (System.currentTimeMillis() - attackFxStartTime) < ATTACK_FX_DURATION_MS;
     }
 
-    public Utils.Direction getFacing() {
+    public Direction getFacing() {
         return facing;
     }
 
     // ---------- floating text (public method for level screens) ----------
-    public void drawFloatingTexts(Engine.GraphicsHandler graphicsHandler, float cameraX, float cameraY) {
+    public void drawFloatingTexts(GraphicsHandler graphicsHandler, float cameraX, float cameraY) {
         for (FloatingText text : new ArrayList<>(floatingTexts)) {
             text.draw(graphicsHandler, cameraX, cameraY);
         }
@@ -493,19 +494,19 @@ public class FrostDragon extends NPC {
 
     // ---------- animations ----------
     @Override
-    public java.util.HashMap<String, GameObject.Frame[]> loadAnimations(GameObject.SpriteSheet sheet) {
-        java.util.HashMap<String, GameObject.Frame[]> map = new java.util.HashMap<>();
+    public HashMap<String, Frame[]> loadAnimations(SpriteSheet sheet) {
+        HashMap<String, Frame[]> map = new HashMap<>();
         final int bx = 20, by = 16, bw = 32, bh = 40;
 
         // Row 0 — FLY
-        GameObject.Frame[] flyR = new GameObject.Frame[] {
+        Frame[] flyR = new Frame[] {
             f(sheet,0,0,8,bx,by,bw,bh,SCALE,false),
             f(sheet,0,1,8,bx,by,bw,bh,SCALE,false),
             f(sheet,0,2,8,bx,by,bw,bh,SCALE,false),
             f(sheet,0,3,8,bx,by,bw,bh,SCALE,false),
             f(sheet,0,4,8,bx,by,bw,bh,SCALE,false),
         };
-        GameObject.Frame[] flyL = new GameObject.Frame[] {
+        Frame[] flyL = new Frame[] {
             f(sheet,0,0,8,bx,by,bw,bh,SCALE,true),
             f(sheet,0,1,8,bx,by,bw,bh,SCALE,true),
             f(sheet,0,2,8,bx,by,bw,bh,SCALE,true),
@@ -516,14 +517,14 @@ public class FrostDragon extends NPC {
         map.put("FLY_LEFT",  flyL);
 
         // Row 1 — WINDUP
-        GameObject.Frame[] windR = new GameObject.Frame[] {
+        Frame[] windR = new Frame[] {
             f(sheet,1,0,4,bx,by,bw,bh,SCALE,false),
             f(sheet,1,1,4,bx,by,bw,bh,SCALE,false),
             f(sheet,1,2,4,bx,by,bw,bh,SCALE,false),
             f(sheet,1,3,4,bx,by,bw,bh,SCALE,false),
             f(sheet,1,4,4,bx,by,bw,bh,SCALE,false),
         };
-        GameObject.Frame[] windL = new GameObject.Frame[] {
+        Frame[] windL = new Frame[] {
             f(sheet,1,0,4,bx,by,bw,bh,SCALE,true),
             f(sheet,1,1,4,bx,by,bw,bh,SCALE,true),
             f(sheet,1,2,4,bx,by,bw,bh,SCALE,true),
@@ -538,11 +539,11 @@ public class FrostDragon extends NPC {
         final int DIVE_COL_A = 4;
         final int DIVE_COL_B = 4;
 
-        GameObject.Frame[] diveR = new GameObject.Frame[] {
+        Frame[] diveR = new Frame[] {
             f(sheet, DIVE_ROW, DIVE_COL_A, 6, bx,by,bw,bh,SCALE,false),
             f(sheet, DIVE_ROW, DIVE_COL_B, 6, bx,by,bw,bh,SCALE,false),
         };
-        GameObject.Frame[] diveL = new GameObject.Frame[] {
+        Frame[] diveL = new Frame[] {
             f(sheet, DIVE_ROW, DIVE_COL_A, 6, bx,by,bw,bh,SCALE,true),
             f(sheet, DIVE_ROW, DIVE_COL_B, 6, bx,by,bw,bh,SCALE,true),
         };
@@ -550,7 +551,7 @@ public class FrostDragon extends NPC {
         map.put("ATTACK_DIVE_LEFT",  diveL);
 
         // Row 3 — DEATH
-        GameObject.Frame[] death = new GameObject.Frame[] {
+        Frame[] death = new Frame[] {
             f(sheet,3,0,7,bx,by,bw,bh,SCALE,false),
             f(sheet,3,1,7,bx,by,bw,bh,SCALE,false),
             f(sheet,3,2,7,bx,by,bw,bh,SCALE,false),
@@ -560,7 +561,7 @@ public class FrostDragon extends NPC {
         map.put("DEATH", death);
 
         // Row 4 — SMOKE (first 4)
-        GameObject.Frame[] smoke = new GameObject.Frame[] {
+        Frame[] smoke = new Frame[] {
             f(sheet,4,0,10,bx,by,bw,bh,SCALE,false),
             f(sheet,4,1,10,bx,by,bw,bh,SCALE,false),
             f(sheet,4,2,10,bx,by,bw,bh,SCALE,false),
@@ -571,11 +572,11 @@ public class FrostDragon extends NPC {
         return map;
     }
 
-    private GameObject.Frame f(GameObject.SpriteSheet s, int r, int c, int delay, int bx, int by, int bw, int bh, int scale, boolean flip) {
-        Builders.FrameBuilder b = new Builders.FrameBuilder(s.getSprite(r, c), delay)
+    private Frame f(SpriteSheet s, int r, int c, int delay, int bx, int by, int bw, int bh, int scale, boolean flip) {
+        FrameBuilder b = new FrameBuilder(s.getSprite(r, c), delay)
                 .withScale(scale)
                 .withBounds(bx, by, bw, bh);
-        if (flip) b.withImageEffect(GameObject.ImageEffect.FLIP_HORIZONTAL);
+        if (flip) b.withImageEffect(ImageEffect.FLIP_HORIZONTAL);
         return b.build();
     }
 }

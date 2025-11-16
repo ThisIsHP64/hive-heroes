@@ -54,8 +54,11 @@ public class Spider extends NPC {
     private static final float TOO_CLOSE_RANGE = 25f;
     private static final float JUMP_RANGE = 60f;
 
+    // --- BALANCE KNOBS ---
+    private static final int SPIDER_MAX_HEALTH = 60;    // was 50 – tankier than bat
+    private static final int JUMP_DAMAGE = 20;          // was 25 – still scary, not ridiculous
+
     // jump attack settings
-    private static final int JUMP_DAMAGE = 25;
     private static final long JUMP_COOLDOWN_MS = 800;
     private static final long JUMP_WINDUP_MS = 150;
     private static final long JUMP_DURATION_MS = 500;
@@ -95,7 +98,7 @@ public class Spider extends NPC {
     private Direction facing = Direction.RIGHT;
 
     // health tracking
-    private int health = 50;
+    private int health = SPIDER_MAX_HEALTH;
     private boolean isDead = false;
     private long deathTime = 0;
     private static final long DEATH_LINGER_MS = 2000;
@@ -137,7 +140,7 @@ public class Spider extends NPC {
             return;
 
         health -= amount;
-        System.out.println("Spider took " + amount + " damage! HP: " + health);
+        System.out.println("Spider took " + amount + " damage! HP: " + health + "/" + SPIDER_MAX_HEALTH);
 
         // show hit flash
         triggerHitFx();

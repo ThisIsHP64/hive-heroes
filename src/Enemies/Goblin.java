@@ -15,6 +15,7 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -25,7 +26,7 @@ public class Goblin extends NPC {
     private static final int TILE_H = 16;
     private static final int SCALE = 2;
 
-    // how fast bat moves
+    // how fast goblin moves
     private static final float PATROL_SPEED = 1.0f;
     private static final float CHASE_SPEED = 2.0f;
 
@@ -55,7 +56,11 @@ public class Goblin extends NPC {
     private static final int ATTACK_DAMAGE = 10;
     private static final long ATTACK_COOLDOWN_MS = 1000;
     private static final long ATTACK_DURATION_MS = 400;
-    private static final float HIT_DISTANCE = 50f;
+
+    // hammer swing hitbox (a bit wider since it’s a smasher)
+    private static final int ATTACK_HITBOX_W = 56;
+    private static final int ATTACK_HITBOX_H = 32;
+    private static final int ATTACK_HITBOX_Y_OFFSET = 4;
 
     // state tracking
     private enum State {
@@ -117,7 +122,7 @@ public class Goblin extends NPC {
 
         triggerHitFx();
 
-        // spawn red damage number above bat
+        // spawn red damage number above goblin
         float textX = getX() + (TILE_W * SCALE) / 2f;
         float textY = getY();
         floatingTexts.add(new FloatingText(textX, textY, "-" + amount, Color.RED));
@@ -223,21 +228,23 @@ public class Goblin extends NPC {
         hasDealtDamageThisAttack = false;
 
         float beeX = player.getX();
-        float batX = getX();
-        facing = (beeX > batX) ? Direction.RIGHT : Direction.LEFT;
+        float goblinX = getX();
+        facing = (beeX > goblinX) ? Direction.RIGHT : Direction.LEFT;
         attackFacingDirection = facing;
 
         currentAnimationName = (facing == Direction.RIGHT) ? "ATTACK_RIGHT" : "ATTACK_LEFT";
 
-        System.out.println("Goblin attacking toward " + facing + " at Goblin pos: " + batX + ", player pos: " + beeX);
+        System.out.println("Goblin attacking toward " + facing + " at Goblin pos: " + goblinX + ", player pos: " + beeX);
     }
 
     private void updateAttack(Player player, long currentTime) {
         long attackElapsed = currentTime - attackStartTime;
         
+        // lock facing during attack
         facing = attackFacingDirection;
         currentAnimationName = (facing == Direction.RIGHT) ? "ATTACK_RIGHT" : "ATTACK_LEFT";
 
+        // hammer connects mid-swing
         if (!hasDealtDamageThisAttack && attackElapsed >= ATTACK_DURATION_MS / 2) {
             checkAttackDamage(player);
         }
@@ -247,29 +254,21 @@ public class Goblin extends NPC {
             lastAttackTime = currentTime;
             currentState = State.CHASE;
             attackFacingDirection = null;
-            System.out.println("Attack finished, resuming chase");
+            System.out.println("Goblin attack finished, resuming chase");
         }
     }
 
+    // hammer swing hitbox vs bee rectangle
     private void checkAttackDamage(Player player) {
-        float goblinCenterX = getX() + (TILE_W * SCALE) / 2f;
-        float goblinCenterY = getY() + (TILE_H * SCALE) / 2f;
+        Rectangle swing = getAttackHitbox();
+        Rectangle beeBounds = new Rectangle(
+                (int) player.getX(),
+                (int) player.getY(),
+                player.getWidth(),
+                player.getHeight()
+        );
 
-        float beeCenterX = player.getX() + 32f;
-        float beeCenterY = player.getY() + 32f;
-
-        float dx = beeCenterX - goblinCenterX;
-        float dy = beeCenterY - goblinCenterY;
-        float distance = (float) Math.sqrt(dx * dx + dy * dy);
-
-        boolean beeIsInFacingDirection = false;
-        if (facing == Direction.RIGHT && dx > 0) {
-            beeIsInFacingDirection = true;
-        } else if (facing == Direction.LEFT && dx < 0) {
-            beeIsInFacingDirection = true;
-        }
-
-        if (distance < HIT_DISTANCE && beeIsInFacingDirection) {
+        if (swing.intersects(beeBounds)) {
             if (player instanceof Players.Bee) {
                 Players.Bee bee = (Players.Bee) player;
                 bee.applyDamage(ATTACK_DAMAGE);
@@ -277,6 +276,25 @@ public class Goblin extends NPC {
                 System.out.println("Goblin hit bee for " + ATTACK_DAMAGE + " damage!");
             }
         }
+    }
+
+    // hammer swing rectangle based on goblin center + facing
+    private Rectangle getAttackHitbox() {
+        float goblinCenterX = getX() + (TILE_W * SCALE) / 2f;
+        float goblinCenterY = getY() + (TILE_H * SCALE) / 2f + ATTACK_HITBOX_Y_OFFSET;
+
+        int w = ATTACK_HITBOX_W;
+        int h = ATTACK_HITBOX_H;
+
+        int x;
+        if (facing == Direction.RIGHT) {
+            x = (int) (goblinCenterX);
+        } else {
+            x = (int) (goblinCenterX - w);
+        }
+        int y = (int) (goblinCenterY - h / 2f);
+
+        return new Rectangle(x, y, w, h);
     }
 
     private float getDistanceToBee(Player player) {
@@ -288,16 +306,16 @@ public class Goblin extends NPC {
     private void chase(Player player) {
         float beeX = player.getX();
         float beeY = player.getY();
-        float batX = getX();
-        float batY = getY();
+        float goblinX = getX();
+        float goblinY = getY();
 
-        float dx = beeX - batX;
-        float dy = beeY - batY;
+        float dx = beeX - goblinX;
+        float dy = beeY - goblinY;
         float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
         if (distance > 0.1f) {
             float moveX = (dx / distance) * currentChaseSpeed();
-            float moveY = (dy / distance) * currentChaseSpeed();
+            float moveY = (dy / distance) * currentPatrolSpeed(); // slight variation if you want; can use chase speed
 
             moveXHandleCollision(moveX);
             moveYHandleCollision(moveY);

@@ -31,12 +31,12 @@ public final class EnemySpawner {
     private static long lastSpawnAttempt = 0;
     
     // HIGHER enemy caps for more action
-    private static final int MAX_GRASS_ENEMIES = 20;      // Was 15
-    private static final int MAX_VOLCANO_ENEMIES = 25;    // Was 20
-    private static final int MAX_FROST_ENEMIES = 22;      // Was 18
+    private static final int MAX_GRASS_ENEMIES = 25;      // Was 15
+    private static final int MAX_VOLCANO_ENEMIES = 30;    // Was 20
+    private static final int MAX_FROST_ENEMIES = 30;      // Was 18
     
     // Spawn MORE at once
-    private static final int ENEMIES_PER_WAVE = 3;  // Spawn 3 at a time (was 2)
+    private static final int ENEMIES_PER_WAVE = 4;  // Spawn 4 at a time
     
     private static final Random rng = new Random();
     

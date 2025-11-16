@@ -15,6 +15,7 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -41,6 +42,7 @@ public class Crab extends NPC {
         return hordeMode ? PATROL_SPEED * hordeSpeedMult : PATROL_SPEED;
     }
 
+    // called by horde/volcano logic
     public void setHordeAggression(float speedMult, boolean on) {
         this.hordeMode = on;
         this.hordeSpeedMult = (speedMult <= 0f) ? 1.0f : speedMult;
@@ -55,7 +57,11 @@ public class Crab extends NPC {
     private static final int ATTACK_DAMAGE = 10;
     private static final long ATTACK_COOLDOWN_MS = 1000;
     private static final long ATTACK_DURATION_MS = 400;
-    private static final float HIT_DISTANCE = 50f;
+
+    // swing hitbox (claw swipe) – we’ll use a rectangle instead of pure distance
+    private static final int ATTACK_HITBOX_W = 50;
+    private static final int ATTACK_HITBOX_H = 40;
+    private static final int ATTACK_HITBOX_Y_OFFSET = 10;
 
     // state tracking
     private enum State {
@@ -235,47 +241,37 @@ public class Crab extends NPC {
 
     private void updateAttack(Player player, long currentTime) {
         long attackElapsed = currentTime - attackStartTime;
-        
-        // keep facing the direction we started attacking
+
+        // lock facing during attack
         facing = attackFacingDirection;
         currentAnimationName = (facing == Direction.RIGHT) ? "ATTACK_RIGHT" : "ATTACK_LEFT";
 
-        // deal damage halfway through the attack animation
+        // actually swing around halfway through
         if (!hasDealtDamageThisAttack && attackElapsed >= ATTACK_DURATION_MS / 2) {
             checkAttackDamage(player);
         }
 
-        // attack animation finished, go back to chasing
+        // once the swing is done, go back to chase
         if (attackElapsed >= ATTACK_DURATION_MS) {
             isAttacking = false;
             lastAttackTime = currentTime;
             currentState = State.CHASE;
             attackFacingDirection = null;
-            System.out.println("Attack finished, resuming chase");
+            System.out.println("Crab attack finished, resuming chase");
         }
     }
 
+    // build a claw swing rectangle in front of the crab and check vs bee bounds
     private void checkAttackDamage(Player player) {
-        float crabCenterX = getX() + (TILE_W * SCALE) / 2f;
-        float crabCenterY = getY() + (TILE_H * SCALE) / 2f;
+        Rectangle swing = getAttackHitbox();
+        Rectangle beeBounds = new Rectangle(
+                (int) player.getX(),
+                (int) player.getY(),
+                player.getWidth(),
+                player.getHeight()
+        );
 
-        float beeCenterX = player.getX() + 32f;
-        float beeCenterY = player.getY() + 32f;
-
-        float dx = beeCenterX - crabCenterX;
-        float dy = beeCenterY - crabCenterY;
-        float distance = (float) Math.sqrt(dx * dx + dy * dy);
-
-        // make sure bee is in the direction we're attacking
-        boolean beeIsInFacingDirection = false;
-        if (facing == Direction.RIGHT && dx > 0) {
-            beeIsInFacingDirection = true;
-        } else if (facing == Direction.LEFT && dx < 0) {
-            beeIsInFacingDirection = true;
-        }
-
-        // if close enough and in the right direction, hit em!
-        if (distance < HIT_DISTANCE && beeIsInFacingDirection) {
+        if (swing.intersects(beeBounds)) {
             if (player instanceof Players.Bee) {
                 Players.Bee bee = (Players.Bee) player;
                 bee.applyDamage(ATTACK_DAMAGE);
@@ -283,6 +279,25 @@ public class Crab extends NPC {
                 System.out.println("Crab hit bee for " + ATTACK_DAMAGE + " damage!");
             }
         }
+    }
+
+    // rectangle for the claw swipe, based on crab center + facing
+    private Rectangle getAttackHitbox() {
+        float crabCenterX = getX() + (TILE_W * SCALE) / 2f;
+        float crabCenterY = getY() + (TILE_H * SCALE) / 2f + ATTACK_HITBOX_Y_OFFSET;
+
+        int w = ATTACK_HITBOX_W;
+        int h = ATTACK_HITBOX_H;
+
+        int x;
+        if (facing == Direction.RIGHT) {
+            x = (int) (crabCenterX);
+        } else {
+            x = (int) (crabCenterX - w);
+        }
+        int y = (int) (crabCenterY - h / 2f);
+
+        return new Rectangle(x, y, w, h);
     }
 
     private float getDistanceToBee(Player player) {
