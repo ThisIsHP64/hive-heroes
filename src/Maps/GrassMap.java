@@ -1,6 +1,5 @@
 package Maps;
 
-import Enemies.Spider;
 import Engine.GraphicsHandler;
 import Level.Map;
 import Level.NPC;
@@ -156,8 +155,6 @@ public class GrassMap extends Map {
         npcs.add(new SkelBee(5030, getMapTile(43, 87).getLocation()));
 
         npcs.add(new BrokenTree(5069, getMapTile(100, 10).getLocation()));
-
-        npcs.add(new Cat3(5079, getMapTile(110, 84).getLocation()));
 
 
         return npcs;
