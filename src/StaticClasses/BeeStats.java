@@ -102,9 +102,9 @@ public class BeeStats {
         return attackDamage;
     }
 
-    public static void setAttackDamage(int attackDamage) {
-        BeeStats.attackDamage = attackDamage;
-    }
+        public static void setAttackDamage(int attackDamage) {
+            BeeStats.attackDamage = attackDamage;
+        }
 
     // ------------------------
     // Death + Respawn
@@ -230,6 +230,22 @@ public class BeeStats {
     public static void restoreAllStats() {
         setHealth(maxHealth);
         setStamina(maxStamina);
+    }
+
+    public static void resetToDefault() {
+        setMaxHealth(100);
+        setMaxStamina(100);
+        setWalkSpeed(6.0f);
+        setMaxNectar(50);
+        setAttackDamage(5);
+        setCurrentLevel(1);
+        restoreAllStats();
+        setDead(false);
+        setHasTunic(false);
+        setTunicActive(false);
+        setHasRing(false);
+        setHasBlueTunic(false);
+        setBlueTunicActive(false);
     }
 
     // ------------------------
