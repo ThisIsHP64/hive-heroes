@@ -6,6 +6,7 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
+import Scripts.MazeMap.RedTunicScript;
 import Tilesets.MazeTileset;
 import NPCs.OneRing;
 import NPCs.FireTunic;
@@ -37,6 +38,7 @@ public class MazeMap extends Map {
 
         // FINISH - Red Tunic at X:19, Y:29 (center-bottom - the goal!)
         FireTunic redTunic = new FireTunic(5001, getMapTile(39, 29).getLocation());
+        redTunic.setInteractScript(new RedTunicScript());
         npcs.add(redTunic);
 
         System.out.println("[MazeMap] START at (1,1) | ONE RING at (2,28) | RED TUNIC (finish) at (19,29)");

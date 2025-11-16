@@ -51,6 +51,8 @@ public class MazeLevelScreen extends Screen implements GameListener {
         map = new MazeMap();
         map.setFlagManager(flagManager);
 
+        flagManager.addFlag("collectedRedTunic", false);
+
         // player (Bee) spawn at X:1, Y:1
         player = new Bee(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         player.setMap(map);
