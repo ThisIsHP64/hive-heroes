@@ -4,7 +4,7 @@ import Level.Script;
 import ScriptActions.*;
 import java.util.ArrayList;
 
-public class Cat3Script extends Script {
+public class Hut2Script extends Script {
 
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
@@ -12,29 +12,19 @@ public class Cat3Script extends Script {
 
         scriptActions.add(new LockPlayerScriptAction());
 
+        
         scriptActions.add(new NPCFacePlayerScriptAction());
 
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Meow! Do you see all those purple flowers?");
+                    addText("**Hmm... the scent of strange potions drifts from\nwithin...**");
                 }});
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("They used to be sunflowers, but I brewed a potion\nthat changed them into something else!");
+                    addText("**If I'm not mistaken, this must be the Kitwitch's\nhut...**");
                 }});
 
-                addScriptAction(new TextboxScriptAction() {{
-                    addText("I also lost some of my power-up and shield potions\nwhile experimenting...");
-                }});
-
-                addScriptAction(new TextboxScriptAction() {{
-                    addText("Not that it mattered none of them worked on me\nanyway.");
-                }});
-
-                addScriptAction(new TextboxScriptAction() {{
-                    addText("If you find any, just press E to pick them up!");
-                }});
             }});
         }});
 
