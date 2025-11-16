@@ -1,5 +1,8 @@
 package StaticClasses;
 
+import Sound.SFX;
+import Sound.SFXManager;
+
 public class BeeStats {
 
     // health variables
@@ -175,9 +178,11 @@ public class BeeStats {
     // if the player's current experience is greater than or equal to the current
     // threshold, subtract the experience and level them up.
     public static void checkLevelUp() {
-        if (experience >= experienceThresholds[currentLevel - 1]) {
+        if (currentLevel - 1 < experienceThresholds.length &&
+                experience >= experienceThresholds[currentLevel - 1]) {
             experience -= experienceThresholds[currentLevel - 1];
             currentLevel += 1;
+            SFXManager.playSFX(SFX.LEVEL);
             processLevelUp();
         }
     }

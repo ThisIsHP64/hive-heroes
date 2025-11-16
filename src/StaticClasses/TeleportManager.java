@@ -2,6 +2,8 @@ package StaticClasses;
 
 import Game.GameState;
 import Game.ScreenCoordinator;
+import Sound.SFX;
+import Sound.SFXManager;
 
 public class TeleportManager {
     private static ScreenCoordinator teleportManager;
@@ -12,6 +14,7 @@ public class TeleportManager {
 
     public static void setCurrentScreen(GameState gameState) {
         if (teleportManager != null) {
+            SFXManager.playSFX(SFX.MOVE);
             teleportManager.setGameState(gameState);
         }
     }

@@ -7,6 +7,8 @@ import Level.MapEntityStatus;
 import Level.NPC;
 import Level.Player;
 import Players.Bee;
+import Sound.SFX;
+import Sound.SFXManager;
 
 public class Flower extends NPC {
 
@@ -38,6 +40,7 @@ public class Flower extends NPC {
             java.awt.Rectangle sting = bee.getAttackHitbox();
             
             if (sting.intersects(this.getHitbox())) {
+                SFXManager.playSFX(SFX.NECTAR);
                 nectarAmount -= 1;
 
                 if (nectarAmount <= 0) {

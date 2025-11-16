@@ -3,6 +3,7 @@ package Game;
 import Engine.GameWindow;
 import Engine.ScreenManager;
 import Sound.MusicManager;
+import Sound.SFXManager;
 
 /* 
 
@@ -18,6 +19,7 @@ public class Game {
 
     public Game() {
         MusicManager.init();
+        SFXManager.init();
         GameWindow gameWindow = new GameWindow();
         ScreenManager screenManager = gameWindow.getScreenManager();
         screenManager.setCurrentScreen(new ScreenCoordinator());

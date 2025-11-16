@@ -19,6 +19,8 @@ import GameObject.SpriteSheet;
 import Level.MapTile;
 import Level.Player;
 import Level.TileType;
+import Sound.SFX;
+import Sound.SFXManager;
 import SpriteImage.PowerupHUD;
 import SpriteImage.ProjectileHUD;
 import Projectiles.BeeProjectile;
@@ -208,6 +210,8 @@ public class Bee extends Player {
     public void applyDamage(int amount) {
         if (BeeStats.isDead())
             return;
+
+        SFXManager.playSFX(SFX.HURT);
 
         if (hasShield && shieldHealth > 0) {
             shieldHealth -= amount;
@@ -494,6 +498,7 @@ public class Bee extends Player {
             // Only shoot projectile if we have it AND we're not near an NPC
             // (NPCs take priority for SPACE interaction)
             if (hasProjectile && !isNearNPC()) {
+                SFXManager.playSFX(SFX.SHOOT);
                 shootProjectile();
             }
 
@@ -564,6 +569,7 @@ public class Bee extends Player {
 
         if (hitSomething) {
             meleeDealtThisSwing = true;
+            SFXManager.playSFX(SFX.STING);
 
             // little feedback
             if (map != null && map.getCamera() != null) {
