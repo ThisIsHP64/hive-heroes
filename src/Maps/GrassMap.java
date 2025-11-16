@@ -131,6 +131,10 @@ public class GrassMap extends Map {
         hive.setInteractScript(new DestroyedBeehiveScript());
         npcs.add(hive);
 
+        Cat3 cat3 = new Cat3(5079, getMapTile(110, 84).getLocation());
+        cat3.setInteractScript(new Cat3Script());
+        npcs.add(cat3);
+
         npcs.add(new Grave(5002, getMapTile(11, 10).getLocation()));
         npcs.add(new Ghost(5007, getMapTile(10, 11).getLocation()));
 
@@ -148,8 +152,11 @@ public class GrassMap extends Map {
 
         npcs.add(new BrokenTree(5069, getMapTile(100, 10).getLocation()));
 
+<<<<<<< HEAD
         npcs.add(new Cat3(5079, getMapTile(110, 84).getLocation()));
 
+=======
+>>>>>>> 1845602 (renamed cat script)
 
         return npcs;
     }

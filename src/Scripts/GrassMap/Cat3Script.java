@@ -4,7 +4,7 @@ import Level.Script;
 import ScriptActions.*;
 import java.util.ArrayList;
 
-public class Cat3 extends Script {
+public class Cat3Script extends Script {
 
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
@@ -18,19 +18,23 @@ public class Cat3 extends Script {
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Meow... I am sorry for what happened to your \nhive.");
+                    addText("Meow! Do you see all those purple flowers?");
                 }});
+
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Very big teeth, sharp claws...");
+                    addText("They used to be sunflowers, but I brewed a potion\nthat changed them into something else!");
                 }});
+
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Did not even spare my dear friend deer!");
+                    addText("I also lost some of my power-up and shield potions\nwhile experimenting...");
                 }});
+
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Luckily the beast did not notice me..");
+                    addText("Not that it mattered none of them worked on me\nanyway.");
                 }});
+
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Good luck on your journey!");
+                    addText("If you find any, just press E to pick them up!");
                 }});
             }});
         }});
