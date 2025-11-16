@@ -5,7 +5,6 @@ import Game.GameState;
 import GameObject.GameObject;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
-import Players.Bee;
 import SpriteImage.ResourceHUD;
 import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
@@ -161,7 +160,7 @@ public abstract class Player extends GameObject {
                 lastWalkingXDirection = Direction.LEFT;
             } 
             else if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL && WeatherManager.GLOBAL.isSnow()==true){
-                moveAmountX -= BeeStats.getWalkSpeed() *0.5f;
+                moveAmountX -= BeeStats.getWalkSpeed() *0.25f;
 
                 totalDistanceTraveled += Math.abs(moveAmountX);
 
@@ -223,7 +222,7 @@ public abstract class Player extends GameObject {
                 lastWalkingXDirection = Direction.RIGHT;
             } 
             else if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL && WeatherManager.GLOBAL.isSnow()==true) {
-                moveAmountX += BeeStats.getWalkSpeed()*0.5f;
+                moveAmountX += BeeStats.getWalkSpeed()*0.25f;
                 
                 totalDistanceTraveled += Math.abs(moveAmountX);
 
@@ -286,7 +285,7 @@ public abstract class Player extends GameObject {
                 
             } 
             else if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL && WeatherManager.GLOBAL.isSnow()==true){
-                moveAmountY -= BeeStats.getWalkSpeed()*0.5f;
+                moveAmountY -= BeeStats.getWalkSpeed()*0.25f;
 
                 totalDistanceTraveled += Math.abs(moveAmountY);
 
@@ -342,7 +341,7 @@ public abstract class Player extends GameObject {
                 
             } 
             else if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL && WeatherManager.GLOBAL.isSnow()==true){
-                moveAmountY += BeeStats.getWalkSpeed()*0.5f;
+                moveAmountY += BeeStats.getWalkSpeed()*0.25f;
 
                 totalDistanceTraveled += Math.abs(moveAmountY);
 
