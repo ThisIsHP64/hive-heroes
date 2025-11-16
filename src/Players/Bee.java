@@ -405,7 +405,6 @@ public class Bee extends Player {
 
         System.out.println("Current number of flowers on the map: " + countFlowers());
 
-        // System.out.println("Flowers in ArrayList: " + FlowerManager.flowersInArrayList());
         handleAttackInput();
         handleTunicInput();
 

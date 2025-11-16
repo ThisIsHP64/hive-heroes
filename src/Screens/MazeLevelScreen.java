@@ -117,33 +117,29 @@ public class MazeLevelScreen extends Screen implements GameListener {
                             }
                             
                             // Check for FireTunic collection
-                            if (npc instanceof NPCs.FireTunic) {
-                                NPCs.FireTunic tunic = (NPCs.FireTunic) npc;
-                                
-                                float distance = (float) Math.sqrt(
-                                    Math.pow(bee.getX() - tunic.getX(), 2) + 
-                                    Math.pow(bee.getY() - tunic.getY(), 2)
-                                );
-                                
-                                System.out.println("Tunic distance: " + distance + ", collected: " + tunic.isCollected());
-                                
-                                if (!tunic.isCollected() && distance < 120) {
-                                    tunic.collect();
-                                    fireTunicCollected = true;
-                                    map.getTextbox().addText("The Volcanic Tunic!");
-                                    map.getTextbox().addText("This will protect me from the flames.");
-                                    map.getTextbox().addText("Returning to Grass Level...");
-                                    map.getTextbox().setIsActive(true);
-                                    pendingTeleportToGrass = true;
-                                    teleportTimer = 0;
-                                    keyLocker.lockKey(Key.E);
-                                }
-                            }
+//                            if (npc instanceof NPCs.FireTunic) {
+//                                NPCs.FireTunic tunic = (NPCs.FireTunic) npc;
+//
+//                                float distance = (float) Math.sqrt(
+//                                    Math.pow(bee.getX() - tunic.getX(), 2) +
+//                                    Math.pow(bee.getY() - tunic.getY(), 2)
+//                                );
+//
+//                                System.out.println("Tunic distance: " + distance + ", collected: " + tunic.isCollected());
+//
+//                                if (!tunic.isCollected() && distance < 120) {
+//                                    tunic.collect();
+//                                    fireTunicCollected = true;
+//                                    map.getTextbox().addText("The Volcanic Tunic!");
+//                                    map.getTextbox().addText("This will protect me from the flames.");
+//                                    map.getTextbox().addText("Returning to Grass Level...");
+//                                    map.getTextbox().setIsActive(true);
+//                                    pendingTeleportToGrass = true;
+//                                    teleportTimer = 0;
+//                                    keyLocker.lockKey(Key.E);
+//                                }
+//                            }
                         }
-                    }
-                    
-                    if (Keyboard.isKeyUp(Key.E)) {
-                        keyLocker.unlockKey(Key.E);
                     }
 
                     if (bee.isAttacking()) {
