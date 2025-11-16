@@ -5,6 +5,7 @@ import java.util.Random;
 
 import Enemies.Spider;
 import Enemies.Bat;
+import Enemies.Skull;
 import Enemies.FrostDragon;
 import Enemies.Crab;
 import Enemies.Goblin;
@@ -150,12 +151,19 @@ public final class EnemySpawner {
             return new Spider(id, position);
 
         } else if (mapName.equals("VolcanoMap")) {
-            // Volcano level: 50% spiders, 50% bats
-            if (rng.nextBoolean()) {
+            // Volcano level: 40% spiders, 35% bats, 25% skulls
+            int roll = rng.nextInt(100);
+            
+            if (roll < 40) {
+                // 40% chance: Spider
                 int id = 3000 + rng.nextInt(10000);
                 return new Spider(id, position);
-            } else {
+            } else if (roll < 75) {
+                // 35% chance: Bat
                 return new Bat(position);
+            } else {
+                // 25% chance: Skull (flying menace!)
+                return new Skull(position);
             }
 
         } else if (mapName.equals("SnowMap") || mapName.equals("FrostMap") || mapName.equals("DungeonMap")) {
@@ -184,7 +192,7 @@ public final class EnemySpawner {
     private static int countEnemiesOnMap(Map map) {
         int count = 0;
         for (NPC npc : map.getNPCs()) {
-            if (npc instanceof Spider || npc instanceof Bat ||
+            if (npc instanceof Spider || npc instanceof Bat || npc instanceof Skull ||
                 npc instanceof Goblin || npc instanceof Crab || npc instanceof FrostDragon) {
                 count++;
             }

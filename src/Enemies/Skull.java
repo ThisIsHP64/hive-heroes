@@ -25,18 +25,18 @@ public class Skull extends NPC {
     private static final int TILE_H = 64;
     private static final int SCALE = 2;     
 
-    // Movement speeds
-    private static final float PATROL_SPEED = 0.8f;
-    private static final float CHASE_SPEED = 1.5f;
+    // Movement speeds - BALANCED for challenging but fair gameplay
+    private static final float PATROL_SPEED = 0.6f;   // Slower patrol (was 0.8f)
+    private static final float CHASE_SPEED = 1.2f;    // Reduced chase speed (was 1.5f)
     
-    // Detection distances
-    private static final float CHASE_RANGE = 150f;
-    private static final float GIVE_UP_RANGE = 250f;
-    private static final float ATTACK_RANGE = 40f;
+    // Detection distances - Slightly tighter range
+    private static final float CHASE_RANGE = 140f;    // Reduced detection (was 150f)
+    private static final float GIVE_UP_RANGE = 220f;  // Gives up sooner (was 250f)
+    private static final float ATTACK_RANGE = 35f;    // Need to get closer (was 40f)
     
-    // Combat settings
-    private static final int DAMAGE = 10;
-    private static final long ATTACK_COOLDOWN_MS = 1000;
+    // Combat settings - BALANCED damage and cooldown
+    private static final int DAMAGE = 8;                      // Less damage (was 10)
+    private static final long ATTACK_COOLDOWN_MS = 1200;      // Slower attacks (was 1000ms)
     private static final long DEATH_LINGER_MS = 1000;
     
     // Spawn timing
@@ -54,7 +54,7 @@ public class Skull extends NPC {
     
     private Direction facing = Direction.RIGHT;
 
-    private int health = 40;
+    private int health = 35;  // Reduced health (was 40) - dies faster
     private boolean isDead = false;
     private long deathTime = 0;
     private long lastAttackTime = 0;
