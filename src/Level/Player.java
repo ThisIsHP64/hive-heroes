@@ -5,6 +5,7 @@ import Game.GameState;
 import GameObject.GameObject;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
+import Players.Bee;
 import SpriteImage.ResourceHUD;
 import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
@@ -97,6 +98,7 @@ public abstract class Player extends GameObject {
         switch (playerState) {
             case STANDING:
                 playerStanding();
+                BeeStats.regenerateStamina(1);
                 break;
             case WALKING:
                 playerWalking();
@@ -145,7 +147,8 @@ public abstract class Player extends GameObject {
                     totalDistanceTraveled += Math.abs(moveAmountX);
                 }
 
-                BeeStats.consumeStamina(1);
+                BeeStats.consumeStamina(5);
+                
             } 
 
             if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) && (WeatherManager.GLOBAL.isRaining() ==true || WeatherManager.GLOBAL.isWind()==true)) {
@@ -207,7 +210,7 @@ public abstract class Player extends GameObject {
                     totalDistanceTraveled += Math.abs(moveAmountX);
                 }
 
-                BeeStats.consumeStamina(1);
+                BeeStats.consumeStamina(5);
             }
 
             if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) && (WeatherManager.GLOBAL.isRaining()==true || WeatherManager.GLOBAL.isWind()==true)) {
@@ -270,7 +273,7 @@ public abstract class Player extends GameObject {
                     totalDistanceTraveled += Math.abs(moveAmountY);
                 }
 
-                BeeStats.consumeStamina(1);
+                BeeStats.consumeStamina(5);
             } 
             
             if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL && (WeatherManager.GLOBAL.isRaining()) || WeatherManager.GLOBAL.isWind()){
@@ -324,10 +327,9 @@ public abstract class Player extends GameObject {
             if (Keyboard.isKeyDown(SPRINT_KEY)) {
                 if (BeeStats.getStamina() > 0) {
                     moveAmountY += BeeStats.getWalkSpeed() * 1f;
-
                     totalDistanceTraveled += Math.abs(moveAmountY);
                 }
-                BeeStats.consumeStamina(1);
+                BeeStats.consumeStamina(5);
             }
 
             if ((TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) && (WeatherManager.GLOBAL.isRaining() || WeatherManager.GLOBAL.isWind())) {
@@ -384,11 +386,13 @@ public abstract class Player extends GameObject {
         if ((currentWalkingXDirection == Direction.RIGHT || currentWalkingXDirection == Direction.LEFT)
                 && currentWalkingYDirection == Direction.NONE) {
             lastWalkingYDirection = Direction.NONE;
+            // BeeStats.regenerateStamina(1);
         }
 
         if ((currentWalkingYDirection == Direction.UP || currentWalkingYDirection == Direction.DOWN)
                 && currentWalkingXDirection == Direction.NONE) {
             lastWalkingXDirection = Direction.NONE;
+            // BeeStats.regenerateStamina(1);
         }
 
         if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY) && Keyboard.isKeyUp(MOVE_UP_KEY)
