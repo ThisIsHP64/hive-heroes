@@ -20,6 +20,7 @@ import Players.Bee;
 import Portals.GrassPortal;
 import Portals.Portal;
 import StaticClasses.BeeStats;
+import StaticClasses.EnemySpawner;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
 import NPCs.Volcano;
@@ -87,6 +88,10 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
 
         stingFxSheet = new SpriteSheet(ImageLoader.load("bee_attack1.png"), 32, 32);
         
+        // Enable ambient enemy spawning for this level
+        EnemySpawner.setEnabled(true);
+        EnemySpawner.resetTimer();
+        
         // DEBUG: Check if volcano exists on map
         boolean volcanoFound = false;
         for (NPC npc : map.getNPCs()) {
@@ -131,6 +136,12 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                     text.update();
                     return text.isDead();
                 });
+
+                // Update ambient enemy spawning
+                if (player instanceof Bee) {
+                    EnemySpawner.update(map, (Bee) player);
+                    EnemySpawner.updateParticles();
+                }
 
                 if (player instanceof Bee) {
                     StaticClasses.HordeManager.update(map, (Bee) player);
@@ -414,6 +425,10 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                     map.getCamera().getX(), 
                     map.getCamera().getY());
                 
+                EnemySpawner.drawParticles(graphicsHandler,
+                    map.getCamera().getX(),
+                    map.getCamera().getY());
+                
                 if (stingFxSheet != null) {
                     float cameraX = map.getCamera().getX();
                     float cameraY = map.getCamera().getY();
@@ -484,6 +499,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
         ScreenFX.start(ScreenFX.Effect.NONE, 0, 0f);
         
         StaticClasses.UnleashMayhem.reset();
+        EnemySpawner.resetTimer();
         ringTimerStarted = false;
         ringHordeTriggered = false;
         ringTextboxShown = false;

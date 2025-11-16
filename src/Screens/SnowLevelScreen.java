@@ -10,6 +10,7 @@ import Maps.SnowMap;
 
 import Players.Bee;
 import StaticClasses.BeeStats;
+import StaticClasses.EnemySpawner;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
 import Portals.GrassPortal;
@@ -17,6 +18,7 @@ import Portals.Portal;
 import Enemies.Spider;
 import Enemies.Crab;
 import Enemies.Goblin;
+import Enemies.FrostDragon;
 
 import Engine.ImageLoader;
 import GameObject.SpriteSheet;
@@ -30,7 +32,7 @@ public class SnowLevelScreen extends Screen implements GameListener {
     protected FlagManager flagManager;
     protected boolean hasInitialized = false;
 
-    // sting FX resource - single static image shown when spider is hit
+    // sting FX resource - single static image shown when enemy is hit
     private SpriteSheet stingFxSheet;
 
     public SnowLevelScreen(ScreenCoordinator screenCoordinator) {
@@ -58,7 +60,9 @@ public class SnowLevelScreen extends Screen implements GameListener {
         // let the map finish its own loading (avoids our NPC being overwritten)
         map.preloadScripts();
 
-        // spiders are now spawned in SprintOneMap.loadNPCs() instead of here
+        // Enable ambient enemy spawning for this level
+        EnemySpawner.setEnabled(true);
+        EnemySpawner.resetTimer();
 
         // load the sting FX - just one static sprite
         stingFxSheet = new SpriteSheet(ImageLoader.load("bee_attack1.png"), 32, 32);
@@ -69,6 +73,12 @@ public class SnowLevelScreen extends Screen implements GameListener {
             case RUNNING:
                 player.update();
                 map.update(player);
+
+                // Update ambient enemy spawning
+                if (player instanceof Bee) {
+                    EnemySpawner.update(map, (Bee) player);
+                    EnemySpawner.updateParticles();
+                }
 
                 // check if bee died and death animation finished
                 if (player instanceof Bee) {
@@ -89,7 +99,7 @@ public class SnowLevelScreen extends Screen implements GameListener {
 
                                 // only deal damage if spider isn't already dead
                                 if (!sp.isDead() && sting.intersects(sp.getHitbox())) {
-                                    sp.takeDamage(1);
+                                    sp.takeDamage(BeeStats.getAttackDamage());
                                     System.out.println("Bee stung spider!");
                                 }
                             }
@@ -113,6 +123,17 @@ public class SnowLevelScreen extends Screen implements GameListener {
                                 if (!goblin.isDead() && sting.intersects(goblin.getHitbox())) {
                                     goblin.takeDamage(BeeStats.getAttackDamage());
                                     System.out.println("Bee stung goblin!");
+                                }
+                            }
+
+                            // handle FrostDragon attacks
+                            if (npc instanceof FrostDragon) {
+                                FrostDragon dragon = (FrostDragon) npc;
+
+                                // only deal damage if dragon isn't already dead
+                                if (!dragon.isDead() && sting.intersects(dragon.getHitbox())) {
+                                    dragon.takeDamage(BeeStats.getAttackDamage());
+                                    System.out.println("Bee stung frost dragon!");
                                 }
                             }
 
@@ -144,12 +165,12 @@ public class SnowLevelScreen extends Screen implements GameListener {
                     }
                 }
                 
-                // remove dead spiders after death animation lingers
                 // remove dead enemies after death animation lingers
                 map.getNPCs().removeIf(npc -> {
                     if (npc instanceof Spider && ((Spider) npc).canBeRemoved()) return true;
                     if (npc instanceof Crab && ((Crab) npc).shouldRemove()) return true;
                     if (npc instanceof Goblin && ((Goblin) npc).shouldRemove()) return true;
+                    if (npc instanceof FrostDragon && ((FrostDragon) npc).canBeRemoved()) return true;
                     return false;
                 });
 
@@ -175,7 +196,12 @@ public class SnowLevelScreen extends Screen implements GameListener {
             case RUNNING:
                 map.draw(player, graphicsHandler);
                 
-                // draw attack FX on spiders that were just hit
+                // Draw EnemySpawner smoke particles
+                EnemySpawner.drawParticles(graphicsHandler,
+                    map.getCamera().getX(),
+                    map.getCamera().getY());
+                
+                // draw attack FX and floating text for all enemies
                 if (stingFxSheet != null) {
                     float cameraX = map.getCamera().getX();
                     float cameraY = map.getCamera().getY();
@@ -200,19 +226,7 @@ public class SnowLevelScreen extends Screen implements GameListener {
                                     fxX, fxY, fxSize, fxSize
                                 );
                             }
-                        }
-                    }
-                }
-
-                // draw floating damage text for all enemies
-                if (stingFxSheet != null) {
-                    float cameraX = map.getCamera().getX();
-                    float cameraY = map.getCamera().getY();
-
-                    for (NPC npc : map.getNPCs()) {
-                        // draw floating text for spiders
-                        if (npc instanceof Spider) {
-                            Spider sp = (Spider) npc;
+                            // draw floating text for spiders
                             sp.drawFloatingTexts(graphicsHandler, cameraX, cameraY);
                         }
                         
@@ -259,6 +273,28 @@ public class SnowLevelScreen extends Screen implements GameListener {
                                 );
                             }
                         }
+
+                        // draw floating text for FrostDragons
+                        if (npc instanceof FrostDragon) {
+                            FrostDragon dragon = (FrostDragon) npc;
+                            dragon.drawFloatingTexts(graphicsHandler, cameraX, cameraY);
+                            
+                            // also draw attack FX on dragons that were just hit
+                            if (dragon.isShowingAttackFx()) {
+                                int fxSize = 80;  // slightly larger for dragon
+                                int fxX = Math.round(dragon.getX() - cameraX);
+                                int fxY = Math.round(dragon.getY() - cameraY);
+                                
+                                // center on dragon body
+                                fxX += 20;
+                                fxY += 20;
+                                
+                                graphicsHandler.drawImage(
+                                    stingFxSheet.getSprite(0, 0),
+                                    fxX, fxY, fxSize, fxSize
+                                );
+                            }
+                        }
                     }
                 }
                 break;
@@ -272,7 +308,8 @@ public class SnowLevelScreen extends Screen implements GameListener {
         return playLevelScreenState;
     }
 
-    public void resetLevel() { 
+    public void resetLevel() {
+        EnemySpawner.resetTimer();
         initialize(); 
     }
 

@@ -484,6 +484,13 @@ public class FrostDragon extends NPC {
         return facing;
     }
 
+    // ---------- floating text (public method for level screens) ----------
+    public void drawFloatingTexts(Engine.GraphicsHandler graphicsHandler, float cameraX, float cameraY) {
+        for (FloatingText text : new ArrayList<>(floatingTexts)) {
+            text.draw(graphicsHandler, cameraX, cameraY);
+        }
+    }
+
     // ---------- animations ----------
     @Override
     public java.util.HashMap<String, GameObject.Frame[]> loadAnimations(GameObject.SpriteSheet sheet) {

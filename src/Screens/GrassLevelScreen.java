@@ -15,6 +15,7 @@ import Maps.GrassMap;
 import NPCs.BigHive;
 import Players.Bee;
 import StaticClasses.BeeStats;
+import StaticClasses.EnemySpawner;
 import StaticClasses.TeleportManager;
 import StaticClasses.UnleashMayhem;
 import Utils.Direction;
@@ -68,6 +69,10 @@ public class GrassLevelScreen extends Screen implements GameListener {
 
         stingFxSheet = new SpriteSheet(ImageLoader.load("bee_attack1.png"), 32, 32);
         
+        // Enable ambient enemy spawning for this level
+        EnemySpawner.setEnabled(true);
+        EnemySpawner.resetTimer();
+        
         // check if bee has max nectar when entering level - trigger horde if so
         if (player instanceof Bee) {
             Bee bee = (Bee) player;
@@ -93,6 +98,12 @@ public class GrassLevelScreen extends Screen implements GameListener {
                     text.update();
                     return text.isDead();
                 });
+                
+                // Update ambient enemy spawning
+                if (player instanceof Bee) {
+                    EnemySpawner.update(map, (Bee) player);
+                    EnemySpawner.updateParticles();
+                }
                 
                 if (player instanceof Bee) {
                     StaticClasses.HordeManager.update(map, (Bee) player);
@@ -192,6 +203,10 @@ public class GrassLevelScreen extends Screen implements GameListener {
                 StaticClasses.HordeManager.drawParticles(graphicsHandler, 
                     map.getCamera().getX(), 
                     map.getCamera().getY());
+                
+                EnemySpawner.drawParticles(graphicsHandler,
+                    map.getCamera().getX(),
+                    map.getCamera().getY());
 
                 if (stingFxSheet != null) {
                     float cameraX = map.getCamera().getX();
@@ -258,6 +273,7 @@ public class GrassLevelScreen extends Screen implements GameListener {
 
     public void resetLevel() {
         StaticClasses.UnleashMayhem.reset();
+        EnemySpawner.resetTimer();
         initialize();
     }
 
