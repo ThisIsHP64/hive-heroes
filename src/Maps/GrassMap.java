@@ -157,11 +157,8 @@ public class GrassMap extends Map {
 
         npcs.add(new BrokenTree(5069, getMapTile(100, 10).getLocation()));
 
-<<<<<<< HEAD
         npcs.add(new Cat3(5079, getMapTile(110, 84).getLocation()));
 
-=======
->>>>>>> 1845602 (renamed cat script)
 
         return npcs;
     }
