@@ -22,7 +22,6 @@ public class FrostTunic extends NPC {
 
     public FrostTunic(int id, Point location) {
         super(id, location.x, location.y - 20, new SpriteSheet(ImageLoader.load("frost_tunic.png"), 64, 64), "IDLE");
-        this.isUncollidable = true; // Allow player to walk through it
     }
 
     @Override
@@ -40,30 +39,30 @@ public class FrostTunic extends NPC {
     public void update(Player player) {
         super.update(player);
         
-        // Debug: Check if player is near
-        if (!collected && this.intersects(player)) {
-            System.out.println("FrostTunic: Player nearby! Press E to collect");
-        }
-        
-        // Collect frost tunic with E key (like other powerups)
-        if (!collected && this.intersects(player) && Keyboard.isKeyDown(Key.E)) {
-            if (player instanceof Bee bee) {
-                System.out.println("Frost Tunic collected!");
-                bee.obtainBlueTunic();
-                
-                // Show collection message in textbox
-                if (map != null && map.getTextbox() != null) {
-                    map.getTextbox().addText("Frost Tunic acquired");
-                    map.getTextbox().setIsActive(true);
-                }
-                
-                collect();
-                // map.getTextbox().setIsActive(false);
-            }
-        }
-        
-        // Handle fade-out animation when collected
-        if (collected && fadeTimer < FADE_DURATION) {
+//        // Debug: Check if player is near
+//        if (!collected && this.intersects(player)) {
+//            System.out.println("FrostTunic: Player nearby! Press E to collect");
+//        }
+//
+//        // Collect frost tunic with E key (like other powerups)
+//        if (!collected && this.intersects(player) && Keyboard.isKeyDown(Key.E)) {
+//            if (player instanceof Bee bee) {
+//                System.out.println("Frost Tunic collected!");
+//                bee.obtainBlueTunic();
+//
+//                // Show collection message in textbox
+//                if (map != null && map.getTextbox() != null) {
+//                    map.getTextbox().addText("Frost Tunic acquired");
+//                    map.getTextbox().setIsActive(true);
+//                }
+//
+//                collect();
+//                // map.getTextbox().setIsActive(false);
+//            }
+//        }
+//
+//        // Handle fade-out animation when collected
+        if (fadeTimer < FADE_DURATION) {
             fadeTimer++;
             fadeAlpha = 1.0f - ((float) fadeTimer / FADE_DURATION);
             

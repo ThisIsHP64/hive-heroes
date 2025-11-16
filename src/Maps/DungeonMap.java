@@ -13,15 +13,7 @@ import NPCs.Ruth;
 import NPCs.Walter;
 import Portals.GrassPortal;
 import PowerUps.StingerPowerUp;
-import Scripts.DungeonMap.CarlScript;
-import Scripts.DungeonMap.DougScript;
-import Scripts.DungeonMap.DungeonGrassPortalScript;
-import Scripts.DungeonMap.EarlScript;
-import Scripts.DungeonMap.FrankScript;
-import Scripts.DungeonMap.GeneScript;
-import Scripts.DungeonMap.HankScript;
-import Scripts.DungeonMap.RuthScript;
-import Scripts.DungeonMap.WalterScript;
+import Scripts.DungeonMap.*;
 import Tilesets.DungeonTileset;
 import java.util.ArrayList;
 
@@ -87,6 +79,7 @@ public class DungeonMap extends Map {
         
         // === Frost Tunic - Blue Tunic Powerup ===
         FrostTunic frostTunic = new FrostTunic(2011, getMapTile(40, 87).getLocation());
+        frostTunic.setInteractScript(new FrostTunicScript());
         npcs.add(frostTunic);
         
         // === Projectile powerup ===
