@@ -189,18 +189,18 @@ public class MazeLevelScreen extends Screen implements GameListener {
                 });
                 
                 // Handle pending teleport with timer
-                if (pendingTeleportToGrass) {
-                    teleportTimer++;
-                    if (teleportTimer >= TELEPORT_DELAY) {
-                        // Remove FireTunic before teleporting
-                        map.getNPCs().removeIf(npc -> npc instanceof NPCs.FireTunic && ((NPCs.FireTunic) npc).isCollected());
+                // if (pendingTeleportToGrass) {
+                //     teleportTimer++;
+                //     if (teleportTimer >= TELEPORT_DELAY) {
+                //         // Remove FireTunic before teleporting
+                //         map.getNPCs().removeIf(npc -> npc instanceof NPCs.FireTunic && ((NPCs.FireTunic) npc).isCollected());
                         
-                        System.out.println("Teleporting to GRASSLEVEL...");
-                        TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
-                        pendingTeleportToGrass = false;
-                        teleportTimer = 0;
-                    }
-                }
+                //         System.out.println("Teleporting to GRASSLEVEL...");
+                //         TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
+                //         pendingTeleportToGrass = false;
+                //         teleportTimer = 0;
+                //     }
+                // }
 
                 break;
 

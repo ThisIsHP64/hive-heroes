@@ -68,7 +68,7 @@ public class BeeStats {
     // ------------------------
     public static void manageStamina() {
         if (stamina > 0) {
-            stamina -= 10;
+            stamina -= 100;
         } else {
             stamina = 0;
         }
