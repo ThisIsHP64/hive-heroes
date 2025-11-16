@@ -1,9 +1,7 @@
 package Scripts.DungeonMap;
 
-import Level.Player;
 import Level.Script;
-import Level.ScriptState;
-import Players.Bee;
+
 import ScriptActions.*;
 
 import java.util.ArrayList;
@@ -26,10 +24,19 @@ public class FrostTunicScript extends Script {
                     addText("Frost tunic acquired!");
                 }});
 
+                addScriptAction(new ChangeFlagScriptAction("collectedFrostTunic", true));
                 addScriptAction(new FrostTunicScriptAction());
 
-                addScriptAction(new ChangeFlagScriptAction("collectedFrostTunic", true));
             }});
+            
+            addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
+                addRequirement(new FlagRequirement("collectedFrostTunic", true));
+
+                // addScriptAction(new ChangeFlagScriptAction("collectedFrostTunic", true));
+
+
+            }});
+
         }});
 
         scriptActions.add(new UnlockPlayerScriptAction());
