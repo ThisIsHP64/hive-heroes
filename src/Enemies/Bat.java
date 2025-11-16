@@ -51,8 +51,11 @@ public class Bat extends NPC {
     private static final float GIVE_UP_RANGE = 350f;
     private static final float ATTACK_RANGE = 60f;
 
-    // attack settings
-    private static final int ATTACK_DAMAGE = 10;
+    // --- BALANCE KNOBS ---
+    // health & damage – tweak these if bat feels too weak/strong
+    private static final int MAX_HEALTH = 40;       // was 50 – now dies in ~3 melee or 2 projectiles
+    private static final int ATTACK_DAMAGE = 8;     // was 10 – softer chip damage
+
     private static final long ATTACK_COOLDOWN_MS = 1000;
     private static final long ATTACK_DURATION_MS = 400;
     private static final float HIT_DISTANCE = 50f;
@@ -75,7 +78,7 @@ public class Bat extends NPC {
     private Direction facing = Direction.RIGHT;
 
     // health tracking
-    private int health = 50;
+    private int health = MAX_HEALTH;
     private boolean isDead = false;
     private long deathTime = 0;
     private static final long DEATH_LINGER_MS = 2000;
@@ -113,7 +116,7 @@ public class Bat extends NPC {
             return;
 
         health -= amount;
-        System.out.println("Bat took " + amount + " damage! HP: " + health);
+        System.out.println("Bat took " + amount + " damage! HP: " + health + "/" + MAX_HEALTH);
 
         triggerHitFx();
 

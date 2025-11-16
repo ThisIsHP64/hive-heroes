@@ -5,50 +5,67 @@ import Sound.SFXManager;
 
 public class BeeStats {
 
-    // health variables
+    // ------------------------
+    // Health
+    // ------------------------
     private static int health = 100;
     private static int maxHealth = 100;
 
-    // stamina variables
-    private static int stamina = 10000;
-    private static int maxStamina = 10000;
+    // ------------------------
+    // Stamina (used for projectiles)
+    // ------------------------
+    // testing values removed — balanced version
+    private static int stamina = 1000;
+    private static int maxStamina = 1000;
 
-    // nectar variables
+    // Nectar
     private static int nectar = 0;
     private static int maxNectar = 60;
 
-    // experience variables
+    // Experience
     private static int experience = 0;
     private static int[] experienceThresholds = {30, 50, 100, 175};
 
-    // walk speed variables
+    // Movement speed
     private static float walkSpeed = 8f;
     private static float maxWalkSpeed = 10f;
 
-    // is Bee dead?
+    // Death flag
     private static boolean isDead = false;
 
-    // bee starts at level 1
+    // Level (starts at 1)
     private static int currentLevel = 1;
 
+    // Base melee damage (Bee.java also uses MELEE_DAMAGE = 15)
     private static int attackDamage = 5;
 
-    // tunic variable (red)
+    // ------------------------
+    // Tunics / Ring
+    // ------------------------
     private static boolean hasTunic = false;
     private static boolean tunicActive = false;
 
-    // ring variable (OneRing)
     private static boolean hasRing = false;
 
-    // tunic variable (blue)
     private static boolean hasBlueTunic = false;
     private static boolean blueTunicActive = false;
 
-    // --- NEW: projectile power unlock (persists across screens) ---
+    // ------------------------
+    // Projectile power (persistent!)
+    // ------------------------
     private static boolean hasProjectilePower = false;
-    public static boolean hasProjectilePower() { return hasProjectilePower; }
-    public static void setHasProjectilePower(boolean value) { hasProjectilePower = value; }
 
+    public static boolean hasProjectilePower() {
+        return hasProjectilePower;
+    }
+
+    public static void setHasProjectilePower(boolean value) {
+        hasProjectilePower = value;
+    }
+
+    // ------------------------
+    // Stamina Management
+    // ------------------------
     public static void manageStamina() {
         if (stamina > 0) {
             stamina--;
@@ -57,7 +74,6 @@ public class BeeStats {
         }
     }
 
-    // Stamina regeneration - call this every frame
     public static void regenerateStamina(int amount) {
         if (stamina < maxStamina) {
             stamina += amount;
@@ -67,12 +83,11 @@ public class BeeStats {
         }
     }
 
-    // Check if bee has enough stamina to shoot
+    // projectile cost check (150 stamina)
     public static boolean canShootProjectile() {
         return stamina >= 150;
     }
 
-    // Deduct stamina when shooting projectile
     public static void useProjectileStamina() {
         if (stamina >= 150) {
             stamina -= 150;
@@ -80,6 +95,9 @@ public class BeeStats {
         }
     }
 
+    // ------------------------
+    // Attack Damage
+    // ------------------------
     public static int getAttackDamage() {
         return attackDamage;
     }
@@ -88,11 +106,13 @@ public class BeeStats {
         BeeStats.attackDamage = attackDamage;
     }
 
-    // related to bee death and respawn
+    // ------------------------
+    // Death + Respawn
+    // ------------------------
     public static void respawn() {
         health = maxHealth;
         nectar = 0;
-        // NOTE: we do NOT clear hasProjectilePower here so the unlock persists across deaths/maps.
+        // DO NOT clear projectile power — persistent unlock
     }
 
     public static void takeDamage(int damage) {
@@ -111,7 +131,9 @@ public class BeeStats {
         isDead = deadUpdate;
     }
 
-    // health getters and setters
+    // ------------------------
+    // Health
+    // ------------------------
     public static int getHealth() {
         return health;
     }
@@ -128,7 +150,9 @@ public class BeeStats {
         maxHealth = newMaxHealth;
     }
 
-    // stamina getters and setters
+    // ------------------------
+    // Stamina getters
+    // ------------------------
     public static int getStamina() {
         return stamina;
     }
@@ -145,7 +169,9 @@ public class BeeStats {
         maxStamina = newMaxStamina;
     }
 
-    // nectar getters and setters
+    // ------------------------
+    // Nectar
+    // ------------------------
     public static int getNectar() {
         return nectar;
     }
@@ -154,7 +180,7 @@ public class BeeStats {
         if (newNectar < 0)
             newNectar = 0;
         if (newNectar > maxNectar)
-            newNectar = maxNectar; // hard cap
+            newNectar = maxNectar;
         nectar = newNectar;
     }
 
@@ -166,7 +192,9 @@ public class BeeStats {
         maxNectar = newMaxNectar;
     }
 
-    // experience setters and getters
+    // ------------------------
+    // Experience / Leveling
+    // ------------------------
     public static int getExperience() {
         return experience;
     }
@@ -175,24 +203,27 @@ public class BeeStats {
         experience = newExperience;
     }
 
-    // if the player's current experience is greater than or equal to the current
-    // threshold, subtract the experience and level them up.
     public static void checkLevelUp() {
         if (currentLevel - 1 < experienceThresholds.length &&
                 experience >= experienceThresholds[currentLevel - 1]) {
+
             experience -= experienceThresholds[currentLevel - 1];
             currentLevel += 1;
+
             SFXManager.playSFX(SFX.LEVEL);
             processLevelUp();
         }
     }
 
     public static void processLevelUp() {
+        // Level-up buffs
         setMaxHealth(maxHealth + 25);
         setMaxStamina(maxStamina + 25);
         setWalkSpeed(walkSpeed + 1.5f);
         setMaxNectar(maxNectar + 10);
         setAttackDamage(attackDamage + 1);
+
+        // Completely heal after leveling
         restoreAllStats();
     }
 
@@ -201,7 +232,9 @@ public class BeeStats {
         setStamina(maxStamina);
     }
 
-    // walk speed getters and setters
+    // ------------------------
+    // Speed
+    // ------------------------
     public static float getWalkSpeed() {
         return walkSpeed;
     }
@@ -218,6 +251,9 @@ public class BeeStats {
         maxWalkSpeed = newMaxWalkSpeed;
     }
 
+    // ------------------------
+    // Level Getter / Setter
+    // ------------------------
     public static int getCurrentLevel() {
         return currentLevel;
     }
@@ -226,6 +262,9 @@ public class BeeStats {
         BeeStats.currentLevel = currentLevel;
     }
 
+    // ------------------------
+    // Tunics / Ring
+    // ------------------------
     public static boolean hasTunic() {
         return hasTunic;
     }

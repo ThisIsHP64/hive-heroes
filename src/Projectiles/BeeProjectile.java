@@ -19,7 +19,7 @@ public class BeeProjectile {
 
     private float x, y;          // world coords (top-left of sprite)
     private float dx, dy;        // velocity
-    private float speed = 8f;
+    private float speed = 16f;
 
     private Direction direction; // initial facing intent
     private boolean isActive = true;

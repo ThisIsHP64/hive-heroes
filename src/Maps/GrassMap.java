@@ -117,29 +117,7 @@ public class GrassMap extends Map {
         mazePortal.setInteractScript(new GrassToMazeScript());
         npcs.add(mazePortal);
 
-        // spawn multiple spiders across the map
-        // spider 1 - original position near red X
-        npcs.add(new Spider(1001, getMapTile(55, 62).getLocation().addY(6)));
-        
-        // spider 2 - right of start
-        npcs.add(new Spider(1002, getMapTile(80, 50).getLocation().addY(6)));
-        
-        // spider 3 - below start
-        npcs.add(new Spider(1003, getMapTile(70, 60).getLocation().addY(6)));
-        
-        // spider 4 - left of start
-        npcs.add(new Spider(1004, getMapTile(60, 50).getLocation().addY(6)));
-        
-        // spider 5 - upper area
-        npcs.add(new Spider(1005, getMapTile(70, 40).getLocation().addY(6)));
-        
-        npcs.add(new Spider(1006, getMapTile(50, 55).getLocation().addY(6)));
-        npcs.add(new Spider(1007, getMapTile(85, 45).getLocation().addY(6)));
-        npcs.add(new Spider(1008, getMapTile(65, 65).getLocation().addY(6)));
-        npcs.add(new Spider(1009, getMapTile(75, 55).getLocation().addY(6)));
-        npcs.add(new Spider(1010, getMapTile(55, 45).getLocation().addY(6)));
-        
-        System.out.println("[SprintOneMap] Spawned 10 spiders across the map");
+        // ===== SPIDERS REMOVED - EnemySpawner handles them dynamically now! =====
 
         npcs.add(new Hut(4000, getMapTile(84, 70).getLocation()));
 
@@ -170,7 +148,7 @@ public class GrassMap extends Map {
 
         npcs.add(new BrokenTree(5069, getMapTile(100, 10).getLocation()));
 
-         npcs.add(new Cat3(5079, getMapTile(110, 84).getLocation()));
+        npcs.add(new Cat3(5079, getMapTile(110, 84).getLocation()));
 
 
         return npcs;
