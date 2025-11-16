@@ -42,6 +42,8 @@ public class DungeonLevelScreen extends Screen implements GameListener {
         map = new DungeonMap();
         map.setFlagManager(flagManager);
 
+        flagManager.addFlag("collectedFrostTunic", false);
+
         // player (Bee) spawn
         player = new Bee(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         player.setMap(map);
