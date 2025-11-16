@@ -86,9 +86,9 @@ public class Bee extends Player {
     private static final int MAX_SHIELD_HEALTH = 100;
     
     // Projectile powerup variable (session flag; persistent lives in BeeStats)
-    private boolean hasProjectile = false;
+    private boolean hasProjectile = false; // we keep this for local convenience, but real truth is in BeeStats
 
-    // --- NEW: projectile tuning / HUD ---
+    // --- projectile tuning / HUD ---
     private static final int PROJECTILE_DAMAGE = 25; // tweak to taste
     private static final String PROJECTILE_HUD_ICON = "Bee_Projectile_HUD.png"; // your HUD icon
 
@@ -161,12 +161,13 @@ public class Bee extends Player {
             powerupHUD.show("onering.png", Integer.MAX_VALUE);
         }
 
-        // --- NEW: if projectile was previously unlocked, keep it active & show HUD on new maps ---
+        // --- PERSISTENT PROJECTILE: if you ever unlocked it, keep it active + HUD on new maps ---
         if (BeeStats.hasProjectilePower()) {
             hasProjectile = true;
             if (projectileHUD != null) {
                 projectileHUD.showProjectile(PROJECTILE_HUD_ICON);
             }
+            System.out.println("[Bee] Projectile already unlocked from previous map. Restoring HUD + ability.");
         }
     }
 
@@ -497,7 +498,8 @@ public class Bee extends Player {
 
             // Only shoot projectile if we have it AND we're not near an NPC
             // (NPCs take priority for SPACE interaction)
-            if (hasProjectile && !isNearNPC()) {
+            // --- PERSISTENT PROJECTILE FIX: check BeeStats, not just local flag ---
+            if (BeeStats.hasProjectilePower() && !isNearNPC()) {
                 SFXManager.playSFX(SFX.SHOOT);
                 shootProjectile();
             }
@@ -865,7 +867,9 @@ public class Bee extends Player {
     }
     
     public boolean hasProjectile() {
-        return hasProjectile;
+        // tie this to the global flag so any other code that calls this
+        // respects the persistent unlock
+        return BeeStats.hasProjectilePower();
     }
     
     private void shootProjectile() {

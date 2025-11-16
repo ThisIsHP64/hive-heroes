@@ -44,11 +44,19 @@ public class BeeStats {
     private static boolean hasBlueTunic = false;
     private static boolean blueTunicActive = false;
 
-    // --- NEW: projectile power unlock (persists across screens) ---
+    // --- projectile power unlock (persists across maps / deaths) ---
+    // once this is true, bee can use projectiles in any region
     private static boolean hasProjectilePower = false;
-    public static boolean hasProjectilePower() { return hasProjectilePower; }
-    public static void setHasProjectilePower(boolean value) { hasProjectilePower = value; }
 
+    public static boolean hasProjectilePower() {
+        return hasProjectilePower;
+    }
+
+    public static void setHasProjectilePower(boolean value) {
+        hasProjectilePower = value;
+    }
+
+    // stamina management for general movement or drain
     public static void manageStamina() {
         if (stamina > 0) {
             stamina--;
@@ -57,7 +65,7 @@ public class BeeStats {
         }
     }
 
-    // Stamina regeneration - call this every frame
+    // stamina regeneration - call this every frame
     public static void regenerateStamina(int amount) {
         if (stamina < maxStamina) {
             stamina += amount;
@@ -92,7 +100,8 @@ public class BeeStats {
     public static void respawn() {
         health = maxHealth;
         nectar = 0;
-        // NOTE: we do NOT clear hasProjectilePower here so the unlock persists across deaths/maps.
+        // NOTE: we do NOT clear hasProjectilePower here
+        // so the unlock persists across deaths/maps.
     }
 
     public static void takeDamage(int damage) {
