@@ -445,7 +445,7 @@ public class Bee extends Player {
             } 
             // If Blue Tunic IS active fasst
             else {
-                BeeStats.setWalkSpeed(20f);   // boosted speed in frost
+                BeeStats.setWalkSpeed(10f);   // boosted speed in frost
                 }
             } 
             // Not in frost region? then default
