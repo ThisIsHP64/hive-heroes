@@ -24,6 +24,7 @@ import StaticClasses.EnemySpawner;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
 import NPCs.Volcano;
+import NPCs.SauronEye;   // <<< ADDED
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -299,6 +300,14 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                         
                                         // ADDED: Trigger epic volcano visual effects (shake, flash, darken)
                                         volcano.triggerRingDestroyFX();
+
+                                        // NEW: crumble all Sauron towers on this map
+                                        for (NPC otherNpc : map.getNPCs()) {
+                                            if (otherNpc instanceof SauronEye) {
+                                                ((SauronEye) otherNpc).destroyEye();
+                                                System.out.println("[VolcanoLevel] SauronEye crumbled!");
+                                            }
+                                        }
                                         
                                         // ADDED: Stop horde from attacking immediately
                                         if (ringHordeTriggered || StaticClasses.UnleashMayhem.isActive()) {
