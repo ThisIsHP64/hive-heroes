@@ -15,11 +15,11 @@ import Utils.Point;
 /**
  * SauronEye – static eye that tracks the player's position.
  *
- * SPRITE SHEET: 67x128 px → tile size = 33x64 (2x2 grid; bottom-right empty)
- * Mapping:
- *   CENTER -> (0,0)  // top-left
- *   RIGHT  -> (0,1)  // top-right
- *   LEFT   -> (1,0)  // bottom-left
+ * SPRITE SHEET: 99x128 px → tile size = 33x64 (3x2 grid)
+ *
+ * Layout (row, col):
+ *   row 0: (0,0) CENTER  | (0,1) RIGHT | (0,2) LEFT
+ *   row 1: (1,0) DESTROYED | (1,1) empty | (1,2) empty
  */
 public class SauronEye extends NPC {
 
@@ -35,21 +35,34 @@ public class SauronEye extends NPC {
     private enum Dir { LEFT, RIGHT, CENTER }
     private Dir lastDir = Dir.CENTER;
 
+    // destroyed flag
+    private boolean destroyed = false;
+
     public SauronEye(int id, Point location) {
         super(
             id,
             location.x,
             location.y,
-            new SpriteSheet(ImageLoader.load("sauroneye.png"), 33, 64, 0),
+            new SpriteSheet(ImageLoader.load("sauroneye1.png"), 33, 64, 0),
             "CENTER"
         );
+    }
+
+    // called when the ring is destroyed
+    public void destroyEye() {
+        destroyed = true;
+        setCurrentAnimationName("DESTROYED");
+    }
+
+    public boolean isDestroyed() {
+        return destroyed;
     }
 
     @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         HashMap<String, Frame[]> animations = new HashMap<>();
 
-        // CENTER = (row 0, col 0)
+        // CENTER = row 0, col 0
         animations.put("CENTER", new Frame[] {
             new FrameBuilder(spriteSheet.getSprite(0, 0))
                 .withScale(3)
@@ -57,17 +70,25 @@ public class SauronEye extends NPC {
                 .build()
         });
 
-        // RIGHT = (row 0, col 1)
+        // RIGHT = row 0, col 1
         animations.put("RIGHT", new Frame[] {
-            new FrameBuilder(spriteSheet.getSprite(1, 0))
+            new FrameBuilder(spriteSheet.getSprite(0, 2))
                 .withScale(3)
                 .withImageEffect(ImageEffect.NONE)
                 .build()
         });
 
-        // LEFT = (row 1, col 0)
+        // LEFT = row 0, col 2
         animations.put("LEFT", new Frame[] {
             new FrameBuilder(spriteSheet.getSprite(0, 1))
+                .withScale(3)
+                .withImageEffect(ImageEffect.NONE)
+                .build()
+        });
+
+        // DESTROYED = row 1, col 0
+        animations.put("DESTROYED", new Frame[] {
+            new FrameBuilder(spriteSheet.getSprite(1, 0))
                 .withScale(3)
                 .withImageEffect(ImageEffect.NONE)
                 .build()
@@ -78,31 +99,35 @@ public class SauronEye extends NPC {
 
     @Override
     public void update(Player player) {
-        long now = System.currentTimeMillis();
-        if (now - lastCheckTime >= CHECK_INTERVAL_MS) {
-            lastCheckTime = now;
+        // Once destroyed, freeze on destroyed frame, no tracking
+        if (!destroyed) {
+            long now = System.currentTimeMillis();
+            if (now - lastCheckTime >= CHECK_INTERVAL_MS) {
+                lastCheckTime = now;
 
-            float eyeCenterX = getX() + getWidth() / 2f;
-            float playerCenterX = player.getX() + player.getWidth() / 2f;
+                float eyeCenterX = getX() + getWidth() / 2f;
+                float playerCenterX = player.getX() + player.getWidth() / 2f;
 
-            // Flip axis if needed so "player on the right" truly means RIGHT frame
-            float dx = MIRROR_X ? (eyeCenterX - playerCenterX)
-                                : (playerCenterX - eyeCenterX);
+                // Flip axis if needed so "player on the right" truly means RIGHT frame
+                float dx = MIRROR_X ? (eyeCenterX - playerCenterX)
+                                    : (playerCenterX - eyeCenterX);
 
-            Dir dir;
-            if (dx >= HYSTERESIS)        dir = Dir.RIGHT;   // player is to the right
-            else if (dx <= -HYSTERESIS)  dir = Dir.LEFT;    // player is to the left
-            else                         dir = Dir.CENTER;  // near aligned
+                Dir dir;
+                if (dx >= HYSTERESIS)        dir = Dir.RIGHT;   // player is to the right
+                else if (dx <= -HYSTERESIS)  dir = Dir.LEFT;    // player is to the left
+                else                         dir = Dir.CENTER;  // near aligned
 
-            if (dir != lastDir) {
-                switch (dir) {
-                    case LEFT:   setCurrentAnimationName("LEFT");   break;
-                    case RIGHT:  setCurrentAnimationName("RIGHT");  break;
-                    default:     setCurrentAnimationName("CENTER"); break;
+                if (dir != lastDir) {
+                    switch (dir) {
+                        case LEFT:   setCurrentAnimationName("LEFT");   break;
+                        case RIGHT:  setCurrentAnimationName("RIGHT");  break;
+                        default:     setCurrentAnimationName("CENTER"); break;
+                    }
+                    lastDir = dir;
                 }
-                lastDir = dir;
             }
         }
+
         super.update(player);
     }
 
