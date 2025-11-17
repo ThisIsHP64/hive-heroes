@@ -31,6 +31,8 @@ public class EmeraldScript extends Script {
                 addScriptAction(new NPCChangeVisibilityScriptAction(Visibility.HIDDEN));
 
                 addScriptAction(new ChangeFlagScriptAction("collectedEmerald", true));
+
+                addScriptAction(new CollectEmeraldScriptAction());
             }});
         }});
 

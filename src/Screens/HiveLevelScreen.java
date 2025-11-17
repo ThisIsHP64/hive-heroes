@@ -47,6 +47,8 @@ public class HiveLevelScreen extends Screen implements GameListener {
         flagManager.addFlag("introductionAdministered", false);
         flagManager.addFlag("controlsReviewed", false);
 
+        flagManager.addFlag("hasEmerald", false);
+
         map = new HiveMap();
         map.setFlagManager(flagManager);
 

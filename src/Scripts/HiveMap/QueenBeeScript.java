@@ -11,7 +11,20 @@ public class QueenBeeScript extends Script {
         ArrayList<ScriptAction> scriptActions = new ArrayList<>();
         scriptActions.add(new LockPlayerScriptAction());
 
+        scriptActions.add(new HasEmeraldScriptAction());
+
         scriptActions.add(new ConditionalScriptAction() {{
+
+            addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
+                addRequirement(new FlagRequirement("hasEmerald", true));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("You have the Chaos Emerald?");
+                    addText("Good going, little one. Now I have all the \npower in the world!");
+                }});
+
+            }});
+
 
             // First conversation
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
