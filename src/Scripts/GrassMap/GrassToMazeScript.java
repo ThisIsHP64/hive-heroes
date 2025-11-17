@@ -22,10 +22,15 @@ public class GrassToMazeScript extends Script {
         scriptActions.add(new LockPlayerScriptAction());
 
         scriptActions.add(new ProcessLevelUpScriptAction());
+        scriptActions.add(new Process50NectarScriptAction());
+
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("isLevel2", false));
+                addRequirement(new FlagRequirement("hasCollected50Nectar", false));
+
                 addScriptAction(new TextboxScriptAction() {{
+                    addText("Requirements: Level 2 and Deposit 50 Nectar \nto the Queen Bee.");
                     addText("What could be in here?");
                     addText("You peek in, and become captivated by the infinitely \nmesmerizing patterns.");
                     addText("You feel like exploring it later.");
@@ -35,6 +40,26 @@ public class GrassToMazeScript extends Script {
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("isLevel2", true));
+                addRequirement(new FlagRequirement("hasCollected50Nectar", false));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("The Queen Bee mandates that I deposit at least 50 \nnectar into the hive first.");
+                }});
+            }});
+
+            addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
+                addRequirement(new FlagRequirement("isLevel2", false));
+                addRequirement(new FlagRequirement("hasCollected50Nectar", true));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("I am not Level 2 yet.");
+                }});
+            }});
+
+            addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
+                addRequirement(new FlagRequirement("isLevel2", true));
+                addRequirement(new FlagRequirement("hasCollected50Nectar", true));
+
                 scriptActions.add(new TextboxScriptAction() {{
                     addText("Would you like to enter the Maze?", new String[] { "Yes", "No" });
                 }});

@@ -22,6 +22,7 @@ import SpriteImage.PowerupHUD;
 import SpriteImage.ProjectileHUD;
 import SpriteImage.ResourceHUD;
 import StaticClasses.BeeStats;
+import StaticClasses.HiveManager;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
 import java.awt.Color;
@@ -340,9 +341,9 @@ public class Bee extends Player {
             case 1:
                 RareSunflowerwithFlowers rareSunflower = new RareSunflowerwithFlowers(4, this.map.getMapTile(randomX, randomY).getLocation());
 
-                if (distance - lastMilestone >= 100 && this.map.getMapTile(randomX, randomY).getTileType() == TileType.PASSABLE) {
+                if (distance - lastMilestone >= 750 && this.map.getMapTile(randomX, randomY).getTileType() == TileType.PASSABLE) {
                     this.map.addNPC(rareSunflower);
-                    lastMilestone += 100;
+                    lastMilestone += 750;
                 }
 
                 break;
@@ -410,7 +411,9 @@ public class Bee extends Player {
         }
 
         // System.out.println("Current number of flowers on the map: " + countFlowers());
-        System.out.println(BeeStats.getStamina());
+        // System.out.println(BeeStats.getStamina());
+
+        System.out.println("Hive Nectar: " + HiveManager.getNectar());
 
         handleAttackInput();
         handleTunicInput();

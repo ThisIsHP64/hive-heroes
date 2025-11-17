@@ -23,7 +23,7 @@ public class IntroductionScript extends Script {
             addText("Press SPACE to melee attack, E to collect powerups, \nand 1 to activate them.");
             addText("Press SPACE near flowers to collect nectar.");
             addText("Press SPACE near the Queen's head to deposit nectar.");
-            addText("Press the E key near Doors, Portals, and NPCs to \ninteract with them.");
+            addText("Press the E/Space key near Doors, Portals, and NPCs \nto interact with them.");
 
             addText("If you ever need reminders of the directions, interact \nwith the Queen Bee.");
         }});

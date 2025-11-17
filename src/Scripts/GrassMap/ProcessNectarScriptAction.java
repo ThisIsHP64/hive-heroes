@@ -9,24 +9,34 @@ public class ProcessNectarScriptAction extends ScriptAction {
 
     @Override
     public ScriptState execute() {
-        switch (HiveManager.getNectar()) {
-            case 1:
-                map.getFlagManager().setFlag("isLevel1");
-                return ScriptState.COMPLETED;
-            case 2:
-                map.getFlagManager().setFlag("isLevel2");
-                return ScriptState.COMPLETED;
-            case 3:
-                map.getFlagManager().setFlag("isLevel3");
-                return ScriptState.COMPLETED;
-            case 4:
-                map.getFlagManager().setFlag("isLevel4");
+        
+        if (HiveManager.getNectar() >= 150) {
+            map.getFlagManager().setFlag("hasCollected150Nectar");
+            // map.getFlagManager().setFlag("hasCollected100Nectar");
+            // map.getFlagManager().setFlag("hasCollected50Nectar");
+            // map.getFlagManager().setFlag("hasCollected15Nectar");
+
+            return ScriptState.COMPLETED;
+        }
+
+        if (HiveManager.getNectar() >= 100) {
+            map.getFlagManager().setFlag("hasCollected100Nectar");
+            // map.getFlagManager().setFlag("hasCollected50Nectar");
+            // map.getFlagManager().setFlag("hasCollected15Nectar");
+            return ScriptState.COMPLETED;
+        }
+        
+        if (HiveManager.getNectar() >= 50) {
+            map.getFlagManager().setFlag("hasCollected50Nectar");
+            // map.getFlagManager().setFlag("hasCollected15Nectar");
                 return ScriptState.COMPLETED;
         }
-        return ScriptState.COMPLETED;
-    }
 
-    public boolean hasFifteenNectar() {
-        return HiveManager.getNectar() >= 15;
+        if (HiveManager.getNectar() >= 15) {
+            map.getFlagManager().setFlag("hasCollected15Nectar");
+            return ScriptState.COMPLETED;
+        }
+
+        return ScriptState.RUNNING;
     }
 }
