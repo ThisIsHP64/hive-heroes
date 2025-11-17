@@ -16,12 +16,21 @@ public class IntroductionScript extends Script {
         scriptActions.add(new LockPlayerScriptAction());
 
         scriptActions.add(new TextboxScriptAction() {{
-            addText("Welcome to Hive Heroes, a 2D RPG style \nadventure game.");
-            addText("For directions on how to play, interact with the \nQueen Bee using the SPACE key.");
-            addText("If you ever need reminders of how to play, \ninteract with the Walrus guard.");
+            addText("Welcome to Hive Heroes, a 2D RPG style adventure \ngame. (Press E to advance.)");
+
+            addText("Use WASD to move and outsmart your enemies!");
+            addText("Combine a movement key with SHIFT to sprint! This \nwill consume stamina.");
+            addText("Press SPACE to melee attack, E to collect powerups, \nand 1 to activate them.");
+            addText("Press SPACE near flowers to collect nectar.");
+            addText("Press SPACE near the Queen's head to deposit nectar.");
+            addText("Press the E/Space key near Doors, Portals, and NPCs \nto interact with them.");
+
+            addText("If you ever need reminders of the directions, interact \nwith the Queen Bee.");
         }});
 
         scriptActions.add(new ChangeFlagScriptAction("introductionAdministered", true));
+        scriptActions.add(new ChangeFlagScriptAction("controlsReviewed", true));
+
 
         scriptActions.add(new UnlockPlayerScriptAction());
 

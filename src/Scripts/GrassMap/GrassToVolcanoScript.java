@@ -23,17 +23,42 @@ public class GrassToVolcanoScript extends Script{
 
         scriptActions.add(new ProcessLevelUpScriptAction());
 
+        scriptActions.add(new Process15NectarScriptAction());
+
+
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("isLevel2", false));
+                addRequirement(new FlagRequirement("hasCollected15Nectar", false));
+
                 addScriptAction(new TextboxScriptAction() {{
+                    addText("Requirements: Level 2 and Deposit 15 Nectar \nto the Queen Bee.");
                     addText("The heat emanating from the entrance is unbearable.");
-                    addText("Maybe I can ask the Queen Bee for some sort \nof heat protection?");
+                    addText("I probably need some sort of heat protection.");
                 }});
             }});
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("isLevel2", true));
+                addRequirement(new FlagRequirement("hasCollected15Nectar", false));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("The Queen Bee mandates that I deposit at least 15 \nnectar into the hive first.");
+                }});
+            }});
+
+            addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
+                addRequirement(new FlagRequirement("isLevel2", false));
+                addRequirement(new FlagRequirement("hasCollected15Nectar", true));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("I am not Level 2 yet.");
+                }});
+            }});
+
+            addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
+                addRequirement(new FlagRequirement("isLevel2", true));
+                addRequirement(new FlagRequirement("hasCollected15Nectar", true));
                 scriptActions.add(new TextboxScriptAction() {{
                     addText("Would you like to enter the Volcanic Map?", new String[] { "Yes", "No" });
                 }});

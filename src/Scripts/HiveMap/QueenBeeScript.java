@@ -22,25 +22,17 @@ public class QueenBeeScript extends Script {
                     addText("You are the spark that will light the sky once more.");
                     addText("Beyond the plains lie uncharted lands, filled with\ndangers and resources.");
                     addText("Claim its nectar, and our song will echo through the\nfields again!");
-                }});
-
-                addScriptAction(new TextboxScriptAction() {{
-                    addText("Use WASD to move and outsmart your enemies!");
-                    addText("Press SPACE to attack, E to collect powerups, and\n1 to activate them.");
-                    addText("Press SPACE near flowers or NPCs to interact.");
-                    addText("Press SPACE near my head to deposit nectar.");
                     addText("Now go, my soldier — follow the path of the flower to\nnew regions and prevail!");
                 }});
 
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToQueen", true));
             }});
 
-            // Second time — Travel offer (Inferno + Frost)
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToQueen", true));
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Do you need a rundown of your duties?", new String[]{"Yes", "No"});
+                    addText("What do you need?", new String[]{"Speech", "Controls"});
                 }});
 
                 addScriptAction(new ConditionalScriptAction() {{
@@ -54,8 +46,15 @@ public class QueenBeeScript extends Script {
                                 return answer == 0;
                             }
                         });
-                        addScriptAction(new ChangeFlagScriptAction("hasTalkedToQueen", false));
+                        addScriptAction(new TextboxScriptAction() {{
+                            addText("Rise, brave one of the hive.");
+                            addText("You are the spark that will light the sky once more.");
+                            addText("Beyond the plains lie uncharted lands, filled with\ndangers and resources.");
+                            addText("Claim its nectar, and our song will echo through the\nfields again!");
+                            addText("Now go, my soldier — follow the path of the flower to\nnew regions and prevail!");
+                        }});
                     }});
+
 
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                         addRequirement(new CustomRequirement() {
@@ -65,6 +64,14 @@ public class QueenBeeScript extends Script {
                                 return answer == 1;
                             }
                         });
+
+                    addScriptAction(new TextboxScriptAction() {{
+                        addText("Use WASD to move and outsmart your enemies!");
+                        addText("Press SPACE to melee attack, E to collect powerups, \nand 1 to activate them.");
+                        addText("Press SPACE near flowers to collect nectar.");
+                        addText("Press SPACE near my head to deposit nectar.");
+                        addText("Press the E/Space key near Doors, Portals, and NPCs \nto interact with them.");
+                    }});
 
                         // addScriptAction(new TextboxScriptAction() {{
                         //     addText("Do you wish to travel to the furthest lands?", new String[]{"Yes", "No"});
@@ -127,7 +134,6 @@ public class QueenBeeScript extends Script {
                         // }});
 
                         // addScriptAction(new TextboxScriptAction("Go forth, and let your wings remember the warmth \nand the frost."));
-                        addScriptAction(new TextboxScriptAction("Go forth, and fulfill your destiny!"));
                     }});
                 }});
             }});

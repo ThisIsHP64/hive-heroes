@@ -15,8 +15,8 @@ public class BeeStats {
     // Stamina (used for projectiles)
     // ------------------------
     // testing values removed — balanced version
-    private static int stamina = 1000;
-    private static int maxStamina = 1000;
+    private static int stamina = 100000;
+    private static int maxStamina = 100000;
 
     // Nectar
     private static int nectar = 0;
@@ -27,7 +27,7 @@ public class BeeStats {
     private static int[] experienceThresholds = {30, 50, 100, 175};
 
     // Movement speed
-    private static float walkSpeed = 8f;
+    private static float walkSpeed = 6f;
     private static float maxWalkSpeed = 10f;
 
     // Death flag
@@ -219,7 +219,7 @@ public class BeeStats {
         // Level-up buffs
         setMaxHealth(maxHealth + 25);
         setMaxStamina(maxStamina + 25);
-        setWalkSpeed(walkSpeed + 1.5f);
+        setWalkSpeed(walkSpeed + 1f);
         setMaxNectar(maxNectar + 10);
         setAttackDamage(attackDamage + 1);
 
