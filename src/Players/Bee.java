@@ -114,6 +114,9 @@ public class Bee extends Player {
 
     int lastMilestone = 0;
 
+    private int snowFlowerCount = 0;
+    private static final int MAX_SNOW_FLOWERS = 500;
+
     public Bee(float x, float y) {
         super(new SpriteSheet(ImageLoader.load("Bee_Walk.png"), TILE, TILE, 0),
                 x, y, "STAND_DOWN");
@@ -335,7 +338,8 @@ public class Bee extends Player {
         int distance = totalDistanceTraveled();
         
 
-        if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) {
+        if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL ||
+        TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL) {
         
         switch (flowerNumber) {
             case 1:
@@ -408,6 +412,13 @@ public class Bee extends Player {
 
         if (TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL) {
             spawnFlower();
+        }
+
+        if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL &&
+            snowFlowerCount < MAX_SNOW_FLOWERS) {
+
+            spawnFlower();
+            snowFlowerCount++;
         }
 
         // System.out.println("Current number of flowers on the map: " + countFlowers());
