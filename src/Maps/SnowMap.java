@@ -1,14 +1,12 @@
 package Maps;
 
-import Enemies.Crab;
-import Enemies.Goblin;
-import Enemies.FrostDragon;
 import Flowers.SnowFlower;
 import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
 import NPCs.Emerald;
+import NPCs.FrostTree;
 import Portals.GrassPortal;
 import Scripts.SnowMap.EmeraldScript;
 import Tilesets.SnowTileset;
@@ -34,10 +32,37 @@ public class SnowMap extends Map {
         // portal out
         GrassPortal grassPortal = new GrassPortal(1, getMapTile(47, 13).getLocation().addX(10).addY(15));
         npcs.add(grassPortal);
+
+        FrostTree frostTree = new FrostTree(1069, getMapTile(18,12).getLocation());
+        npcs.add(frostTree);
+
+        FrostTree frostTree2 = new FrostTree(1069, getMapTile(28,12).getLocation());
+        npcs.add(frostTree2);
+
+        FrostTree frostTree3 = new FrostTree(1069, getMapTile(34,12).getLocation());
+        npcs.add(frostTree3);
         
         // a little flower flavor
         SnowFlower snowFlower = new SnowFlower(4, getMapTile(15, 15).getLocation());
         npcs.add(snowFlower);
+
+        SnowFlower snowFlower2 = new SnowFlower(4, getMapTile(16, 15).getLocation());
+        npcs.add(snowFlower2);
+
+        SnowFlower snowFlower3 = new SnowFlower(4, getMapTile(20, 15).getLocation());
+        npcs.add(snowFlower3);
+
+        SnowFlower snowFlower4 = new SnowFlower(4, getMapTile(25, 15).getLocation());
+        npcs.add(snowFlower4);
+
+        SnowFlower snowFlower5 = new SnowFlower(4, getMapTile(32, 15).getLocation());
+        npcs.add(snowFlower5);
+
+        SnowFlower snowFlower6 = new SnowFlower(4, getMapTile(39, 15).getLocation());
+        npcs.add(snowFlower6);
+
+        SnowFlower snowFlower7 = new SnowFlower(4, getMapTile(41, 15).getLocation());
+        npcs.add(snowFlower7);
         
         // ===== GOBLINS REMOVED - EnemySpawner handles them dynamically now! =====
         
