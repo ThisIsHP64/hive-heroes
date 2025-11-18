@@ -13,7 +13,7 @@ public class BrokenTree extends NPC {
 
     private static final int SPRITE_WIDTH = 64;
     private static final int SPRITE_HEIGHT = 64;
-    private static final float SCALE = 7f;
+    private static final float SCALE = 3.5f;
 
     public BrokenTree(int id, Point location) {
         super(
