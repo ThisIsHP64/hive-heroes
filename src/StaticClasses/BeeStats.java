@@ -50,6 +50,7 @@ public class BeeStats {
     private static boolean hasBlueTunic = false;
     private static boolean blueTunicActive = false;
 
+    private static boolean hasEmerald = false;
     // ------------------------
     // Projectile power (persistent!)
     // ------------------------
@@ -319,5 +320,13 @@ public class BeeStats {
 
     public static void setBlueTunicActive(boolean value) {
         blueTunicActive = value;
+    }
+
+    public static boolean hasEmerald() {
+        return hasEmerald;
+    }
+
+    public static void setHasEmerald(boolean value) {
+        hasEmerald = true;
     }
 }

@@ -3,7 +3,7 @@ package Scripts.FinalBoss;
 import Level.ScriptState;
 import ScriptActions.ScriptAction;
 
-public class TeleportSnowScriptAction extends ScriptAction {
+public class TeleportGrassBossScriptAction extends ScriptAction {
 
     @Override
     public void cleanup() {

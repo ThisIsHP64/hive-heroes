@@ -2,6 +2,9 @@ package Scripts.HiveMap;
 
 import Level.Script;
 import ScriptActions.*;
+import Scripts.FinalBoss.LavaRainScriptAction;
+import Scripts.FinalBoss.TeleportVolcanoBossScriptAction;
+
 import java.util.ArrayList;
 
 public class QueenBeeScript extends Script {
@@ -11,7 +14,36 @@ public class QueenBeeScript extends Script {
         ArrayList<ScriptAction> scriptActions = new ArrayList<>();
         scriptActions.add(new LockPlayerScriptAction());
 
+        scriptActions.add(new HasEmeraldScriptAction());
+
         scriptActions.add(new ConditionalScriptAction() {{
+
+            addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
+                addRequirement(new FlagRequirement("hasEmerald", true));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("You have the Chaos Emerald?");
+                    addText("Good going, little one. Now I have all the \npower in the world!");
+                    addText("As for you, you're free now. Free to die!");
+                    addText("Now suffer from the regions you've faced, and \nendless enemies!");
+                }});
+
+                addScriptAction(new WaitScriptAction(60));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("This is your emergency Bee senses! It appears \nwe've been tricked by the Queen Bee.");
+                    addText("The fate of all bee-kind is at stake here. \nYou will need to use everything you have.");
+                    addText("You'll be subject to three rounds of suffering.\nVolcano, then Snow, then Grass.");
+                    addText("The Queen Bee will manipulate the monsters and \nweather, so make sure to use your tunics!");
+                    addText("Don't give up, no matter what!");
+                }});
+
+                // addScriptAction(new LavaRainScriptAction());
+
+                addScriptAction(new TeleportVolcanoBossScriptAction());
+
+            }});
+
 
             // First conversation
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{

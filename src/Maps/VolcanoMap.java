@@ -22,6 +22,7 @@ import NPCs.Volcano;
 import Portals.GrassPortal;
 import Scripts.SimpleTextScript;
 import Scripts.VolcanoMap.VolcanoGrassPortalScript;
+import Scripts.VolcanoMap.VolcanoToGrassScript;
 import Tilesets.VolcanoTileset;
 
 import java.util.ArrayList;
@@ -73,6 +74,10 @@ public class VolcanoMap extends Map {
         // Grass portal back to main map - moved to (75, 75) with E key interaction
         GrassPortal grassPortal = new GrassPortal(1, getMapTile(75, 75).getLocation());
         grassPortal.setInteractScript(new VolcanoGrassPortalScript());
+
+        // UPDATED: GrassPortal moved from (92, 49) to (75, 40) - near player spawn
+        // GrassPortal grassPortal = new GrassPortal(1, getMapTile(75, 40).getLocation());
+        // grassPortal.setInteractScript(new VolcanoToGrassScript());
         npcs.add(grassPortal);
 
         // One FireFlower near the hub area
