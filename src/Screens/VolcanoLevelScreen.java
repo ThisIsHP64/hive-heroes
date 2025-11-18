@@ -1,7 +1,7 @@
 package Screens;
 
 import Effects.FloatingText;
-import Effects.ScreenFX; // ADDED: For screen darkness effects
+import Effects.ScreenFX; // For screen darkness effects
 import Enemies.Bat;
 import Enemies.Skull;
 import Enemies.Spider;
@@ -10,7 +10,7 @@ import Engine.ImageLoader;
 import Engine.Screen;
 import Engine.Keyboard;
 import Engine.Key;
-import Flowers.RareSunflowerwithFlowers;
+import Flowers.Flower; // <-- ADDED: generic Flower handling
 import Game.GameState;
 import Game.ScreenCoordinator;
 import GameObject.SpriteSheet;
@@ -24,7 +24,7 @@ import StaticClasses.EnemySpawner;
 import StaticClasses.TeleportManager;
 import Utils.Direction;
 import NPCs.Volcano;
-import NPCs.SauronEye;   // <<< ADDED
+import NPCs.SauronEye;
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -157,10 +157,10 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                         ringHordeTriggered = true;
                         map.getCamera().hordeShake();
                         
-                        // MODIFIED: Start PULSING RED VIGNETTE - evil darkness breathing from edges
+                        // Start pulsing red vignette
                         ScreenFX.start(ScreenFX.Effect.RED_VIGNETTE_PULSE, Integer.MAX_VALUE, 0.5f);
                         
-                        // Show ominous textbox message (will auto-close after 3 seconds)
+                        // Show ominous textbox message
                         map.getTextbox().addText("The ring...it calls to me...");
                         map.getTextbox().addText("Dark whispers echo through the flames...");
                         map.getTextbox().addText("I must find a place to destroy this");
@@ -185,12 +185,9 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                 
                 // Prevent melee attack spam while textbox is active
                 if (map.getTextbox().isActive()) {
-                    // Player can only advance textbox, not attack
-                    // This prevents the melee animation glitch
                     if (player instanceof Bee) {
                         Bee bee = (Bee) player;
-                        // Reset attack state if textbox is active
-                        // (Bee class should handle this, but just in case)
+                        // Bee class should handle locking attacks if needed
                     }
                 }
                 
@@ -203,7 +200,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                     }
                 }
                 
-                // MODIFIED: Volcano destruction sequence with visual effects
+                // Volcano destruction sequence with visual effects
                 if (destroyingRing) {
                     volcanoShakeTimer++;
                     
@@ -219,7 +216,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                         // Destroy the ring
                         BeeStats.setHasRing(false);
                         
-                        // ADDED: Remove ring icon from HUD
+                        // Remove ring icon from HUD
                         if (player instanceof Bee) {
                             Bee bee = (Bee) player;
                             if (bee.getPowerupHUD() != null) {
@@ -227,17 +224,17 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                             }
                         }
                         
-                        // ADDED: Clear screen darkness effect
+                        // Clear screen darkness effect
                         ScreenFX.start(ScreenFX.Effect.NONE, 0, 0f);
                         
-                        // MODIFIED: Horde already ceased when ring was thrown, just ensure it's reset
+                        // Reset horde
                         StaticClasses.UnleashMayhem.reset();
                         System.out.println("[VolcanoLevel] The ring is destroyed! Peace returns...");
                         
-                        // ADDED: Remove all horde enemies from the map
-                        map.getNPCs().removeIf(npc -> 
-                            npc instanceof Spider || 
-                            npc instanceof Bat || 
+                        // Remove all horde enemies from the map
+                        map.getNPCs().removeIf(npc ->
+                            npc instanceof Spider ||
+                            npc instanceof Bat ||
                             npc instanceof Skull
                         );
                         
@@ -249,14 +246,14 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                         ringShakeTimer = 0;
                         
                         // TODO: Award XP here when ready
-                        // BeeStats.addXP(5000); // or whatever amount
+                        // BeeStats.addXP(5000);
                     }
                 }
 
                 if (player instanceof Bee) {
                     Bee bee = (Bee) player;
                     
-                    // ADDED: Clear screen effects if bee just died
+                    // Clear screen effects if bee just died
                     if (bee.isDead()) {
                         ScreenFX.start(ScreenFX.Effect.NONE, 0, 0f);
                     }
@@ -266,7 +263,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                         return;
                     }
 
-                    // MODIFIED: Check for Volcano interaction (destroy the ring) with visual effects
+                    // Check for Volcano interaction (destroy the ring)
                     if (BeeStats.hasRing() && !destroyingRing) {
                         // Check for E key press with key locker
                         if (Keyboard.isKeyDown(Key.E) && !eKeyLocker.isKeyLocked(Key.E)) {
@@ -277,7 +274,6 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                 if (npc instanceof Volcano) {
                                     Volcano volcano = (Volcano) npc;
                                     
-                                    // Calculate distance from bee center to volcano center
                                     // Volcano is scaled 8x from 32x32, so it's 256x256 pixels
                                     float volcanoCenterX = volcano.getX() + 128; // half of 256
                                     float volcanoCenterY = volcano.getY() + 128;
@@ -286,7 +282,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                     float beeCenterY = bee.getY() + bee.getHeight() / 2f;
                                     
                                     float distance = (float) Math.sqrt(
-                                        Math.pow(beeCenterX - volcanoCenterX, 2) + 
+                                        Math.pow(beeCenterX - volcanoCenterX, 2) +
                                         Math.pow(beeCenterY - volcanoCenterY, 2)
                                     );
                                     
@@ -298,10 +294,10 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                         // Player is close enough to the volcano - start destruction!
                                         System.out.println("[VolcanoLevel] ✓✓✓ SUCCESS! Throwing the One Ring into Mount Doom!");
                                         
-                                        // ADDED: Trigger epic volcano visual effects (shake, flash, darken)
+                                        // Trigger epic volcano visual effects
                                         volcano.triggerRingDestroyFX();
 
-                                        // NEW: crumble all Sauron towers on this map
+                                        // Crumble all Sauron towers on this map
                                         for (NPC otherNpc : map.getNPCs()) {
                                             if (otherNpc instanceof SauronEye) {
                                                 ((SauronEye) otherNpc).destroyEye();
@@ -309,7 +305,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                             }
                                         }
                                         
-                                        // ADDED: Stop horde from attacking immediately
+                                        // Stop horde from attacking immediately
                                         if (ringHordeTriggered || StaticClasses.UnleashMayhem.isActive()) {
                                             StaticClasses.UnleashMayhem.cease(map);
                                             System.out.println("[VolcanoLevel] Horde ceased! Enemies stop attacking.");
@@ -332,6 +328,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                         }
                     }
 
+                    // --- MELEE ATTACK COLLISIONS ---
                     if (bee.isAttacking()) {
                         java.awt.Rectangle sting = bee.getAttackHitbox();
 
@@ -365,20 +362,27 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                 }
                             }
 
-                            if (npc instanceof RareSunflowerwithFlowers) {
-                                RareSunflowerwithFlowers rareSunflower = (RareSunflowerwithFlowers) npc;
-                                
-                                if (sting.intersects(rareSunflower.getHitbox())) {
+                            // --- FLOWER NECTAR + FLOATING TEXT (same as Grass) ---
+                            if (npc instanceof Flower) {
+                                Flower flower = (Flower) npc;
+
+                                if (sting.intersects(flower.getHitbox())) {
                                     System.out.println("Sunflower hit!");
-                                    
+
                                     int added = bee.tryAddNectar(1);
                                     if (added > 0) {
-                                        System.out.println("Nectar collected: " + bee.getNectar() + "/" + bee.getNectarCap());
-                                        
-                                        // spawn yellow +1 floating text at sunflower
-                                        float textX = rareSunflower.getX() + 24;
-                                        float textY = rareSunflower.getY();
-                                        floatingTexts.add(new FloatingText(textX, textY, "+1", new Color(255, 215, 0)));
+                                        System.out.println("Nectar collected: " +
+                                            bee.getNectar() + "/" + bee.getNectarCap());
+
+                                        // spawn yellow +1 floating text at flower
+                                        float textX = flower.getX() + 24;
+                                        float textY = flower.getY();
+                                        floatingTexts.add(new FloatingText(
+                                            textX,
+                                            textY,
+                                            "+1",
+                                            new Color(255, 215, 0)
+                                        ));
                                     } else {
                                         System.out.println("Pouch full! Deposit at the hive.");
                                     }
@@ -430,8 +434,8 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
             case RUNNING:
                 map.draw(player, graphicsHandler);
                 
-                StaticClasses.HordeManager.drawParticles(graphicsHandler, 
-                    map.getCamera().getX(), 
+                StaticClasses.HordeManager.drawParticles(graphicsHandler,
+                    map.getCamera().getX(),
                     map.getCamera().getY());
                 
                 EnemySpawner.drawParticles(graphicsHandler,
@@ -504,7 +508,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
     }
 
     public void resetLevel() { 
-        // ADDED: Clear any lingering screen effects
+        // Clear any lingering screen effects
         ScreenFX.start(ScreenFX.Effect.NONE, 0, 0f);
         
         StaticClasses.UnleashMayhem.reset();
