@@ -44,6 +44,10 @@ public final class HordeManager {
         return running;
     }
 
+    public static void setIsRunning(boolean value) {
+        running = value;
+    }
+
     public static void startHorde(Map map, Bee bee) {
         if (running)
             return;

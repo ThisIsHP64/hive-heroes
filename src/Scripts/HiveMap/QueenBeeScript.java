@@ -38,7 +38,7 @@ public class QueenBeeScript extends Script {
                     addText("Don't give up, no matter what!");
                 }});
 
-                addScriptAction(new LavaRainScriptAction());
+                // addScriptAction(new LavaRainScriptAction());
 
                 addScriptAction(new TeleportVolcanoBossScriptAction());
 

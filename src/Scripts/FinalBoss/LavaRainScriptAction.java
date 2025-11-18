@@ -8,13 +8,9 @@ import Level.ScriptState;
 import ScriptActions.ScriptAction;
 
 public class LavaRainScriptAction extends ScriptAction {
-    RedRainParticleSystemBossFight rainSystem;
-
 
     @Override
-    public void setup() {
-        rainSystem = new RedRainParticleSystemBossFight(800, 605);
-    }
+    public void setup() {}
 
     @Override
     public ScriptState execute() {
