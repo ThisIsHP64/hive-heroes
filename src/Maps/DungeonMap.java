@@ -75,6 +75,7 @@ public class DungeonMap extends Map {
         
         // === Grass Portal - Teleport to Grasslands ===
         GrassPortal grassPortal = new GrassPortal(2010, getMapTile(35, 87).getLocation());
+        grassPortal.setInteractScript(new DungeonGrassPortalScript());
         npcs.add(grassPortal);
         
         // === Frost Tunic - Blue Tunic Powerup ===
