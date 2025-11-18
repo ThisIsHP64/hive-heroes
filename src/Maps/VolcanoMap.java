@@ -79,9 +79,16 @@ public class VolcanoMap extends Map {
         FireFlower hubFireFlower = new FireFlower(4000, getMapTile(60, 42).getLocation());
         npcs.add(hubFireFlower);
 
-        // Broken hut
-        BrokenHut brokenHut = new BrokenHut(4001, getMapTile(66, 42).getLocation());
-        npcs.add(brokenHut);
+        // Broken huts - multiple locations (shifted 2 left, 2 up)
+        npcs.add(new BrokenHut(4001, getMapTile(45, 30).getLocation()));  // Original hut
+        npcs.add(new BrokenHut(4002, getMapTile(67, 66).getLocation()));  // Between trees
+        npcs.add(new BrokenHut(4003, getMapTile(15, 45).getLocation()));  
+        npcs.add(new BrokenHut(4004, getMapTile(22, 47).getLocation()));
+        npcs.add(new BrokenHut(4005, getMapTile(37, 61).getLocation()));  // Inside rectangle
+        npcs.add(new BrokenHut(4006, getMapTile(42, 62).getLocation()));  // Inside rectangle
+        npcs.add(new BrokenHut(4007, getMapTile(19, 35).getLocation()));  // New (shifted up)
+        npcs.add(new BrokenHut(4008, getMapTile(44, 7).getLocation()));   // New
+        npcs.add(new BrokenHut(4009, getMapTile(45, 18).getLocation()));  // New
 
         // Sauron's Eye near the volcano
         npcs.add(new SauronEye(9001, getMapTile(48, 47).getLocation()));
@@ -89,23 +96,70 @@ public class VolcanoMap extends Map {
         // Volcano NPC - center of map
         npcs.add(new Volcano(3001, getMapTile(41, 39).getLocation()));
 
-        // Broken trees for decoration
-        npcs.add(new BrokenTree2(3061, getMapTile(6, 50).getLocation()));
-        npcs.add(new BrokenTree2(3062, getMapTile(60, 57).getLocation()));
-        npcs.add(new BrokenTree2(3063, getMapTile(57, 30).getLocation()));
+        // Broken trees - strategically placed (shifted 2 left, 2 up)
+        // Vertical line: X=66, Y=23 to 39 (5 trees evenly spaced)
+        npcs.add(new BrokenTree2(3061, getMapTile(66, 23).getLocation()));
+        npcs.add(new BrokenTree2(3062, getMapTile(66, 27).getLocation()));
+        npcs.add(new BrokenTree2(3063, getMapTile(66, 31).getLocation()));
+        npcs.add(new BrokenTree2(3064, getMapTile(66, 35).getLocation()));
+        npcs.add(new BrokenTree2(3065, getMapTile(66, 39).getLocation()));
+        
+        // Vertical line: X=30, Y=27 to 36 (3 trees)
+        npcs.add(new BrokenTree2(3066, getMapTile(30, 27).getLocation()));
+        npcs.add(new BrokenTree2(3067, getMapTile(30, 32).getLocation()));
+        npcs.add(new BrokenTree2(3068, getMapTile(30, 36).getLocation()));
+        
+        // Tree-Hut-Tree formation
+        npcs.add(new BrokenTree2(3069, getMapTile(62, 64).getLocation()));  // Left tree
+        npcs.add(new BrokenTree2(3070, getMapTile(71, 64).getLocation()));  // Right tree
+        
+        // Two scattered trees
+        npcs.add(new BrokenTree2(3071, getMapTile(21, 57).getLocation()));
+        npcs.add(new BrokenTree2(3072, getMapTile(17, 61).getLocation()));
+        
+        // Rectangle corners
+        npcs.add(new BrokenTree2(3073, getMapTile(33, 58).getLocation()));  // Top-left
+        npcs.add(new BrokenTree2(3074, getMapTile(33, 65).getLocation()));  // Bottom-left
+        npcs.add(new BrokenTree2(3075, getMapTile(46, 65).getLocation()));  // Bottom-right
+        npcs.add(new BrokenTree2(3076, getMapTile(46, 58).getLocation()));  // Top-right
 
         // Random flower field generation
 
         // Avoid placing flowers directly on top of these occupied tiles
         HashSet<String> blockedTiles = new HashSet<>();
-        blockedTiles.add("75,75"); // portal (updated)
+        blockedTiles.add("75,75"); // portal
         blockedTiles.add("60,42"); // hub fire flower
-        blockedTiles.add("66,42"); // hut
         blockedTiles.add("48,47"); // Sauron eye
         blockedTiles.add("41,39"); // volcano
-        blockedTiles.add("6,50");
-        blockedTiles.add("60,57");
-        blockedTiles.add("57,30");
+        
+        // Block all hut locations (shifted)
+        blockedTiles.add("45,30");
+        blockedTiles.add("67,66");
+        blockedTiles.add("15,45");
+        blockedTiles.add("22,47");
+        blockedTiles.add("37,61");
+        blockedTiles.add("42,62");
+        blockedTiles.add("19,35");
+        blockedTiles.add("44,7");
+        blockedTiles.add("45,18");
+        
+        // Block all tree locations (shifted)
+        blockedTiles.add("66,23");
+        blockedTiles.add("66,27");
+        blockedTiles.add("66,31");
+        blockedTiles.add("66,35");
+        blockedTiles.add("66,39");
+        blockedTiles.add("30,27");
+        blockedTiles.add("30,32");
+        blockedTiles.add("30,36");
+        blockedTiles.add("62,64");
+        blockedTiles.add("71,64");
+        blockedTiles.add("21,57");
+        blockedTiles.add("17,61");
+        blockedTiles.add("33,58");
+        blockedTiles.add("33,65");
+        blockedTiles.add("46,65");
+        blockedTiles.add("46,58");
 
         // Track where we already put flowers so they do not stack
         HashSet<String> usedFlowerTiles = new HashSet<>();

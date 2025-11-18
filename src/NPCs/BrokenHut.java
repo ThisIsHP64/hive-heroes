@@ -11,9 +11,9 @@ import java.util.HashMap;
 
 public class BrokenHut extends NPC {
 
-    private static final int SPRITE_WIDTH = 128;
-    private static final int SPRITE_HEIGHT = 128;
-    private static final float SCALE = 2f;
+    private static final int SPRITE_WIDTH = 64;
+    private static final int SPRITE_HEIGHT = 64;
+    private static final float SCALE = 3f;
 
     public BrokenHut(int id, Point location) {
         super(
@@ -33,7 +33,7 @@ public class BrokenHut extends NPC {
         map.put("GRAVE", new Frame[]{
             new FrameBuilder(spriteSheet.getSprite(0, 0), 9999)
                 .withScale(SCALE)
-                .withBounds(0, 0, 100, 100)
+                .withBounds(8, 20, 50, 45)
                 .build()
         });
 
