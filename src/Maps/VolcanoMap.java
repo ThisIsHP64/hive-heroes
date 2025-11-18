@@ -1,8 +1,5 @@
 package Maps;
 
-import Enemies.Bat;
-import Enemies.Spider;
-import Enemies.Skull;
 import Engine.GraphicsHandler;
 import Flowers.FireFlower;
 import Flowers.RareSunflowerwithFlowers;
@@ -10,8 +7,10 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
-import NPCs.Volcano;
+import NPCs.BrokenHut;
+import NPCs.BrokenTree2;
 import NPCs.SauronEye;
+import NPCs.Volcano;
 import Portals.GrassPortal;
 import Scripts.SimpleTextScript;
 import Tilesets.VolcanoTileset;
@@ -50,8 +49,11 @@ public class VolcanoMap extends Map {
         npcs.add(testSunflower);
 
         // UPDATED: FireFlower moved from (80, 50) to (65, 42)
-        FireFlower fireFlower = new FireFlower(4, getMapTile(65, 42).getLocation());
+        FireFlower fireFlower = new FireFlower(4, getMapTile(60, 42).getLocation());
         npcs.add(fireFlower);
+
+        BrokenHut brokenHut = new BrokenHut(5, getMapTile(66, 42).getLocation());
+        npcs.add(brokenHut);
 
         // ===== SPIDERS REMOVED - EnemySpawner handles them dynamically now! =====
 
@@ -64,6 +66,12 @@ public class VolcanoMap extends Map {
         
         // Volcano NPC - SAFE at center of map
         npcs.add(new Volcano(3001, getMapTile(41, 39).getLocation()));
+
+        npcs.add(new BrokenTree2(3061, getMapTile(6, 50).getLocation()));
+
+        npcs.add(new BrokenTree2(3061, getMapTile(60, 57).getLocation()));
+
+        npcs.add(new BrokenTree2(3061, getMapTile(57, 30).getLocation()));
 
         return npcs;
     }
