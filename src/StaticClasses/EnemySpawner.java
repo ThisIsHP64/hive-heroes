@@ -10,7 +10,9 @@ import Enemies.FrostDragon;
 import Enemies.Crab;
 import Enemies.Goblin;
 import Level.Map;
+import Level.MapTile;
 import Level.NPC;
+import Level.TileType;  // ← THIS WAS MISSING!
 import Players.Bee;
 import Utils.Point;
 import Effects.SmokeParticle;
@@ -18,6 +20,7 @@ import Effects.SmokeParticle;
 /**
  * Handles ambient enemy spawning in a radius around the player.
  * AGGRESSIVE VERSION - More spawns, faster rate, closer to player + SMOKE EFFECTS!
+ * NOW WITH TILE PASSABILITY CHECKING!
  */
 public final class EnemySpawner {
 
@@ -38,6 +41,9 @@ public final class EnemySpawner {
 
     // Spawn MORE at once
     private static final int ENEMIES_PER_WAVE = 4;  // Spawn 4 at a time
+    
+    // Max attempts to find a valid spawn position
+    private static final int MAX_SPAWN_ATTEMPTS = 20;  // Increased from 10
 
     private static final Random rng = new Random();
 
@@ -101,16 +107,25 @@ public final class EnemySpawner {
      * Spawn enemies in a radius around the player
      */
     private static void spawnEnemiesAroundPlayer(Map map, Bee bee, String mapName, int count) {
-        System.out.println("[EnemySpawner] Spawning " + count + " enemies for " + mapName);
+        System.out.println("[EnemySpawner] Attempting to spawn " + count + " enemies for " + mapName);
 
+        int successfulSpawns = 0;
+        
         for (int i = 0; i < count; i++) {
-            Point spawnPos = pickSpawnPositionAroundPlayer(bee);
+            Point spawnPos = pickValidSpawnPositionAroundPlayer(map, bee);
+            
+            if (spawnPos == null) {
+                System.out.println("[EnemySpawner] Could not find valid spawn position after " + MAX_SPAWN_ATTEMPTS + " attempts");
+                continue;  // Skip this spawn if no valid position found
+            }
+            
             NPC enemy = createEnemyForMap(mapName, spawnPos);
 
             if (enemy != null) {
                 enemy.setMap(map);
                 map.getNPCs().add(enemy);
-                System.out.println("[EnemySpawner] Spawned " + enemy.getClass().getSimpleName() +
+                successfulSpawns++;
+                System.out.println("[EnemySpawner] ✓ Spawned " + enemy.getClass().getSimpleName() +
                                    " at (" + spawnPos.x + ", " + spawnPos.y + ")");
 
                 // CREATE SMOKE POOF EFFECT! 💨
@@ -119,26 +134,76 @@ public final class EnemySpawner {
                 }
             }
         }
+        
+        System.out.println("[EnemySpawner] Successfully spawned " + successfulSpawns + "/" + count + " enemies");
     }
 
     /**
-     * Pick a random spawn position around the player
-     * Returns a Point 3-6 tiles away in a random direction
+     * Pick a valid spawn position around the player that is on a passable tile
+     * Returns null if no valid position found after MAX_SPAWN_ATTEMPTS tries
      */
-    private static Point pickSpawnPositionAroundPlayer(Bee bee) {
-        // Random distance between min and max tiles
-        int distanceInTiles = MIN_SPAWN_DISTANCE_TILES +
-                             rng.nextInt(MAX_SPAWN_DISTANCE_TILES - MIN_SPAWN_DISTANCE_TILES + 1);
-        int distanceInPixels = distanceInTiles * TILE_SIZE;
+    private static Point pickValidSpawnPositionAroundPlayer(Map map, Bee bee) {
+        for (int attempt = 0; attempt < MAX_SPAWN_ATTEMPTS; attempt++) {
+            // Random distance between min and max tiles
+            int distanceInTiles = MIN_SPAWN_DISTANCE_TILES +
+                                 rng.nextInt(MAX_SPAWN_DISTANCE_TILES - MIN_SPAWN_DISTANCE_TILES + 1);
+            int distanceInPixels = distanceInTiles * TILE_SIZE;
 
-        // Random angle (0 to 360 degrees)
-        double angle = rng.nextDouble() * Math.PI * 2;
+            // Random angle (0 to 360 degrees)
+            double angle = rng.nextDouble() * Math.PI * 2;
 
-        // Calculate spawn position
-        int spawnX = (int) (bee.getX() + Math.cos(angle) * distanceInPixels);
-        int spawnY = (int) (bee.getY() + Math.sin(angle) * distanceInPixels);
+            // Calculate spawn position
+            int spawnX = (int) (bee.getX() + Math.cos(angle) * distanceInPixels);
+            int spawnY = (int) (bee.getY() + Math.sin(angle) * distanceInPixels);
 
-        return new Point(spawnX, spawnY);
+            // Check if this position is on a passable tile
+            if (isPositionPassable(map, spawnX, spawnY)) {
+                System.out.println("[EnemySpawner] Found valid spawn at pixel (" + spawnX + ", " + spawnY + ") on attempt " + (attempt + 1));
+                return new Point(spawnX, spawnY);
+            }
+            
+            // Debug: show why this position was rejected
+            int tileX = spawnX / TILE_SIZE;
+            int tileY = spawnY / TILE_SIZE;
+            System.out.println("[EnemySpawner] Attempt " + (attempt + 1) + ": Rejected tile (" + tileX + ", " + tileY + ") at pixel (" + spawnX + ", " + spawnY + ")");
+        }
+        
+        // Failed to find valid position after MAX_SPAWN_ATTEMPTS
+        System.out.println("[EnemySpawner] ✗ Failed to find passable tile after " + MAX_SPAWN_ATTEMPTS + " attempts");
+        return null;
+    }
+
+    /**
+     * Check if a position (in pixels) is on a passable tile
+     */
+    private static boolean isPositionPassable(Map map, int pixelX, int pixelY) {
+        try {
+            // Convert pixel coordinates to tile coordinates
+            int tileX = pixelX / TILE_SIZE;
+            int tileY = pixelY / TILE_SIZE;
+            
+            // Get the tile at this position
+            MapTile tile = map.getMapTile(tileX, tileY);
+            
+            if (tile == null) {
+                System.out.println("[EnemySpawner] Tile at (" + tileX + ", " + tileY + ") is NULL");
+                return false;  // Out of bounds
+            }
+            
+            // Check if tile is passable (not a collision tile)
+            TileType tileType = tile.getTileType();
+            boolean isPassable = (tileType == TileType.PASSABLE);
+            
+            System.out.println("[EnemySpawner] Tile (" + tileX + ", " + tileY + ") type: " + tileType + ", passable: " + isPassable);
+            
+            return isPassable;
+            
+        } catch (Exception e) {
+            // If any error occurs (out of bounds, etc.), consider it impassable
+            System.out.println("[EnemySpawner] Error checking tile passability: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**

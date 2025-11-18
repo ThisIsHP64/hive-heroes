@@ -19,18 +19,18 @@ public final class HordeManager {
 
     // --- Horde tuning knobs ---
     // trying to hit: "oh crap this is scary" but not "insta-wipe"
-    private static final int HORDE_INITIAL    = 4;       // first spike when mayhem starts
+    private static final int HORDE_INITIAL    = 6;       // first spike when mayhem starts
     private static final int HORDE_REINFORCE  = 2;       // how many join later
-    private static final int HORDE_MAX        = 10;      // hard cap of horde bodies on map
+    private static final int HORDE_MAX        = 15;      // hard cap of horde bodies on map
 
     private static final long REINFORCE_AT_MS = 20_000;  // when reinforcements show up
     private static final long TIMEOUT_MS      = 75_000;  // how long mayhem can run before auto-stop
 
     // how juiced enemies get when in horde mode (applied inside enemies)
-    private static final float SPEED_MULT     = 4.0f;    // Horde speed multiplier
+    private static final float SPEED_MULT     = 5.0f;    // Horde speed multiplier
 
     // roaming spawn tuning when horde is NOT active
-    private static final int ROAM_NEAR_TARGET = 4;       // how many enemies we want "near" the bee
+    private static final int ROAM_NEAR_TARGET = 5;       // how many enemies we want "near" the bee
     private static final int ROAM_GLOBAL_CAP  = 10;      // overall cap of enemies we allow on map
 
     // --- State ---
