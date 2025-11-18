@@ -1,7 +1,9 @@
 package Scripts.FinalBoss;
 
+import Game.GameState;
 import Level.ScriptState;
 import ScriptActions.ScriptAction;
+import StaticClasses.TeleportManager;
 
 public class TeleportVolcanoScriptAction extends ScriptAction {
 
@@ -13,8 +15,8 @@ public class TeleportVolcanoScriptAction extends ScriptAction {
 
     @Override
     public ScriptState execute() {
-        // TODO Auto-generated method stub
-        return super.execute();
+        TeleportManager.setCurrentGameState(GameState.VOLCANOLEVEL);
+        return ScriptState.COMPLETED;
     }
 
     @Override
