@@ -3,7 +3,7 @@ package Scripts.HiveMap;
 import Level.Script;
 import ScriptActions.*;
 import Scripts.FinalBoss.LavaRainScriptAction;
-import Scripts.FinalBoss.TeleportVolcanoScriptAction;
+import Scripts.FinalBoss.TeleportVolcanoBossScriptAction;
 
 import java.util.ArrayList;
 
@@ -28,6 +28,8 @@ public class QueenBeeScript extends Script {
                     addText("Now suffer from the regions you've faced, and \nendless enemies!");
                 }});
 
+                addScriptAction(new WaitScriptAction(60));
+
                 addScriptAction(new TextboxScriptAction() {{
                     addText("This is your emergency Bee senses! It appears \nwe've been tricked by the Queen Bee.");
                     addText("The fate of all bee-kind is at stake here. \nYou will need to use everything you have.");
@@ -36,9 +38,9 @@ public class QueenBeeScript extends Script {
                     addText("Don't give up, no matter what!");
                 }});
 
-                                addScriptAction(new LavaRainScriptAction());
+                addScriptAction(new LavaRainScriptAction());
 
-                addScriptAction(new TeleportVolcanoScriptAction());
+                addScriptAction(new TeleportVolcanoBossScriptAction());
 
             }});
 
