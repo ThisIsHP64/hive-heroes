@@ -33,7 +33,7 @@ public class BrokenHut extends NPC {
         map.put("GRAVE", new Frame[]{
             new FrameBuilder(spriteSheet.getSprite(0, 0), 9999)
                 .withScale(SCALE)
-                .withBounds(8, 20, 50, 45)
+                .withBounds(8, 20, 40, 35)
                 .build()
         });
 
