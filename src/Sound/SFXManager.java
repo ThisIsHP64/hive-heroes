@@ -10,7 +10,7 @@ public class SFXManager {
             System.out.println("Sound not found!");
         } else if(!effects.get(effect).isPlaying()){
             effects.get(effect).play();
-            System.out.println("played fx");
+            // System.out.println("played fx");
         }
     }
 

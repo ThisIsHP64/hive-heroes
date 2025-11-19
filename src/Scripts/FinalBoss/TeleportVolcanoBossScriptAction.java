@@ -13,21 +13,6 @@ import StaticClasses.TeleportManager;
 public class TeleportVolcanoBossScriptAction extends ScriptAction {
 
     @Override
-    public void cleanup() {
-        // TODO Auto-generated method stub
-        super.cleanup();
-    }
-
-    @Override
-    public ScriptState execute() {
-        TeleportManager.setCurrentGameState(GameState.VOLCANOLEVEL);        
-
-        WeatherManager.GLOBAL.enableOverrideMode();
-        WeatherManager.GLOBAL.setRedRain(true);
-        return ScriptState.COMPLETED;
-    }
-
-    @Override
     public void setup() {
 
         HordeManager.setIsRunning(false);
@@ -40,6 +25,21 @@ public class TeleportVolcanoBossScriptAction extends ScriptAction {
                 npc.lock();
             }
         }
+    }
+
+    @Override
+    public ScriptState execute() {
+        TeleportManager.setCurrentGameState(GameState.VOLCANOLEVEL);        
+
+        WeatherManager.GLOBAL.enableOverrideMode();
+        // WeatherManager.GLOBAL.setRedRain(true);
+        return ScriptState.COMPLETED;
+    }
+
+    @Override
+    public void cleanup() {
+        // TODO Auto-generated method stub
+        super.cleanup();
     }
 
 }

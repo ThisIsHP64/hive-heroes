@@ -41,7 +41,8 @@ public class SnowLevelScreen extends Screen implements GameListener {
         hasInitialized = true;
 
         flagManager = new FlagManager();
-        flagManager.addFlag("collectedEmerald", false);
+        flagManager.addFlag("collectedGreenEmerald", false);
+        flagManager.addFlag("collectedBlueEmerald", false);
 
         map = new SnowMap();
         map.setFlagManager(flagManager);

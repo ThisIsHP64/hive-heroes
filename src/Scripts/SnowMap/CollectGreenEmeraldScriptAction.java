@@ -4,10 +4,10 @@ import Level.ScriptState;
 import ScriptActions.ScriptAction;
 import StaticClasses.BeeStats;
 
-public class CollectEmeraldScriptAction extends ScriptAction{
+public class CollectGreenEmeraldScriptAction extends ScriptAction{
     @Override
     public ScriptState execute() {
-        BeeStats.setHasEmerald(true);
+        BeeStats.setHasGreenEmerald(true);
         return ScriptState.COMPLETED;
     }
 }

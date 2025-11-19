@@ -4,6 +4,7 @@ import Level.Script;
 import ScriptActions.*;
 import Scripts.FinalBoss.LavaRainScriptAction;
 import Scripts.FinalBoss.TeleportVolcanoBossScriptAction;
+import Scripts.VolcanoMap.SetBossActiveScriptAction;
 
 import java.util.ArrayList;
 
@@ -14,12 +15,12 @@ public class QueenBeeScript extends Script {
         ArrayList<ScriptAction> scriptActions = new ArrayList<>();
         scriptActions.add(new LockPlayerScriptAction());
 
-        scriptActions.add(new HasEmeraldScriptAction());
+        scriptActions.add(new HasGreenEmeraldScriptAction());
 
         scriptActions.add(new ConditionalScriptAction() {{
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("hasEmerald", true));
+                addRequirement(new FlagRequirement("hasGreenEmerald", true));
 
                 addScriptAction(new TextboxScriptAction() {{
                     addText("You have the Chaos Emerald?");
@@ -38,8 +39,13 @@ public class QueenBeeScript extends Script {
                     addText("Don't give up, no matter what!");
                 }});
 
-                // addScriptAction(new LavaRainScriptAction());
+                // sets boss active to true
+                addScriptAction(new SetBossActiveScriptAction());
 
+                // begins the lava rain in the volcano region
+                addScriptAction(new LavaRainScriptAction());
+
+                // teleports player to the volcano region
                 addScriptAction(new TeleportVolcanoBossScriptAction());
 
             }});
