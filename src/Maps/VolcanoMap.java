@@ -16,6 +16,7 @@ import Level.MapTile;
 import Level.NPC;
 import Level.Trigger;
 import Level.TileType;
+import NPCs.BlueEmerald;
 import NPCs.BrokenHut;
 import NPCs.BrokenTree2;
 import NPCs.RedEmerald;
@@ -25,6 +26,8 @@ import Portals.GrassPortal;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.LostBallScript;
 import Scripts.VolcanoMap.AddRedEmeraldScript;
+import Scripts.VolcanoMap.BlueEmeraldScript;
+import Scripts.VolcanoMap.RedEmeraldScript;
 import Scripts.VolcanoMap.VolcanoGrassPortalScript;
 import Scripts.VolcanoMap.VolcanoToGrassScript;
 import Tilesets.VolcanoTileset;
@@ -86,8 +89,12 @@ public class VolcanoMap extends Map {
 
 
         RedEmerald redEmerald = new RedEmerald(0, getMapTile(70, 70).getLocation());
-        redEmerald.setMapEntityStatus(MapEntityStatus.INACTIVE);
+        redEmerald.setInteractScript(new RedEmeraldScript());
         npcs.add(redEmerald);
+
+        BlueEmerald blueEmerald = new BlueEmerald(0, getMapTile(72, 70).getLocation());
+        blueEmerald.setInteractScript(new BlueEmeraldScript());
+        npcs.add(blueEmerald);
 
         // One FireFlower near the hub area
         FireFlower hubFireFlower = new FireFlower(4000, getMapTile(60, 42).getLocation());
