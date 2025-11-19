@@ -2,15 +2,18 @@ package Scripts.VolcanoMap;
 
 import java.util.ArrayList;
 
+import Level.MapEntityStatus;
 import Level.Script;
 import ScriptActions.ChangeFlagScriptAction;
 import ScriptActions.ConditionalScriptAction;
 import ScriptActions.ConditionalScriptActionGroup;
 import ScriptActions.FlagRequirement;
 import ScriptActions.LockPlayerScriptAction;
+import ScriptActions.NPCChangeVisibilityScriptAction;
 import ScriptActions.ScriptAction;
 import ScriptActions.TextboxScriptAction;
 import ScriptActions.UnlockPlayerScriptAction;
+import Utils.Visibility;
 
 public class RedEmeraldScript extends Script {
 
@@ -30,6 +33,8 @@ public class RedEmeraldScript extends Script {
                     addText("You must stop the possessor of the Green \n Chaos Emerald at all cost.");
                 }});
 
+                addScriptAction(new ClaimRedEmeraldScriptAction());
+                addScriptAction(new NPCChangeVisibilityScriptAction(Visibility.HIDDEN));
             }});
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{

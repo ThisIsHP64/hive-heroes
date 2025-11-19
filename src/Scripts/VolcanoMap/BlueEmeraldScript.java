@@ -8,9 +8,11 @@ import ScriptActions.ConditionalScriptAction;
 import ScriptActions.ConditionalScriptActionGroup;
 import ScriptActions.FlagRequirement;
 import ScriptActions.LockPlayerScriptAction;
+import ScriptActions.NPCChangeVisibilityScriptAction;
 import ScriptActions.ScriptAction;
 import ScriptActions.TextboxScriptAction;
 import ScriptActions.UnlockPlayerScriptAction;
+import Utils.Visibility;
 
 public class BlueEmeraldScript extends Script {
 
@@ -30,6 +32,9 @@ public class BlueEmeraldScript extends Script {
                     addText("The Red Chaos Emerald calls to you.");
                     addText("You must stop the possessor of the Green \n Chaos Emerald at all cost.");
                 }});
+
+                addScriptAction(new ClaimBlueEmeraldScriptAction());
+                addScriptAction(new NPCChangeVisibilityScriptAction(Visibility.HIDDEN));
 
             }});
 

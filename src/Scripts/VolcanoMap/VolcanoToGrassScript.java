@@ -15,29 +15,36 @@ public class VolcanoToGrassScript extends Script {
         scriptActions.add(new LockPlayerScriptAction());
 
         scriptActions.add(new HasRedEmeraldScript());
+
+        scriptActions.add(new HasBlueEmeraldScriptAction());
+
+        scriptActions.add(new CheckBothEmeraldsScriptAction());
         
         scriptActions.add(new CheckBossActiveScript());
 
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("collectedRedEmerald", false));
+                addRequirement(new FlagRequirement("hasBothEmeralds", false));
+                // addRequirement(new FlagRequirement("collectedBlueEmerald", false));
                 addRequirement(new FlagRequirement("bossActive", true));
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("I must find the Red Emerald to defeat the Queen.");
+                    addText("I must find the Red and Blue Chaos \nEmeralds to defeat the Queen.");
                 }});
             }});
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("collectedRedEmerald", true));
+                addRequirement(new FlagRequirement("hasBothEmeralds", true));
+                // addRequirement(new FlagRequirement("collectedBlueEmerald", true));
+
                 addRequirement(new FlagRequirement("bossActive", true));
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Are you ready for the next challenge?", new String[] { "Yes", "No" });
+                    addText("Are you ready to challenge the Queen?");
                 }});
 
                 // add a scriptaction that begins the snow level boss
-                addScriptAction(new TeleportSnowScriptAction());
+                addScriptAction(new TeleportHiveScriptAction());
             }});
 
 

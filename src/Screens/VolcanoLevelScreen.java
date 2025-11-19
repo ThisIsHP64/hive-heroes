@@ -72,9 +72,11 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
     public void initialize() {
         hasInitialized = true;
         flagManager = new FlagManager();
-        flagManager.addFlag("collectedRedEmerald", false);
-        flagManager.addFlag("bossActive", false);
-        flagManager.addFlag("spawnedYet", false);
+        flagManager.addFlag("hasRedEmerald", false);
+        flagManager.addFlag("hasBlueEmerald", false);
+        flagManager.addFlag("hasBothEmeralds", false);
+
+        flagManager.addFlag("bossActive", true);
 
         map = new VolcanoMap();
         map.setFlagManager(flagManager);

@@ -4,7 +4,11 @@ import Level.Script;
 import ScriptActions.*;
 import Scripts.FinalBoss.LavaRainScriptAction;
 import Scripts.FinalBoss.TeleportVolcanoBossScriptAction;
+import Scripts.VolcanoMap.CheckBothEmeraldsScriptAction;
+import Scripts.VolcanoMap.HasBlueEmeraldScriptAction;
+import Scripts.VolcanoMap.HasRedEmeraldScript;
 import Scripts.VolcanoMap.SetBossActiveScriptAction;
+import Utils.Visibility;
 
 import java.util.ArrayList;
 
@@ -15,9 +19,57 @@ public class QueenBeeScript extends Script {
         ArrayList<ScriptAction> scriptActions = new ArrayList<>();
         scriptActions.add(new LockPlayerScriptAction());
 
+        // player should first only have the green emerald.
         scriptActions.add(new HasGreenEmeraldScriptAction());
 
+
+        // after returning from the volcano boss fight, check for both emeralds
+        scriptActions.add(new HasRedEmeraldScript());
+
+        scriptActions.add(new HasBlueEmeraldScriptAction());
+
+        scriptActions.add(new CheckBothEmeraldsScriptAction());
+
+        
         scriptActions.add(new ConditionalScriptAction() {{
+
+            addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
+                addRequirement(new FlagRequirement("hasBothEmeralds", true));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("How even...");
+                    addText("What? How is this possible??");
+                    addText("No other one of my offspring has survived being \nbanished to that hellish region...");
+                    addText("Don't tell me...");
+                    addText("You received the blessing of the other Emeralds?!");
+                }});
+
+                addScriptAction(new WaitScriptAction(120));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("The Red and Blue Emeralds begin to react with \n the Green Emerald.");
+                    addText("Return what you have stolen from the world, and begone.");
+                }});
+
+                addScriptAction(new WaitScriptAction(30));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("NOOOOOOOOOOOOOOOOO!!!");
+                }});
+
+                addScriptAction(new NPCChangeVisibilityScriptAction(Visibility.HIDDEN));
+                
+                addScriptAction(new WaitScriptAction(120));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("We thank you for saving the world.");
+                }});
+
+                addScriptAction(new TeleportCreditScriptAction());
+
+            }});
+
+
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasGreenEmerald", true));
