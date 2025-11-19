@@ -10,9 +10,6 @@ public class ProcessLevelUpScriptAction extends ScriptAction {
     @Override
     public ScriptState execute() {
         switch (BeeStats.getCurrentLevel()) {
-            case 1:
-                map.getFlagManager().setFlag("isLevel1");
-                return ScriptState.COMPLETED;
             case 2:
                 map.getFlagManager().setFlag("isLevel2");
                 return ScriptState.COMPLETED;

@@ -6,9 +6,13 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.NPC;
 import Level.Trigger;
+import Scripts.GrassMap.GrassToDungeonScript;
+import Scripts.HiveMap.GrassPortalScript;
+import Scripts.MazeMap.MazeToGrassScript;
 import Scripts.MazeMap.RedTunicScript;
 import Tilesets.MazeTileset;
 import NPCs.OneRing;
+import Portals.GrassPortal;
 import NPCs.FireTunic;
 
 public class MazeMap extends Map {
@@ -37,9 +41,13 @@ public class MazeMap extends Map {
         npcs.add(oneRing);
 
         // FINISH - Red Tunic at X:19, Y:29 (center-bottom - the goal!)
-        FireTunic redTunic = new FireTunic(5001, getMapTile(39, 29).getLocation());
+        FireTunic redTunic = new FireTunic(5001, getMapTile(38, 28).getLocation());
         redTunic.setInteractScript(new RedTunicScript());
         npcs.add(redTunic);
+
+        GrassPortal grassPortal = new GrassPortal(1, getMapTile(32, 26).getLocation().addY(20).addX(35));
+        grassPortal.setInteractScript(new MazeToGrassScript());
+        npcs.add(grassPortal);
 
         System.out.println("[MazeMap] START at (1,1) | ONE RING at (2,28) | RED TUNIC (finish) at (19,29)");
 

@@ -42,7 +42,6 @@ public class SnowLevelScreen extends Screen implements GameListener {
 
         flagManager = new FlagManager();
         flagManager.addFlag("collectedGreenEmerald", false);
-        flagManager.addFlag("collectedBlueEmerald", false);
 
         map = new SnowMap();
         map.setFlagManager(flagManager);
@@ -143,22 +142,6 @@ public class SnowLevelScreen extends Screen implements GameListener {
                                 if (sting.intersects(rareSunflower.getHitbox())) {
                                     System.out.println("Sunflower hit!");
                                     BeeStats.setNectar(BeeStats.getNectar() + 1);
-                                }
-                            }
-
-                            if (npc instanceof Portal) {
-                                Portal portal = (Portal) npc;
-
-                                if (sting.intersects(portal.getHitbox())) {
-                                    TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
-                                }
-                            }
-
-                            if (npc instanceof GrassPortal) {
-                                GrassPortal grassPortal = (GrassPortal) npc;
-
-                                if (sting.intersects(grassPortal.getHitbox())) {
-                                    TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
                                 }
                             }
                         }

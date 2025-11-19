@@ -23,6 +23,7 @@ public class VolcanoToGrassScript extends Script {
         scriptActions.add(new CheckBossActiveScript());
 
         scriptActions.add(new ConditionalScriptAction() {{
+
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasBothEmeralds", false));
                 // addRequirement(new FlagRequirement("collectedBlueEmerald", false));
@@ -43,7 +44,6 @@ public class VolcanoToGrassScript extends Script {
                     addText("Are you ready to challenge the Queen?");
                 }});
 
-                // add a scriptaction that begins the snow level boss
                 addScriptAction(new TeleportHiveScriptAction());
             }});
 
@@ -52,106 +52,37 @@ public class VolcanoToGrassScript extends Script {
                 addRequirement(new FlagRequirement("bossActive", false));
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Teleport to Grass Map?", new String[] { "Yes", "No" });
+                    addText("Teleport to Grass Map?", new String[] {"Yes", "No"});
                 }});
+                        addScriptAction(new ConditionalScriptAction() {{
+                            addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
+                                addRequirement(new CustomRequirement() {
+                                    @Override
+                                    public boolean isRequirementMet() {
+                                        int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
+                                        return answer == 0;
+                                    }
+                                });
 
-                addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new CustomRequirement() {
-                    @Override
-                    public boolean isRequirementMet() {
-                        int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
-                        return answer == 0;
-                    }
-                });
+                            addScriptAction(new TeleportGrassScriptAction());
+                        }});
 
-                addScriptAction(new TeleportGrassScriptAction());
-            }});
-
-            addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new CustomRequirement() {
-                    @Override
-                    public boolean isRequirementMet() {
-                        int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
-                        return answer == 1;
-                    }
-                });
-                
-                addScriptAction(new TextboxScriptAction("..."));
-            }});
-
-                
-            }});
+                        addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
+                            addRequirement(new CustomRequirement() {
+                                @Override
+                                public boolean isRequirementMet() {
+                                    int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
+                                    return answer == 1;
+                                }
+                            });
+                        
+                        addScriptAction(new TextboxScriptAction("..."));
+                    }});
+                }});
+            }});      
         }});
 
-
-        // scriptActions.add(new ConditionalScriptAction() {{
-
-        //     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-        //         addRequirement(new FlagRequirement("bossActive", false));
-
-        //         addScriptAction(new TextboxScriptAction() {{
-        //             addText("Teleport to Grass Map?", new String[] { "Yes", "No" });
-        //         }});
-
-        //         addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-        //         addRequirement(new CustomRequirement() {
-        //             @Override
-        //             public boolean isRequirementMet() {
-        //                 int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
-        //                 return answer == 0;
-        //             }
-        //         });
-
-        //         addScriptAction(new TeleportGrassScriptAction());
-        //     }});
-
-        //     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-        //         addRequirement(new CustomRequirement() {
-        //             @Override
-        //             public boolean isRequirementMet() {
-        //                 int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
-        //                 return answer == 1;
-        //             }
-        //         });
-                
-        //         addScriptAction(new TextboxScriptAction("Oh...uh...awkward..."));
-        //     }});
-
-                
-        //     }});
-        // }});
-        // scriptActions.add(new TextboxScriptAction() {{
-        //     addText("Teleport to Grass Map?", new String[] { "Yes", "No" });
-        // }});
-
-        // scriptActions.add(new ConditionalScriptAction() {{
-        //     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-        //         addRequirement(new CustomRequirement() {
-        //             @Override
-        //             public boolean isRequirementMet() {
-        //                 int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
-        //                 return answer == 0;
-        //             }
-        //         });
-
-        //         addScriptAction(new TeleportGrassScriptAction());
-        //     }});
-
-        //     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-        //         addRequirement(new CustomRequirement() {
-        //             @Override
-        //             public boolean isRequirementMet() {
-        //                 int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
-        //                 return answer == 1;
-        //             }
-        //         });
-                
-        //         addScriptAction(new TextboxScriptAction("Oh...uh...awkward..."));
-        //     }});
-        // }});
-
         scriptActions.add(new UnlockPlayerScriptAction());
-
         return scriptActions;
     }
 }

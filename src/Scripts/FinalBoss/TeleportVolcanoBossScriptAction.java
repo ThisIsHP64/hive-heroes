@@ -1,5 +1,6 @@
 package Scripts.FinalBoss;
 
+import Effects.ScreenFX;
 import Enemies.*;
 import Engine.WeatherManager;
 import Game.GameState;
@@ -29,10 +30,12 @@ public class TeleportVolcanoBossScriptAction extends ScriptAction {
 
     @Override
     public ScriptState execute() {
+        ScreenFX.start(ScreenFX.Effect.DARKEN, Integer.MAX_VALUE, 0.10f);
+
         TeleportManager.setCurrentGameState(GameState.VOLCANOLEVEL);        
 
         WeatherManager.GLOBAL.enableOverrideMode();
-        // WeatherManager.GLOBAL.setRedRain(true);
+        WeatherManager.GLOBAL.setRedRain(true);
         return ScriptState.COMPLETED;
     }
 

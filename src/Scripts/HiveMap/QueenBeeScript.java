@@ -36,6 +36,8 @@ public class QueenBeeScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasBothEmeralds", true));
 
+                addScriptAction(new ResetScreenFX());
+                
                 addScriptAction(new TextboxScriptAction() {{
                     addText("How even...");
                     addText("What? How is this possible??");
@@ -44,11 +46,11 @@ public class QueenBeeScript extends Script {
                     addText("You received the blessing of the other Emeralds?!");
                 }});
 
-                addScriptAction(new WaitScriptAction(120));
+                addScriptAction(new WaitScriptAction(90));
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("The Red and Blue Emeralds begin to react with \n the Green Emerald.");
-                    addText("Return what you have stolen from the world, and begone.");
+                    addText("The Red and Blue Emeralds begin to react with \nthe Green Emerald.");
+                    addText("Return what you have stolen from the world, and \nbegone.");
                 }});
 
                 addScriptAction(new WaitScriptAction(30));
@@ -59,7 +61,7 @@ public class QueenBeeScript extends Script {
 
                 addScriptAction(new NPCChangeVisibilityScriptAction(Visibility.HIDDEN));
                 
-                addScriptAction(new WaitScriptAction(120));
+                addScriptAction(new WaitScriptAction(90));
 
                 addScriptAction(new TextboxScriptAction() {{
                     addText("We thank you for saving the world.");
@@ -162,68 +164,6 @@ public class QueenBeeScript extends Script {
                         addText("Press SPACE near my head to deposit nectar.");
                         addText("Press the E/Space key near Doors, Portals, and NPCs \nto interact with them.");
                     }});
-
-                        // addScriptAction(new TextboxScriptAction() {{
-                        //     addText("Do you wish to travel to the furthest lands?", new String[]{"Yes", "No"});
-                        // }});
-
-                        // addScriptAction(new ConditionalScriptAction() {{
-                        //     // Yes : receive both Red and Blue Tunics
-                        //     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                        //         addRequirement(new CustomRequirement() {
-                        //             @Override
-                        //             public boolean isRequirementMet() {
-                        //                 int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
-                        //                 return answer == 0;
-                        //             }
-                        //         });
-
-                        //         addScriptAction(new TextboxScriptAction("Then take these tunics, brave one."));
-                        //         addScriptAction(new TextboxScriptAction("The Red Tunic will shield you from flame..."));
-                        //         addScriptAction(new TextboxScriptAction("The Blue Tunic will guard you from frost."));
-                        //         addScriptAction(new TextboxScriptAction("Press 3 for the Red Tunic, and 4 for the Blue Tunic."));
-
-                        //         addScriptAction(new ScriptAction() {
-                        //             @Override
-                        //             public ScriptState execute() {
-                        //                 Player player = map.getPlayer();
-                        //                 if (player instanceof Bee bee) {
-                        //                     bee.obtainTunic();      
-                        //                     bee.obtainBlueTunic();  
-                        //                 }
-                        //                 return ScriptState.COMPLETED;
-                        //             }
-                        //         });
-                        //     }});
-
-                        //     // No : still gives them (kind Queen)
-                        //     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                        //         addRequirement(new CustomRequirement() {
-                        //             @Override
-                        //             public boolean isRequirementMet() {
-                        //                 int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
-                        //                 return answer == 1;
-                        //             }
-                        //         });
-
-                        //         addScriptAction(new TextboxScriptAction("Take them anyway — you will need their strength soon."));
-                        //         addScriptAction(new TextboxScriptAction("Press 3 for the Red Tunic, and 4 for the Blue Tunic."));
-
-                        //         addScriptAction(new ScriptAction() {
-                        //             @Override
-                        //             public ScriptState execute() {
-                        //                 Player player = map.getPlayer();
-                        //                 if (player instanceof Bee bee) {
-                        //                     bee.obtainTunic();     
-                        //                     bee.obtainBlueTunic();   
-                        //                 }
-                        //                 return ScriptState.COMPLETED;
-                        //             }
-                        //         });
-                        //     }});
-                        // }});
-
-                        // addScriptAction(new TextboxScriptAction("Go forth, and let your wings remember the warmth \nand the frost."));
                     }});
                 }});
             }});
