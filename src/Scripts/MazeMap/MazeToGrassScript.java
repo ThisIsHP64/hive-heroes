@@ -1,11 +1,18 @@
-package Scripts.DungeonMap;
+package Scripts.MazeMap;
 
-import Level.Script;
-import ScriptActions.*;
-import Scripts.TeleportScriptActions.TeleportGrassScriptAction;
 import java.util.ArrayList;
 
-public class DungeonGrassPortalScript extends Script {
+import Level.Script;
+import ScriptActions.ConditionalScriptAction;
+import ScriptActions.ConditionalScriptActionGroup;
+import ScriptActions.CustomRequirement;
+import ScriptActions.LockPlayerScriptAction;
+import ScriptActions.ScriptAction;
+import ScriptActions.TextboxScriptAction;
+import ScriptActions.UnlockPlayerScriptAction;
+import Scripts.TeleportScriptActions.TeleportGrassScriptAction;
+
+public class MazeToGrassScript extends Script {
 
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {

@@ -8,6 +8,7 @@ import Level.Trigger;
 import NPCs.Emerald;
 import NPCs.FrostTree;
 import Portals.GrassPortal;
+import Scripts.DungeonMap.DungeonGrassPortalScript;
 import Scripts.SnowMap.EmeraldScript;
 import Tilesets.SnowTileset;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class SnowMap extends Map {
         
         // portal out
         GrassPortal grassPortal = new GrassPortal(1, getMapTile(47, 13).getLocation().addX(10).addY(15));
+        grassPortal.setInteractScript(new DungeonGrassPortalScript());
         npcs.add(grassPortal);
 
         FrostTree frostTree = new FrostTree(1069, getMapTile(18,12).getLocation());

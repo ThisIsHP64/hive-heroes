@@ -4,6 +4,11 @@ import Level.Script;
 import ScriptActions.*;
 import Scripts.FinalBoss.LavaRainScriptAction;
 import Scripts.FinalBoss.TeleportVolcanoBossScriptAction;
+import Scripts.VolcanoMap.CheckBothEmeraldsScriptAction;
+import Scripts.VolcanoMap.HasBlueEmeraldScriptAction;
+import Scripts.VolcanoMap.HasRedEmeraldScript;
+import Scripts.VolcanoMap.SetBossActiveScriptAction;
+import Utils.Visibility;
 
 import java.util.ArrayList;
 
@@ -14,12 +19,62 @@ public class QueenBeeScript extends Script {
         ArrayList<ScriptAction> scriptActions = new ArrayList<>();
         scriptActions.add(new LockPlayerScriptAction());
 
-        scriptActions.add(new HasEmeraldScriptAction());
+        // player should first only have the green emerald.
+        scriptActions.add(new HasGreenEmeraldScriptAction());
 
+
+        // after returning from the volcano boss fight, check for both emeralds
+        scriptActions.add(new HasRedEmeraldScript());
+
+        scriptActions.add(new HasBlueEmeraldScriptAction());
+
+        scriptActions.add(new CheckBothEmeraldsScriptAction());
+
+        
         scriptActions.add(new ConditionalScriptAction() {{
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("hasEmerald", true));
+                addRequirement(new FlagRequirement("hasBothEmeralds", true));
+
+                addScriptAction(new ResetScreenFX());
+                
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("How even...");
+                    addText("What? How is this possible??");
+                    addText("No other one of my offspring has survived being \nbanished to that hellish region...");
+                    addText("Don't tell me...");
+                    addText("You received the blessing of the other Emeralds?!");
+                }});
+
+                addScriptAction(new WaitScriptAction(90));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("The Red and Blue Emeralds begin to react with \nthe Green Emerald.");
+                    addText("Return what you have stolen from the world, and \nbegone.");
+                }});
+
+                addScriptAction(new WaitScriptAction(30));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("NOOOOOOOOOOOOOOOOO!!!");
+                }});
+
+                addScriptAction(new NPCChangeVisibilityScriptAction(Visibility.HIDDEN));
+                
+                addScriptAction(new WaitScriptAction(90));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("We thank you for saving the world.");
+                }});
+
+                addScriptAction(new TeleportCreditScriptAction());
+
+            }});
+
+
+
+            addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
+                addRequirement(new FlagRequirement("hasGreenEmerald", true));
 
                 addScriptAction(new TextboxScriptAction() {{
                     addText("You have the Chaos Emerald?");
@@ -38,8 +93,13 @@ public class QueenBeeScript extends Script {
                     addText("Don't give up, no matter what!");
                 }});
 
-                // addScriptAction(new LavaRainScriptAction());
+                // sets boss active to true
+                addScriptAction(new SetBossActiveScriptAction());
 
+                // begins the lava rain in the volcano region
+                addScriptAction(new LavaRainScriptAction());
+
+                // teleports player to the volcano region
                 addScriptAction(new TeleportVolcanoBossScriptAction());
 
             }});
@@ -104,68 +164,6 @@ public class QueenBeeScript extends Script {
                         addText("Press SPACE near my head to deposit nectar.");
                         addText("Press the E/Space key near Doors, Portals, and NPCs \nto interact with them.");
                     }});
-
-                        // addScriptAction(new TextboxScriptAction() {{
-                        //     addText("Do you wish to travel to the furthest lands?", new String[]{"Yes", "No"});
-                        // }});
-
-                        // addScriptAction(new ConditionalScriptAction() {{
-                        //     // Yes : receive both Red and Blue Tunics
-                        //     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                        //         addRequirement(new CustomRequirement() {
-                        //             @Override
-                        //             public boolean isRequirementMet() {
-                        //                 int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
-                        //                 return answer == 0;
-                        //             }
-                        //         });
-
-                        //         addScriptAction(new TextboxScriptAction("Then take these tunics, brave one."));
-                        //         addScriptAction(new TextboxScriptAction("The Red Tunic will shield you from flame..."));
-                        //         addScriptAction(new TextboxScriptAction("The Blue Tunic will guard you from frost."));
-                        //         addScriptAction(new TextboxScriptAction("Press 3 for the Red Tunic, and 4 for the Blue Tunic."));
-
-                        //         addScriptAction(new ScriptAction() {
-                        //             @Override
-                        //             public ScriptState execute() {
-                        //                 Player player = map.getPlayer();
-                        //                 if (player instanceof Bee bee) {
-                        //                     bee.obtainTunic();      
-                        //                     bee.obtainBlueTunic();  
-                        //                 }
-                        //                 return ScriptState.COMPLETED;
-                        //             }
-                        //         });
-                        //     }});
-
-                        //     // No : still gives them (kind Queen)
-                        //     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                        //         addRequirement(new CustomRequirement() {
-                        //             @Override
-                        //             public boolean isRequirementMet() {
-                        //                 int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
-                        //                 return answer == 1;
-                        //             }
-                        //         });
-
-                        //         addScriptAction(new TextboxScriptAction("Take them anyway — you will need their strength soon."));
-                        //         addScriptAction(new TextboxScriptAction("Press 3 for the Red Tunic, and 4 for the Blue Tunic."));
-
-                        //         addScriptAction(new ScriptAction() {
-                        //             @Override
-                        //             public ScriptState execute() {
-                        //                 Player player = map.getPlayer();
-                        //                 if (player instanceof Bee bee) {
-                        //                     bee.obtainTunic();     
-                        //                     bee.obtainBlueTunic();   
-                        //                 }
-                        //                 return ScriptState.COMPLETED;
-                        //             }
-                        //         });
-                        //     }});
-                        // }});
-
-                        // addScriptAction(new TextboxScriptAction("Go forth, and let your wings remember the warmth \nand the frost."));
                     }});
                 }});
             }});

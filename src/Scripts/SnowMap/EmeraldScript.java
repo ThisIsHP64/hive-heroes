@@ -18,7 +18,7 @@ public class EmeraldScript extends Script {
         scriptActions.add(new ConditionalScriptAction() {{
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("collectedEmerald", false));
+                addRequirement(new FlagRequirement("collectedGreenEmerald", false));
 
                 addScriptAction(new TextboxScriptAction() {{
                     addText("The Chaos Emerald...");
@@ -30,9 +30,9 @@ public class EmeraldScript extends Script {
 
                 addScriptAction(new NPCChangeVisibilityScriptAction(Visibility.HIDDEN));
 
-                addScriptAction(new ChangeFlagScriptAction("collectedEmerald", true));
+                addScriptAction(new ChangeFlagScriptAction("collectedGreenEmerald", true));
 
-                addScriptAction(new CollectEmeraldScriptAction());
+                addScriptAction(new CollectGreenEmeraldScriptAction());
             }});
         }});
 

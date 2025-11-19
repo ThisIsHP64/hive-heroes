@@ -1,5 +1,6 @@
 package Scripts.FinalBoss;
 
+import Effects.ScreenFX;
 import Enemies.*;
 import Engine.WeatherManager;
 import Game.GameState;
@@ -11,21 +12,6 @@ import StaticClasses.HordeManager;
 import StaticClasses.TeleportManager;
 
 public class TeleportVolcanoBossScriptAction extends ScriptAction {
-
-    @Override
-    public void cleanup() {
-        // TODO Auto-generated method stub
-        super.cleanup();
-    }
-
-    @Override
-    public ScriptState execute() {
-        TeleportManager.setCurrentGameState(GameState.VOLCANOLEVEL);        
-
-        WeatherManager.GLOBAL.enableOverrideMode();
-        WeatherManager.GLOBAL.setRedRain(true);
-        return ScriptState.COMPLETED;
-    }
 
     @Override
     public void setup() {
@@ -40,6 +26,23 @@ public class TeleportVolcanoBossScriptAction extends ScriptAction {
                 npc.lock();
             }
         }
+    }
+
+    @Override
+    public ScriptState execute() {
+        ScreenFX.start(ScreenFX.Effect.DARKEN, Integer.MAX_VALUE, 0.10f);
+
+        TeleportManager.setCurrentGameState(GameState.VOLCANOLEVEL);        
+
+        WeatherManager.GLOBAL.enableOverrideMode();
+        WeatherManager.GLOBAL.setRedRain(true);
+        return ScriptState.COMPLETED;
+    }
+
+    @Override
+    public void cleanup() {
+        // TODO Auto-generated method stub
+        super.cleanup();
     }
 
 }

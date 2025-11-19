@@ -11,16 +11,23 @@ import Flowers.Poppy;
 import Flowers.Daisy;
 import Level.EnhancedMapTile;
 import Level.Map;
+import Level.MapEntityStatus;
 import Level.MapTile;
 import Level.NPC;
 import Level.Trigger;
 import Level.TileType;
+import NPCs.BlueEmerald;
 import NPCs.BrokenHut;
 import NPCs.BrokenTree2;
+import NPCs.RedEmerald;
 import NPCs.SauronEye;
 import NPCs.Volcano;
 import Portals.GrassPortal;
 import Scripts.SimpleTextScript;
+import Scripts.TestMap.LostBallScript;
+import Scripts.VolcanoMap.AddRedEmeraldScript;
+import Scripts.VolcanoMap.BlueEmeraldScript;
+import Scripts.VolcanoMap.RedEmeraldScript;
 import Scripts.VolcanoMap.VolcanoGrassPortalScript;
 import Scripts.VolcanoMap.VolcanoToGrassScript;
 import Tilesets.VolcanoTileset;
@@ -73,12 +80,21 @@ public class VolcanoMap extends Map {
 
         // Grass portal back to main map - moved to (75, 75) with E key interaction
         GrassPortal grassPortal = new GrassPortal(1, getMapTile(75, 75).getLocation());
-        grassPortal.setInteractScript(new VolcanoGrassPortalScript());
+        grassPortal.setInteractScript(new VolcanoToGrassScript());
 
         // UPDATED: GrassPortal moved from (92, 49) to (75, 40) - near player spawn
         // GrassPortal grassPortal = new GrassPortal(1, getMapTile(75, 40).getLocation());
         // grassPortal.setInteractScript(new VolcanoToGrassScript());
         npcs.add(grassPortal);
+
+
+        RedEmerald redEmerald = new RedEmerald(0, getMapTile(70, 70).getLocation());
+        redEmerald.setInteractScript(new RedEmeraldScript());
+        npcs.add(redEmerald);
+
+        BlueEmerald blueEmerald = new BlueEmerald(0, getMapTile(72, 70).getLocation());
+        blueEmerald.setInteractScript(new BlueEmeraldScript());
+        npcs.add(blueEmerald);
 
         // One FireFlower near the hub area
         FireFlower hubFireFlower = new FireFlower(4000, getMapTile(60, 42).getLocation());
@@ -281,5 +297,7 @@ public class VolcanoMap extends Map {
     @Override
     public void loadScripts() {
         getMapTile(55, 40).setInteractScript(new SimpleTextScript("Volcanic Region"));
+        // triggers.add(new Trigger(0, 0, 6000, 6000, new AddRedEmeraldScript(), "spawnedYet"));
+
     }
 }

@@ -102,21 +102,8 @@ public class DungeonLevelScreen extends Screen implements GameListener {
                                 }
                             }
 
-                            if (npc instanceof Portal) {
-                                Portal portal = (Portal) npc;
-
-                                if (sting.intersects(portal.getHitbox())) {
-                                    TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
-                                }
-                            }
-
-                            if (npc instanceof GrassPortal) {
-                                GrassPortal grassPortal = (GrassPortal) npc;
-
-                                if (sting.intersects(grassPortal.getHitbox())) {
-                                    TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
-                                }
-                            }
+                            
+                            
 
                         }
                     }

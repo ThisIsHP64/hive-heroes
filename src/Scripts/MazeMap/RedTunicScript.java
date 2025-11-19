@@ -22,7 +22,8 @@ public class RedTunicScript extends Script {
                 addRequirement(new FlagRequirement("collectedRedTunic", false));
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Volcanic tunic acquired!");
+                    addText("Volcanic tunic acquired! Press 3 to activate.");
+                    addText("When active, you will be impeccable to the \nstorms of burning earth.");
                 }});
 
                 addScriptAction(new RedTunicScriptAction());
@@ -33,11 +34,9 @@ public class RedTunicScript extends Script {
 
         scriptActions.add(new UnlockPlayerScriptAction());
 
-        scriptActions.add(new WaitScriptAction(120));
+        // scriptActions.add(new WaitScriptAction(120));
 
-        scriptActions.add(new TeleportGrassScriptAction());
-
-
+        // scriptActions.add(new TeleportGrassScriptAction());
 
         return scriptActions;
     }

@@ -72,9 +72,15 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
     public void initialize() {
         hasInitialized = true;
         flagManager = new FlagManager();
+        flagManager.addFlag("hasRedEmerald", false);
+        flagManager.addFlag("hasBlueEmerald", false);
+        flagManager.addFlag("hasBothEmeralds", false);
+
+        flagManager.addFlag("bossActive", false);
 
         map = new VolcanoMap();
         map.setFlagManager(flagManager);
+        
 
         player = new Bee(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         player.setMap(map);
@@ -389,21 +395,21 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                 }
                             }
 
-                            if (npc instanceof Portal) {
-                                Portal portal = (Portal) npc;
+                            // if (npc instanceof Portal) {
+                            //     Portal portal = (Portal) npc;
 
-                                if (sting.intersects(portal.getHitbox())) {
-                                    TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
-                                }
-                            }
+                            //     if (sting.intersects(portal.getHitbox())) {
+                            //         TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
+                            //     }
+                            // }
 
-                            if (npc instanceof GrassPortal) {
-                                GrassPortal grassPortal = (GrassPortal) npc;
+                            // if (npc instanceof GrassPortal) {
+                            //     GrassPortal grassPortal = (GrassPortal) npc;
 
-                                if (sting.intersects(grassPortal.getHitbox())) {
-                                    TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
-                                }
-                            }
+                            //     if (sting.intersects(grassPortal.getHitbox())) {
+                            //         TeleportManager.setCurrentScreen(GameState.GRASSLEVEL);
+                            //     }
+                            // }
                         }
                     }
                 }
