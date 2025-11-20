@@ -21,7 +21,7 @@ public class GrassToSnowScript extends Script{
 
         scriptActions.add(new LockPlayerScriptAction());
 
-        scriptActions.add(new ProcessLevelUpScriptAction());
+        scriptActions.add(new ProcessLevel4ScriptAction());
         scriptActions.add(new Process150NectarScriptAction());
 
         scriptActions.add(new ConditionalScriptAction() {{

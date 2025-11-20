@@ -23,7 +23,7 @@ public class IntroductionScript extends Script {
             addText("Stamina automatically regenerates when you stand \nstill.");
 
             addText("Press SPACE to melee attack. If you hit successfully, \nthere will be indicators.");
-            addText("Press E to collect powerups, \nand 1 to activate them.");
+            addText("Press E to collect powerups, and 1 to activate them.");
             addText("Press SPACE near flowers to collect nectar.");
             addText("Press SPACE near the Queen's head to deposit nectar.");
 

@@ -107,7 +107,7 @@ public class MenuScreen extends Screen {
             if (menuItemSelected == 0) {
 
 
-                screenCoordinator.setGameState(GameState.VOLCANOLEVEL);
+                screenCoordinator.setGameState(GameState.HIVELEVEL);
             } else if (menuItemSelected == 1) {
                 screenCoordinator.setGameState(GameState.CREDITS);
             }

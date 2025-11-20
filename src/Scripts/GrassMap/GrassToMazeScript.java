@@ -21,7 +21,7 @@ public class GrassToMazeScript extends Script {
 
         scriptActions.add(new LockPlayerScriptAction());
 
-        scriptActions.add(new ProcessLevelUpScriptAction());
+        scriptActions.add(new ProcessLevel2ScriptAction());
         scriptActions.add(new Process15NectarScriptAction());
 
         scriptActions.add(new ConditionalScriptAction() {{

@@ -97,7 +97,7 @@ public class QueenBeeScript extends Script {
                 }});
 
                 addScriptAction(new StopMusicScriptAction());
-                
+
                 addScriptAction(new WaitScriptAction(30));
 
                 addScriptAction(new TextboxScriptAction() {{
@@ -146,10 +146,10 @@ public class QueenBeeScript extends Script {
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Rise, brave one of the hive.");
                     addText("Your strength is required, and you will not falter.");
-                    addText("Beyond the plains lie uncharted lands—treacherous, yet\nladen with power.");
+                    addText("Beyond the plains lie uncharted lands—treacherous, \nyet laden with power.");
                     addText("There, you will seek a radiant jewel of great force.\nIts energy is vital to our hive’s ascension.");
-                    addText("Secure it. Do not disappoint the hive. Our future depends\non your success.");
-                    addText("Now go, soldier—follow the path of the flower, claim what\nawaits, and let nothing stand in your way.");
+                    addText("Secure it. Do not disappoint the hive. Our future \ndepends on your success.");
+                    addText("Now go, soldier—follow the path of the flower, claim \nwhat awaits, and let nothing stand in your way.");
                 }});
 
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToQueen", true));
@@ -176,10 +176,10 @@ public class QueenBeeScript extends Script {
                         addScriptAction(new TextboxScriptAction() {{
                             addText("Rise, brave one of the hive.");
                             addText("Your strength is required, and you will not falter.");
-                            addText("Beyond the plains lie uncharted lands—treacherous, yet\nladen with power.");
+                            addText("Beyond the plains lie uncharted lands—treacherous, \nyet laden with power.");
                             addText("There, you will seek a radiant jewel of great force.\nIts energy is vital to our hive’s ascension.");
-                            addText("Secure it. Do not disappoint the hive. Our future depends\non your success.");
-                            addText("Now go, soldier—follow the path of the flower, claim what\nawaits, and let nothing stand in your way.");
+                            addText("Secure it. Do not disappoint the hive. Our future \ndepends on your success.");
+                            addText("Now go, soldier—follow the path of the flower, claim \nwhat awaits, and let nothing stand in your way.");
                         }});
                     }});
 

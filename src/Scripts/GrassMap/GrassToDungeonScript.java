@@ -20,7 +20,7 @@ public class GrassToDungeonScript extends Script{
 
         scriptActions.add(new LockPlayerScriptAction());
         
-        scriptActions.add(new ProcessLevelUpScriptAction());
+        scriptActions.add(new ProcessLevel3ScriptAction());
         scriptActions.add(new Process100NectarScriptAction());
 
         scriptActions.add(new ConditionalScriptAction() {{

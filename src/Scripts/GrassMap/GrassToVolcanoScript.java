@@ -21,7 +21,7 @@ public class GrassToVolcanoScript extends Script{
 
         scriptActions.add(new LockPlayerScriptAction());
 
-        scriptActions.add(new ProcessLevelUpScriptAction());
+        scriptActions.add(new ProcessLevel2ScriptAction());
 
         scriptActions.add(new Process50NectarScriptAction());
 
