@@ -20,9 +20,13 @@ public class IntroductionScript extends Script {
 
             addText("Use WASD to move and outsmart your enemies!");
             addText("Combine a movement key with SHIFT to sprint! This \nwill consume stamina.");
-            addText("Press SPACE to melee attack, E to collect powerups, \nand 1 to activate them.");
+            addText("Stamina automatically regenerates when you stand \nstill.");
+
+            addText("Press SPACE to melee attack. If you hit successfully, \nthere will be indicators.");
+            addText("Press E to collect powerups, and 1 to activate them.");
             addText("Press SPACE near flowers to collect nectar.");
             addText("Press SPACE near the Queen's head to deposit nectar.");
+
             addText("Press the E/Space key near Doors, Portals, and NPCs \nto interact with them.");
 
             addText("If you ever need reminders of the directions, interact \nwith the Queen Bee.");

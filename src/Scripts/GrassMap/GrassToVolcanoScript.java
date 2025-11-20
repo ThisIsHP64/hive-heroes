@@ -21,7 +21,7 @@ public class GrassToVolcanoScript extends Script{
 
         scriptActions.add(new LockPlayerScriptAction());
 
-        scriptActions.add(new ProcessLevelUpScriptAction());
+        scriptActions.add(new ProcessLevel2ScriptAction());
 
         scriptActions.add(new Process50NectarScriptAction());
 
@@ -60,7 +60,7 @@ public class GrassToVolcanoScript extends Script{
                 addRequirement(new FlagRequirement("isLevel2", true));
                 addRequirement(new FlagRequirement("hasCollected50Nectar", true));
                 scriptActions.add(new TextboxScriptAction() {{
-                    addText("Would you like to enter the Volcanic Map?", new String[] { "Yes", "No" });
+                    addText("The searing passage is lit. Enter the Volcanic Map?", new String[] { "Yes", "No" });
                 }});
 
             scriptActions.add(new ConditionalScriptAction() {{

@@ -25,19 +25,15 @@ public class DestroyedBeehiveScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("*The neighbour hive is shattered*");
+                    addText("*The neighbour hive is shattered.*");
                 }});
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("*Broken combs. Scattered nectar. Silence \nwhere life once buzzed*");
+                    addText("*Broken honeycombs. Scattered nectar. Silence \nwhere life once buzzed.*");
                 }});
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("*But the beast showed no mercy*");
-                }});
-
-                addScriptAction(new TextboxScriptAction() {{
-                    addText("*The sun will shine on us again*");
+                    addText("*The beast showed no mercy.*");
                 }});
             }});
         }});

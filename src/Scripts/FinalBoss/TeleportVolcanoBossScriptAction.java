@@ -4,9 +4,12 @@ import Effects.ScreenFX;
 import Enemies.*;
 import Engine.WeatherManager;
 import Game.GameState;
+import Game.ScreenCoordinator;
 import Level.MapEntityStatus;
 import Level.ScriptState;
 import ScriptActions.ScriptAction;
+import Sound.Music;
+import Sound.MusicManager;
 import StaticClasses.EnemySpawner;
 import StaticClasses.HordeManager;
 import StaticClasses.TeleportManager;
@@ -26,16 +29,20 @@ public class TeleportVolcanoBossScriptAction extends ScriptAction {
                 npc.lock();
             }
         }
+
     }
 
     @Override
     public ScriptState execute() {
         ScreenFX.start(ScreenFX.Effect.DARKEN, Integer.MAX_VALUE, 0.10f);
 
-        TeleportManager.setCurrentGameState(GameState.VOLCANOLEVEL);        
+        TeleportManager.setCurrentGameState(GameState.VOLCANOLEVEL);
+        TeleportManager.setBossActive(true);
 
         WeatherManager.GLOBAL.enableOverrideMode();
         WeatherManager.GLOBAL.setRedRain(true);
+        MusicManager.stopAll();
+        MusicManager.playLoop(Music.BOSS);
         return ScriptState.COMPLETED;
     }
 

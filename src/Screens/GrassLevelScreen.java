@@ -43,23 +43,23 @@ public class GrassLevelScreen extends Screen implements GameListener {
     public void initialize() {
         hasInitialized = true;
         flagManager = new FlagManager();
-        flagManager.addFlag("isLevel2", true);
-        flagManager.addFlag("isLevel3", true);
-        flagManager.addFlag("isLevel4", true);
+        // flagManager.addFlag("isLevel2", true);
+        // flagManager.addFlag("isLevel3", true);
+        // flagManager.addFlag("isLevel4", true);
 
-        flagManager.addFlag("hasCollected15Nectar", true);
-        flagManager.addFlag("hasCollected50Nectar", true);
-        flagManager.addFlag("hasCollected100Nectar", true);
-        flagManager.addFlag("hasCollected150Nectar", true);
+        // flagManager.addFlag("hasCollected15Nectar", true);
+        // flagManager.addFlag("hasCollected50Nectar", true);
+        // flagManager.addFlag("hasCollected100Nectar", true);
+        // flagManager.addFlag("hasCollected150Nectar", true);
 
-        // flagManager.addFlag("hasCollected15Nectar", false);
-        // flagManager.addFlag("hasCollected50Nectar", false);
-        // flagManager.addFlag("hasCollected100Nectar", false);
-        // flagManager.addFlag("hasCollected150Nectar", false);
+        flagManager.addFlag("hasCollected15Nectar", false);
+        flagManager.addFlag("hasCollected50Nectar", false);
+        flagManager.addFlag("hasCollected100Nectar", false);
+        flagManager.addFlag("hasCollected150Nectar", false);
 
-        // flagManager.addFlag("isLevel2", false);
-        // flagManager.addFlag("isLevel3", false);
-        // flagManager.addFlag("isLevel4", false);
+        flagManager.addFlag("isLevel2", false);
+        flagManager.addFlag("isLevel3", false);
+        flagManager.addFlag("isLevel4", false);
 
         map = new GrassMap();
         map.setFlagManager(flagManager);

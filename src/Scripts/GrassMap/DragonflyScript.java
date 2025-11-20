@@ -20,7 +20,7 @@ public class DragonflyScript extends Script {
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Feeling down and thirsty? Be sure to get as much \nnectar from the rare sunflower! Keep Exploring!");
+                    addText("Feeling down and thirsty? Be sure to get as much \nnectar from sunflowers! Keep exploring!");
                 }});
             }});
         }});

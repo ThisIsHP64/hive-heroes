@@ -25,7 +25,7 @@ public class DeadDeerScript extends Script {
                 }});
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("*The deer lies motionless on the soft grass*");
+                    addText("*The deer lies motionless on the soft grass...*");
                 }});
 
                 addScriptAction(new TextboxScriptAction() {{

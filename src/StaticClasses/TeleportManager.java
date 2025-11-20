@@ -8,6 +8,16 @@ import Sound.SFXManager;
 public class TeleportManager {
     private static ScreenCoordinator teleportManager;
 
+    private static boolean isBossActive = false;
+
+    public static boolean isBossActive() {
+        return isBossActive;
+    }
+
+    public static void setBossActive(boolean isBossActive) {
+        TeleportManager.isBossActive = isBossActive;
+    }
+
     public static void call(ScreenCoordinator screenCoordinator) {
         teleportManager = screenCoordinator;
     }
@@ -24,6 +34,9 @@ public class TeleportManager {
     }
 
     public static void setCurrentGameState(GameState newGameState) {
+        
         teleportManager.setCurrentGameState(newGameState);
+
+
     }
 }

@@ -8,6 +8,8 @@ import Scripts.VolcanoMap.CheckBothEmeraldsScriptAction;
 import Scripts.VolcanoMap.HasBlueEmeraldScriptAction;
 import Scripts.VolcanoMap.HasRedEmeraldScript;
 import Scripts.VolcanoMap.SetBossActiveScriptAction;
+import Sound.Music;
+import Sound.MusicManager;
 import Utils.Visibility;
 
 import java.util.ArrayList;
@@ -39,11 +41,12 @@ public class QueenBeeScript extends Script {
                 addScriptAction(new ResetScreenFX());
                 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("How even...");
-                    addText("What? How is this possible??");
-                    addText("No other one of my offspring has survived being \nbanished to that hellish region...");
-                    addText("Don't tell me...");
-                    addText("You received the blessing of the other Emeralds?!");
+                    addText("I… impossible...");
+                    addText("You— you made it back?");
+                    addText("No one survives that place. No one!");
+                    addText("Wait… that glow…");
+                    addText("Don’t tell me…");
+                    addText("You actually harnessed the power \nof the other Emeralds?!");
                 }});
 
                 addScriptAction(new WaitScriptAction(90));
@@ -64,7 +67,13 @@ public class QueenBeeScript extends Script {
                 addScriptAction(new WaitScriptAction(90));
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("We thank you for saving the world.");
+                    addText("Child of the hive… we have watched your journey.");
+                    addText("We have felt your suffering…and your resolve.");
+                    addText("Abandoned and ultimately betrayed, you still pressed forward.");
+                    addText("Your heart did not waver, even when the world turned against you.");
+                    addText("Let our power guide you now.");
+                    addText("You are worthy, little one. Worthy of us…and of what comes next.");
+                    addText("Go, bearer. Restore balance where corruption took root.");
                 }});
 
                 addScriptAction(new TeleportCreditScriptAction());
@@ -77,21 +86,46 @@ public class QueenBeeScript extends Script {
                 addRequirement(new FlagRequirement("hasGreenEmerald", true));
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("You have the Chaos Emerald?");
-                    addText("Good going, little one. Now I have all the \npower in the world!");
-                    addText("As for you, you're free now. Free to die!");
-                    addText("Now suffer from the regions you've faced, and \nendless enemies!");
+                    addText("You carry the Chaos Emerald?");
+                    addText("Excellent. You have served your purpose well.");
                 }});
 
                 addScriptAction(new WaitScriptAction(60));
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("This is your emergency Bee senses! It appears \nwe've been tricked by the Queen Bee.");
-                    addText("The fate of all bee-kind is at stake here. \nYou will need to use everything you have.");
-                    addText("You'll be subject to three rounds of suffering.\nVolcano, then Snow, then Grass.");
-                    addText("The Queen Bee will manipulate the monsters and \nweather, so make sure to use your tunics!");
-                    addText("Don't give up, no matter what!");
+                    addText("Ah… the Chaos Emerald… its voice… it calls to \nme...");
                 }});
+
+                addScriptAction(new StopMusicScriptAction());
+
+                addScriptAction(new WaitScriptAction(30));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("With this, I will ascend-and I alone command its \npower.");
+                    addText("As for you…your part in this ends now.");
+                    addText("Be gone from my sight. I banish you to the outer wilds—");
+                    addText("—and may what awaits you there finish what I no \nlonger need to.");
+                }});
+
+                addScriptAction(new WaitScriptAction(30));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("This is your Emergency Bee Senses! Something \nis terribly wrong!");
+                    addText("The Queen Bee has been overtaken by the Chaos \nEmerald’s power.");
+                    addText("Her corruption threatens all bee-kind. You must \ngather every ounce of strength you have.");
+                    addText("She’s twisting the monsters and the weather itself! \nActivate your volcanic tunic now! (Press 3!)");
+                    addText("Stay focused. Stay alive. You’re the only one who can\nstop her now!");
+                }});
+
+                addScriptAction(new WaitScriptAction(60));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("You are filled with determination. Your health and \nstamina is restored.");
+                }});
+
+                addScriptAction(new WaitScriptAction(30));
+
+                addScriptAction(new RestoreStatsScriptAction());
 
                 // sets boss active to true
                 addScriptAction(new SetBossActiveScriptAction());
@@ -111,10 +145,11 @@ public class QueenBeeScript extends Script {
 
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Rise, brave one of the hive.");
-                    addText("You are the spark that will light the sky once more.");
-                    addText("Beyond the plains lie uncharted lands, filled with\ndangers and resources.");
-                    addText("Claim its nectar, and our song will echo through the\nfields again!");
-                    addText("Now go, my soldier — follow the path of the flower to\nnew regions and prevail!");
+                    addText("Your strength is required, and you will not falter.");
+                    addText("Beyond the plains lie uncharted lands—treacherous, \nyet laden with power.");
+                    addText("There, you will seek a radiant jewel of great force.\nIts energy is vital to our hive’s ascension.");
+                    addText("Secure it. Do not disappoint the hive. Our future \ndepends on your success.");
+                    addText("Now go, soldier—follow the path of the flower, claim \nwhat awaits, and let nothing stand in your way.");
                 }});
 
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToQueen", true));
@@ -140,10 +175,11 @@ public class QueenBeeScript extends Script {
                         });
                         addScriptAction(new TextboxScriptAction() {{
                             addText("Rise, brave one of the hive.");
-                            addText("You are the spark that will light the sky once more.");
-                            addText("Beyond the plains lie uncharted lands, filled with\ndangers and resources.");
-                            addText("Claim its nectar, and our song will echo through the\nfields again!");
-                            addText("Now go, my soldier — follow the path of the flower to\nnew regions and prevail!");
+                            addText("Your strength is required, and you will not falter.");
+                            addText("Beyond the plains lie uncharted lands—treacherous, \nyet laden with power.");
+                            addText("There, you will seek a radiant jewel of great force.\nIts energy is vital to our hive’s ascension.");
+                            addText("Secure it. Do not disappoint the hive. Our future \ndepends on your success.");
+                            addText("Now go, soldier—follow the path of the flower, claim \nwhat awaits, and let nothing stand in your way.");
                         }});
                     }});
 

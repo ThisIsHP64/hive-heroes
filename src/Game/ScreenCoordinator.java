@@ -6,6 +6,7 @@ import Engine.Screen;
 import Screens.*;
 import Sound.Music;
 import Sound.MusicManager;
+import StaticClasses.TeleportManager;
 
 /*
  * Based on the current game state, this class determines which Screen should be shown
@@ -32,6 +33,7 @@ public class ScreenCoordinator extends Screen {
     // demo map
     protected DemoLevelScreen demoLevelScreen;
 
+    protected boolean isBossActive = false;
 
     // keep track of gameState so ScreenCoordinator knows which Screen to show
     protected GameState gameState;
@@ -98,6 +100,8 @@ public class ScreenCoordinator extends Screen {
 
                     case CREDITS:
                         currentScreen = creditsScreen;
+                        MusicManager.stopAll();
+                        MusicManager.playLoop(Music.CREDITS);
                         break;
 
                     case GAME_OVER:
@@ -111,8 +115,13 @@ public class ScreenCoordinator extends Screen {
                         break;
 
                     case VOLCANOLEVEL:
-                        MusicManager.stopAll();
-                        MusicManager.playLoop(Music.VOLCANO);
+                        if (!TeleportManager.isBossActive()) {
+                            MusicManager.stopAll();
+                            MusicManager.playLoop(Music.VOLCANO);
+                        } else {
+                            MusicManager.stopAll();
+                            MusicManager.playLoop(Music.BOSS);
+                        }
                         currentScreen = volcanoLevelScreen;
                         break;
 
@@ -139,6 +148,17 @@ public class ScreenCoordinator extends Screen {
                         MusicManager.playLoop(Music.HIVE);
                         currentScreen = hiveLevelScreen;
                         break;
+
+                    // case BOSSLEVEL:
+                    //     MusicManager.stopAll();
+                    //     MusicManager.playLoop(Music.BOSS);
+                    //     currentScreen = volcanoLevelScreen;
+                    //     break;
+
+                    case OPTIONS:
+                        break;
+                    default:
+                        break;
                 }
 
                 if (currentScreen.hasInitialized()) {
@@ -158,6 +178,15 @@ public class ScreenCoordinator extends Screen {
     public void draw(GraphicsHandler graphicsHandler) {
         // call the draw method for the currentScreen
         currentScreen.draw(graphicsHandler);
+    }
+
+
+    public boolean isBossActive() {
+        return isBossActive;
+    }
+
+    public void setBossActive(boolean isBossActive) {
+        this.isBossActive = isBossActive;
     }
 
     @Override

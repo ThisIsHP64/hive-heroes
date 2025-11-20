@@ -30,7 +30,7 @@ public class RedEmeraldScript extends Script {
 
                 scriptActions.add(new TextboxScriptAction() {{
                     addText("The Red Chaos Emerald calls to you.");
-                    addText("You must stop the possessor of the Green \n Chaos Emerald at all cost.");
+                    addText("You must stop the possessor of the Green Chaos \nEmerald at all cost.");
                 }});
 
                 addScriptAction(new ClaimRedEmeraldScriptAction());

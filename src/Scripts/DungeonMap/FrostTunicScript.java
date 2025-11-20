@@ -21,7 +21,7 @@ public class FrostTunicScript extends Script {
                 addRequirement(new FlagRequirement("collectedFrostTunic", false));
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Frost tunic acquired!");
+                    addText("Frost tunic acquired! Press 4 to toggle.");
                 }});
 
                 addScriptAction(new ChangeFlagScriptAction("collectedFrostTunic", true));

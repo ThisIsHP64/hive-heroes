@@ -21,7 +21,7 @@ public class GrassToSnowScript extends Script{
 
         scriptActions.add(new LockPlayerScriptAction());
 
-        scriptActions.add(new ProcessLevelUpScriptAction());
+        scriptActions.add(new ProcessLevel4ScriptAction());
         scriptActions.add(new Process150NectarScriptAction());
 
         scriptActions.add(new ConditionalScriptAction() {{
@@ -59,7 +59,7 @@ public class GrassToSnowScript extends Script{
                 addRequirement(new FlagRequirement("hasCollected150Nectar", true));
 
                 scriptActions.add(new TextboxScriptAction() {{
-                    addText("Would you like to enter the Snow Map?", new String[] { "Yes", "No" });
+                    addText("Enter the Snow Map? You may not make it out.", new String[] { "Yes", "No" });
                 }});
 
             scriptActions.add(new ConditionalScriptAction() {{

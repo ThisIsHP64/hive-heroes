@@ -29,7 +29,7 @@ public class BlueEmeraldScript extends Script {
                 addRequirement(new FlagRequirement("bossActive", true));
 
                 scriptActions.add(new TextboxScriptAction() {{
-                    addText("The Red Chaos Emerald calls to you.");
+                    addText("The Blue Chaos Emerald calls to you.");
                     addText("You must stop the possessor of the Green \n Chaos Emerald at all cost.");
                 }});
 
@@ -42,9 +42,8 @@ public class BlueEmeraldScript extends Script {
                 addRequirement(new FlagRequirement("bossActive", false));
 
                 scriptActions.add(new TextboxScriptAction() {{
-                    addText("The energy emanating from the emerald is scathing.");
+                    addText("The energy emanating from the emerald is overwhelming.");
                 }});
-
             }});
         }});
         

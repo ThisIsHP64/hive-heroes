@@ -20,7 +20,7 @@ public class GrassToDungeonScript extends Script{
 
         scriptActions.add(new LockPlayerScriptAction());
         
-        scriptActions.add(new ProcessLevelUpScriptAction());
+        scriptActions.add(new ProcessLevel3ScriptAction());
         scriptActions.add(new Process100NectarScriptAction());
 
         scriptActions.add(new ConditionalScriptAction() {{
@@ -30,7 +30,7 @@ public class GrassToDungeonScript extends Script{
 
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Requirements: Level 3 and Deposit 100 Nectar \nto the Queen Bee.");
-                    addText("You hear sounds coming from within the dungeon.");
+                    addText("You hear things coming from within the dungeon.");
                     addText("The screams send shivers down your spine. \nMaybe I'll come back later.");
                 }});
             }});

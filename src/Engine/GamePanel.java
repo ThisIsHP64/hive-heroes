@@ -154,96 +154,96 @@ public class GamePanel extends JPanel implements ActionListener {
                 boolean onGrassLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
                 boolean onVolcanoLevel = TeleportManager.getCurrentGameState() == GameState.VOLCANOLEVEL;
                 boolean onSnowLevel = TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL;
-				//boolean onRedRainBossLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
-				//boolean onrainBossLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
-				//boolean onsnowBossLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
+				boolean onRedRainBossLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
+				boolean onrainBossLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
+				boolean onsnowBossLevel = TeleportManager.getCurrentGameState() == GameState.GRASSLEVEL;
 
                 // --- RAIN CYCLE ---
-                // if (grassLevelcycleTime >= 30 && grassLevelcycleTime < 90) {
-                //     if (onGrassLevel) {
-                //         if (!weatherManager.isRaining()) {
-                //             weatherManager.setRaining(true);
-                //             rainSystemgrassLevel.clear();
-                //         }
-                //     }
-                // } else if (weatherManager.isRaining()) {
-                //     weatherManager.setRaining(false);
-                //     rainSystemgrassLevel.clear();
-                // }
-
-                // // --- WIND CYCLE ---
-                // if (grassLevelcycleTime >= 150 && grassLevelcycleTime < 210) {
-                //     if (onGrassLevel) {
-                //         if (!weatherManager.isWind()) {
-                //             weatherManager.setWind(true);
-                //             windSystemgrassLevel.clear();
-                //         }
-                //     }
-                // } else if (weatherManager.isWind()) {
-                //     weatherManager.setWind(false);
-                //     windSystemgrassLevel.clear();
-                // }
-
-                // // --- VOLCANO RED RAIN ---
-                // if (volcanoLevelcycleTime >= 30 && volcanoLevelcycleTime < 90) {
-                //     if (onVolcanoLevel) {
-                //         if (!weatherManager.isRedRain()) {
-                //             weatherManager.setRedRain(true);
-                //             redRainSystemvolcanoLevel.clear();
-                //         }
-                //     }
-                // } else if (weatherManager.isRedRain()) {
-                //     weatherManager.setRedRain(false);
-                //     redRainSystemvolcanoLevel.clear();
-                // }
-
-                // // --- SNOW ---
-                // if (snowLevelcycleTime >= 30 && snowLevelcycleTime < 90) {
-                //     if (onSnowLevel) {
-                //         if (!weatherManager.isSnow()) {
-                //             weatherManager.setSnow(true);
-                //             snowParticleSystemsnowLevel.clear();
-                //         }
-                //     }
-                // } else if (onSnowLevel) {
-                //     weatherManager.setSnow(false);
-                //     snowParticleSystemsnowLevel.clear();
-                // }
-				
-				// --- BOSS FIGHT ---
-				if (redRainbossFightcycleTime >= 30 && redRainbossFightcycleTime < 45) {
-					if (onGrassLevel){
-						if (!weatherManager.isRedRain()) {
-							weatherManager.setRedRain(true);
-							redRainSystembossfight.clear();
-						}
-					}
-				} else if (weatherManager.isRedRain()) {
-				 	weatherManager.setRedRain(false);
-					redRainSystembossfight.clear();
-				}
-                if (redRainbossFightcycleTime >= 80 && redRainbossFightcycleTime < 95) {
+                if (grassLevelcycleTime >= 30 && grassLevelcycleTime < 90) {
                     if (onGrassLevel) {
                         if (!weatherManager.isRaining()) {
                             weatherManager.setRaining(true);
-                            rainSystembossfight.clear();
+                            rainSystemgrassLevel.clear();
                         }
                     }
                 } else if (weatherManager.isRaining()) {
                     weatherManager.setRaining(false);
-                    rainSystembossfight.clear();
+                    rainSystemgrassLevel.clear();
                 }
-				if (redRainbossFightcycleTime >= 130 && redRainbossFightcycleTime < 145) {
+
+                // --- WIND CYCLE ---
+                if (grassLevelcycleTime >= 150 && grassLevelcycleTime < 210) {
                     if (onGrassLevel) {
+                        if (!weatherManager.isWind()) {
+                            weatherManager.setWind(true);
+                            windSystemgrassLevel.clear();
+                        }
+                    }
+                } else if (weatherManager.isWind()) {
+                    weatherManager.setWind(false);
+                    windSystemgrassLevel.clear();
+                }
+
+                // --- VOLCANO RED RAIN ---
+                if (volcanoLevelcycleTime >= 30 && volcanoLevelcycleTime < 90) {
+                    if (onVolcanoLevel) {
+                        if (!weatherManager.isRedRain()) {
+                            weatherManager.setRedRain(true);
+                            redRainSystemvolcanoLevel.clear();
+                        }
+                    }
+                } else if (weatherManager.isRedRain()) {
+                    weatherManager.setRedRain(false);
+                    redRainSystemvolcanoLevel.clear();
+                }
+
+                // --- SNOW ---
+                if (snowLevelcycleTime >= 30 && snowLevelcycleTime < 90) {
+                    if (onSnowLevel) {
                         if (!weatherManager.isSnow()) {
                             weatherManager.setSnow(true);
-                            snowSystembossfight.clear();
+                            snowParticleSystemsnowLevel.clear();
                         }
                     }
                 } else if (onSnowLevel) {
                     weatherManager.setSnow(false);
-                    snowSystembossfight.clear();
+                    snowParticleSystemsnowLevel.clear();
                 }
+				
+				// --- BOSS FIGHT ---
+				// if (redRainbossFightcycleTime >= 30 && redRainbossFightcycleTime < 45) {
+				// 	if (onGrassLevel){
+				// 		if (!weatherManager.isRedRain()) {
+				// 			weatherManager.setRedRain(true);
+				// 			redRainSystembossfight.clear();
+				// 		}
+				// 	}
+				// } else if (weatherManager.isRedRain()) {
+				//  	weatherManager.setRedRain(false);
+				// 	redRainSystembossfight.clear();
+				// }
+                // if (redRainbossFightcycleTime >= 80 && redRainbossFightcycleTime < 95) {
+                //     if (onGrassLevel) {
+                //         if (!weatherManager.isRaining()) {
+                //             weatherManager.setRaining(true);
+                //             rainSystembossfight.clear();
+                //         }
+                //     }
+                // } else if (weatherManager.isRaining()) {
+                //     weatherManager.setRaining(false);
+                //     rainSystembossfight.clear();
+                // }
+				// if (redRainbossFightcycleTime >= 130 && redRainbossFightcycleTime < 145) {
+                //     if (onGrassLevel) {
+                //         if (!weatherManager.isSnow()) {
+                //             weatherManager.setSnow(true);
+                //             snowSystembossfight.clear();
+                //         }
+                //     }
+                // } else if (onSnowLevel) {
+                //     weatherManager.setSnow(false);
+                //     snowSystembossfight.clear();
+                // }
 				
             }
 
@@ -270,7 +270,7 @@ public class GamePanel extends JPanel implements ActionListener {
             } else {
                 snowParticleSystemsnowLevel.clear();
             }
-			/*
+			
 			if (weatherManager.isRedRain()) {
                 redRainSystembossfight.update();
             } else {
@@ -281,13 +281,13 @@ public class GamePanel extends JPanel implements ActionListener {
             } else {
                 rainSystembossfight.clear();
             }
-			if (weatherManager.isSnowing()) {
+			if (weatherManager.isSnow()) {
                 snowSystembossfight.update();
             } else {
                 snowSystembossfight.clear();
             }
 
-			 */
+			 
         }
 	}
 	

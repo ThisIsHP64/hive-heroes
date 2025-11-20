@@ -25,7 +25,6 @@ import NPCs.Volcano;
 import Portals.GrassPortal;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.LostBallScript;
-import Scripts.VolcanoMap.AddRedEmeraldScript;
 import Scripts.VolcanoMap.BlueEmeraldScript;
 import Scripts.VolcanoMap.RedEmeraldScript;
 import Scripts.VolcanoMap.VolcanoGrassPortalScript;
@@ -88,11 +87,11 @@ public class VolcanoMap extends Map {
         npcs.add(grassPortal);
 
 
-        RedEmerald redEmerald = new RedEmerald(0, getMapTile(70, 70).getLocation());
+        RedEmerald redEmerald = new RedEmerald(0, getMapTile(7, 8).getLocation());
         redEmerald.setInteractScript(new RedEmeraldScript());
         npcs.add(redEmerald);
 
-        BlueEmerald blueEmerald = new BlueEmerald(0, getMapTile(72, 70).getLocation());
+        BlueEmerald blueEmerald = new BlueEmerald(0, getMapTile(64, 5).getLocation());
         blueEmerald.setInteractScript(new BlueEmeraldScript());
         npcs.add(blueEmerald);
 

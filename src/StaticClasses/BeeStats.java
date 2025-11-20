@@ -15,8 +15,8 @@ public class BeeStats {
     // Stamina (used for projectiles)
     // ------------------------
     // testing values removed — balanced version
-    private static int stamina = 100000;
-    private static int maxStamina = 100000;
+    private static int stamina = 2000;
+    private static int maxStamina = 10000;
 
     // Nectar
     private static int nectar = 0;
@@ -24,7 +24,7 @@ public class BeeStats {
 
     // Experience
     private static int experience = 0;
-    private static int[] experienceThresholds = {30, 50, 100, 175};
+    private static int[] experienceThresholds = {30, 50, 70, 100};
 
     // Movement speed
     private static float walkSpeed = 6f;
