@@ -625,7 +625,7 @@ public class Bee extends Player {
         int beeCenterY = (int) getY() + beeH / 2;
 
         final int ATTACK_SIZE = 45;
-        final int REACH = 20;
+        final int REACH = 15;
 
         int x = beeCenterX - ATTACK_SIZE / 2;
         int y = beeCenterY - ATTACK_SIZE / 2;

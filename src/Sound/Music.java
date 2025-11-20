@@ -14,6 +14,7 @@ public class Music {
     public static final int MAZE = 6;
     public static final int DUNGEON = 7;
     public static final int BOSS = 8;
+    public static final int CREDITS = 9;
 
     // actual audio data
     private Clip clip;
