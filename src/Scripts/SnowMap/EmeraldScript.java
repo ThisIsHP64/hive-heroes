@@ -23,7 +23,7 @@ public class EmeraldScript extends Script {
                 addScriptAction(new TextboxScriptAction() {{
                     addText("The Chaos Emerald...");
                     addText("Its power floods you—too much…far too much.");
-                    addText("Your head splits with a pounding voice that isn’t your own.");
+                    addText("Your head splits with a pounding voice that isn’t \nyour own.");
                     addText("I… I must return this to the Queen…");
                     addText("Yes…return it…at once...");
                 }});

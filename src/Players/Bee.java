@@ -437,21 +437,21 @@ public class Bee extends Player {
         }
 
         // frost slow-fast speed logic
-        if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL) {
+        // if (TeleportManager.getCurrentGameState() == GameState.SNOWLEVEL) {
 
-            // If Blue Tunic is NOT active then slow down the bee in the frost
-            if (!BeeStats.isBlueTunicActive()) {
-                BeeStats.setWalkSpeed(3f);   // slow and painful
-            } 
-            // If Blue Tunic IS active fasst
-            else {
-                BeeStats.setWalkSpeed(10f);   // boosted speed in frost
-                }
-            } 
-            // Not in frost region? then default
-            // else {
-            //     BeeStats.setWalkSpeed(6f);
-            // }
+        //     // If Blue Tunic is NOT active then slow down the bee in the frost
+        //     if (!BeeStats.isBlueTunicActive()) {
+        //         BeeStats.setWalkSpeed(3f);   // slow and painful
+        //     } 
+        //     // If Blue Tunic IS active fasst
+        //     else if (BeeStats.isBlueTunicActive()) {
+        //         BeeStats.setWalkSpeed(10f);   // boosted speed in frost
+        //     }
+
+        //     else {
+        //          BeeStats.setWalkSpeed(BeeStats.getWalkSpeed());
+        //      }
+        // } 
 
         resourceBars.update();
         

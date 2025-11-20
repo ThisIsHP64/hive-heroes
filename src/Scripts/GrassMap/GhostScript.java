@@ -26,7 +26,7 @@ public class GhostScript extends Script {
                 addText("This land breathes with memories... and dangers.");
             }});
             addScriptAction(new TextboxScriptAction() {{
-                addText("Protect the trees and the creatures\nwho dwell here.");
+                addText("Protect the trees and the creatures that dwell here.");
             }});
             addScriptAction(new TextboxScriptAction() {{
                 addText("Your journey is only beginning!");
