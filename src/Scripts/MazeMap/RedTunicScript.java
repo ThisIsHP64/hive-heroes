@@ -34,10 +34,6 @@ public class RedTunicScript extends Script {
 
         scriptActions.add(new UnlockPlayerScriptAction());
 
-        // scriptActions.add(new WaitScriptAction(120));
-
-        // scriptActions.add(new TeleportGrassScriptAction());
-
         return scriptActions;
     }
 }

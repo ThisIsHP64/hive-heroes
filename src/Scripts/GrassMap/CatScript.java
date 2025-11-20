@@ -21,7 +21,7 @@ public class CatScript extends Script {
                     addText("Meow... I am sorry for what happened to your \nhive.");
                 }});
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Very big teeth, sharp claws...");
+                    addText("It had very big teeth, sharp claws...");
                 }});
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Did not even spare my dear friend deer!");

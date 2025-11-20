@@ -25,7 +25,6 @@ import NPCs.Volcano;
 import Portals.GrassPortal;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.LostBallScript;
-import Scripts.VolcanoMap.AddRedEmeraldScript;
 import Scripts.VolcanoMap.BlueEmeraldScript;
 import Scripts.VolcanoMap.RedEmeraldScript;
 import Scripts.VolcanoMap.VolcanoGrassPortalScript;

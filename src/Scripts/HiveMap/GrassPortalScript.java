@@ -28,7 +28,7 @@ public class GrassPortalScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToQueen", true));
                 scriptActions.add(new TextboxScriptAction() {{
-                    addText("Would you like to exit the Hive into the Grasslands?", new String[] { "Yes", "No" });
+                    addText("Would you like to enter the Grasslands?", new String[] { "Yes", "No" });
                 }});
 
             scriptActions.add(new ConditionalScriptAction() {{
@@ -53,7 +53,7 @@ public class GrassPortalScript extends Script {
                         }
                     });
 
-                    addScriptAction(new TextboxScriptAction("Okay."));
+                    addScriptAction(new TextboxScriptAction("..."));
 
                     }});
                 }});

@@ -61,7 +61,7 @@ public class GrassToMazeScript extends Script {
                 addRequirement(new FlagRequirement("hasCollected15Nectar", true));
 
                 scriptActions.add(new TextboxScriptAction() {{
-                    addText("Would you like to enter the Maze?", new String[] { "Yes", "No" });
+                    addText("Would you like to begin the Maze?", new String[] { "Yes", "No" });
                 }});
 
             scriptActions.add(new ConditionalScriptAction() {{

@@ -65,7 +65,13 @@ public class QueenBeeScript extends Script {
                 addScriptAction(new WaitScriptAction(90));
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("We thank you for saving the world.");
+                    addText("Child of the hive… we have watched your journey.");
+                    addText("We have felt your suffering…and your resolve.");
+                    addText("Abandoned and ultimately betrayed, you still pressed forward.");
+                    addText("Your heart did not waver, even when the world turned against you.");
+                    addText("Let our power guide you now.");
+                    addText("You are worthy, little one. Worthy of us…and of what comes next.");
+                    addText("Go, bearer. Restore balance where corruption took root.");
                 }});
 
                 addScriptAction(new TeleportCreditScriptAction());
@@ -80,19 +86,31 @@ public class QueenBeeScript extends Script {
                 addScriptAction(new TextboxScriptAction() {{
                     addText("You carry the Chaos Emerald?");
                     addText("Excellent. You have served your purpose well.");
-                    addText("With this, the hive ascends—and I alone command its \npower.");
-                    addText("As for you…your part in this ends now.");
-                    addText("Be gone from my sight. I banish you to the outer wilds—");
-                    addText("—and may the dangers there finish what I no longer \nneed to.");
                 }});
 
                 addScriptAction(new WaitScriptAction(60));
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("This is your emergency Bee senses! It appears we've \nbeen tricked by the Queen Bee.");
-                    addText("The fate of all bee-kind is at stake here. You will need \nto use everything you have.");
-                    addText("The Queen Bee will manipulate the monsters and \nweather, so make sure to activate your volcanic tunic!");
-                    addText("Don't give up, no matter what!");
+                    addText("Ah… the Chaos Emerald… its voice… it calls to \nme...");
+                }});
+
+                addScriptAction(new WaitScriptAction(30));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("With this, I will ascend-and I alone command its \npower.");
+                    addText("As for you…your part in this ends now.");
+                    addText("Be gone from my sight. I banish you to the outer wilds—");
+                    addText("—and may what awaits you there finish what I no \nlonger need to.");
+                }});
+
+                addScriptAction(new WaitScriptAction(30));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("This is your Emergency Bee Senses! Something \nis terribly wrong!");
+                    addText("The Queen Bee has been overtaken by the Chaos \nEmerald’s power.");
+                    addText("Her corruption threatens all bee-kind. You must \ngather every ounce of strength you have.");
+                    addText("She’s twisting the monsters and the weather itself! \nActivate your volcanic tunic now! (Press 3!)");
+                    addText("Stay focused. Stay alive. You’re the only one who can\nstop her now!");
                 }});
 
                 addScriptAction(new WaitScriptAction(60));

@@ -22,10 +22,10 @@ public class EmeraldScript extends Script {
 
                 addScriptAction(new TextboxScriptAction() {{
                     addText("The Chaos Emerald...");
-                    addText("You feel its overwhelming power.");
-                    addText("Your head begins to pound.");
-                    addText("I must return this to the Queen!");
-                    addText("With haste!");
+                    addText("Its power floods you—too much…far too much.");
+                    addText("Your head splits with a pounding voice that isn’t your own.");
+                    addText("I… I must return this to the Queen…");
+                    addText("Yes…return it…at once...");
                 }});
 
                 addScriptAction(new NPCChangeVisibilityScriptAction(Visibility.HIDDEN));
