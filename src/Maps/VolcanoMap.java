@@ -88,11 +88,11 @@ public class VolcanoMap extends Map {
         npcs.add(grassPortal);
 
 
-        RedEmerald redEmerald = new RedEmerald(0, getMapTile(70, 70).getLocation());
+        RedEmerald redEmerald = new RedEmerald(0, getMapTile(7, 8).getLocation());
         redEmerald.setInteractScript(new RedEmeraldScript());
         npcs.add(redEmerald);
 
-        BlueEmerald blueEmerald = new BlueEmerald(0, getMapTile(72, 70).getLocation());
+        BlueEmerald blueEmerald = new BlueEmerald(0, getMapTile(64, 5).getLocation());
         blueEmerald.setInteractScript(new BlueEmeraldScript());
         npcs.add(blueEmerald);
 

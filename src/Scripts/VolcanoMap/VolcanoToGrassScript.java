@@ -30,7 +30,7 @@ public class VolcanoToGrassScript extends Script {
                 addRequirement(new FlagRequirement("bossActive", true));
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("I must find the Red and Blue Chaos \nEmeralds to defeat the Queen.");
+                    addText("I must find the Red and Blue Chaos Emeralds to \ndefeat the traitorous Queen.");
                 }});
             }});
 

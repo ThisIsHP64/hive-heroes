@@ -39,11 +39,12 @@ public class QueenBeeScript extends Script {
                 addScriptAction(new ResetScreenFX());
                 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("How even...");
-                    addText("What? How is this possible??");
-                    addText("No other one of my offspring has survived being \nbanished to that hellish region...");
-                    addText("Don't tell me...");
-                    addText("You received the blessing of the other Emeralds?!");
+                    addText("I… impossible...");
+                    addText("You— you made it back?");
+                    addText("No one survives that place. No one!");
+                    addText("Wait… that glow…");
+                    addText("Don’t tell me…");
+                    addText("You actually harnessed the power \nof the other Emeralds?!");
                 }});
 
                 addScriptAction(new WaitScriptAction(90));
@@ -77,21 +78,32 @@ public class QueenBeeScript extends Script {
                 addRequirement(new FlagRequirement("hasGreenEmerald", true));
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("You have the Chaos Emerald?");
-                    addText("Good going, little one. Now I have all the \npower in the world!");
-                    addText("As for you, you're free now. Free to die!");
-                    addText("Now suffer from the regions you've faced, and \nendless enemies!");
+                    addText("You carry the Chaos Emerald?");
+                    addText("Excellent. You have served your purpose well.");
+                    addText("With this, the hive ascends—and I alone command its \npower.");
+                    addText("As for you…your part in this ends now.");
+                    addText("Be gone from my sight. I banish you to the outer wilds—");
+                    addText("—and may the dangers there finish what I no longer \nneed to.");
                 }});
 
                 addScriptAction(new WaitScriptAction(60));
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("This is your emergency Bee senses! It appears \nwe've been tricked by the Queen Bee.");
-                    addText("The fate of all bee-kind is at stake here. \nYou will need to use everything you have.");
-                    addText("You'll be subject to three rounds of suffering.\nVolcano, then Snow, then Grass.");
-                    addText("The Queen Bee will manipulate the monsters and \nweather, so make sure to use your tunics!");
+                    addText("This is your emergency Bee senses! It appears we've \nbeen tricked by the Queen Bee.");
+                    addText("The fate of all bee-kind is at stake here. You will need \nto use everything you have.");
+                    addText("The Queen Bee will manipulate the monsters and \nweather, so make sure to activate your volcanic tunic!");
                     addText("Don't give up, no matter what!");
                 }});
+
+                addScriptAction(new WaitScriptAction(60));
+
+                addScriptAction(new TextboxScriptAction() {{
+                    addText("You are filled with determination. Your health and \nstamina is restored.");
+                }});
+
+                addScriptAction(new WaitScriptAction(30));
+
+                addScriptAction(new RestoreStatsScriptAction());
 
                 // sets boss active to true
                 addScriptAction(new SetBossActiveScriptAction());
@@ -111,10 +123,11 @@ public class QueenBeeScript extends Script {
 
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Rise, brave one of the hive.");
-                    addText("You are the spark that will light the sky once more.");
-                    addText("Beyond the plains lie uncharted lands, filled with\ndangers and resources.");
-                    addText("Claim its nectar, and our song will echo through the\nfields again!");
-                    addText("Now go, my soldier — follow the path of the flower to\nnew regions and prevail!");
+                    addText("Your strength is required, and you will not falter.");
+                    addText("Beyond the plains lie uncharted lands—treacherous, yet\nladen with power.");
+                    addText("There, you will seek a radiant jewel of great force.\nIts energy is vital to our hive’s ascension.");
+                    addText("Secure it. Do not disappoint the hive. Our future depends\non your success.");
+                    addText("Now go, soldier—follow the path of the flower, claim what\nawaits, and let nothing stand in your way.");
                 }});
 
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToQueen", true));
@@ -140,10 +153,11 @@ public class QueenBeeScript extends Script {
                         });
                         addScriptAction(new TextboxScriptAction() {{
                             addText("Rise, brave one of the hive.");
-                            addText("You are the spark that will light the sky once more.");
-                            addText("Beyond the plains lie uncharted lands, filled with\ndangers and resources.");
-                            addText("Claim its nectar, and our song will echo through the\nfields again!");
-                            addText("Now go, my soldier — follow the path of the flower to\nnew regions and prevail!");
+                            addText("Your strength is required, and you will not falter.");
+                            addText("Beyond the plains lie uncharted lands—treacherous, yet\nladen with power.");
+                            addText("There, you will seek a radiant jewel of great force.\nIts energy is vital to our hive’s ascension.");
+                            addText("Secure it. Do not disappoint the hive. Our future depends\non your success.");
+                            addText("Now go, soldier—follow the path of the flower, claim what\nawaits, and let nothing stand in your way.");
                         }});
                     }});
 
