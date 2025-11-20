@@ -8,6 +8,8 @@ import Scripts.VolcanoMap.CheckBothEmeraldsScriptAction;
 import Scripts.VolcanoMap.HasBlueEmeraldScriptAction;
 import Scripts.VolcanoMap.HasRedEmeraldScript;
 import Scripts.VolcanoMap.SetBossActiveScriptAction;
+import Sound.Music;
+import Sound.MusicManager;
 import Utils.Visibility;
 
 import java.util.ArrayList;
@@ -94,6 +96,8 @@ public class QueenBeeScript extends Script {
                     addText("Ah… the Chaos Emerald… its voice… it calls to \nme...");
                 }});
 
+                addScriptAction(new StopMusicScriptAction());
+                
                 addScriptAction(new WaitScriptAction(30));
 
                 addScriptAction(new TextboxScriptAction() {{

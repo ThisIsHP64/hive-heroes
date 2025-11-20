@@ -7,6 +7,8 @@ import Game.GameState;
 import Level.MapEntityStatus;
 import Level.ScriptState;
 import ScriptActions.ScriptAction;
+import Sound.Music;
+import Sound.MusicManager;
 import StaticClasses.EnemySpawner;
 import StaticClasses.HordeManager;
 import StaticClasses.TeleportManager;
@@ -26,6 +28,7 @@ public class TeleportVolcanoBossScriptAction extends ScriptAction {
                 npc.lock();
             }
         }
+
     }
 
     @Override
@@ -34,6 +37,9 @@ public class TeleportVolcanoBossScriptAction extends ScriptAction {
 
         TeleportManager.setCurrentGameState(GameState.VOLCANOLEVEL);        
 
+        MusicManager.stopAll();
+        MusicManager.playLoop(Music.BOSS);
+        
         WeatherManager.GLOBAL.enableOverrideMode();
         WeatherManager.GLOBAL.setRedRain(true);
         return ScriptState.COMPLETED;
