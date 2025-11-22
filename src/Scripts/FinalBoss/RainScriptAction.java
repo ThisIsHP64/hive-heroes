@@ -6,12 +6,6 @@ import ScriptActions.ScriptAction;
 
 public class RainScriptAction extends ScriptAction {
 
-    
-    @Override
-    public void setup() {
-        super.setup();
-    }
-
     @Override
     public ScriptState execute() {
         WeatherManager.GLOBAL.enableOverrideMode();
@@ -19,6 +13,4 @@ public class RainScriptAction extends ScriptAction {
 
         return ScriptState.COMPLETED;
     }
-
-    
 }

@@ -2,8 +2,6 @@ package Scripts.SnowMap;
 
 import Level.Script;
 import ScriptActions.*;
-import Scripts.MazeMap.RedTunicScriptAction;
-import Scripts.TeleportScriptActions.TeleportGrassScriptAction;
 import Utils.Visibility;
 
 import java.util.ArrayList;

@@ -3,7 +3,6 @@ package StaticClasses;
 import Level.Map;
 import Players.Bee;
 import Enemies.Spider;
-import Level.NPC;
 import Utils.Point;
 import Effects.SmokeParticle;
 import java.util.ArrayList;

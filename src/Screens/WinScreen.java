@@ -2,7 +2,6 @@ package Screens;
 
 import Engine.*;
 import SpriteFont.SpriteFont;
-
 import java.awt.*;
 
 // This class is for the win level screen
@@ -52,7 +51,6 @@ public class WinScreen extends Screen {
 
     @Override
     public boolean hasInitialized() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'hasInitialized'");
     }
 }

@@ -7,13 +7,9 @@ import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.*;
 import Maps.DungeonMap;
-
 import Players.Bee;
 import StaticClasses.BeeStats;
-import StaticClasses.TeleportManager;
 import Utils.Direction;
-import Portals.GrassPortal;
-import Portals.Portal;
 import Enemies.Spider;
 
 import Engine.ImageLoader;

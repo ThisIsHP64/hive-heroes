@@ -4,12 +4,7 @@ import Level.Script;
 import ScriptActions.*;
 import Scripts.FinalBoss.LavaRainScriptAction;
 import Scripts.FinalBoss.TeleportVolcanoBossScriptAction;
-import Scripts.VolcanoMap.CheckBothEmeraldsScriptAction;
-import Scripts.VolcanoMap.HasBlueEmeraldScriptAction;
-import Scripts.VolcanoMap.HasRedEmeraldScript;
-import Scripts.VolcanoMap.SetBossActiveScriptAction;
-import Sound.Music;
-import Sound.MusicManager;
+import Scripts.VolcanoMap.*;
 import Utils.Visibility;
 
 import java.util.ArrayList;

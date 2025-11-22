@@ -2,14 +2,8 @@ package Screens;
 
 import Effects.FloatingText;
 import Effects.ScreenFX; // For screen darkness effects
-import Enemies.Bat;
-import Enemies.Skull;
-import Enemies.Spider;
-import Engine.GraphicsHandler;
-import Engine.ImageLoader;
-import Engine.Screen;
-import Engine.Keyboard;
-import Engine.Key;
+import Enemies.*;
+import Engine.*;
 import Flowers.Flower; // <-- ADDED: generic Flower handling
 import Game.GameState;
 import Game.ScreenCoordinator;
@@ -17,11 +11,7 @@ import GameObject.SpriteSheet;
 import Level.*;
 import Maps.VolcanoMap;
 import Players.Bee;
-import Portals.GrassPortal;
-import Portals.Portal;
-import StaticClasses.BeeStats;
-import StaticClasses.EnemySpawner;
-import StaticClasses.TeleportManager;
+import StaticClasses.*;
 import Utils.Direction;
 import NPCs.Volcano;
 import NPCs.SauronEye;

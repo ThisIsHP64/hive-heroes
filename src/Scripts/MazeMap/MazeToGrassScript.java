@@ -3,13 +3,7 @@ package Scripts.MazeMap;
 import java.util.ArrayList;
 
 import Level.Script;
-import ScriptActions.ConditionalScriptAction;
-import ScriptActions.ConditionalScriptActionGroup;
-import ScriptActions.CustomRequirement;
-import ScriptActions.LockPlayerScriptAction;
-import ScriptActions.ScriptAction;
-import ScriptActions.TextboxScriptAction;
-import ScriptActions.UnlockPlayerScriptAction;
+import ScriptActions.*;
 import Scripts.TeleportScriptActions.TeleportGrassScriptAction;
 
 public class MazeToGrassScript extends Script {
