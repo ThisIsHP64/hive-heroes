@@ -4,7 +4,6 @@ import Level.MapEntityStatus;
 import Level.Player;
 import Level.ScriptState;
 import NPCs.FireTunic;
-import NPCs.FrostTunic;
 import Players.Bee;
 import ScriptActions.ScriptAction;
 

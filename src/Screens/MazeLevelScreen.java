@@ -1,10 +1,6 @@
 package Screens;
 
-import Engine.GraphicsHandler;
-import Engine.Screen;
-import Engine.Keyboard;
-import Engine.Key;
-import Engine.KeyLocker;
+import Engine.*;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.*;
@@ -15,8 +11,6 @@ import StaticClasses.TeleportManager;
 import Utils.Direction;
 import Portals.GrassPortal;
 import Portals.Portal;
-import NPCs.OneRing;
-import NPCs.FireTunic;
 
 public class MazeLevelScreen extends Screen implements GameListener {
     protected ScreenCoordinator screenCoordinator;

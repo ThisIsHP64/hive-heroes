@@ -3,16 +3,7 @@ package Scripts.HiveMap;
 import java.util.ArrayList;
 
 import Level.Script;
-import ScriptActions.ChangeFlagScriptAction;
-import ScriptActions.ConditionalScriptAction;
-import ScriptActions.ConditionalScriptActionGroup;
-import ScriptActions.CustomRequirement;
-import ScriptActions.FlagRequirement;
-import ScriptActions.LockPlayerScriptAction;
-import ScriptActions.NPCFacePlayerScriptAction;
-import ScriptActions.ScriptAction;
-import ScriptActions.TextboxScriptAction;
-import ScriptActions.UnlockPlayerScriptAction;
+import ScriptActions.*;
 
 public class BeeGuardScript extends Script {
 

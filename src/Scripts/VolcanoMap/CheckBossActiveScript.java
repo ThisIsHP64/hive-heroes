@@ -1,6 +1,5 @@
 package Scripts.VolcanoMap;
 
-import Level.Script;
 import Level.ScriptState;
 import ScriptActions.ScriptAction;
 import StaticClasses.BeeStats;

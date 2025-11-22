@@ -4,15 +4,10 @@ import Effects.ScreenFX;
 import Enemies.*;
 import Engine.WeatherManager;
 import Game.GameState;
-import Game.ScreenCoordinator;
-import Level.MapEntityStatus;
 import Level.ScriptState;
 import ScriptActions.ScriptAction;
-import Sound.Music;
-import Sound.MusicManager;
-import StaticClasses.EnemySpawner;
-import StaticClasses.HordeManager;
-import StaticClasses.TeleportManager;
+import Sound.*;
+import StaticClasses.*;
 
 public class TeleportVolcanoBossScriptAction extends ScriptAction {
 

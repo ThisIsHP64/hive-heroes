@@ -1,10 +1,7 @@
 package Scripts.MazeMap;
 
 import Level.Script;
-
 import ScriptActions.*;
-import Scripts.TeleportScriptActions.TeleportGrassScriptAction;
-
 import java.util.ArrayList;
 
 public class RedTunicScript extends Script {

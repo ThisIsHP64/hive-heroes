@@ -1,9 +1,6 @@
 package Scripts.DungeonMap;
 
-import Level.MapEntityStatus;
-import Level.NPC;
-import Level.Player;
-import Level.ScriptState;
+import Level.*;
 import NPCs.FrostTunic;
 import Players.Bee;
 import ScriptActions.ScriptAction;

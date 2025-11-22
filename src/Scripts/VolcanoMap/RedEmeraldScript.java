@@ -2,17 +2,8 @@ package Scripts.VolcanoMap;
 
 import java.util.ArrayList;
 
-import Level.MapEntityStatus;
 import Level.Script;
-import ScriptActions.ChangeFlagScriptAction;
-import ScriptActions.ConditionalScriptAction;
-import ScriptActions.ConditionalScriptActionGroup;
-import ScriptActions.FlagRequirement;
-import ScriptActions.LockPlayerScriptAction;
-import ScriptActions.NPCChangeVisibilityScriptAction;
-import ScriptActions.ScriptAction;
-import ScriptActions.TextboxScriptAction;
-import ScriptActions.UnlockPlayerScriptAction;
+import ScriptActions.*;
 import Utils.Visibility;
 
 public class RedEmeraldScript extends Script {

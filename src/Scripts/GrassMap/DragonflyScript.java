@@ -2,7 +2,6 @@ package Scripts.GrassMap;
 
 import Level.Script;
 import ScriptActions.*;
-import Scripts.FinalBoss.LavaRainScriptAction;
 
 import java.util.ArrayList;
 
