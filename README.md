@@ -1,9 +1,9 @@
-# SER225 RPG Game
+# Hive Heroes - SER225 RPG Game
 
 ## What is this?
-This is a game created for Quinnipiac's SER225 Agile Development class.
+This is a game created for Quinnipiac's SER225 Agile-focused Software Development class.
 Students will be paired up in teams for an entire semester, and will utilize agile development to work further on this game.
-This usually involves adding features and fixing bugs (I'm sure there are bugs...)
+This usually involves adding features and fixing bugs.
 
 ## How to run this project?
 I did not use any external libraries for this, so you can clone this repo as is and run it out of the box with Java (min version 8).
@@ -18,10 +18,10 @@ It can be accessed at [https://a-r-t.github.io/SER-225-Game-RPG/](https://a-r-t.
 
 Changes to content in the `docs` folder will not show up on the website unless they are pushed to the `master` branch.
 
-## Credits
-**Alex Thimineur**: Programmed the game, made the art.
+# Credits
+**Alex Thimineur**: Programmed the initial game and made the art.
 
-
+Link to base game: https://github.com/a-r-t/SER-225-Game-RPG
 
 ## External Art
 **HUD Resources**
@@ -30,16 +30,25 @@ Heart: https://temok.itch.io/heart-container-animated-in-pixel-art
 
 
 **Queen Bee Sprite**
-Queen Bee: https://www.spriters-resource.com/pc_computer/songsforahero/asset/458622/
+
+https://www.spriters-resource.com/pc_computer/songsforahero/asset/458622/
 
 **Portal Sprite**
+
 https://www.spriters-resource.com/pc_computer/patchmeifyoucan/asset/482001/
 
-All other icons were generated and/or polished up by Philip Kwiatkowski.
+**Emerald Sprite**
 
-____________________________________________________________________________
+https://www.spriters-resource.com/pc_computer/fairyfarm/asset/80722/
 
-**World Tilesets**
+**Flower Sprites**
+
+https://jennpixel.itch.io/free-flower-pack-12-icons
+
+Most other icons/spritesheets were generated, originally created, and/or polished up by members of the team. Note: other assets may not be reflected in this section.
+
+
+## World Tilesets
 
 Volcano: https://schwarnhild.itch.io/volcanoe-tileset-and-asset-pack-32x32-pixels
 
@@ -52,4 +61,9 @@ Zelda Maze/Dungeon: https://kuroren.itch.io/dungeon-tileset
 Cemetery: https://dreamir.itch.io/tilesets-cemetery
 
 Snow Region: https://maytch.itch.io/pixel
+
+
+## Music
+All in-game music was composed by Hunter Pageau (https://github.com/ThisIsHP64).
+
 

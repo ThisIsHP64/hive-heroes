@@ -24,7 +24,6 @@ public class QueenBeeScript extends Script {
         // player should first only have the green emerald.
         scriptActions.add(new HasGreenEmeraldScriptAction());
 
-
         // after returning from the volcano boss fight, check for both emeralds
         scriptActions.add(new HasRedEmeraldScript());
 
@@ -46,7 +45,7 @@ public class QueenBeeScript extends Script {
                     addText("No one survives that place. No one!");
                     addText("Wait… that glow…");
                     addText("Don’t tell me…");
-                    addText("You actually harnessed the power \nof the other Emeralds?!");
+                    addText("You actually harnessed the power of the \nother Emeralds?!");
                 }});
 
                 addScriptAction(new WaitScriptAction(90));
@@ -69,10 +68,10 @@ public class QueenBeeScript extends Script {
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Child of the hive… we have watched your journey.");
                     addText("We have felt your suffering…and your resolve.");
-                    addText("Abandoned and ultimately betrayed, you still pressed forward.");
-                    addText("Your heart did not waver, even when the world turned against you.");
+                    addText("Abandoned and ultimately betrayed, you \nstill pressed forward.");
+                    addText("Your heart did not waver, even when the \nworld turned against you.");
                     addText("Let our power guide you now.");
-                    addText("You are worthy, little one. Worthy of us…and of what comes next.");
+                    addText("You are worthy, little one. Worthy of \nus…and of what comes next.");
                     addText("Go, bearer. Restore balance where corruption took root.");
                 }});
 
