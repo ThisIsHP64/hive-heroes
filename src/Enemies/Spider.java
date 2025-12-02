@@ -130,8 +130,8 @@ public class Spider extends NPC {
         this.patrolLeftX = location.x - patrolRange;
         this.patrolRightX = location.x + patrolRange;
 
-        System.out.println("Spider spawned at: " + location.x + ", " + location.y);
-        System.out.println("Patrol range: " + patrolLeftX + " to " + patrolRightX);
+        // System.out.println("Spider spawned at: " + location.x + ", " + location.y);
+        // System.out.println("Patrol range: " + patrolLeftX + " to " + patrolRightX);
     }
 
     // bee calls this when it attacks
@@ -140,7 +140,7 @@ public class Spider extends NPC {
             return;
 
         health -= amount;
-        System.out.println("Spider took " + amount + " damage! HP: " + health + "/" + SPIDER_MAX_HEALTH);
+        // System.out.println("Spider took " + amount + " damage! HP: " + health + "/" + SPIDER_MAX_HEALTH);
 
         // show hit flash
         triggerHitFx();
@@ -164,7 +164,7 @@ public class Spider extends NPC {
         deathTime = System.currentTimeMillis();
         currentState = State.DEAD;
         currentAnimationName = "DEATH";
-        System.out.println("Spider died!");
+        // System.out.println("Spider died!");
     }
 
     public boolean isDead() {
@@ -242,7 +242,7 @@ public class Spider extends NPC {
                         distanceToBee > TOO_CLOSE_RANGE &&
                         beeInTerritory)) {
                     currentState = State.CHASE;
-                    System.out.println("Spider spotted bee! Starting chase...");
+                    // System.out.println("Spider spotted bee! Starting chase...");
                 }
                 break;
 
@@ -257,7 +257,7 @@ public class Spider extends NPC {
 
                 if (!hordeMode && (distanceToBee > GIVE_UP_RANGE || !beeInTerritory)) {
                     currentState = State.PATROL;
-                    System.out.println("Bee escaped! Returning to patrol...");
+                    // System.out.println("Bee escaped! Returning to patrol...");
                 }
                 break;
 
@@ -287,7 +287,7 @@ public class Spider extends NPC {
 
         currentAnimationName = (facing == Direction.RIGHT) ? "JUMP_RIGHT" : "JUMP_LEFT";
 
-        System.out.println("Spider winding up jump toward " + facing);
+        // System.out.println("Spider winding up jump toward " + facing);
     }
 
     // handle jump attack movement and damage
@@ -306,7 +306,7 @@ public class Spider extends NPC {
                 isJumping = true;
                 jumpStartTime = currentTime;
                 lockedJumpDirection = facing;
-                System.out.println("Spider jumping toward " + facing + "! Direction LOCKED");
+                // System.out.println("Spider jumping toward " + facing + "! Direction LOCKED");
             }
             return;
         }
@@ -359,7 +359,7 @@ public class Spider extends NPC {
             isRecovering = false;
             lockedJumpDirection = null;
             currentState = State.CHASE;
-            System.out.println("Recovery complete, unlocking facing, resuming chase");
+            // System.out.println("Recovery complete, unlocking facing, resuming chase");
         }
     }
 
@@ -403,7 +403,7 @@ public class Spider extends NPC {
                     bee.applyDamage(JUMP_DAMAGE);
                     hasDealtDamageThisJump = true;
 
-                    System.out.println("Spider hit bee for " + JUMP_DAMAGE + " damage!");
+                    // System.out.println("Spider hit bee for " + JUMP_DAMAGE + " damage!");
                 }
             }
         }
@@ -421,7 +421,7 @@ public class Spider extends NPC {
 
         currentAnimationName = (facing == Direction.RIGHT) ? "WALK_RIGHT" : "WALK_LEFT";
 
-        System.out.println("Jump finished, entering recovery...");
+        // System.out.println("Jump finished, entering recovery...");
     }
 
     // calculate straight line distance to player

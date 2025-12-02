@@ -119,7 +119,7 @@ public class Crab extends NPC {
             return;
 
         health -= amount;
-        System.out.println("Crab took " + amount + " damage! HP: " + health);
+        // System.out.println("Crab took " + amount + " damage! HP: " + health);
 
         triggerHitFx();
 
@@ -141,7 +141,7 @@ public class Crab extends NPC {
         deathTime = System.currentTimeMillis();
         currentState = State.DEAD;
         currentAnimationName = "DIE";
-        System.out.println("Crab died!");
+        // System.out.println("Crab died!");
     }
 
     public boolean isDead() {
@@ -193,7 +193,7 @@ public class Crab extends NPC {
 
                 if (distanceToBee < CHASE_RANGE) {
                     currentState = State.CHASE;
-                    System.out.println("Crab spotted bee! Starting chase...");
+                    // System.out.println("Crab spotted bee! Starting chase...");
                 }
                 break;
 
@@ -209,7 +209,7 @@ public class Crab extends NPC {
                 if (!hordeMode && distanceToBee > GIVE_UP_RANGE) {
                     currentState = State.PATROL;
                     setRandomPatrolTarget();
-                    System.out.println("Crab gave up! Returning to patrol...");
+                    // System.out.println("Crab gave up! Returning to patrol...");
                 }
                 break;
 
@@ -236,7 +236,7 @@ public class Crab extends NPC {
 
         currentAnimationName = (facing == Direction.RIGHT) ? "ATTACK_RIGHT" : "ATTACK_LEFT";
 
-        System.out.println("Crab attacking toward " + facing + " at Crab pos: " + crabX + ", player pos: " + beeX);
+        // System.out.println("Crab attacking toward " + facing + " at Crab pos: " + crabX + ", player pos: " + beeX);
     }
 
     private void updateAttack(Player player, long currentTime) {
@@ -257,7 +257,7 @@ public class Crab extends NPC {
             lastAttackTime = currentTime;
             currentState = State.CHASE;
             attackFacingDirection = null;
-            System.out.println("Crab attack finished, resuming chase");
+            // System.out.println("Crab attack finished, resuming chase");
         }
     }
 
@@ -276,7 +276,7 @@ public class Crab extends NPC {
                 Players.Bee bee = (Players.Bee) player;
                 bee.applyDamage(ATTACK_DAMAGE);
                 hasDealtDamageThisAttack = true;
-                System.out.println("Crab hit bee for " + ATTACK_DAMAGE + " damage!");
+                // System.out.println("Crab hit bee for " + ATTACK_DAMAGE + " damage!");
             }
         }
     }
