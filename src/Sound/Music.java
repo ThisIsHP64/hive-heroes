@@ -1,7 +1,10 @@
 package Sound;
 
 import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.InputStream;
+import java.util.Objects;
 
 public class Music {
     // songs
@@ -24,8 +27,11 @@ public class Music {
     // constructor
     public Music(String audioPath) {
         try {
-            File file = new File(audioPath);
-            AudioInputStream input = AudioSystem.getAudioInputStream(file);
+            InputStream raw = Objects.requireNonNull(
+                    Music.class.getResourceAsStream("/" + audioPath)
+            );
+            BufferedInputStream buffered = new BufferedInputStream(raw);
+            AudioInputStream input = AudioSystem.getAudioInputStream(buffered);
             clip = AudioSystem.getClip();
             clip.open(input);
         } catch (Exception e) {
@@ -35,8 +41,11 @@ public class Music {
 
     public Music(String audioPath, double bpm, int loopBar) {
         try {
-            File file = new File(audioPath);
-            AudioInputStream input = AudioSystem.getAudioInputStream(file);
+            InputStream raw = Objects.requireNonNull(
+                    Music.class.getResourceAsStream("/" + audioPath)
+            );
+            BufferedInputStream buffered = new BufferedInputStream(raw);
+            AudioInputStream input = AudioSystem.getAudioInputStream(buffered);
             clip = AudioSystem.getClip();
             clip.open(input);
             this.bpm = bpm;
@@ -48,7 +57,7 @@ public class Music {
 
     // play the audio once
     public void play() {
-        if(clip != null) {
+        if (clip != null) {
             clip.start();
         }
     }
@@ -56,7 +65,7 @@ public class Music {
     // play the audio and loop at a certain bar
     public void loop() {
         // loop from beginning
-        if(loopBar <= 0) {
+        if (loopBar <= 0) {
             clip.setFramePosition(0);
             clip.loop(Clip.LOOP_CONTINUOUSLY);
             return;
@@ -78,7 +87,7 @@ public class Music {
 
     // stop the audio
     public void stop() {
-        if(clip != null) {
+        if (clip != null) {
             clip.stop();
         }
     }

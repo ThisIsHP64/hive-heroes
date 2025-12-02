@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 // contains a bunch of helpful methods for loading images file into the game
 public class ImageLoader {
@@ -19,7 +20,7 @@ public class ImageLoader {
     // loads an image and allows the transparent color to be specified
     public static BufferedImage load(String imageFileName, Color transparentColor) {
         try {
-            BufferedImage initialImage = ImageIO.read(new File(Config.RESOURCES_PATH + imageFileName));
+            BufferedImage initialImage = ImageIO.read(Objects.requireNonNull(ImageLoader.class.getClassLoader().getResource(imageFileName)));
             return ImageUtils.transformColorToTransparency(initialImage, transparentColor);
         } catch (IOException e) {
             System.out.println("Unable to find file " + Config.RESOURCES_PATH + imageFileName);
@@ -35,7 +36,7 @@ public class ImageLoader {
     // Loads an image and PRESERVES existing alpha (no color-keying).
     public static BufferedImage loadPreserveAlpha(String imageFileName) {
         try {
-            BufferedImage raw = ImageIO.read(new File(Config.RESOURCES_PATH + imageFileName));
+            BufferedImage raw = ImageIO.read(Objects.requireNonNull(ImageLoader.class.getClassLoader().getResource(imageFileName)));
             if (raw == null) {
                 throw new IOException("ImageIO.read returned null for: " + Config.RESOURCES_PATH + imageFileName);
             }
@@ -62,7 +63,7 @@ public class ImageLoader {
     // loads a piece of an image from an image file and allows the transparent color to be specified
     public static BufferedImage loadSubImage(String imageFileName, Color transparentColor, int x, int y, int width, int height) {
         try {
-            BufferedImage initialImage = ImageIO.read(new File(Config.RESOURCES_PATH + imageFileName));
+            BufferedImage initialImage = ImageIO.read(Objects.requireNonNull(ImageLoader.class.getClassLoader().getResource(imageFileName)));
             BufferedImage transparentImage = ImageUtils.transformColorToTransparency(initialImage, transparentColor);
             return transparentImage.getSubimage(x, y, width, height);
         } catch (IOException e) {

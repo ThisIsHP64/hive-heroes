@@ -16,12 +16,12 @@ public class SFXManager {
 
     public static void init() {
         if(effects.isEmpty()) {
-            effects.put(SFX.NECTAR, new SFX("Resources/audio/nectar.wav"));
-            effects.put(SFX.MOVE, new SFX("Resources/audio/move.wav"));
-            effects.put(SFX.SHOOT, new SFX("Resources/audio/shoot.wav"));
-            effects.put(SFX.STING, new SFX("Resources/audio/sting.wav"));
-            effects.put(SFX.HURT, new SFX("Resources/audio/hurt.wav"));
-            effects.put(SFX.LEVEL, new SFX("Resources/audio/level.wav"));
+            effects.put(SFX.NECTAR, new SFX("audio/nectar.wav"));
+            effects.put(SFX.MOVE, new SFX("audio/move.wav"));
+            effects.put(SFX.SHOOT, new SFX("audio/shoot.wav"));
+            effects.put(SFX.STING, new SFX("audio/sting.wav"));
+            effects.put(SFX.HURT, new SFX("audio/hurt.wav"));
+            effects.put(SFX.LEVEL, new SFX("audio/level.wav"));
         }
     }
 }

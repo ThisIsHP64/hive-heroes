@@ -31,16 +31,16 @@ public class MusicManager {
 
     public static void init() {
         if(tracks.isEmpty()) {
-            tracks.put(Music.MENU, new Music("Resources/audio/menu.wav", 90, 9));
-            tracks.put(Music.GRASS, new Music("Resources/audio/grass.wav", 128.6, 13));
-            tracks.put(Music.SIEGE, new Music("Resources/audio/siege.wav", 128.6, 13));
-            tracks.put(Music.HIVE, new Music("Resources/audio/hive.wav", 90, 9));
-            tracks.put(Music.VOLCANO, new Music("Resources/audio/volcano.wav", 81.8, 9));
-            tracks.put(Music.DUNGEON, new Music("Resources/audio/dungeon.wav", 100, 0));
-            tracks.put(Music.SNOW, new Music("Resources/audio/snow.wav", 90, 5));
-            tracks.put(Music.MAZE, new Music("Resources/audio/maze.wav", 90, 9));
-            tracks.put(Music.BOSS, new Music("Resources/audio/boss.wav", 90, 9));
-            tracks.put(Music.CREDITS, new Music("Resources/audio/night.wav", 90, 9));
+            tracks.put(Music.MENU, new Music("audio/menu.wav", 90, 9));
+            tracks.put(Music.GRASS, new Music("audio/grass.wav", 128.6, 13));
+            tracks.put(Music.SIEGE, new Music("audio/siege.wav", 128.6, 13));
+            tracks.put(Music.HIVE, new Music("audio/hive.wav", 90, 9));
+            tracks.put(Music.VOLCANO, new Music("audio/volcano.wav", 81.8, 9));
+            tracks.put(Music.DUNGEON, new Music("audio/dungeon.wav", 100, 0));
+            tracks.put(Music.SNOW, new Music("audio/snow.wav", 90, 5));
+            tracks.put(Music.MAZE, new Music("audio/maze.wav", 90, 9));
+            tracks.put(Music.BOSS, new Music("audio/boss.wav", 90, 9));
+            tracks.put(Music.CREDITS, new Music("audio/night.wav", 90, 9));
         }
     }
 }
