@@ -82,7 +82,7 @@ public class PowerUp extends NPC {
         if (animationPlaying && System.currentTimeMillis() - animationStartTime > ACTIVATED_ANIM_DURATION_MS) {
             animationPlaying = false;
             setMapEntityStatus(MapEntityStatus.REMOVED);
-            System.out.println("Entity removed after animation.");
+            System.out.println("Powerup removed from map.");
         }
     }
 

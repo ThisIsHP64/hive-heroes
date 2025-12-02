@@ -413,7 +413,7 @@ public class Bee extends Player {
         // System.out.println("Current number of flowers on the map: " + countFlowers());
         // System.out.println(BeeStats.getStamina());
 
-        System.out.println("Hive Nectar: " + HiveManager.getNectar());
+        // System.out.println("Hive Nectar: " + HiveManager.getNectar());
 
         handleAttackInput();
         handleTunicInput();
