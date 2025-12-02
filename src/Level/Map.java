@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 /*
@@ -101,17 +102,17 @@ public abstract class Map {
         loadMapFile();
 
         this.enhancedMapTiles = loadEnhancedMapTiles();
-        for (EnhancedMapTile enhancedMapTile: this.enhancedMapTiles) {
+        for (EnhancedMapTile enhancedMapTile : this.enhancedMapTiles) {
             enhancedMapTile.setMap(this);
         }
 
         this.npcs = loadNPCs();
-        for (NPC npc: this.npcs) {
+        for (NPC npc : this.npcs) {
             npc.setMap(this);
         }
 
         this.triggers = loadTriggers();
-        for (Trigger trigger: this.triggers) {
+        for (Trigger trigger : this.triggers) {
             trigger.setMap(this);
         }
 
@@ -124,22 +125,9 @@ public abstract class Map {
     // reads in a map file to create the map's tilemap
     private void loadMapFile() {
         Scanner fileInput;
-        try {
-            // open map file that is located in the MAP_FILES_PATH directory
-            fileInput = new Scanner(new File(Config.MAP_FILES_PATH + this.mapFileName));
-        } catch(FileNotFoundException ex) {
-            // if map file does not exist, create a new one for this map (the map editor uses this)
-            System.out.println("Map file " + Config.MAP_FILES_PATH + this.mapFileName + " not found! Creating empty map file...");
+        // open map file that is located in the MAP_FILES_PATH directory
+        fileInput = new Scanner(Objects.requireNonNull(Map.class.getClassLoader().getResourceAsStream(Config.MAP_FILES_PATH + this.mapFileName)));
 
-            try {
-                createEmptyMapFile();
-                fileInput = new Scanner(new File(Config.MAP_FILES_PATH + this.mapFileName));
-            } catch(IOException ex2) {
-                ex2.printStackTrace();
-                System.out.println("Failed to create an empty map file!");
-                throw new RuntimeException();
-            }
-        }
 
         // read in map width and height from the first line of map file
         this.width = fileInput.nextInt();
@@ -279,7 +267,8 @@ public abstract class Map {
     }
 
     // list of scripts defined to be a part of the map, should be overridden in a subclass
-    protected void loadScripts() { }
+    protected void loadScripts() {
+    }
 
     // list of enhanced map tiles defined to be a part of the map, should be overridden in a subclass
     protected ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
@@ -306,7 +295,10 @@ public abstract class Map {
     public ArrayList<NPC> getNPCs() {
         return npcs;
     }
-    public ArrayList<Trigger> getTriggers() { return triggers; }
+
+    public ArrayList<Trigger> getTriggers() {
+        return triggers;
+    }
 
     public ArrayList<MapTile> getAnimatedMapTiles() {
         return animatedMapTiles;
@@ -422,9 +414,9 @@ public abstract class Map {
         ArrayList<MapEntity> surroundingMapEntities = new ArrayList<>();
 
         // gets surrounding tiles
-        Point playerCurrentTile = getTileIndexByPosition((int)player.getBounds().getX1(), (int)player.getBounds().getY1());
-        for (int i = (int)playerCurrentTile.y - 1; i <= playerCurrentTile.y + 1; i++) {
-            for (int j = (int)playerCurrentTile.x - 1; j <= playerCurrentTile.x + 1; j++) {
+        Point playerCurrentTile = getTileIndexByPosition((int) player.getBounds().getX1(), (int) player.getBounds().getY1());
+        for (int i = (int) playerCurrentTile.y - 1; i <= playerCurrentTile.y + 1; i++) {
+            for (int j = (int) playerCurrentTile.x - 1; j <= playerCurrentTile.x + 1; j++) {
                 MapTile mapTile = getMapTile(j, i);
                 if (mapTile != null && mapTile.getInteractScript() != null) {
                     surroundingMapEntities.add(mapTile);
@@ -450,8 +442,7 @@ public abstract class Map {
             if (playerTouchingMapEntities.get(0).isUncollidable || isInteractedEntityValid(playerTouchingMapEntities.get(0), player)) {
                 interactedEntity = playerTouchingMapEntities.get(0);
             }
-        }
-        else if (playerTouchingMapEntities.size() > 1) {
+        } else if (playerTouchingMapEntities.size() > 1) {
             MapEntity currentLargestAreaOverlappedEntity = null;
             float currentLargestAreaOverlapped = 0;
             for (MapEntity mapEntity : playerTouchingMapEntities) {
@@ -477,7 +468,7 @@ public abstract class Map {
         // this does several checks to ensure the player's location releative to the entity's is valid for interaction
         // takes into account things like player's current location, entity's current location, player's facing direction, player's center point, etc.
         // this prevents things like being able to interact with an entity without facing it and other oddities like that
-                
+
         // if player is facing left and entity is completely to the left of the player, location is valid
         if (player.getFacingDirection() == Direction.LEFT && entityBounds.getX2() < playerBounds.getX1()) {
             return true;
@@ -497,8 +488,7 @@ public abstract class Map {
             else if (player.getFacingDirection() == Direction.RIGHT && isEntityOverOrUnderPlayer && playerBounds.getX2() > entityBounds.getX1()) {
                 return true;
             }
-        }
-        else {
+        } else {
             // if interacted with anything other than NPC, it doesn't matter which direction you're facing, so it's valid if above/below player
             if (isEntityOverOrUnderPlayer) {
                 return true;
@@ -589,16 +579,25 @@ public abstract class Map {
         }
     }
 
-    public FlagManager getFlagManager() { return flagManager; }
+    public FlagManager getFlagManager() {
+        return flagManager;
+    }
 
     public void setFlagManager(FlagManager flagManager) {
         this.flagManager = flagManager;
     }
 
-    public Textbox getTextbox() { return textbox; }
+    public Textbox getTextbox() {
+        return textbox;
+    }
 
-    public int getEndBoundX() { return endBoundX; }
-    public int getEndBoundY() { return endBoundY; }
+    public int getEndBoundX() {
+        return endBoundX;
+    }
+
+    public int getEndBoundY() {
+        return endBoundY;
+    }
 
     public Player getPlayer() {
         return this.player;

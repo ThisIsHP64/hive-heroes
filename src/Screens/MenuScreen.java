@@ -8,6 +8,7 @@ import StaticClasses.TeleportManager;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 // This is the class for the main menu screen
@@ -39,8 +40,12 @@ public class MenuScreen extends Screen {
         TeleportManager.call(screenCoordinator);
 
         try {
-            orbitronLarge = Font.createFont(Font.TRUETYPE_FONT, new File("Resources/fonts/orbitron.ttf")).deriveFont(60f);
-            orbitronMed = Font.createFont(Font.TRUETYPE_FONT, new File("Resources/fonts/orbitron.ttf")).deriveFont(30f);
+            InputStream fontStream = MenuScreen.class.getResourceAsStream("/fonts/orbitron.ttf");
+            assert fontStream != null;
+            Font orbitronBase = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+
+            orbitronLarge = orbitronBase.deriveFont(60f);
+            orbitronMed = orbitronBase.deriveFont(30f);
         } catch (Exception e) {
             orbitronLarge = new Font("Arial", Font.PLAIN, 60);
             orbitronMed = new Font("Arial", Font.PLAIN, 30);
@@ -59,7 +64,12 @@ public class MenuScreen extends Screen {
         credits.setOutlineColor(Color.black);
         credits.setOutlineThickness(3);
         try {
-            background = ImageIO.read(new File("Resources/titleBg.jpg"));
+            InputStream raw = MenuScreen.class.getResourceAsStream("/titleBg.jpg");
+            if (raw != null) {
+                background = ImageIO.read(raw);
+            } else {
+                background = null;
+            }
         } catch (Exception e) {
             background = null;
         }

@@ -1,7 +1,11 @@
 package Sound;
 
-import javax.sound.sampled.*;
-import java.io.File;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.util.Objects;
 
 public class SFX {
     // songs
@@ -18,8 +22,11 @@ public class SFX {
     // constructor
     public SFX(String audioPath) {
         try {
-            File file = new File(audioPath);
-            AudioInputStream input = AudioSystem.getAudioInputStream(file);
+            InputStream raw = Objects.requireNonNull(
+                    Music.class.getResourceAsStream("/" + audioPath)
+            );
+            BufferedInputStream buffered = new BufferedInputStream(raw);
+            AudioInputStream input = AudioSystem.getAudioInputStream(buffered);
             clip = AudioSystem.getClip();
             clip.open(input);
         } catch (Exception e) {
@@ -29,8 +36,8 @@ public class SFX {
 
     // play the audio once
     public void play() {
-        if(clip != null) {
-            if(clip.isRunning()) {
+        if (clip != null) {
+            if (clip.isRunning()) {
                 clip.stop();
             }
             clip.setFramePosition(0);

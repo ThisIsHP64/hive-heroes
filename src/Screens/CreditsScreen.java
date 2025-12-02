@@ -8,6 +8,7 @@ import StaticClasses.TeleportManager;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
@@ -41,8 +42,12 @@ public class CreditsScreen extends Screen {
         TeleportManager.call(screenCoordinator);
 
         try {
-            orbitronLarge = Font.createFont(Font.TRUETYPE_FONT, new File("Resources/fonts/orbitron.ttf")).deriveFont(50f);
-            orbitronMed = Font.createFont(Font.TRUETYPE_FONT, new File("Resources/fonts/orbitron.ttf")).deriveFont(20f);
+            InputStream fontStream = MenuScreen.class.getResourceAsStream("/fonts/orbitron.ttf");
+            assert fontStream != null;
+            Font orbitronBase = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+
+            orbitronLarge = orbitronBase.deriveFont(50f);
+            orbitronMed = orbitronBase.deriveFont(20f);
         } catch (Exception e) {
             orbitronLarge = new Font("Arial", Font.PLAIN, 60);
             orbitronMed = new Font("Arial", Font.PLAIN, 30);
@@ -52,9 +57,13 @@ public class CreditsScreen extends Screen {
         // setup graphics on screen (background, spritefont text)
 
         try {
-            background = ImageIO.read(new File("Resources/credits.png"));
-        }
-        catch (Exception e){
+            InputStream raw = MenuScreen.class.getResourceAsStream("/credits.png");
+            if (raw != null) {
+                background = ImageIO.read(raw);
+            } else {
+                background = null;
+            }
+        } catch (Exception e) {
             background = null;
         }
 
