@@ -28,7 +28,7 @@ public final class GrassLevelHorde {
     public static void spawnWave(Map map, Bee bee, int count) {
         if (map == null || bee == null) return;
         
-        System.out.println("[GrassLevelHorde] Spawning " + count + " spiders");
+        // System.out.println("[GrassLevelHorde] Spawning " + count + " spiders");
         
         for (int i = 0; i < count; i++) {
             Point spawn = pickSpawnOutsideCamera(bee);
@@ -45,7 +45,7 @@ public final class GrassLevelHorde {
             }
         }
         
-        System.out.println("[GrassLevelHorde] Wave spawned!");
+        // System.out.println("[GrassLevelHorde] Wave spawned!");
     }
     
     /**

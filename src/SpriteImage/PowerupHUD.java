@@ -41,7 +41,7 @@ public class PowerupHUD {
         BufferedImage img = ImageLoader.load(path);
         activeIcons.add(new IconEntry(img, path, durationMs));
 
-        System.out.println("[HUD] Added icon: " + path);
+        // System.out.println("[HUD] Added icon: " + path);
     }
 
     // add icon from a loaded image
@@ -59,10 +59,10 @@ public class PowerupHUD {
         IconEntry entry = it.next();
         if (entry.path != null && entry.path.toLowerCase().trim().equals(normalizedTarget)) {
             it.remove();
-            System.out.println("[HUD] Removed icon: " + entry.path);
+            // System.out.println("[HUD] Removed icon: " + entry.path);
             return;
         } else {
-            System.out.println("[HUD] Checked icon: " + entry.path);
+            // System.out.println("[HUD] Checked icon: " + entry.path);
         }
     }
 

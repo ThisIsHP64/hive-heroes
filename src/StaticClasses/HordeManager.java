@@ -122,7 +122,7 @@ public final class HordeManager {
         if (!running || map == null || bee == null) 
             return;
         
-        System.out.println("[HordeManager] Respawning wave for new level");
+        // System.out.println("[HordeManager] Respawning wave for new level");
         
         // clear old horde enemies from previous level
         horde.clear();
@@ -201,9 +201,9 @@ public final class HordeManager {
     }
 
     private static void spawnWave(Map map, Bee bee, int count) {
-        System.out.println("[HordeManager] spawnWave called - spawning " + count + " enemies");
-        System.out.println("[HordeManager] Bee position: " + bee.getX() + ", " + bee.getY());
-        System.out.println("[HordeManager] Current NPC count: " + map.getNPCs().size());
+        // System.out.println("[HordeManager] spawnWave called - spawning " + count + " enemies");
+        // System.out.println("[HordeManager] Bee position: " + bee.getX() + ", " + bee.getY());
+        // System.out.println("[HordeManager] Current NPC count: " + map.getNPCs().size());
         
         String mapName = map.getClass().getSimpleName();
         boolean isGrassMap = mapName.equals("GrassMap");
@@ -219,7 +219,7 @@ public final class HordeManager {
                 s.setHordeAggression(SPEED_MULT, running);
                 s.setMap(map);
                 enemy = s;
-                System.out.println("[HordeManager] Spawned horde Spider #" + i + " at: " + spawn.x + ", " + spawn.y);
+                // System.out.println("[HordeManager] Spawned horde Spider #" + i + " at: " + spawn.x + ", " + spawn.y);
 
             } else if (isFrostMap) {
                 // frost level: mix of FrostDragon, Crab, Goblin
@@ -232,21 +232,21 @@ public final class HordeManager {
                     dragon.setHordeAggression(2.0f, running); // slightly less cracked than others
                     dragon.setMap(map);
                     enemy = dragon;
-                    System.out.println("[HordeManager] Spawned horde FrostDragon #" + i + " at: " + spawn.x + ", " + spawn.y);
+                    // System.out.println("[HordeManager] Spawned horde FrostDragon #" + i + " at: " + spawn.x + ", " + spawn.y);
                 } else if (roll < 55) {
                     // 40% Crab
                     Crab crab = new Crab(spawn);
                     crab.setHordeAggression(SPEED_MULT, running);
                     crab.setMap(map);
                     enemy = crab;
-                    System.out.println("[HordeManager] Spawned horde Crab #" + i + " at: " + spawn.x + ", " + spawn.y);
+                    // System.out.println("[HordeManager] Spawned horde Crab #" + i + " at: " + spawn.x + ", " + spawn.y);
                 } else {
                     // 45% Goblin
                     Goblin goblin = new Goblin(spawn);
                     goblin.setHordeAggression(SPEED_MULT, running);
                     goblin.setMap(map);
                     enemy = goblin;
-                    System.out.println("[HordeManager] Spawned horde Goblin #" + i + " at: " + spawn.x + ", " + spawn.y);
+                    // System.out.println("[HordeManager] Spawned horde Goblin #" + i + " at: " + spawn.x + ", " + spawn.y);
                 }
 
             } else {
@@ -256,13 +256,13 @@ public final class HordeManager {
                     s.setHordeAggression(SPEED_MULT, running);
                     s.setMap(map);
                     enemy = s;
-                    System.out.println("[HordeManager] Spawned horde Spider #" + i + " at: " + spawn.x + ", " + spawn.y);
+                    // System.out.println("[HordeManager] Spawned horde Spider #" + i + " at: " + spawn.x + ", " + spawn.y);
                 } else {
                     Bat b = new Bat(spawn);
                     b.setHordeAggression(SPEED_MULT, running);
                     b.setMap(map);
                     enemy = b;
-                    System.out.println("[HordeManager] Spawned horde Bat #" + i + " at: " + spawn.x + ", " + spawn.y);
+                    // System.out.println("[HordeManager] Spawned horde Bat #" + i + " at: " + spawn.x + ", " + spawn.y);
                 }
             }
             
@@ -275,8 +275,8 @@ public final class HordeManager {
             }
         }
         
-        System.out.println("[HordeManager] After spawn, NPC count: " + map.getNPCs().size());
-        System.out.println("[HordeManager] Horde list size: " + horde.size());
+        // System.out.println("[HordeManager] After spawn, NPC count: " + map.getNPCs().size());
+        // System.out.println("[HordeManager] Horde list size: " + horde.size());
     }
 
     private static void setHordeMode(boolean on) {

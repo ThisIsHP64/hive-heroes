@@ -116,7 +116,7 @@ public class Bat extends NPC {
             return;
 
         health -= amount;
-        System.out.println("Bat took " + amount + " damage! HP: " + health + "/" + MAX_HEALTH);
+        // System.out.println("Bat took " + amount + " damage! HP: " + health + "/" + MAX_HEALTH);
 
         triggerHitFx();
 
@@ -138,7 +138,7 @@ public class Bat extends NPC {
         deathTime = System.currentTimeMillis();
         currentState = State.DEAD;
         currentAnimationName = "DIE";
-        System.out.println("Bat died!");
+        // System.out.println("Bat died!");
     }
 
     public boolean isDead() {
@@ -185,7 +185,7 @@ public class Bat extends NPC {
 
                 if (distanceToBee < CHASE_RANGE) {
                     currentState = State.CHASE;
-                    System.out.println("Bat spotted bee! Starting chase...");
+                    // System.out.println("Bat spotted bee! Starting chase...");
                 }
                 break;
 
@@ -201,7 +201,7 @@ public class Bat extends NPC {
                 if (!hordeMode && distanceToBee > GIVE_UP_RANGE) {
                     currentState = State.PATROL;
                     setRandomPatrolTarget();
-                    System.out.println("Bee escaped! Returning to patrol...");
+                    // System.out.println("Bee escaped! Returning to patrol...");
                 }
                 break;
 
@@ -227,7 +227,7 @@ public class Bat extends NPC {
 
         currentAnimationName = (facing == Direction.RIGHT) ? "ATTACK_RIGHT" : "ATTACK_LEFT";
 
-        System.out.println("Bat attacking toward " + facing + " at bat pos: " + batX + ", player pos: " + beeX);
+        // System.out.println("Bat attacking toward " + facing + " at bat pos: " + batX + ", player pos: " + beeX);
     }
 
     private void updateAttack(Player player, long currentTime) {
@@ -245,7 +245,7 @@ public class Bat extends NPC {
             lastAttackTime = currentTime;
             currentState = State.CHASE;
             attackFacingDirection = null;
-            System.out.println("Attack finished, resuming chase");
+            // System.out.println("Attack finished, resuming chase");
         }
     }
 
@@ -272,7 +272,7 @@ public class Bat extends NPC {
                 Players.Bee bee = (Players.Bee) player;
                 bee.applyDamage(ATTACK_DAMAGE);
                 hasDealtDamageThisAttack = true;
-                System.out.println("Bat hit bee for " + ATTACK_DAMAGE + " damage!");
+                // System.out.println("Bat hit bee for " + ATTACK_DAMAGE + " damage!");
             }
         }
     }

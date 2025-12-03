@@ -77,8 +77,8 @@ public class Skull extends NPC {
         this.patrolLeftX = location.x - patrolRange;
         this.patrolRightX = location.x + patrolRange;
         
-        System.out.println("Skull spawned at: " + location.x + ", " + location.y);
-        System.out.println("Patrol range: " + patrolLeftX + " to " + patrolRightX);
+        // System.out.println("Skull spawned at: " + location.x + ", " + location.y);
+        // System.out.println("Patrol range: " + patrolLeftX + " to " + patrolRightX);
     }
 
     // damage
@@ -90,7 +90,7 @@ public class Skull extends NPC {
         float textY = getY();
         floatingTexts.add(new FloatingText(textX, textY, "-" + amount, Color.RED));
         
-        System.out.println("Skull took " + amount + " damage! HP: " + health);
+        // System.out.println("Skull took " + amount + " damage! HP: " + health);
         
         if (health <= 0) die();
     }
@@ -100,7 +100,7 @@ public class Skull extends NPC {
         isDead = true;
         deathTime = System.currentTimeMillis();
         currentState = State.DEAD;
-        System.out.println("Skull destroyed!");
+        // System.out.println("Skull destroyed!");
     }
     
     public boolean isDead() {
@@ -167,7 +167,7 @@ public class Skull extends NPC {
                     distanceToBee < CHASE_RANGE &&
                     beeInTerritory) {
                     currentState = State.CHASE;
-                    System.out.println("Skull spotted bee! Starting chase...");
+                    // System.out.println("Skull spotted bee! Starting chase...");
                 }
                 break;
                 
@@ -182,7 +182,7 @@ public class Skull extends NPC {
                 // Give up if bee gets too far or leaves territory
                 if (distanceToBee > GIVE_UP_RANGE || !beeInTerritory) {
                     currentState = State.PATROL;
-                    System.out.println("Bee escaped! Returning to patrol...");
+                    // System.out.println("Bee escaped! Returning to patrol...");
                 }
                 break;
                 
@@ -199,7 +199,7 @@ public class Skull extends NPC {
                 // Give up if bee gets too far
                 if (distanceToBee > GIVE_UP_RANGE || !beeInTerritory) {
                     currentState = State.PATROL;
-                    System.out.println("Bee escaped! Returning to patrol...");
+                    // System.out.println("Bee escaped! Returning to patrol...");
                 }
                 break;
                 
@@ -278,7 +278,7 @@ public class Skull extends NPC {
                 bee.applyDamage(DAMAGE);
                 lastAttackTime = currentTime;
                 currentState = State.ATTACK;
-                System.out.println("Skull hit Bee for " + DAMAGE + " damage!");
+                // System.out.println("Skull hit Bee for " + DAMAGE + " damage!");
             }
         }
     }

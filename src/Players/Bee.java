@@ -132,7 +132,7 @@ public class Bee extends Player {
 
         try {
             slashSheet = new SpriteSheet(ImageLoader.load("spider_slash.png"), 32, 32);
-            System.out.println("Bee: Slash sprite loaded!");
+            // System.out.println("Bee: Slash sprite loaded!");
         } catch (Exception e) {
             System.out.println("Bee: ERROR loading slash sprite: " + e.getMessage());
             slashSheet = null;
@@ -140,7 +140,7 @@ public class Bee extends Player {
 
         try {
             attackFxSheet = new SpriteSheet(ImageLoader.load("bee_attack1.png"), 32, 32);
-            System.out.println("Bee: Attack FX sprite loaded!");
+            // System.out.println("Bee: Attack FX sprite loaded!");
         } catch (Exception e) {
             System.out.println("Bee: ERROR loading attack FX sprite: " + e.getMessage());
             attackFxSheet = null;
@@ -174,7 +174,7 @@ public class Bee extends Player {
             if (projectileHUD != null) {
                 projectileHUD.showProjectile(PROJECTILE_HUD_ICON);
             }
-            System.out.println("[Bee] Projectile already unlocked from previous map. Restoring HUD + ability.");
+            // System.out.println("[Bee] Projectile already unlocked from previous map. Restoring HUD + ability.");
         }
     }
 
@@ -266,7 +266,7 @@ public class Bee extends Player {
         }
 
         if (currentHealth <= 0) {
-            System.out.println(BeeStats.isDead());
+            // System.out.println(BeeStats.isDead());
             BeeStats.setDead(true);
             BeeStats.setWalkSpeed(0);
             System.out.println("Bee died! Playing death animation...");
@@ -284,7 +284,7 @@ public class Bee extends Player {
         hasPowerup = true;
         powerupIconPath = iconPath;
         showPowerupIcon(iconPath, 999999);
-        System.out.println("Bee collected power-up! (Press 1 to activate)");
+        // System.out.println("Bee collected power-up! (Press 1 to activate)");
     }
 
     public void obtainTunic() {
@@ -413,7 +413,7 @@ public class Bee extends Player {
         // System.out.println("Current number of flowers on the map: " + countFlowers());
         // System.out.println(BeeStats.getStamina());
 
-        System.out.println("Hive Nectar: " + HiveManager.getNectar());
+        // System.out.println("Hive Nectar: " + HiveManager.getNectar());
 
         handleAttackInput();
         handleTunicInput();

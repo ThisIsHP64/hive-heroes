@@ -85,11 +85,11 @@ public class GrassLevelScreen extends Screen implements GameListener {
         if (player instanceof Bee) {
             Bee bee = (Bee) player;
             if (bee.getNectar() >= bee.getNectarCap()) {
-                System.out.println("GrassLevel: Bee entered with full nectar! Starting horde...");
+                // System.out.println("GrassLevel: Bee entered with full nectar! Starting horde...");
                 UnleashMayhem.fire(map, bee);
             } else if (!StaticClasses.UnleashMayhem.isActive()) {
                 // if horde is not active, clean up any leftover enemies from previous horde
-                System.out.println("GrassLevel: Horde not active, cleaning up leftover enemies");
+                // System.out.println("GrassLevel: Horde not active, cleaning up leftover enemies");
                 map.getNPCs().removeIf(npc -> npc instanceof Spider || npc instanceof Bat);
             }
         }
@@ -135,7 +135,7 @@ public class GrassLevelScreen extends Screen implements GameListener {
                                     sp.takeDamage(BeeStats.getAttackDamage());
                                     BeeStats.setExperience(BeeStats.getExperience() + 1);
                                     
-                                    System.out.println("Bee stung spider!");
+                                    // System.out.println("Bee stung spider!");
                                 }
                             }
                             
@@ -145,7 +145,7 @@ public class GrassLevelScreen extends Screen implements GameListener {
                                 if (!bat.isDead() && sting.intersects(bat.getHitbox())) {
                                     bat.takeDamage(BeeStats.getAttackDamage());
                                     BeeStats.setExperience(BeeStats.getExperience() + 1);
-                                    System.out.println("Bee stung bat!");
+                                    // System.out.println("Bee stung bat!");
                                 }
                             }
 
@@ -154,19 +154,19 @@ public class GrassLevelScreen extends Screen implements GameListener {
                                 Flower flower = (Flower) npc;
 
                                 if (sting.intersects(flower.getHitbox())) {
-                                    System.out.println("Sunflower hit!");
+                                    // System.out.println("Sunflower hit!");
 
                                     int added = bee.tryAddNectar(1);
                                     if (added > 0) {
-                                        System.out.println(
-                                                "Nectar collected: " + bee.getNectar() + "/" + bee.getNectarCap());
+                                        // System.out.println(
+                                        //         "Nectar collected: " + bee.getNectar() + "/" + bee.getNectarCap());
                                         
                                         // spawn yellow +1 floating text at sunflower
                                         float textX = flower.getX() + 24;
                                         float textY = flower.getY();
                                         floatingTexts.add(new FloatingText(textX, textY, "+1", new Color(255, 215, 0)));
                                     } else {
-                                        System.out.println("Pouch full! Deposit at the hive.");
+                                        // System.out.println("Pouch full! Deposit at the hive.");
                                     }
                                 }
                             }

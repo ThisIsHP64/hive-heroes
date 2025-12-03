@@ -63,7 +63,7 @@ public class PowerUp extends NPC {
         // Step 1: pickup with E
         if (!used && this.intersects(player) && Keyboard.isKeyDown(Key.E)) {
             if (player instanceof Bee bee) {
-                System.out.println("Power-up collected! (Press 1 to activate)");
+                System.out.println("Speed Power-up collected! (Press 1 to activate)");
 
                 // play pickup animation once
                 this.currentAnimationName = "ACTIVATED";
@@ -82,7 +82,7 @@ public class PowerUp extends NPC {
         if (animationPlaying && System.currentTimeMillis() - animationStartTime > ACTIVATED_ANIM_DURATION_MS) {
             animationPlaying = false;
             setMapEntityStatus(MapEntityStatus.REMOVED);
-            System.out.println("Entity removed after animation.");
+            // System.out.println("Powerup removed from map.");
         }
     }
 

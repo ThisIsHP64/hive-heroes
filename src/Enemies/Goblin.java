@@ -118,7 +118,7 @@ public class Goblin extends NPC {
             return;
 
         health -= amount;
-        System.out.println("Goblin took " + amount + " damage! HP: " + health);
+        // System.out.println("Goblin took " + amount + " damage! HP: " + health);
 
         triggerHitFx();
 
@@ -140,7 +140,7 @@ public class Goblin extends NPC {
         deathTime = System.currentTimeMillis();
         currentState = State.DEAD;
         currentAnimationName = "DIE";
-        System.out.println("Goblin died!");
+        // System.out.println("Goblin died!");
     }
 
     public boolean isDead() {
@@ -192,7 +192,7 @@ public class Goblin extends NPC {
 
                 if (distanceToBee < CHASE_RANGE) {
                     currentState = State.CHASE;
-                    System.out.println("Goblin spotted bee! Starting chase...");
+                    // System.out.println("Goblin spotted bee! Starting chase...");
                 }
                 break;
 
@@ -208,7 +208,7 @@ public class Goblin extends NPC {
                 if (!hordeMode && distanceToBee > GIVE_UP_RANGE) {
                     currentState = State.PATROL;
                     setRandomPatrolTarget();
-                    System.out.println("Goblin escaped! Returning to patrol...");
+                    // System.out.println("Goblin escaped! Returning to patrol...");
                 }
                 break;
 
@@ -234,7 +234,7 @@ public class Goblin extends NPC {
 
         currentAnimationName = (facing == Direction.RIGHT) ? "ATTACK_RIGHT" : "ATTACK_LEFT";
 
-        System.out.println("Goblin attacking toward " + facing + " at Goblin pos: " + goblinX + ", player pos: " + beeX);
+        // System.out.println("Goblin attacking toward " + facing + " at Goblin pos: " + goblinX + ", player pos: " + beeX);
     }
 
     private void updateAttack(Player player, long currentTime) {
@@ -254,7 +254,7 @@ public class Goblin extends NPC {
             lastAttackTime = currentTime;
             currentState = State.CHASE;
             attackFacingDirection = null;
-            System.out.println("Goblin attack finished, resuming chase");
+            // System.out.println("Goblin attack finished, resuming chase");
         }
     }
 
@@ -273,7 +273,7 @@ public class Goblin extends NPC {
                 Players.Bee bee = (Players.Bee) player;
                 bee.applyDamage(ATTACK_DAMAGE);
                 hasDealtDamageThisAttack = true;
-                System.out.println("Goblin hit bee for " + ATTACK_DAMAGE + " damage!");
+                // System.out.println("Goblin hit bee for " + ATTACK_DAMAGE + " damage!");
             }
         }
     }

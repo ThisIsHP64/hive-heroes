@@ -32,7 +32,7 @@ public final class FrostLevelHorde {
     public static void spawnWave(Map map, Bee bee, int count) {
         if (map == null || bee == null) return;
         
-        System.out.println("[FrostLevelHorde] Spawning " + count + " frost enemies");
+        // System.out.println("[FrostLevelHorde] Spawning " + count + " frost enemies");
         
         for (int i = 0; i < count; i++) {
             Point spawn = pickSpawnOutsideCamera(bee);
@@ -47,21 +47,21 @@ public final class FrostLevelHorde {
                 dragon.setHordeAggression(SPEED_MULT, true);
                 dragon.setMap(map);
                 enemy = dragon;
-                System.out.println("[FrostLevelHorde] Spawned FrostDragon");
+                // System.out.println("[FrostLevelHorde] Spawned FrostDragon");
             } else if (roll < 60) {
                 // 40% chance: Crab
                 Crab crab = new Crab(spawn);
                 crab.setHordeAggression(SPEED_MULT, true);
                 crab.setMap(map);
                 enemy = crab;
-                System.out.println("[FrostLevelHorde] Spawned Crab");
+                // System.out.println("[FrostLevelHorde] Spawned Crab");
             } else {
                 // 40% chance: Goblin
                 Goblin goblin = new Goblin(spawn);
                 goblin.setHordeAggression(SPEED_MULT, true);
                 goblin.setMap(map);
                 enemy = goblin;
-                System.out.println("[FrostLevelHorde] Spawned Goblin");
+                // System.out.println("[FrostLevelHorde] Spawned Goblin");
             }
             
             map.getNPCs().add(enemy);
@@ -72,7 +72,7 @@ public final class FrostLevelHorde {
             }
         }
         
-        System.out.println("[FrostLevelHorde] Wave spawned!");
+        // System.out.println("[FrostLevelHorde] Wave spawned!");
     }
     
     /**

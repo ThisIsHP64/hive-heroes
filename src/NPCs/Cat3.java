@@ -29,7 +29,7 @@ public class Cat3 extends NPC {
         setX(getX() - (SPRITE_WIDTH * SCALE / 2f));
         setY(getY() - (SPRITE_HEIGHT * SCALE));
 
-        System.out.println(" spawned at " + getX() + ", " + getY());
+        // System.out.println(" spawned at " + getX() + ", " + getY());
     }
 
     @Override

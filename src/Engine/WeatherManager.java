@@ -38,6 +38,7 @@ public class WeatherManager {
 
     public void setRaining(boolean raining) {
         this.raining = raining;
+        System.out.println("It has began to rain. Your wings are slowed.");
     }
 
     public boolean isWind() {
@@ -46,6 +47,7 @@ public class WeatherManager {
 
     public void setWind(boolean wind) {
         this.wind = wind;
+        System.out.println("The galeful wind stifles your movements.");
     }
 
     public boolean isRedRain() {
@@ -54,6 +56,7 @@ public class WeatherManager {
 
     public void setRedRain(boolean redRain) {
         this.redRain = redRain;
+        System.out.println("Take cover! The lava rain burns through your skin.");
     }
 
     public boolean isSnow() {
@@ -62,5 +65,6 @@ public class WeatherManager {
 
     public void setSnow(boolean snow) {
         this.snow = snow;
+        System.out.println("You begin to feel a wistful chill in the air, and freeze up.");
     }
 }

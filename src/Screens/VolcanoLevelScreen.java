@@ -94,11 +94,11 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
         for (NPC npc : map.getNPCs()) {
             if (npc instanceof Volcano) {
                 volcanoFound = true;
-                System.out.println("[VolcanoLevel] ✓ Volcano found at: (" + npc.getX() + ", " + npc.getY() + ")");
+                // System.out.println("[VolcanoLevel] ✓ Volcano found at: (" + npc.getX() + ", " + npc.getY() + ")");
             }
         }
         if (!volcanoFound) {
-            System.out.println("[VolcanoLevel] ✗✗✗ WARNING: NO VOLCANO FOUND ON MAP!");
+            // System.out.println("[VolcanoLevel] ✗✗✗ WARNING: NO VOLCANO FOUND ON MAP!");
         }
         
         // LOTR Easter Egg - Check if player has the ring when entering
@@ -112,11 +112,11 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
         if (player instanceof Bee) {
             Bee bee = (Bee) player;
             if (bee.getNectar() >= bee.getNectarCap()) {
-                System.out.println("VolcanoLevel: Bee entered with full nectar! Starting horde...");
+                // System.out.println("VolcanoLevel: Bee entered with full nectar! Starting horde...");
                 StaticClasses.UnleashMayhem.fire(map, bee);
             } else if (!StaticClasses.UnleashMayhem.isActive()) {
                 // if horde is not active, clean up any leftover enemies from previous horde
-                System.out.println("VolcanoLevel: Horde not active, cleaning up leftover enemies");
+                // System.out.println("VolcanoLevel: Horde not active, cleaning up leftover enemies");
                 map.getNPCs().removeIf(npc -> npc instanceof Spider || npc instanceof Bat);
             }
         }
@@ -176,7 +176,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                 if (ringTextboxShown && map.getTextbox().isActive() && map.getTextbox().isTextQueueEmpty()) {
                     map.getTextbox().setIsActive(false);
                     ringTextboxShown = false;
-                    System.out.println("[VolcanoLevel] Ring textbox closed - all messages read");
+                    // System.out.println("[VolcanoLevel] Ring textbox closed - all messages read");
                 }
                 
                 // Prevent melee attack spam while textbox is active
@@ -263,7 +263,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                     if (BeeStats.hasRing() && !destroyingRing) {
                         // Check for E key press with key locker
                         if (Keyboard.isKeyDown(Key.E) && !eKeyLocker.isKeyLocked(Key.E)) {
-                            System.out.println("[VolcanoLevel] E key pressed! Checking volcano...");
+                            // System.out.println("[VolcanoLevel] E key pressed! Checking volcano...");
                             eKeyLocker.lockKey(Key.E);
                             
                             for (NPC npc : map.getNPCs()) {
@@ -282,13 +282,13 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                         Math.pow(beeCenterY - volcanoCenterY, 2)
                                     );
                                     
-                                    System.out.println("[VolcanoLevel] Bee position: (" + beeCenterX + ", " + beeCenterY + ")");
-                                    System.out.println("[VolcanoLevel] Volcano position: (" + volcanoCenterX + ", " + volcanoCenterY + ")");
-                                    System.out.println("[VolcanoLevel] Distance: " + distance + " (need < 350)");
+                                    // System.out.println("[VolcanoLevel] Bee position: (" + beeCenterX + ", " + beeCenterY + ")");
+                                    // System.out.println("[VolcanoLevel] Volcano position: (" + volcanoCenterX + ", " + volcanoCenterY + ")");
+                                    // System.out.println("[VolcanoLevel] Distance: " + distance + " (need < 350)");
                                     
                                     if (distance < 350) {
                                         // Player is close enough to the volcano - start destruction!
-                                        System.out.println("[VolcanoLevel] ✓✓✓ SUCCESS! Throwing the One Ring into Mount Doom!");
+                                        System.out.println("[VolcanoLevel] SUCCESS! Throwing the One Ring into Mount Doom!");
                                         
                                         // Trigger epic volcano visual effects
                                         volcano.triggerRingDestroyFX();
@@ -297,14 +297,14 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                         for (NPC otherNpc : map.getNPCs()) {
                                             if (otherNpc instanceof SauronEye) {
                                                 ((SauronEye) otherNpc).destroyEye();
-                                                System.out.println("[VolcanoLevel] SauronEye crumbled!");
+                                                // System.out.println("[VolcanoLevel] SauronEye crumbled!");
                                             }
                                         }
                                         
                                         // Stop horde from attacking immediately
                                         if (ringHordeTriggered || StaticClasses.UnleashMayhem.isActive()) {
                                             StaticClasses.UnleashMayhem.cease(map);
-                                            System.out.println("[VolcanoLevel] Horde ceased! Enemies stop attacking.");
+                                            // System.out.println("[VolcanoLevel] Horde ceased! Enemies stop attacking.");
                                         }
                                         
                                         destroyingRing = true;
@@ -312,7 +312,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                         
                                         break;
                                     } else {
-                                        System.out.println("[VolcanoLevel] ✗✗✗ TOO FAR! Get closer!");
+                                        // System.out.println("[VolcanoLevel] ✗✗✗ TOO FAR! Get closer!");
                                     }
                                 }
                             }
@@ -336,7 +336,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
 
                                 if (!sp.isDead() && sting.intersects(sp.getHitbox())) {
                                     sp.takeDamage(BeeStats.getAttackDamage());
-                                    System.out.println("Bee stung spider!");
+                                    // System.out.println("Bee stung spider!");
                                 }
                             }
 
@@ -345,7 +345,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
 
                                 if (!bat.isDead() && sting.intersects(bat.getHitbox())) {
                                     bat.takeDamage(BeeStats.getAttackDamage());
-                                    System.out.println("Bee stung bat!");
+                                    // System.out.println("Bee stung bat!");
                                 }
                             }
 
@@ -354,7 +354,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
 
                                 if (!skull.isDead() && sting.intersects(skull.getHitbox())) {
                                     skull.takeDamage(BeeStats.getAttackDamage());
-                                    System.out.println("Bee stung skull!");
+                                    // System.out.println("Bee stung skull!");
                                 }
                             }
 
@@ -363,12 +363,12 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                 Flower flower = (Flower) npc;
 
                                 if (sting.intersects(flower.getHitbox())) {
-                                    System.out.println("Sunflower hit!");
+                                    // System.out.println("Sunflower hit!");
 
                                     int added = bee.tryAddNectar(1);
                                     if (added > 0) {
-                                        System.out.println("Nectar collected: " +
-                                            bee.getNectar() + "/" + bee.getNectarCap());
+                                        // System.out.println("Nectar collected: " +
+                                        //     bee.getNectar() + "/" + bee.getNectarCap());
 
                                         // spawn yellow +1 floating text at flower
                                         float textX = flower.getX() + 24;
@@ -380,7 +380,7 @@ public class VolcanoLevelScreen extends Screen implements GameListener {
                                             new Color(255, 215, 0)
                                         ));
                                     } else {
-                                        System.out.println("Pouch full! Deposit at the hive.");
+                                        // System.out.println("Pouch full! Deposit at the hive.");
                                     }
                                 }
                             }

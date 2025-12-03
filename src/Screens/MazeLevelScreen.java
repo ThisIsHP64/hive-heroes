@@ -96,7 +96,7 @@ public class MazeLevelScreen extends Screen implements GameListener {
                                     Math.pow(bee.getY() - ring.getY(), 2)
                                 );
                                 
-                                System.out.println("Ring distance: " + distance + ", collected: " + ring.isCollected());
+                                // System.out.println("Ring distance: " + distance + ", collected: " + ring.isCollected());
                                 
                                 if (!ring.isCollected() && distance < 80) {
                                     ring.collect();
@@ -139,7 +139,7 @@ public class MazeLevelScreen extends Screen implements GameListener {
                     }
 
                     if (bee.isAttacking()) {
-                        System.out.println("Bee is attacking!");
+                        // System.out.println("Bee is attacking!");
                         java.awt.Rectangle sting = bee.getAttackHitbox();
 
                         for (NPC npc : map.getNPCs()) {
@@ -171,7 +171,7 @@ public class MazeLevelScreen extends Screen implements GameListener {
                             if (map.getTextbox().isActive() && map.getTextbox().isTextQueueEmpty()) {
                                 map.getTextbox().setIsActive(false);
                                 keyLocker.unlockKey(Key.E);
-                                System.out.println("Ring faded - textbox closed and E unlocked");
+                                // System.out.println("Ring faded - textbox closed and E unlocked");
                             }
                             // Remove ring even if textbox still active (player still reading)
                             if (map.getTextbox().isTextQueueEmpty()) {

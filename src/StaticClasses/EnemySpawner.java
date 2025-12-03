@@ -107,7 +107,7 @@ public final class EnemySpawner {
      * Spawn enemies in a radius around the player
      */
     private static void spawnEnemiesAroundPlayer(Map map, Bee bee, String mapName, int count) {
-        System.out.println("[EnemySpawner] Attempting to spawn " + count + " enemies for " + mapName);
+        // System.out.println("[EnemySpawner] Attempting to spawn " + count + " enemies for " + mapName);
 
         int successfulSpawns = 0;
         
@@ -115,7 +115,7 @@ public final class EnemySpawner {
             Point spawnPos = pickValidSpawnPositionAroundPlayer(map, bee);
             
             if (spawnPos == null) {
-                System.out.println("[EnemySpawner] Could not find valid spawn position after " + MAX_SPAWN_ATTEMPTS + " attempts");
+                // System.out.println("[EnemySpawner] Could not find valid spawn position after " + MAX_SPAWN_ATTEMPTS + " attempts");
                 continue;  // Skip this spawn if no valid position found
             }
             
@@ -125,8 +125,8 @@ public final class EnemySpawner {
                 enemy.setMap(map);
                 map.getNPCs().add(enemy);
                 successfulSpawns++;
-                System.out.println("[EnemySpawner] ✓ Spawned " + enemy.getClass().getSimpleName() +
-                                   " at (" + spawnPos.x + ", " + spawnPos.y + ")");
+                // System.out.println("[EnemySpawner] ✓ Spawned " + enemy.getClass().getSimpleName() +
+                //                    " at (" + spawnPos.x + ", " + spawnPos.y + ")");
 
                 // CREATE SMOKE POOF EFFECT! 💨
                 for (int p = 0; p < 8; p++) {
@@ -135,7 +135,7 @@ public final class EnemySpawner {
             }
         }
         
-        System.out.println("[EnemySpawner] Successfully spawned " + successfulSpawns + "/" + count + " enemies");
+        // System.out.println("[EnemySpawner] Successfully spawned " + successfulSpawns + "/" + count + " enemies");
     }
 
     /**
@@ -158,18 +158,18 @@ public final class EnemySpawner {
 
             // Check if this position is on a passable tile
             if (isPositionPassable(map, spawnX, spawnY)) {
-                System.out.println("[EnemySpawner] Found valid spawn at pixel (" + spawnX + ", " + spawnY + ") on attempt " + (attempt + 1));
+                // System.out.println("[EnemySpawner] Found valid spawn at pixel (" + spawnX + ", " + spawnY + ") on attempt " + (attempt + 1));
                 return new Point(spawnX, spawnY);
             }
             
             // Debug: show why this position was rejected
             int tileX = spawnX / TILE_SIZE;
             int tileY = spawnY / TILE_SIZE;
-            System.out.println("[EnemySpawner] Attempt " + (attempt + 1) + ": Rejected tile (" + tileX + ", " + tileY + ") at pixel (" + spawnX + ", " + spawnY + ")");
+            // System.out.println("[EnemySpawner] Attempt " + (attempt + 1) + ": Rejected tile (" + tileX + ", " + tileY + ") at pixel (" + spawnX + ", " + spawnY + ")");
         }
         
         // Failed to find valid position after MAX_SPAWN_ATTEMPTS
-        System.out.println("[EnemySpawner] ✗ Failed to find passable tile after " + MAX_SPAWN_ATTEMPTS + " attempts");
+        // System.out.println("[EnemySpawner] ✗ Failed to find passable tile after " + MAX_SPAWN_ATTEMPTS + " attempts");
         return null;
     }
 
@@ -186,7 +186,7 @@ public final class EnemySpawner {
             MapTile tile = map.getMapTile(tileX, tileY);
             
             if (tile == null) {
-                System.out.println("[EnemySpawner] Tile at (" + tileX + ", " + tileY + ") is NULL");
+                // System.out.println("[EnemySpawner] Tile at (" + tileX + ", " + tileY + ") is NULL");
                 return false;  // Out of bounds
             }
             
@@ -194,13 +194,13 @@ public final class EnemySpawner {
             TileType tileType = tile.getTileType();
             boolean isPassable = (tileType == TileType.PASSABLE);
             
-            System.out.println("[EnemySpawner] Tile (" + tileX + ", " + tileY + ") type: " + tileType + ", passable: " + isPassable);
+            // System.out.println("[EnemySpawner] Tile (" + tileX + ", " + tileY + ") type: " + tileType + ", passable: " + isPassable);
             
             return isPassable;
             
         } catch (Exception e) {
             // If any error occurs (out of bounds, etc.), consider it impassable
-            System.out.println("[EnemySpawner] Error checking tile passability: " + e.getMessage());
+            // System.out.println("[EnemySpawner] Error checking tile passability: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
@@ -284,7 +284,7 @@ public final class EnemySpawner {
      */
     public static void setEnabled(boolean enabled) {
         EnemySpawner.enabled = enabled;
-        System.out.println("[EnemySpawner] Spawning " + (enabled ? "enabled" : "disabled"));
+        // System.out.println("[EnemySpawner] Spawning " + (enabled ? "enabled" : "disabled"));
     }
 
     /**
