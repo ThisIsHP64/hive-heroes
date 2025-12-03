@@ -2,6 +2,7 @@ package Engine;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,7 +20,7 @@ public class GameWindow {
 		gamePanel = new GamePanel();
 
 		try {
-			gameWindow.setIconImage(ImageIO.read(new File("Resources/diamond.png")));
+			gameWindow.setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/diamond.png"))));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
