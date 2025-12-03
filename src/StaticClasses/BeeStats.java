@@ -231,6 +231,9 @@ public class BeeStats {
 
         // Completely heal after leveling
         restoreAllStats();
+
+        System.out.println(String.format("Bee Leveled Up! Your stats have been upgraded.\nMax Health: %d\nMax Stamina: %d\nWalk Speed: %f\nAttack Damage: %d", 
+                                            health, stamina, walkSpeed, attackDamage));
     }
 
     public static void restoreAllStats() {

@@ -30,7 +30,7 @@ public final class VolcanoLevelHorde {
     public static void spawnWave(Map map, Bee bee, int count) {
         if (map == null || bee == null) return;
         
-        System.out.println("[VolcanoLevelHorde] Spawning " + count + " volcanic enemies");
+        // System.out.println("[VolcanoLevelHorde] Spawning " + count + " volcanic enemies");
         
         for (int i = 0; i < count; i++) {
             Point spawn = pickSpawnOutsideCamera(bee);
@@ -42,13 +42,13 @@ public final class VolcanoLevelHorde {
                 spider.setHordeAggression(SPEED_MULT, true);
                 spider.setMap(map);
                 enemy = spider;
-                System.out.println("[VolcanoLevelHorde] Spawned spider");
+                // System.out.println("[VolcanoLevelHorde] Spawned spider");
             } else {
                 Bat bat = new Bat(spawn);
                 bat.setHordeAggression(SPEED_MULT, true);
                 bat.setMap(map);
                 enemy = bat;
-                System.out.println("[VolcanoLevelHorde] Spawned bat");
+                // System.out.println("[VolcanoLevelHorde] Spawned bat");
             }
             
             map.getNPCs().add(enemy);
@@ -59,7 +59,7 @@ public final class VolcanoLevelHorde {
             }
         }
         
-        System.out.println("[VolcanoLevelHorde] Wave spawned!");
+        // System.out.println("[VolcanoLevelHorde] Wave spawned!");
     }
     
     /**

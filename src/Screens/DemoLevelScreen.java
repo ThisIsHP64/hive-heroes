@@ -72,7 +72,7 @@ public class DemoLevelScreen extends Screen implements GameListener {
                                 Spider sp = (Spider) npc;
 
                                 if (sting.intersects(sp.getHitbox())) {
-                                    System.out.println("Spider hit!");
+                                    // System.out.println("Spider hit!");
                                     BeeStats.setStamina(BeeStats.getStamina() + 1);
                                 }
                             }
@@ -81,7 +81,7 @@ public class DemoLevelScreen extends Screen implements GameListener {
                                 RareSunflowerwithFlowers rareSunflower = (RareSunflowerwithFlowers) npc;
                                 
                                 if (sting.intersects(rareSunflower.getHitbox())) {
-                                    System.out.println("Sunflower hit!");
+                                    // System.out.println("Sunflower hit!");
                                     BeeStats.setNectar(BeeStats.getNectar() + 1);
                                 }
                             }

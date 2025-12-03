@@ -17,7 +17,7 @@ public final class UnleashMayhem {
         
         // if already active, respawn a wave instead of restarting
         if (active) {
-            System.out.println("[Mayhem] Already active - spawning reinforcements for new level");
+            // System.out.println("[Mayhem] Already active - spawning reinforcements for new level");
             HordeManager.respawnWaveForNewLevel(map, bee);
             return;
         }
@@ -27,7 +27,7 @@ public final class UnleashMayhem {
         map.getCamera().hordeShake();
         Sound.MusicManager.stopAll();
         Sound.MusicManager.playLoop(Music.SIEGE);
-        System.out.println("[Mayhem] HORDE STARTED");
+        // System.out.println("[Mayhem] HORDE STARTED");
     }
 
     public static void cease(Map map) {
@@ -37,7 +37,7 @@ public final class UnleashMayhem {
         HordeManager.stopHorde(map);
         Sound.MusicManager.stopAll();
         Sound.MusicManager.playLoop(Music.GRASS);
-        System.out.println("[Mayhem] HORDE STOPPED");
+        // System.out.println("[Mayhem] HORDE STOPPED");
     }
 
     public static void reset() {
@@ -49,6 +49,6 @@ public final class UnleashMayhem {
         HordeManager.stopHorde(null);
         Sound.MusicManager.stopAll();
         Sound.MusicManager.playLoop(Music.GRASS);
-        System.out.println("[Mayhem] HORDE RESET");
+        // System.out.println("[Mayhem] HORDE RESET");
     }
 }

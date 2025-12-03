@@ -4,6 +4,7 @@ import Engine.*;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import SpriteFont.SpriteFont;
+import StaticClasses.BeeStats;
 import StaticClasses.TeleportManager;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -115,8 +116,6 @@ public class MenuScreen extends Screen {
         if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
             menuItemSelected = currentMenuItemHovered;
             if (menuItemSelected == 0) {
-
-
                 screenCoordinator.setGameState(GameState.HIVELEVEL);
             } else if (menuItemSelected == 1) {
                 screenCoordinator.setGameState(GameState.CREDITS);

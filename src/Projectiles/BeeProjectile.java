@@ -45,7 +45,7 @@ public class BeeProjectile {
             default:    dx = speed;  dy = 0;      break;
         }
 
-        System.out.println("[Proj] spawn dir=" + dir + " dx=" + dx + " dy=" + dy);
+        // System.out.println("[Proj] spawn dir=" + dir + " dx=" + dx + " dy=" + dy);
     }
 
     public void update() {
@@ -122,7 +122,7 @@ public class BeeProjectile {
                 frames[r][c] = sheet.getSubimage(c * TILE, r * TILE, TILE, TILE);
             }
         }
-        System.out.println("[Proj] sheet loaded: " + cols + "x" + rows + " tiles @ " + TILE + "px");
+        // System.out.println("[Proj] sheet loaded: " + cols + "x" + rows + " tiles @ " + TILE + "px");
     }
 
     // Your 3x3 layout:

@@ -85,7 +85,7 @@ public class DungeonLevelScreen extends Screen implements GameListener {
                                 // only deal damage if spider isn't already dead
                                 if (!sp.isDead() && sting.intersects(sp.getHitbox())) {
                                     sp.takeDamage(1);
-                                    System.out.println("Bee stung spider!");
+                                    // System.out.println("Bee stung spider!");
                                 }
                             }
 
@@ -93,7 +93,7 @@ public class DungeonLevelScreen extends Screen implements GameListener {
                                 RareSunflowerwithFlowers rareSunflower = (RareSunflowerwithFlowers) npc;
 
                                 if (sting.intersects(rareSunflower.getHitbox())) {
-                                    System.out.println("Sunflower hit!");
+                                    // System.out.println("Sunflower hit!");
                                     BeeStats.setNectar(BeeStats.getNectar() + 1);
                                 }
                             }

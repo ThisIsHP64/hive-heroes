@@ -284,7 +284,7 @@ public class Bee extends Player {
         hasPowerup = true;
         powerupIconPath = iconPath;
         showPowerupIcon(iconPath, 999999);
-        System.out.println("Bee collected power-up! (Press 1 to activate)");
+        // System.out.println("Bee collected power-up! (Press 1 to activate)");
     }
 
     public void obtainTunic() {

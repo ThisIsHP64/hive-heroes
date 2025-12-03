@@ -24,7 +24,7 @@ public class Hut extends NPC {
                 new SpriteSheet(ImageLoader.load("Hut.png"), TILE_W, TILE_H, 0),
                 "HUT"
         );
-        System.out.println("Hut spawned at " + location.x + ", " + location.y);
+        // System.out.println("Hut spawned at " + location.x + ", " + location.y);
     }
 
     @Override

@@ -96,7 +96,7 @@ public class SnowLevelScreen extends Screen implements GameListener {
                                 // only deal damage if spider isn't already dead
                                 if (!sp.isDead() && sting.intersects(sp.getHitbox())) {
                                     sp.takeDamage(BeeStats.getAttackDamage());
-                                    System.out.println("Bee stung spider!");
+                                    // System.out.println("Bee stung spider!");
                                 }
                             }
 
@@ -107,7 +107,7 @@ public class SnowLevelScreen extends Screen implements GameListener {
                                 // only deal damage if crab isn't already dead
                                 if (!crab.isDead() && sting.intersects(crab.getHitbox())) {
                                     crab.takeDamage(BeeStats.getAttackDamage());
-                                    System.out.println("Bee stung crab!");
+                                    // System.out.println("Bee stung crab!");
                                 }
                             }
 
@@ -118,7 +118,7 @@ public class SnowLevelScreen extends Screen implements GameListener {
                                 // only deal damage if goblin isn't already dead
                                 if (!goblin.isDead() && sting.intersects(goblin.getHitbox())) {
                                     goblin.takeDamage(BeeStats.getAttackDamage());
-                                    System.out.println("Bee stung goblin!");
+                                    // System.out.println("Bee stung goblin!");
                                 }
                             }
 
@@ -129,7 +129,7 @@ public class SnowLevelScreen extends Screen implements GameListener {
                                 // only deal damage if dragon isn't already dead
                                 if (!dragon.isDead() && sting.intersects(dragon.getHitbox())) {
                                     dragon.takeDamage(BeeStats.getAttackDamage());
-                                    System.out.println("Bee stung frost dragon!");
+                                    // System.out.println("Bee stung frost dragon!");
                                 }
                             }
 
@@ -137,7 +137,7 @@ public class SnowLevelScreen extends Screen implements GameListener {
                                 RareSunflowerwithFlowers rareSunflower = (RareSunflowerwithFlowers) npc;
                                 
                                 if (sting.intersects(rareSunflower.getHitbox())) {
-                                    System.out.println("Sunflower hit!");
+                                    // System.out.println("Sunflower hit!");
                                     BeeStats.setNectar(BeeStats.getNectar() + 1);
                                 }
                             }
