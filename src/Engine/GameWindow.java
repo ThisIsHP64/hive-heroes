@@ -1,5 +1,9 @@
 package Engine;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /*
@@ -13,6 +17,13 @@ public class GameWindow {
 	public GameWindow() {
 		gameWindow = new JFrame("Hive Heroes");
 		gamePanel = new GamePanel();
+
+		try {
+			gameWindow.setIconImage(ImageIO.read(new File("Resources/diamond.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		gamePanel.setFocusable(true);
 		gamePanel.requestFocusInWindow();
 		gameWindow.setContentPane(gamePanel);

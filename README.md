@@ -57,6 +57,9 @@ https://jennpixel.itch.io/free-flower-pack-12-icons
 
 Most other icons/spritesheets were either generated, originally created, and/or polished up by members of the team. Note: other assets may not be reflected in this section.
 
+Favicon/Taskbar Icon <br>
+<a href="https://www.flaticon.com/free-icons/jewel" title="jewel icons">Jewel icons created by Icongeek26 - Flaticon</a>
+
 
 ## World Tilesets
 
