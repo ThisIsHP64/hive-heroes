@@ -910,8 +910,8 @@ public class Bee extends Player {
         float projectileX = this.x + 32; // center-ish of bee
         float projectileY = this.y + 32;
         
-        System.out.println("[Bee] Shooting projectile!");
-        System.out.println("[Bee] Facing direction: " + facingDirection);
+        // System.out.println("[Bee] Shooting projectile!");
+        // System.out.println("[Bee] Facing direction: " + facingDirection);
         
         BeeProjectile projectile = new BeeProjectile(projectileX, projectileY, facingDirection);
         activeProjectiles.add(projectile);
@@ -920,7 +920,7 @@ public class Bee extends Player {
         BeeStats.useProjectileStamina();
         lastShotTime = System.currentTimeMillis();
         
-        System.out.println("[Bee] Projectile created. Total projectiles: " + activeProjectiles.size());
+        // System.out.println("[Bee] Projectile created. Total projectiles: " + activeProjectiles.size());
     }
     
     public void updateProjectiles() {

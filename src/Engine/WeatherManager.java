@@ -65,6 +65,6 @@ public class WeatherManager {
 
     public void setSnow(boolean snow) {
         this.snow = snow;
-        System.out.println("You begin to feel a wistful chill in the air, and freeze up.");
+        // System.out.println("You begin to feel a wistful chill in the air, and freeze up.");
     }
 }

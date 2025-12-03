@@ -49,7 +49,7 @@ public class MazeMap extends Map {
         grassPortal.setInteractScript(new MazeToGrassScript());
         npcs.add(grassPortal);
 
-        System.out.println("[MazeMap] START at (1,1) | ONE RING at (2,28) | RED TUNIC (finish) at (19,29)");
+        // System.out.println("[MazeMap] START at (1,1) | ONE RING at (2,28) | RED TUNIC (finish) at (19,29)");
 
         return npcs;
     }
